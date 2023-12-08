@@ -12,14 +12,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> sendLoginCredentials(String username, String password) async {
-    var url = Uri.parse('http://tmztoolsdev:3000'); // Replace with your server's URL
+    var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
 
-    try {
-      var response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'username': username, 'password': password}),
-      );
+  try {
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Add your API key here
+      },
+      body: jsonEncode({'username': username, 'password': password}),
+    );
 
       if (response.statusCode == 200) {
         print('Login successful');
