@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure storage
 import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
@@ -10,27 +11,42 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final storage = FlutterSecureStorage(); // Instance of FlutterSecureStorage
 
   Future<void> sendLoginCredentials(String username, String password) async {
     var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
 
-  try {
-    var response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Add your API key here
-      },
-      body: jsonEncode({'username': username, 'password': password}),
-    );
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
+        },
+        body: jsonEncode({'username': username, 'password': password}),
+      );
 
       if (response.statusCode == 200) {
-        print('Login successful');
+        final responseData = json.decode(response.body);
+        if (responseData['token'] != null) {
+          // Store the token
+          await storage.write(key: 'jwt_token', value: responseData['token']);
+
+          // Navigate to the Search Screen
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => SearchScreen()),
+          );
+        } else {
+          print('Login failed: ${response.body}');
+          // Handle login failure
+        }
       } else {
-        print('Login failed: ${response.body}');
+        print('Server error: ${response.body}');
+        // Handle server error
       }
     } catch (e) {
       print('Error: $e');
+      // Handle network error
     }
   }
 
@@ -138,6 +154,16 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Search')),
+      body: Center(child: Text('Search Screen Placeholder')),
     );
   }
 }
