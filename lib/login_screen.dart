@@ -14,41 +14,41 @@ class _LoginScreenState extends State<LoginScreen> {
   final storage = FlutterSecureStorage(); // Instance of FlutterSecureStorage
 
   Future<void> sendLoginCredentials(String username, String password) async {
-    var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
+  var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
 
-    try {
-      var response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
-        },
-        body: jsonEncode({'username': username, 'password': password}),
-      );
+  try {
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
+      },
+      body: jsonEncode({'username': username, 'password': password}),
+    );
 
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        if (responseData['token'] != null) {
-          // Store the token
-          await storage.write(key: 'jwt_token', value: responseData['token']);
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      if (responseData['success'] == true && responseData['message'] != null) {
+        // Assuming the token is in the 'message' field
+        await storage.write(key: 'jwt_token', value: responseData['message']);
 
-          // Navigate to the Search Screen
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => SearchScreen()),
-          );
-        } else {
-          print('Login failed: ${response.body}');
-          // Handle login failure
-        }
+        // Navigate to the Search Screen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => SearchScreen()),
+        );
       } else {
-        print('Server error: ${response.body}');
-        // Handle server error
+        print('Login failed: ${response.body}');
+        // Handle login failure
       }
-    } catch (e) {
-      print('Error: $e');
-      // Handle network error
+    } else {
+      print('Server error: ${response.body}');
+      // Handle server error
     }
+  } catch (e) {
+    print('Error: $e');
+    // Handle network error
   }
+}
 
   @override
   void dispose() {
