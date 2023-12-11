@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure storage
 import 'dart:convert';
+import 'search_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final storage = FlutterSecureStorage(); // Instance of FlutterSecureStorage
 
-  Future<void> sendLoginCredentials(String username, String password) async {
+Future<void> sendLoginCredentials(String username, String password) async {
   var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
 
   try {
@@ -32,23 +33,27 @@ class _LoginScreenState extends State<LoginScreen> {
         // Assuming the token is in the 'message' field
         await storage.write(key: 'jwt_token', value: responseData['message']);
 
-        // Navigate to the Search Screen
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => SearchScreen()),
-        );
+        // Check if the widget is still in the widget tree before navigating
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => SearchScreen()),
+          );
+        }
       } else {
+        // Login failed but the server responded with 200 OK
         print('Login failed: ${response.body}');
-        // Handle login failure
       }
     } else {
+      // Server responded with an error code other than 200
       print('Server error: ${response.body}');
-      // Handle server error
     }
   } catch (e) {
+    // An exception was thrown during the request
     print('Error: $e');
-    // Handle network error
   }
 }
+
+
 
   @override
   void dispose() {
@@ -158,15 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class SearchScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Search')),
-      body: Center(child: Text('Search Screen Placeholder')),
-    );
-  }
-}
+
 
 void main() {
   runApp(MaterialApp(home: LoginScreen()));
