@@ -14,46 +14,38 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final storage = FlutterSecureStorage(); // Instance of FlutterSecureStorage
 
-Future<void> sendLoginCredentials(String username, String password) async {
-  var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
+  Future<void> sendLoginCredentials(String username, String password) async {
+    var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
 
-  try {
-    var response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
-      },
-      body: jsonEncode({'username': username, 'password': password}),
-    );
+    try {
+      var response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
+        },
+        body: jsonEncode({'username': username, 'password': password}),
+      );
 
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      if (responseData['success'] == true && responseData['message'] != null) {
-        // Assuming the token is in the 'message' field
-        await storage.write(key: 'jwt_token', value: responseData['message']);
-
-        // Check if the widget is still in the widget tree before navigating
-        if (mounted) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => SearchScreen()),
-          );
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData['success'] == true && responseData['message'] != null) {
+          await storage.write(key: 'jwt_token', value: responseData['message']);
+          if (mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => SearchScreen()),
+            );
+          }
+        } else {
+          print('Login failed: ${response.body}');
         }
       } else {
-        // Login failed but the server responded with 200 OK
-        print('Login failed: ${response.body}');
+        print('Server error: ${response.body}');
       }
-    } else {
-      // Server responded with an error code other than 200
-      print('Server error: ${response.body}');
+    } catch (e) {
+      print('Error: $e');
     }
-  } catch (e) {
-    // An exception was thrown during the request
-    print('Error: $e');
   }
-}
-
-
 
   @override
   void dispose() {
@@ -64,13 +56,13 @@ Future<void> sendLoginCredentials(String username, String password) async {
 
   Widget _buildLogoSection() {
     return Expanded(
-      flex: 1, // Left third of the panel for the logo
+      flex: 1,
       child: Padding(
-        padding: EdgeInsets.all(10), // Add padding around the logo
+        padding: EdgeInsets.all(10),
         child: Center(
           child: Container(
-            width: 100, // Adjust width as needed
-            height: 100, // Adjust height as needed
+            width: 100,
+            height: 100,
             child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
           ),
         ),
@@ -79,8 +71,9 @@ Future<void> sendLoginCredentials(String username, String password) async {
   }
 
   Widget _buildLoginSection() {
+    ThemeData theme = Theme.of(context);
     return Expanded(
-      flex: 2, // Right two-thirds of the panel
+      flex: 2,
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -91,7 +84,7 @@ Future<void> sendLoginCredentials(String username, String password) async {
               decoration: InputDecoration(
                 labelText: 'Username',
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: theme.primaryColor, // Use theme color
               ),
             ),
             SizedBox(height: 10),
@@ -101,7 +94,7 @@ Future<void> sendLoginCredentials(String username, String password) async {
               decoration: InputDecoration(
                 labelText: 'Password',
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: theme.primaryColor, // Use theme color
               ),
             ),
             SizedBox(height: 20),
@@ -112,25 +105,11 @@ Future<void> sendLoginCredentials(String username, String password) async {
                 sendLoginCredentials(username, password);
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                backgroundColor: MaterialStateProperty.all(theme.primaryColor), // Use theme color
               ),
               child: Text(
                 'LOGIN',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2.0,
-                  wordSpacing: 5.0,
-                  shadows: [
-                    Shadow(
-                      color: Colors.black,
-                      offset: Offset(2, 2),
-                      blurRadius: 2,
-                    ),
-                  ],
-                  fontFamily: 'SourceSansPro',
-                ),
+                style: theme.textTheme.button, // Use text style from theme
               ),
             ),
           ],
@@ -142,13 +121,13 @@ Future<void> sendLoginCredentials(String username, String password) async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff4a4a4a),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Use theme background color
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * 0.5,
           height: MediaQuery.of(context).size.height * 0.4,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Theme.of(context).primaryColor, // Use theme primary color
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -162,8 +141,6 @@ Future<void> sendLoginCredentials(String username, String password) async {
     );
   }
 }
-
-
 
 void main() {
   runApp(MaterialApp(home: LoginScreen()));
