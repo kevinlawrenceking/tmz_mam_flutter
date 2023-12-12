@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_theme.dart'; // Import the theme file
 import 'login_screen.dart'; // Import your login screen
 
 void main() {
@@ -9,11 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Media Asset Manager',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginScreen(), // Set LoginScreen as the home screen
+      title: 'TMZ Media Asset Manager',
+      theme: AppTheme.lightTheme, // Default theme
+      darkTheme: AppTheme.darkTheme, // Dark theme
+      // Rest of your app widget
     );
   }
 }
