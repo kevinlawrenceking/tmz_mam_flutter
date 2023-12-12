@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48">
-<defs><filter id="f" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur in="SourceGraphic" stdDeviation="1.5" /></filter></defs>
-<path fill="rgba(0,0,0,0.4)" filter="url(#f)"  d="M24 44C13 44 4 35 4 24S13 4 24 4v1.4a18.6 18.6 0 1 0 0 37.3 18.6 18.6 0 0 0 0-37.3V4c11 0 20 9 20 20s-9 20-20 20zm7-26v15H17V14h10l4 4zm-5-2v3h3l-3-3zm3 5h-5v-5h-5v15h10V21z"/>
-<path fill="#fff" d="M24 44C13 44 4 35 4 24S13 4 24 4v1.4a18.6 18.6 0 1 0 0 37.3 18.6 18.6 0 0 0 0-37.3V4c11 0 20 9 20 20s-9 20-20 20zm7-26v15H17V14h10l4 4zm-5-2v3h3l-3-3zm3 5h-5v-5h-5v15h10V21z"/>
-</svg>
