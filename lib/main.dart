@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-import 'app_palette.dart';
-import 'login_screen.dart'; // Make sure this path is correct
+import 'package:tmz_mam_flutter/login_screen.dart';
+import 'app_theme.dart';
+import 'theme_manager.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark, // Default to dark theme
-      home: LoginScreen(), // Your LoginScreen widget
+    return ChangeNotifierProvider(
+      create: (_) => ThemeManager(),
+      builder: (context, _) => MaterialApp(
+        title: 'Flutter Demo',
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: context.watch<ThemeManager>().themeMode,
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(), // Use TestScreen here
+      ),
     );
   }
 }
