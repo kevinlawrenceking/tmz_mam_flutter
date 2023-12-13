@@ -1,86 +1,44 @@
 import 'package:flutter/material.dart';
 import 'app_palette.dart';
+import 'account_settings_screen.dart'; // Import this if you have an AccountSettingsScreen
 
 class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF4a4a4a), // The background color
-        elevation: 0, // Removes the shadow
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/images/logo_trans.png'), // Your logo asset
+        title: Text(
+          'TMZ Media Asset Manager',
+          // Removed hardcoded text style to use default AppBar title style
+        ),
+        centerTitle: true,
+        // Removed hardcoded background color to use default AppBar theme color
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            // TODO: Implement functionality to show the menu
+          },
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.account_circle), // Placeholder for user avatar
             onPressed: () {
-              // TODO: Implement user profile navigation
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
+              );
             },
           ),
         ],
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search MAM',
-            suffixIcon: Icon(Icons.search),
-            border: InputBorder.none,
-          ),
-          style: TextStyle(color: Colors.white),
-          // TODO: Add search functionality
-        ),
       ),
-      body: Column(
-        children: <Widget>[
-          // Top search bar and navigation menu
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            color: Color(0xFF4a4a4a),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                navItem('Images', context),
-                navItem('Collections', context),
-                navItem('Status', context),
-                navItem('Admin', context),
-              ],
-            ),
-          ),
-          // Main content area
-          Expanded(
-            child: GridView.builder(
-              // Grid builder to build asset cards
-              itemCount: 20, // Placeholder for number of assets
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, // Adjust number of columns
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  // Card layout for assets goes here
-                );
-              },
-            ),
-          ),
-        ],
+      body: Center(
+        // Placeholder for the main content
+        child: Text('Main content goes here'),
       ),
-      bottomNavigationBar: BottomAppBar(
-        // Footer goes here
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            TextButton(
-              onPressed: () {/* Technical support */},
-              child: Text('TECHNICAL SUPPORT'),
-            ),
-            TextButton(
-              onPressed: () {/* Metadata support */},
-              child: Text('METADATA SUPPORT'),
-            ),
-          ],
-        ),
-      ),
+      // Other properties and methods...
     );
   }
+}
+
 
   Widget navItem(String title, BuildContext context) {
     return TextButton(
@@ -93,7 +51,6 @@ class SearchScreen extends StatelessWidget {
       ),
     );
   }
-}
 
 void main() {
   runApp(MaterialApp(home: SearchScreen()));
