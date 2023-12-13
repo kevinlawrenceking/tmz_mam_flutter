@@ -1,55 +1,52 @@
+// File: lib/app_theme.dart
+
 import 'package:flutter/material.dart';
+import 'app_colors_extension.dart'; // Import AppColorsExtension
 
 class AppTheme {
-  AppTheme._();
-
-  // Define all the colors used in the app.
-  static const Color primaryColor = Color(0xFF000000); // Black
-  static const Color primaryVariantColor = Color(0xFFCF0000); // Red
-  static const Color secondaryColor = Color(0xFF4A4A4A); // Dark Grey
-  static const Color secondaryVariantColor = Color(0xFF9B9B9B); // Light Grey
-  static const Color backgroundColorLight = Color(0xFFFFFFFF); // White
-  static const Color backgroundColorDark = Color(0xFF8E8E8E); // Off-White
-
-  // Define the light theme of the app.
-  static final ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: primaryColor,
-    colorScheme: ColorScheme.light(
-      primary: primaryColor,
-      secondary: primaryVariantColor,
-    ),
-    scaffoldBackgroundColor: backgroundColorLight,
-    appBarTheme: AppBarTheme(
-      color: primaryColor,
-      iconTheme: IconThemeData(color: backgroundColorLight),
-    ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: primaryVariantColor,
-      textTheme: ButtonTextTheme.primary,
-    ),
-    // Define other theme properties like TextTheme, ButtonTheme, etc.
-    // ...
+  //
+  // Light theme
+  //
+  static final ThemeData light = ThemeData.light().copyWith(
+    extensions: [
+      _lightAppColors,
+    ],
   );
 
-  // Define the dark theme of the app.
-  static final ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: primaryColor,
-    colorScheme: ColorScheme.dark(
-      primary: primaryColor,
-      secondary: primaryVariantColor,
-    ),
-    scaffoldBackgroundColor: secondaryColor,
-    appBarTheme: AppBarTheme(
-      color: secondaryColor,
-      iconTheme: IconThemeData(color: backgroundColorDark),
-    ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: primaryVariantColor,
-      textTheme: ButtonTextTheme.primary,
-    ),
-    // Define other theme properties for the dark theme
-    // ...
+  static final _lightAppColors = AppColorsExtension(
+    primary: const Color(0xff6200ee),
+    onPrimary: Colors.white,
+    secondary: const Color(0xff03dac6),
+    onSecondary: Colors.black,
+    error: const Color(0xffb00020),
+    onError: Colors.white,
+    background: Colors.white,
+    onBackground: Colors.black,
+    surface: Colors.white,
+    onSurface: Colors.black,
+    // Add any other color properties you need
+  );
+
+  //
+  // Dark theme
+  //
+  static final ThemeData dark = ThemeData.dark().copyWith(
+    extensions: [
+      _darkAppColors,
+    ],
+  );
+
+  static final _darkAppColors = AppColorsExtension(
+    primary: const Color(0xffbb86fc),
+    onPrimary: Colors.black,
+    secondary: const Color(0xff03dac6),
+    onSecondary: Colors.black,
+    error: const Color(0xffcf6679),
+    onError: Colors.black,
+    background: const Color(0xff121212),
+    onBackground: Colors.white,
+    surface: const Color(0xff121212),
+    onSurface: Colors.white,
+    // Add any other color properties you need
   );
 }

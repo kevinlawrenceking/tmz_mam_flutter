@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_palette.dart';
 
 class SearchScreen extends StatelessWidget {
   @override
