@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_manager.dart'; // Import ThemeManager
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure storage
 import 'dart:convert';
+import 'search_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,29 +14,48 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final storage = FlutterSecureStorage(); // Instance of FlutterSecureStorage
+
 
   Future<void> sendLoginCredentials(String username, String password) async {
     var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
 
-    try {
-      var response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Add your API key here
-        },
-        body: jsonEncode({'username': username, 'password': password}),
-      );
+      try {
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
+      },
+      body: jsonEncode({'username': username, 'password': password}),
+    );
 
-      if (response.statusCode == 200) {
-        print('Login successful');
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      if (responseData['success'] == true && responseData['message'] != null) {
+        // Assuming the token is in the 'message' field
+        await storage.write(key: 'jwt_token', value: responseData['message']);
+
+        // Check if the widget is still in the widget tree before navigating
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => SearchScreen()),
+          );
+        }
       } else {
+        // Login failed but the server responded with 200 OK
         print('Login failed: ${response.body}');
       }
-    } catch (e) {
-      print('Error: $e');
+    } else {
+      // Server responded with an error code other than 200
+      print('Server error: ${response.body}');
     }
+  } catch (e) {
+    // An exception was thrown during the request
+    print('Error: $e');
   }
+}
+
 
   @override
   void dispose() {
