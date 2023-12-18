@@ -35,8 +35,8 @@ class AppTheme {
     ),
     textTheme: TextTheme(
       titleMedium: TextStyle(color: AppPalette.lightInputTextColor), // For light theme input text
-      titleSmall: TextStyle(color: AppPalette.red),
-      titleLarge: TextStyle(color: AppPalette.black),
+      titleSmall: TextStyle(color: AppPalette.darkGray),
+      titleLarge: TextStyle(color: AppPalette.red),
       // Add other text styles as needed
     ),
     // Add other theme properties as needed
@@ -73,7 +73,7 @@ class AppTheme {
       iconTheme: IconThemeData(color: AppPalette.darkGray),
     ),
     textTheme: TextTheme(
-      titleMedium: TextStyle(color: AppPalette.darkInputTextColor), // For light theme input text
+      titleMedium: TextStyle(color: AppPalette.white), // For light theme input text
       titleSmall: TextStyle(color: AppPalette.white60),
       titleLarge: TextStyle(color: AppPalette.white),
       // Add other text styles as needed

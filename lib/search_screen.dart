@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'theme_manager.dart'; // Import ThemeManager
-import 'app_palette.dart';
+import 'theme_manager.dart'; // Ensure this is correctly implemented
+import 'app_palette.dart'; // Ensure this is your color palette file
+import 'package:flutter/material.dart';
 import 'account_settings_screen.dart'; // Import this if you have an AccountSettingsScreen
 
 class SearchScreen extends StatelessWidget {
@@ -16,7 +18,7 @@ class SearchScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
-            // TODO: Implement functionality to show the menu
+            // Implement functionality to show the menu
           },
         ),
         actions: [
@@ -43,58 +45,69 @@ class SearchScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Container(
-              // Container for GridView and pagination controls
-              child: GridView.builder(
-                controller: _scrollController,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  childAspectRatio: (16 / 9),
-                ),
-                itemCount: 20, // Adjust based on the items count
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Image.network(
-                            'https://via.placeholder.com/160x90', // Dummy image
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Headline Title',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              Divider(),
-                              Text('Celebrity: Brad Pitt'),
-                              Text('Created By: Kevin King'),
-                              Text('Rights Summary: Free TMZ'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+            child: GridView.builder(
+              controller: _scrollController,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                childAspectRatio: (16 / 9),
               ),
+              itemCount: 20, // Adjust based on the number of items
+              itemBuilder: (context, index) {
+                return Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Container(color: Colors.grey), // Gray background
+                            Image.network(
+                              'https://via.placeholder.com/160x90', // Replace with actual image data
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          'Los Angeles Chargers vs Dallas Cowboys',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rights Summary: Free (Non-TMZ)',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              'CreatedBy: xarene',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              'Celebrity: Brandon Staley',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
-          // Placeholder for pagination controls
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Text('Pagination Controls Here'),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+     floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Use Provider to access ThemeManager and toggle the theme.
           Provider.of<ThemeManager>(context, listen: false).toggleTheme();
         },
         child: Icon(Icons.brightness_4), // Icon for theme toggle
