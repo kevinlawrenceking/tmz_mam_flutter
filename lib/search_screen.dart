@@ -1,14 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'theme_manager.dart'; // Ensure this is correctly implemented
-import 'app_palette.dart'; // Ensure this is your color palette file
-import 'package:flutter/material.dart';
-import 'account_settings_screen.dart'; // Import this if you have an AccountSettingsScreen
+import 'theme_manager.dart';
+import 'app_palette.dart';
+import 'account_settings_screen.dart';
 
 class SearchScreen extends StatelessWidget {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +19,7 @@ class SearchScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle), // Placeholder for user avatar
+            icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
@@ -32,82 +28,93 @@ class SearchScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              controller: _scrollController,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                childAspectRatio: (16 / 9),
-              ),
-              itemCount: 20, // Adjust based on the number of items
-              itemBuilder: (context, index) {
-                return Card(
-  clipBehavior: Clip.antiAlias,
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Expanded(
-        child: Container(
-          color: Colors.grey, // Gray background
-          child: Image.network(
-            'http://tmztools.tmz.local/mediaroot/flutter/raw.jpg', // Replace with actual image data
-            fit: BoxFit.contain, // Make sure the entire image is shown
-          ),
+            Wrap(
+              spacing: 8.0, // horizontal spacing between cards
+              runSpacing: 8.0, // vertical spacing between cards
+              children: List.generate(20, (index) => buildCard(context)),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text('Pagination Controls Here'),
+            ),
+          ],
         ),
       ),
-                      ListTile(
-                        title: Text(
-                          'Los Angeles Chargers vs Dallas Cowboys',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Rights Summary: Free (Non-TMZ)',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              'CreatedBy: xarene',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Text(
-                              'Celebrity: Brandon Staley',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Pagination Controls Here'),
-          ),
-        ],
-      ),
-     floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Use Provider to access ThemeManager and toggle the theme.
           Provider.of<ThemeManager>(context, listen: false).toggleTheme();
         },
         child: Icon(Icons.brightness_4), // Icon for theme toggle
+      ),
+    );
+  }
+
+  Widget buildCard(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 4 - 16, // Adjust width as needed
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              color: Colors.grey, // Gray background
+              height: 180, // Fixed height for image section
+              child: Image.network(
+                'http://tmztools.tmz.local/mediaroot/flutter/raw.jpg',
+                fit: BoxFit.contain,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Los Angeles Chargers vs Dallas Cowboys',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Rights Summary: Free (Non-TMZ)',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    'CreatedBy: xarene',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    'Celebrity: Brandon Staley',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    'Celebrity: Brandon Staley',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    'Celebrity: Brandon Staley',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  // Additional metadata rows
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
