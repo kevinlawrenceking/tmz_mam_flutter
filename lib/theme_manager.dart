@@ -1,14 +1,12 @@
-// File: lib/theme_manager.dart
-
 import 'package:flutter/material.dart';
-
 class ThemeManager with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode _themeMode = ThemeMode.light; // Default to light mode
 
   ThemeMode get themeMode => _themeMode;
 
-  set themeMode(ThemeMode themeMode) {
-    _themeMode = themeMode;
-    notifyListeners();
+  // Toggles the theme between light and dark mode
+  void toggleTheme() {
+    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners(); // Notify all listeners about the theme change
   }
 }
