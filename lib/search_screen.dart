@@ -48,28 +48,25 @@ class SearchScreen extends StatelessWidget {
             child: GridView.builder(
               controller: _scrollController,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 5,
                 childAspectRatio: (16 / 9),
               ),
               itemCount: 20, // Adjust based on the number of items
               itemBuilder: (context, index) {
                 return Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Container(color: Colors.grey), // Gray background
-                            Image.network(
-                              'https://via.placeholder.com/160x90', // Replace with actual image data
-                              fit: BoxFit.cover,
-                            ),
-                          ],
-                        ),
-                      ),
+  clipBehavior: Clip.antiAlias,
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Expanded(
+        child: Container(
+          color: Colors.grey, // Gray background
+          child: Image.network(
+            'http://tmztools.tmz.local/mediaroot/flutter/raw.jpg', // Replace with actual image data
+            fit: BoxFit.contain, // Make sure the entire image is shown
+          ),
+        ),
+      ),
                       ListTile(
                         title: Text(
                           'Los Angeles Chargers vs Dallas Cowboys',
