@@ -3,8 +3,15 @@ import 'package:provider/provider.dart';
 import 'theme_manager.dart';
 import 'app_palette.dart';
 import 'account_settings_screen.dart';
+import 'api_service.dart'; // Import your API service
+import 'inventory.dart'; // Import your Inventory model
 
 class SearchScreen extends StatelessWidget {
+  Future<List<Inventory>> fetchInventory() async {
+    var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
+    return apiService.fetchInventory(); // Replace with actual method
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +48,23 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Wrap(
-              spacing: 8.0, // horizontal spacing between cards
-              runSpacing: 8.0, // vertical spacing between cards
-              children: List.generate(20, (index) => buildCard(context)),
+            FutureBuilder<List<Inventory>>(
+              future: fetchInventory(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  return Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: snapshot.data!.map((inventoryItem) => buildCard(context, inventoryItem)).toList(),
+                  );
+                } else {
+                  return Text('No data found');
+                }
+              },
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -57,24 +77,24 @@ class SearchScreen extends StatelessWidget {
         onPressed: () {
           Provider.of<ThemeManager>(context, listen: false).toggleTheme();
         },
-        child: Icon(Icons.brightness_4), // Icon for theme toggle
+        child: Icon(Icons.brightness_4),
       ),
     );
   }
 
-  Widget buildCard(BuildContext context) {
+  Widget buildCard(BuildContext context, Inventory inventoryItem) {
     return Container(
-      width: MediaQuery.of(context).size.width / 4 - 16, // Adjust width as needed
+      width: MediaQuery.of(context).size.width / 4 - 16,
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              color: Colors.grey, // Gray background
-              height: 180, // Fixed height for image section
+              color: Colors.grey,
+              height: 180,
               child: Image.network(
-                'http://tmztools.tmz.local/mediaroot/flutter/raw.jpg',
+                inventoryItem.thumbnail,
                 fit: BoxFit.contain,
               ),
             ),
@@ -85,31 +105,11 @@ class SearchScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Los Angeles Chargers vs Dallas Cowboys',
+                    inventoryItem.name,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 4),
-                  Text(
-                    'Rights Summary: Free (Non-TMZ)',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Text(
-                    'CreatedBy: xarene',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Text(
-                    'Celebrity: Brandon Staley',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Text(
-                    'Celebrity: Brandon Staley',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  Text(
-                    'Celebrity: Brandon Staley',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  // Additional metadata rows
+                  // Add other metadata fields as needed
                 ],
               ),
             ),
