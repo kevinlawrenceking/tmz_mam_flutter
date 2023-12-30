@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Import your login screen
+import 'package:provider/provider.dart';
+import 'theme_manager.dart';
+import 'app_theme.dart';
+import 'login_screen.dart'; // Ensure this file exists with your TestPage class
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeManager(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Media Asset Manager',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginScreen(), // Set LoginScreen as the home screen
+      title: 'Flutter Demo',
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: Provider.of<ThemeManager>(context).themeMode,
+      debugShowCheckedModeBanner: false,
+      home: LoginScreen(), // Directly go to TestPage
     );
   }
 }

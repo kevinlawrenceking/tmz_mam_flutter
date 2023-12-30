@@ -1,94 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'theme_manager.dart';
+import 'app_palette.dart';
+import 'account_settings_screen.dart';
+import 'api_service.dart'; // Import your API service
+import 'inventory.dart'; // Import your Inventory model
 
 class SearchScreen extends StatelessWidget {
+  Future<List<Inventory>> fetchInventory() async {
+    var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
+    return apiService.fetchInventory(); // Replace with actual method
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF4a4a4a), // The background color
-        elevation: 0, // Removes the shadow
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/images/logo_trans.png'), // Your logo asset
+        title: Text('TMZ Media Asset Manager'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            // Implement functionality to show the menu
+          },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle), // Placeholder for user avatar
+            icon: Icon(Icons.account_circle),
             onPressed: () {
-              // TODO: Implement user profile navigation
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
+              );
             },
           ),
         ],
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search MAM',
-            suffixIcon: Icon(Icons.search),
-            border: InputBorder.none,
-          ),
-          style: TextStyle(color: Colors.white),
-          // TODO: Add search functionality
-        ),
       ),
-      body: Column(
-        children: <Widget>[
-          // Top search bar and navigation menu
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            color: Color(0xFF4a4a4a),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                navItem('Images', context),
-                navItem('Collections', context),
-                navItem('Status', context),
-                navItem('Admin', context),
-              ],
-            ),
-          ),
-          // Main content area
-          Expanded(
-            child: GridView.builder(
-              // Grid builder to build asset cards
-              itemCount: 20, // Placeholder for number of assets
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, // Adjust number of columns
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
               ),
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  // Card layout for assets goes here
-                );
+            ),
+            FutureBuilder<List<Inventory>>(
+              future: fetchInventory(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  return Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: snapshot.data!.map((inventoryItem) => buildCard(context, inventoryItem)).toList(),
+                  );
+                } else {
+                  return Text('No data found');
+                }
               },
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        // Footer goes here
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            TextButton(
-              onPressed: () {/* Technical support */},
-              child: Text('TECHNICAL SUPPORT'),
-            ),
-            TextButton(
-              onPressed: () {/* Metadata support */},
-              child: Text('METADATA SUPPORT'),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text('Pagination Controls Here'),
             ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Provider.of<ThemeManager>(context, listen: false).toggleTheme();
+        },
+        child: Icon(Icons.brightness_4),
+      ),
     );
   }
 
-  Widget navItem(String title, BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        // TODO: Add navigation functionality
-      },
-      child: Text(
-        title,
-        style: TextStyle(color: Colors.white),
+  Widget buildCard(BuildContext context, Inventory inventoryItem) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 4 - 16,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              color: Colors.grey,
+              height: 180,
+              child: Image.network(
+                inventoryItem.thumbnail,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    inventoryItem.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(height: 4),
+                  // Add other metadata fields as needed
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
