@@ -10,20 +10,32 @@ class ApiService {
   // Fetch inventory data from the API
   Future<List<Inventory>> fetchInventory() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/inventory')); // Adjust the URL path as needed
+      final response = await http.get(
+        Uri.parse('$baseUrl/inventory'),
+        headers: {
+          'Content-Type': 'application/json',
+          'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
+        },
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> body = jsonDecode(response.body);
         List<Inventory> inventory = body.map((dynamic item) => Inventory.fromJson(item)).toList();
         return inventory;
       } else {
-        // Handle the case when the server returns a 4xx or 5xx response
-        throw Exception('Failed to load inventory');
+        // Log the status code and response body for debugging
+        print('Request failed with status: ${response.statusCode}.');
+        print('Response body: ${response.body}');
+        throw Exception('Failed to load inventory. Status code: ${response.statusCode}');
       }
+    } on FormatException catch (e) {
+      // Handle JSON format errors
+      print('Format error: $e');
+      throw Exception('Error occurred while decoding data: $e');
     } catch (e) {
-      // Handle any exceptions thrown during the request
+      // Handle other exceptions
+      print('Error occurred: $e');
       throw Exception('Error occurred: $e');
     }
   }
 }
-
