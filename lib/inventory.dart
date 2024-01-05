@@ -56,6 +56,7 @@ this.versionFlag,
 this.imageContentID,
 this.thumbnail,
 this.systemKeywords,
+this.metadata,
 });
 
  factory Inventory.fromJson(Map<String, dynamic> json) {
