@@ -23,19 +23,13 @@ class ApiService {
         List<Inventory> inventory = body.map((dynamic item) => Inventory.fromJson(item)).toList();
         return inventory;
       } else {
-        // Log the status code and response body for debugging
-        print('Request failed with status: ${response.statusCode}.');
-        print('Response body: ${response.body}');
-        throw Exception('Failed to load inventory. Status code: ${response.statusCode}');
+        // Handle the case when the server returns a 4xx or 5xx response
+        throw Exception('Failed to load inventory');
       }
-    } on FormatException catch (e) {
-      // Handle JSON format errors
-      print('Format error: $e');
-      throw Exception('Error occurred while decoding data: $e');
     } catch (e) {
-      // Handle other exceptions
-      print('Error occurred: $e');
+      // Handle any exceptions thrown during the request
       throw Exception('Error occurred: $e');
     }
   }
 }
+

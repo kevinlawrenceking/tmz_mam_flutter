@@ -109,7 +109,23 @@ class SearchScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 4),
-                  // Add other metadata fields as needed
+                  ...inventoryItem.metadata.map((metadataItem) {
+                    var label = metadataItem.keys.first;
+                    var value = metadataItem[label];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            label,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(value ?? '-')
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ],
               ),
             ),
