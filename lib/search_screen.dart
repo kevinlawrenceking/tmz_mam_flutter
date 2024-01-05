@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_manager.dart';
-import 'app_palette.dart';
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
-import 'inventory.dart'; // Import your Inventory model
+import 'Inventory.dart'; // Import your Inventory model
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -16,12 +15,13 @@ class _SearchScreenState extends State<SearchScreen> {
   final int limit = 50; // Number of items per page
   List<Inventory> inventoryItems = [];
 
-  Future<void> fetchInventory(int offset) async {
+  Future<List<Inventory>> fetchInventory(int offset) async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    var fetchedItems = await apiService.fetchInventory(offset, limit); // Adjust the method signature accordingly
+    var fetchedItems = await apiService.fetchInventory(offset: offset, limit: limit);
     setState(() {
       inventoryItems = fetchedItems;
     });
+    return fetchedItems;
   }
 
   @override
@@ -123,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
               color: Colors.grey,
               height: 180,
               child: Image.network(
-                inventoryItem.thumbnail,
+                inventoryItem.thumbnail ?? 'Unknown',
                 fit: BoxFit.contain,
               ),
             ),
@@ -134,9 +134,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    inventoryItem.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+  inventoryItem.name ?? 'Unknown', // Provide a default value if name is null
+  style: Theme.of(context).textTheme.titleMedium,
+),
                   SizedBox(height: 4),
                   ...inventoryItem.metadata.map((metadataItem) {
                     var label = metadataItem.keys.first;

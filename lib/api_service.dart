@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'inventory.dart'; // Replace with the path to your Inventory model
+import 'Inventory.dart'; // Replace with the path to your Inventory model
 
 class ApiService {
   final String baseUrl;

@@ -1,37 +1,41 @@
 class Inventory {
 final int id;
-final String type;
-final DateTime? created;
-final DateTime? lastUpdated;
+final String? assetType;
+final DateTime? dateCreated;
+final DateTime? dateUpdated;
 final String name;
-final int version;
-final int metadataID;
-final bool truncatedFlag;
-final bool? thumbnailAssetFlag;
-final int filesize;
-final String fileExtension;
-final int width;
-final int checksum;
-final int height;
-final bool versionFlag;
-final DateTime? dateLocked;
-final bool searchableFlag;
-final DateTime? sourceDateCreated;
-final int imageContentID;
-final bool placeholder;
+final String? createdBy;
+final String? dateLocked;
+final int? metadataID;
+final bool? placeholder;
+final String? inventoryKey;
+final String? inventoryTypeName;
 final String? restoreKey;
-final String sourceFilePath;
-final String status;
-final bool? deleteFlag;
+final bool? searchableFlag;
+final DateTime? sourceDateCreated;
+final String? sourceFilePath;
+final String? status;
+final String? checksum;
+final String? fileExtension;
+final int? filesize;
+final int? height;
+final int? width;
+final bool? thumbnailAssetFlag;
+final int? thumbnailid;
+final bool? truncatedFlag;
+final String? uuid;
+final bool? versionFlag;
+final int? imageContentID;
 final String thumbnail;
-  final List<Map<String, String?>> metadata;
+final String? systemKeywords;
+final List<Map<String, String?>> metadata;
 
-Inventory({
-required this.id,
-this.assetType,
+  Inventory({
+ required this.id,
+this.assetType = "-",
 this.dateCreated,
 this.dateUpdated,
-this.name,
+this.name  = "-",
 this.createdBy,
 this.dateLocked,
 this.metadataID,
@@ -54,39 +58,34 @@ this.truncatedFlag,
 this.uuid,
 this.versionFlag,
 this.imageContentID,
-this.thumbnail,
+this.thumbnail = "Unknown",
 this.systemKeywords,
-this.metadata,
-});
+    required this.metadata,
+  });
 
  factory Inventory.fromJson(Map<String, dynamic> json) {
     return Inventory(
-id: json['id'] as int,
-type: json['type'] as String,
-created: json['created'] != null ? DateTime.parse(json['created']) : null,
-lastUpdated: json['lastUpdated'] != null ? DateTime.parse(json['lastUpdated']) : null,
-name: json['name'] as String,
-version: json['version'] as int,
-metadataID: json['metadataID'] as int,
-truncatedFlag: json['truncatedFlag'] as bool,
-thumbnailAssetFlag: json['thumbnailAssetFlag'] as bool,
-filesize: json['filesize'] as int,
-fileExtension: json['fileExtension'] as String,
-width: json['width'] as int,
-checksum: json['checksum'] as int,
-height: json['height'] as int,
-versionFlag: json['versionFlag'] as bool,
-dateLocked: json['dateLocked'] != null ? DateTime.parse(json['dateLocked']) : null,
-searchableFlag: json['searchableFlag'] as bool,
-sourceDateCreated: json['sourceDateCreated'] != null ? DateTime.parse(json['sourceDateCreated']) : null,
-imageContentID: json['imageContentID'] as int,
-placeholder: json['placeholder'] as bool,
-restoreKey: json['restoreKey'] as String,
-sourceFilePath: json['sourceFilePath'] as String,
-status: json['status'] as String,
-deleteFlag: json['deleteFlag'] as bool,
-thumbnail: json['thumbnail'] as String,
-metadata: json['metadata'] != null
+      id: json['id'] as int,
+      name: json['name'] ?? '', // Provide a default value
+      metadataID: json['metadataID'] ?? 0, // Provide a default value
+      truncatedFlag: json['truncatedFlag'] ?? false, // Provide a default value
+      thumbnailAssetFlag: json['thumbnailAssetFlag'] ?? false, // Provide a default value
+      filesize: json['filesize'] ?? 0, // Provide a default value
+      fileExtension: json['fileExtension'] ?? '', // Provide a default value
+      width: json['width'] ?? 0, // Provide a default value
+      checksum: json['checksum'] ?? '', // Provide a default value
+      height: json['height'] ?? 0, // Provide a default value
+      versionFlag: json['versionFlag'] ?? false, // Provide a default value
+      dateLocked: json['dateLocked'], // Nullable
+      searchableFlag: json['searchableFlag'] ?? false, // Provide a default value
+      sourceDateCreated: json['sourceDateCreated'] != null ? DateTime.parse(json['sourceDateCreated']) : null,
+      imageContentID: json['imageContentID'] ?? 0, // Provide a default value
+      placeholder: json['placeholder'] ?? false, // Provide a default value
+      restoreKey: json['restoreKey'], // Nullable
+      sourceFilePath: json['sourceFilePath'] ?? '', // Provide a default value
+      status: json['status'] ?? '', // Provide a default value
+      thumbnail: json['thumbnail'] ?? '', // Provide a default value
+      metadata: json['metadata'] != null
         ? (json['metadata'] as List).map((item) => Map<String, String?>.from(item as Map)).toList()
         : <Map<String, String?>>[], // Provide an empty list if metadata is null
     );
