@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_manager.dart';
-import 'app_palette.dart';
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
-import 'inventory.dart'; // Import your Inventory model
+import 'Inventory.dart'; // Import your Inventory model
 
-class SearchScreen extends StatelessWidget {
-  Future<List<Inventory>> fetchInventory() async {
+class SearchScreen extends StatefulWidget {
+  @override
+  _SearchScreenState createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  int currentPage = 0;
+  final int limit = 50; // Number of items per page
+  List<Inventory> inventoryItems = [];
+
+  Future<List<Inventory>> fetchInventory(int offset) async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    return apiService.fetchInventory(); // Replace with actual method
+    var fetchedItems = await apiService.fetchInventory(offset: offset, limit: limit);
+    setState(() {
+      inventoryItems = fetchedItems;
+    });
+    return fetchedItems;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchInventory(0); // Initially fetch the first page
   }
 
   @override
@@ -49,7 +67,7 @@ class SearchScreen extends StatelessWidget {
               ),
             ),
             FutureBuilder<List<Inventory>>(
-              future: fetchInventory(),
+              future: fetchInventory(currentPage * limit),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -66,9 +84,20 @@ class SearchScreen extends StatelessWidget {
                 }
               },
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text('Pagination Controls Here'),
+            // Pagination controls
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: currentPage > 0 ? () => changePage(currentPage - 1) : null,
+                ),
+                Text('Page ${currentPage + 1}'),
+                IconButton(
+                  icon: Icon(Icons.arrow_forward),
+                  onPressed: () => changePage(currentPage + 1),
+                ),
+              ],
             ),
           ],
         ),
@@ -94,7 +123,7 @@ class SearchScreen extends StatelessWidget {
               color: Colors.grey,
               height: 180,
               child: Image.network(
-                inventoryItem.thumbnail,
+                inventoryItem.thumbnail ?? 'Unknown',
                 fit: BoxFit.contain,
               ),
             ),
@@ -105,11 +134,27 @@ class SearchScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    inventoryItem.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+  inventoryItem.name ?? 'Unknown', // Provide a default value if name is null
+  style: Theme.of(context).textTheme.titleMedium,
+),
                   SizedBox(height: 4),
-                  // Add other metadata fields as needed
+                  ...inventoryItem.metadata.map((metadataItem) {
+                    var label = metadataItem.keys.first;
+                    var value = metadataItem[label];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            label,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(value ?? '-')
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ],
               ),
             ),
@@ -117,6 +162,14 @@ class SearchScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void changePage(int page) {
+    int offset = page * limit;
+    fetchInventory(offset);
+    setState(() {
+      currentPage = page;
+    });
   }
 }
 

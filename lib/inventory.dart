@@ -1,10 +1,9 @@
-
 class Inventory {
 final int id;
 final String? assetType;
 final DateTime? dateCreated;
 final DateTime? dateUpdated;
-final String? name;
+final String name;
 final String? createdBy;
 final String? dateLocked;
 final int? metadataID;
@@ -27,16 +26,16 @@ final bool? truncatedFlag;
 final String? uuid;
 final bool? versionFlag;
 final int? imageContentID;
-final String? thumbnail;
+final String thumbnail;
 final String? systemKeywords;
+final List<Map<String, String?>> metadata;
 
-
-Inventory({
-required this.id,
-this.assetType,
+  Inventory({
+ required this.id,
+this.assetType = "-",
 this.dateCreated,
 this.dateUpdated,
-this.name,
+this.name  = "-",
 this.createdBy,
 this.dateLocked,
 this.metadataID,
@@ -59,43 +58,36 @@ this.truncatedFlag,
 this.uuid,
 this.versionFlag,
 this.imageContentID,
-this.thumbnail,
+this.thumbnail = "Unknown",
 this.systemKeywords,
-});
+    required this.metadata,
+  });
 
-factory Inventory.fromJson(Map<String, dynamic> json) {
+ factory Inventory.fromJson(Map<String, dynamic> json) {
     return Inventory(
-id: json['id'] as int,
-assetType: json['assetType'] as String?,
-dateCreated: json['dateCreated'] != null ? DateTime.parse(json['dateCreated']) : null,
-dateUpdated: json['dateUpdated'] != null ? DateTime.parse(json['dateUpdated']) : null,
-name: json['name'] as String?,
-createdBy: json['createdBy'] as String?,
-dateLocked: json['dateLocked'] as String?,
-metadataID: json['metadataID'] as int?,
-placeholder: json['placeholder'] as bool?,
-inventoryKey: json['inventoryKey'] as String?,
-inventoryTypeName: json['inventoryTypeName'] as String?,
-restoreKey: json['restoreKey'] as String?,
-searchableFlag: json['searchableFlag'] as bool?,
-sourceDateCreated: json['sourceDateCreated'] != null ? DateTime.parse(json['sourceDateCreated']) : null,
-sourceFilePath: json['sourceFilePath'] as String?,
-status: json['status'] as String?,
-checksum: json['checksum'] as String?,
-fileExtension: json['fileExtension'] as String?,
-filesize: json['filesize'] as int?,
-height: json['height'] as int?,
-width: json['width'] as int?,
-thumbnailAssetFlag: json['thumbnailAssetFlag'] as bool?,
-thumbnailid: json['thumbnailid'] as int?,
-truncatedFlag: json['truncatedFlag'] as bool?,
-uuid: json['uuid'] as String?,
-versionFlag: json['versionFlag'] as bool?,
-imageContentID: json['imageContentID'] as int?,
-thumbnail: json['thumbnail'] as String?,
-systemKeywords: json['systemKeywords'] as String?,
-
+      id: json['id'] as int? ?? 0,
+      name: json['name'] ?? '', // Provide a default value
+      metadataID: json['metadataID'] as int? ?? 0, // Provide a default value
+      truncatedFlag: json['truncatedFlag'] ?? false, // Provide a default value
+      thumbnailAssetFlag: json['thumbnailAssetFlag'] ?? false, // Provide a default value
+      filesize: json['filesize'] ?? 0, // Provide a default value
+      fileExtension: json['fileExtension'] ?? '', // Provide a default value
+      width: json['width'] ?? 0, // Provide a default value
+      checksum: json['checksum'] ?? '', // Provide a default value
+      height: json['height'] ?? 0, // Provide a default value
+      versionFlag: json['versionFlag'] ?? false, // Provide a default value
+      dateLocked: json['dateLocked'], // Nullable
+      searchableFlag: json['searchableFlag'] ?? false, // Provide a default value
+      sourceDateCreated: json['sourceDateCreated'] != null ? DateTime.parse(json['sourceDateCreated']) : null,
+      imageContentID: json['imageContentID'] ?? 0, // Provide a default value
+      placeholder: json['placeholder'] ?? false, // Provide a default value
+      restoreKey: json['restoreKey'], // Nullable
+      sourceFilePath: json['sourceFilePath'] ?? '', // Provide a default value
+      status: json['status'] ?? '', // Provide a default value
+      thumbnail: json['thumbnail'] ?? '', // Provide a default value
+      metadata: json['metadata'] != null
+        ? (json['metadata'] as List).map((item) => Map<String, String?>.from(item as Map)).toList()
+        : <Map<String, String?>>[], // Provide an empty list if metadata is null
     );
   }
 }
-
