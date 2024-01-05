@@ -24,7 +24,7 @@ final String sourceFilePath;
 final String status;
 final bool? deleteFlag;
 final String thumbnail;
-
+  final List<Map<String, String?>> metadata;
 
 Inventory({
 required this.id,
@@ -85,7 +85,9 @@ sourceFilePath: json['sourceFilePath'] as String,
 status: json['status'] as String,
 deleteFlag: json['deleteFlag'] as bool,
 thumbnail: json['thumbnail'] as String,
-
+metadata: json['metadata'] != null
+        ? (json['metadata'] as List).map((item) => Map<String, String?>.from(item as Map)).toList()
+        : <Map<String, String?>>[], // Provide an empty list if metadata is null
     );
   }
 }
