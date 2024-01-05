@@ -82,59 +82,60 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCard(BuildContext context, Inventory inventoryItem) {
-    return Container(
-      width: MediaQuery.of(context).size.width / 4 - 16,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              color: Colors.grey,
-              height: 180,
-              child: Image.network(
-                inventoryItem.thumbnail,
-                fit: BoxFit.contain,
-              ),
+Widget buildCard(BuildContext context, Inventory inventoryItem) {
+  return Container(
+    width: MediaQuery.of(context).size.width / 4 - 16,
+    child: Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: Colors.grey,
+            height: 180,
+            child: Image.network(
+              inventoryItem.thumbnail,
+              fit: BoxFit.contain,
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    inventoryItem.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  SizedBox(height: 4),
-                  ...inventoryItem.metadata.map((metadataItem) {
-                    var label = metadataItem.keys.first;
-                    var value = metadataItem[label];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            label,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(value ?? '-')
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  inventoryItem.name,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                SizedBox(height: 4),
+                ...inventoryItem.metadata.map((metadataItem) {
+                  var label = metadataItem.keys.first;
+                  var value = metadataItem[label];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          label,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(value ?? '-')
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
+
+
 
 void main() {
   runApp(MaterialApp(home: SearchScreen()));
