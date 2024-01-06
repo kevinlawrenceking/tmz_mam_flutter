@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'Inventory.dart'; // Replace with the path to your Inventory model
+import 'inventory.dart'; // Replace with the path to your Inventory model
 
 class ApiService {
   final String baseUrl;
 
   ApiService({required this.baseUrl});
 
-  // Fetch inventory data from the API with pagination
-  Future<List<Inventory>> fetchInventory({int offset = 0, int limit = 50}) async {
+  // Fetch inventory data from the API
+  Future<List<Inventory>> fetchInventory() async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/inventory?offset=$offset&limit=$limit'),
+        Uri.parse('$baseUrl/inventory'),
         headers: {
           'Content-Type': 'application/json',
           'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key

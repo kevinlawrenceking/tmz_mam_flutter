@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'theme_manager.dart';
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
-import 'Inventory.dart'; // Import your Inventory model
+import 'inventory.dart'; // Import your Inventory model
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -11,24 +11,12 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  int currentPage = 0;
-  final int limit = 50; // Number of items per page
-  List<Inventory> inventoryItems = [];
-
-  Future<List<Inventory>> fetchInventory(int offset) async {
+  Future<List<Inventory>> fetchInventory() async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    var fetchedItems = await apiService.fetchInventory(offset: offset, limit: limit);
-    setState(() {
-      inventoryItems = fetchedItems;
-    });
-    return fetchedItems;
+    return apiService.fetchInventory(); // Replace with actual method
   }
 
-  @override
-  void initState() {
-    super.initState();
-    fetchInventory(0); // Initially fetch the first page
-  }
+  bool isRightPanelOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
-            // Implement functionality to show the menu
+            Scaffold.of(context).openDrawer();
           },
         ),
         actions: [
@@ -53,54 +41,71 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            FutureBuilder<List<Inventory>>(
-              future: fetchInventory(currentPage * limit),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  return Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: snapshot.data!.map((inventoryItem) => buildCard(context, inventoryItem)).toList(),
-                  );
-                } else {
-                  return Text('No data found');
-                }
-              },
-            ),
-            // Pagination controls
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      drawer: Drawer(
+        // Left Panel content here
+        child: Center(child: Text('Left Panel Content')),
+      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
               children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: currentPage > 0 ? () => changePage(currentPage - 1) : null,
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
-                Text('Page ${currentPage + 1}'),
-                IconButton(
-                  icon: Icon(Icons.arrow_forward),
-                  onPressed: () => changePage(currentPage + 1),
+                FutureBuilder<List<Inventory>>(
+                  future: fetchInventory(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      return Container(
+                        color: Colors.grey[850], // Dark grey background
+                        child: Wrap(
+                          spacing: 8.0,
+                          runSpacing: 8.0,
+                          children: snapshot.data!.map((inventoryItem) => buildCard(context, inventoryItem)).toList(),
+                        ),
+                      );
+                    } else {
+                      return Text('No data found');
+                    }
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text('Pagination Controls Here'),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isRightPanelOpen = !isRightPanelOpen;
+                });
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                width: isRightPanelOpen ? MediaQuery.of(context).size.width * 0.25 : 0,
+                color: Colors.grey[850], // Dark grey background for the right panel
+                // Right Panel content here
+                child: isRightPanelOpen ? Center(child: Text('Right Panel Content')) : null,
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -113,7 +118,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget buildCard(BuildContext context, Inventory inventoryItem) {
     return Container(
-      width: MediaQuery.of(context).size.width / 4 - 16,
+      width: MediaQuery.of(context).size.width / 6 - 16,
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -123,7 +128,7 @@ class _SearchScreenState extends State<SearchScreen> {
               color: Colors.grey,
               height: 180,
               child: Image.network(
-                inventoryItem.thumbnail ?? 'Unknown',
+                inventoryItem.thumbnail,
                 fit: BoxFit.contain,
               ),
             ),
@@ -134,9 +139,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-  inventoryItem.name ?? 'Unknown', // Provide a default value if name is null
-  style: Theme.of(context).textTheme.titleMedium,
-),
+                    inventoryItem.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Divider(), // Horizontal line after the title
                   SizedBox(height: 4),
                   ...inventoryItem.metadata.map((metadataItem) {
                     var label = metadataItem.keys.first;
@@ -148,9 +156,16 @@ class _SearchScreenState extends State<SearchScreen> {
                         children: [
                           Text(
                             label,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ) ?? TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Text(value ?? '-')
+                          Text(
+                            value ?? '-',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ],
                       ),
                     );
@@ -162,14 +177,6 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
-  }
-
-  void changePage(int page) {
-    int offset = page * limit;
-    fetchInventory(offset);
-    setState(() {
-      currentPage = page;
-    });
   }
 }
 
