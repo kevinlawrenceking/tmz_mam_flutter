@@ -13,14 +13,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   Future<List<Inventory>> fetchInventory() async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    List<Inventory> inventoryList = await apiService.fetchInventory(); // Replace with actual method
-
-    // Sort metadata for each inventory item
-    for (var item in inventoryList) {
-      item.sortMetadata();
-    }
-
-    return inventoryList;
+    return apiService.fetchInventory(); // Replace with actual method
   }
 
   bool isRightPanelOpen = false;
