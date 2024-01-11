@@ -28,11 +28,11 @@ class Inventory {
   final int? imageContentID;
   final String thumbnail;
   final String? systemKeywords;
-  List<Map<String, String?>> metadata;
+  List<Map<String, dynamic>> metadata;
 
   Inventory({
     required this.id,
-    this.assetType = "-",
+    this.assetType,
     this.dateCreated,
     this.dateUpdated,
     required this.name,
@@ -66,38 +66,49 @@ class Inventory {
   factory Inventory.fromJson(Map<String, dynamic> json) {
     var inventory = Inventory(
       id: json['id'] as int? ?? 0,
+      assetType: json['assetType'],
+      dateCreated: json['dateCreated'] != null ? DateTime.parse(json['dateCreated']) : null,
+      dateUpdated: json['dateUpdated'] != null ? DateTime.parse(json['dateUpdated']) : null,
       name: json['name'] ?? '',
-      metadataID: json['metadataID'] as int? ?? 0,
-      truncatedFlag: json['truncatedFlag'] ?? false,
-      thumbnailAssetFlag: json['thumbnailAssetFlag'] ?? false,
-      filesize: json['filesize'] ?? 0,
-      fileExtension: json['fileExtension'] ?? '',
-      width: json['width'] ?? 0,
-      checksum: json['checksum'] ?? '',
-      height: json['height'] ?? 0,
-      versionFlag: json['versionFlag'] ?? false,
+      createdBy: json['createdBy'],
       dateLocked: json['dateLocked'],
-      searchableFlag: json['searchableFlag'] ?? false,
-      sourceDateCreated: json['sourceDateCreated'] != null ? DateTime.parse(json['sourceDateCreated']) : null,
-      imageContentID: json['imageContentID'] ?? 0,
-      placeholder: json['placeholder'] ?? false,
+      metadataID: json['metadataID'] as int?,
+      placeholder: json['placeholder'],
+      inventoryKey: json['inventoryKey'],
+      inventoryTypeName: json['inventoryTypeName'],
       restoreKey: json['restoreKey'],
-      sourceFilePath: json['sourceFilePath'] ?? '',
-      status: json['status'] ?? '',
+      searchableFlag: json['searchableFlag'],
+      sourceDateCreated: json['sourceDateCreated'] != null ? DateTime.parse(json['sourceDateCreated']) : null,
+      sourceFilePath: json['sourceFilePath'],
+      status: json['status'],
+      checksum: json['checksum'],
+      fileExtension: json['fileExtension'],
+      filesize: json['filesize'] as int?,
+      height: json['height'] as int?,
+      width: json['width'] as int?,
+      thumbnailAssetFlag: json['thumbnailAssetFlag'],
+      thumbnailid: json['thumbnailid'] as int?,
+      truncatedFlag: json['truncatedFlag'],
+      uuid: json['uuid'],
+      versionFlag: json['versionFlag'],
+      imageContentID: json['imageContentID'] as int?,
       thumbnail: json['thumbnail'] ?? '',
+      systemKeywords: json['systemKeywords'],
       metadata: json['metadata'] != null
-        ? (json['metadata'] as List).map((item) => Map<String, String?>.from(item as Map)).toList()
-        : <Map<String, String?>>[],
+        ? (json['metadata'] as List).map((item) {
+          var map = Map<String, dynamic>.from(item as Map);
+          map['orderno'] = int.tryParse(map['orderno']?.toString() ?? '0') ?? 0;
+          return map;
+        }).toList()
+        : [],
     );
 
-    // Sort metadata here
     inventory.sortMetadata();
 
     return inventory;
   }
 
-  // Method to sort metadata
   void sortMetadata() {
-    metadata.sort((a, b) => int.parse(a['orderno'] ?? '0').compareTo(int.parse(b['orderno'] ?? '0')));
+    metadata.sort((a, b) => a['orderno'].compareTo(b['orderno']));
   }
 }
