@@ -69,14 +69,20 @@ class Inventory {
       parsedMetadata = (json['metadata'] as List)
           .map((item) => Map<String, dynamic>.from(item as Map))
           .toList();
-    }
     
-    // Sort the metadata
-    parsedMetadata.sort((a, b) {
-      int orderA = int.tryParse(a['orderno']?.toString() ?? '0') ?? 0;
-      int orderB = int.tryParse(b['orderno']?.toString() ?? '0') ?? 0;
-      return orderA.compareTo(orderB);
-    });
+      // Debug: Print the metadata before sorting
+      print("Metadata before sorting: $parsedMetadata");
+
+      // Sort the metadata by 'orderno'
+      parsedMetadata.sort((a, b) {
+        int orderA = int.tryParse(a['orderno']?.toString() ?? '0') ?? 0;
+        int orderB = int.tryParse(b['orderno']?.toString() ?? '0') ?? 0;
+        return orderA.compareTo(orderB);
+      });
+
+      // Debug: Print the metadata after sorting
+      print("Metadata after sorting: $parsedMetadata");
+    }
 
     return Inventory(
       id: json['id'] as int? ?? 0,
