@@ -150,28 +150,28 @@ class _SearchScreenState extends State<SearchScreen> {
                   Divider(), // Horizontal line after the title
                   SizedBox(height: 4),
                   ...inventoryItem.metadata.map((metadataItem) {
-                    var label = metadataItem.keys.first;
-                    var value = metadataItem[label];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            label,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ) ?? TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            value ?? '-',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    );
+               var label = metadataItem["metalabel"];
+               var value = metadataItem["metavalue"];
+                 return Padding(
+  padding: const EdgeInsets.only(bottom: 4.0),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label ?? '', // Provide a default empty string
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          fontWeight: FontWeight.bold,
+        ) ?? TextStyle(fontWeight: FontWeight.bold),
+      ),
+      Text(
+        value ?? '-', // Provide a default '-' when value is null
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
+    ],
+  ),
+);
                   }).toList(),
                 ],
               ),

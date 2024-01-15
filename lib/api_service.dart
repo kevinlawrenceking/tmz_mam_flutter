@@ -11,7 +11,7 @@ class ApiService {
   Future<List<Inventory>> fetchInventory() async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/inventory'),
+        Uri.parse('$baseUrl/inventory/light'),
         headers: {
           'Content-Type': 'application/json',
           'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
