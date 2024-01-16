@@ -142,57 +142,56 @@ class _SearchScreenState extends State<SearchScreen> {
         clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              // Making the image container flexible
+              // Flexible image container
+              flex: 2, // Adjust flex ratio if needed
               child: Container(
-                color: Colors.grey,
+                color: Colors.grey, // Background color for the image
                 child: Image.network(
                   inventoryItem.thumbnail,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    inventoryItem.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Divider(),
-                  ...inventoryItem.metadata.map((metadataItem) {
-                    var label = metadataItem["metalabel"];
-                    var value = metadataItem["metavalue"];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            label ?? '', // Provide a default empty string
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ) ??
-                                    TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            value ??
-                                '-', // Provide a default '-' when value is null
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ],
+            Expanded(
+              // Flexible metadata section
+              flex: 3, // Adjust flex ratio if needed
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      inventoryItem.name,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Divider(),
+                    ...inventoryItem.metadata.map((metadataItem) {
+                      var label = metadataItem["metalabel"];
+                      var value = metadataItem["metavalue"];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              label ?? '', // Default empty string
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              value ?? '-', // Default '-' for null value
+                              style: TextStyle(),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
               ),
             ),
           ],
