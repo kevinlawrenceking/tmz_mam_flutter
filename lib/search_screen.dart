@@ -11,9 +11,13 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  Future<List<Inventory>> fetchInventory() async {
+  int limit = 10; // Number of items per page
+  int offset = 0; // Starting offset
+
+  Future<List<Inventory>> fetchInventory(int limit, int offset) async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    List<Inventory> inventoryList = await apiService.fetchInventory();
+    List<Inventory> inventoryList =
+        await apiService.fetchInventory(limit, offset);
 
     // Sorting is already handled in the Inventory.fromJson factory
     return inventoryList;
@@ -38,14 +42,14 @@ class _SearchScreenState extends State<SearchScreen> {
             icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => AccountSettingsScreen()),
               );
             },
           ),
         ],
       ),
       drawer: Drawer(
-        // Left Panel content here
         child: Center(child: Text('Left Panel Content')),
       ),
       body: Stack(
@@ -64,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 FutureBuilder<List<Inventory>>(
-                  future: fetchInventory(),
+                  future: fetchInventory(limit, offset),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
@@ -72,11 +76,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       return Container(
-                        color: Colors.grey[850], // Dark grey background
+                        color: Colors.grey[850],
                         child: Wrap(
                           spacing: 8.0,
                           runSpacing: 8.0,
-                          children: snapshot.data!.map((inventoryItem) => buildCard(context, inventoryItem)).toList(),
+                          children: snapshot.data!
+                              .map((inventoryItem) =>
+                                  buildCard(context, inventoryItem))
+                              .toList(),
                         ),
                       );
                     } else {
@@ -86,7 +93,30 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text('Pagination Controls Here'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          if (offset >= limit) {
+                            setState(() {
+                              offset -= limit;
+                            });
+                          }
+                        },
+                      ),
+                      Text('Page ${offset ~/ limit + 1}'),
+                      IconButton(
+                        icon: Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          setState(() {
+                            offset += limit;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -101,10 +131,13 @@ class _SearchScreenState extends State<SearchScreen> {
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 300),
-                width: isRightPanelOpen ? MediaQuery.of(context).size.width * 0.25 : 0,
-                color: Colors.grey[850], // Dark grey background for the right panel
-                // Right Panel content here
-                child: isRightPanelOpen ? Center(child: Text('Right Panel Content')) : null,
+                width: isRightPanelOpen
+                    ? MediaQuery.of(context).size.width * 0.25
+                    : 0,
+                color: Colors.grey[850],
+                child: isRightPanelOpen
+                    ? Center(child: Text('Right Panel Content'))
+                    : null,
               ),
             ),
           ),
@@ -147,31 +180,33 @@ class _SearchScreenState extends State<SearchScreen> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Divider(), // Horizontal line after the title
+                  Divider(),
                   SizedBox(height: 4),
                   ...inventoryItem.metadata.map((metadataItem) {
-               var label = metadataItem["metalabel"];
-               var value = metadataItem["metavalue"];
-                 return Padding(
-  padding: const EdgeInsets.only(bottom: 4.0),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label ?? '', // Provide a default empty string
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          fontWeight: FontWeight.bold,
-        ) ?? TextStyle(fontWeight: FontWeight.bold),
-      ),
-      Text(
-        value ?? '-', // Provide a default '-' when value is null
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
-    ],
-  ),
-);
+                    var label = metadataItem["metalabel"];
+                    var value = metadataItem["metavalue"];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            label ?? '',
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ) ??
+                                    TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            value ?? '-',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    );
                   }).toList(),
                 ],
               ),
