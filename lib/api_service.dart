@@ -7,11 +7,11 @@ class ApiService {
 
   ApiService({required this.baseUrl});
 
-  // Fetch inventory data from the API
-  Future<List<Inventory>> fetchInventory() async {
+  // Fetch inventory data from the API with pagination
+  Future<List<Inventory>> fetchInventory(int limit, int offset) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/inventory/light'),
+        Uri.parse('$baseUrl/inventory/light?limit=$limit&offset=$offset'),
         headers: {
           'Content-Type': 'application/json',
           'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
