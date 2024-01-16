@@ -119,17 +119,19 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 Widget buildPage(List<Inventory> inventoryItems) {
-// Build your grid or list view here using inventoryItems
-// For instance, using a GridView.builder
-return GridView.builder(
-gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-crossAxisCount: 3, // Adjust the number of columns as needed),
+  // Build your grid or list view here using inventoryItems
+  // For instance, using a GridView.builder
+  return GridView.builder(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3, // Adjust the number of columns as needed
+    ),
     itemCount: inventoryItems.length,
     itemBuilder: (context, index) {
       return buildCard(context, inventoryItems[index]);
     },
   );
 }
+
 
 Widget buildCard(BuildContext context, Inventory inventoryItem) {
 // Build your individual item card here
