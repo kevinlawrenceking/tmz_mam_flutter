@@ -4,6 +4,7 @@ import 'theme_manager.dart';
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
 import 'inventory.dart'; // Import your Inventory model
+import 'details_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -11,25 +12,24 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final PageController _pageController = PageController();
-  int currentPage = 0;
-  int totalNumberOfPages = 10; // Example total number of pages
   int limit = 10; // Number of items per page
+  int offset = 0; // Starting offset
 
-  Future<List<Inventory>> fetchInventory(int page) async {
+  Future<List<Inventory>> fetchInventory(int limit, int offset) async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    int offset = page * limit; // Calculate the offset based on the page number
     List<Inventory> inventoryList =
         await apiService.fetchInventory(limit, offset);
-
     return inventoryList;
   }
+
+  bool isRightPanelOpen = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('TMZ Media Asset Manager'),
+        foregroundColor: Colors.white,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.menu),
@@ -42,8 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
             icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => AccountSettingsScreen()),
+                MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
               );
             },
           ),
@@ -52,62 +51,59 @@ class _SearchScreenState extends State<SearchScreen> {
       drawer: Drawer(
         child: Center(child: Text('Left Panel Content')),
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: totalNumberOfPages,
-              itemBuilder: (context, index) {
-                return FutureBuilder<List<Inventory>>(
-                  future: fetchInventory(index),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                buildAdvancedSearchControls(), // Advanced search controls
+                FutureBuilder<List<Inventory>>(
+                  future: fetchInventory(limit, offset),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                    if (snapshot.connectionState == ConnectionState.waiting && offset == 0) {
+                      // Show spinner only during initial load
+                      return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
+                      return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (snapshot.hasData) {
-                      return buildPage(snapshot.data!);
+                      return AnimatedSwitcher(
+                        duration: Duration(milliseconds: 500),
+                        child: buildGridContent(snapshot.data!),
+                      );
                     } else {
-                      return Text('No data found');
+                      // Show a placeholder or message if no data is found
+                      return Center(child: Text('No data found'));
                     }
                   },
-                );
-              },
+                ),
+              ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  if (currentPage > 0) {
-                    _pageController.previousPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                    setState(() {
-                      currentPage--;
-                    });
-                  }
-                },
+          Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isRightPanelOpen = !isRightPanelOpen;
+                });
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                width: isRightPanelOpen ? MediaQuery.of(context).size.width * 0.25 : 0,
+                color: Colors.grey[850],
+                child: isRightPanelOpen ? Center(child: Text('Right Panel Content')) : null,
               ),
-              IconButton(
-                icon: Icon(Icons.arrow_forward),
-                onPressed: () {
-                  if (currentPage < totalNumberOfPages - 1) {
-                    _pageController.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                    setState(() {
-                      currentPage++;
-                    });
-                  }
-                },
-              ),
-            ],
+            ),
           ),
         ],
       ),
@@ -120,78 +116,132 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget buildPage(List<Inventory> inventoryItems) {
-    // Build your grid or list view here using inventoryItems
-    // For instance, using a GridView.builder
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3, // Adjust the number of columns as needed
+  Widget buildAdvancedSearchControls() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TextButton(onPressed: () {}, child: Text('Advanced Search')),
+          Row(
+            children: [
+              DropdownButton<int>(
+                value: limit,
+                onChanged: (newLimit) {
+                  if (newLimit != null) {
+                    setState(() {
+                      limit = newLimit;
+                    });
+                  }
+                },
+                items: [10, 25, 50, 100, 250, 500].map<DropdownMenuItem<int>>((int value) {
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Text(value.toString()),
+                  );
+                }).toList(),
+              ),
+              SizedBox(width: 8),
+              DropdownButton<String>(
+                value: 'Last Updated',
+                onChanged: (newValue) {},
+                items: <String>['Last Updated', 'Created', 'Celebrity', 'Headline']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              Switch(value: true, onChanged: (val) {}),
+            ],
+          ),
+        ],
       ),
-      itemCount: inventoryItems.length,
-      itemBuilder: (context, index) {
-        return buildCard(context, inventoryItems[index]);
+    );
+  }
+
+  Widget buildGridContent(List<Inventory> data) {
+    return Wrap(
+      key: ValueKey<int>(offset), // Unique key for AnimatedSwitcher
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: data.map((inventoryItem) => buildAnimatedCard(context, inventoryItem)).toList(),
+    );
+  }
+
+  Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DetailsScreen(id: inventoryItem.id, inventoryItem: inventoryItem),
+          ),
+        );
       },
+      child: AnimatedOpacity(
+        opacity: 1.0,
+        duration: Duration(milliseconds: 300),
+        child: buildCard(context, inventoryItem),
+      ),
     );
   }
 
   Widget buildCard(BuildContext context, Inventory inventoryItem) {
     return Container(
-      width: MediaQuery.of(context).size.width / 6 -
-          16, // Adjusted for 6 items per row
+      width: MediaQuery.of(context).size.width / 5 - 16,
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              // Flexible image container
-              flex: 2, // Adjust flex ratio if needed
-              child: Container(
-                color: Colors.grey, // Background color for the image
-                child: Image.network(
-                  inventoryItem.thumbnail,
-                  fit: BoxFit.cover,
-                ),
+            Container(
+              color: Colors.grey,
+              height: 180,
+              child: Image.network(
+                inventoryItem.thumbnail,
+                fit: BoxFit.contain,
               ),
             ),
-            Expanded(
-              // Flexible metadata section
-              flex: 3, // Adjust flex ratio if needed
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      inventoryItem.name,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Divider(),
-                    ...inventoryItem.metadata.map((metadataItem) {
-                      var label = metadataItem["metalabel"];
-                      var value = metadataItem["metavalue"];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 4.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              label ?? '', // Default empty string
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              value ?? '-', // Default '-' for null value
-                              style: TextStyle(),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    inventoryItem.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Divider(),
+                  SizedBox(height: 4),
+                  ...inventoryItem.metadata.map((metadataItem) {
+                    var label = metadataItem["metalabel"];
+                    var value = metadataItem["metavalue"];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            label ?? '',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ) ?? TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            value ?? '-',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ],
               ),
             ),
           ],
@@ -199,8 +249,11 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
+}
 
-  void main() {
-    runApp(MaterialApp(home: SearchScreen()));
-  }
+
+
+
+void main() {
+  runApp(MaterialApp(home: SearchScreen()));
 }
