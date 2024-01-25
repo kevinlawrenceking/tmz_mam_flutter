@@ -394,11 +394,11 @@ extension IterableExt<T> on Iterable<T> {
       .toList();
 }
 
-void setAppLanguage(BuildContext context, String language) =>
-    MyApp.of(context).setLocale(language);
+// void setAppLanguage(BuildContext context, String language) =>
+ // v   MyApp.of(context).setLocale(language);
 
-void setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
-    MyApp.of(context).setThemeMode(themeMode);
+// vvoid setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
+ // v   MyApp.of(context).setThemeMode(themeMode);
 
 void showSnackbar(
   BuildContext context,
