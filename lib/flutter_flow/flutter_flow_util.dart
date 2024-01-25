@@ -397,7 +397,6 @@ extension IterableExt<T> on Iterable<T> {
 // void setAppLanguage(BuildContext context, String language) =>
  // v   MyApp.of(context).setLocale(language);
 
-
 // vvoid setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
  // v   MyApp.of(context).setThemeMode(themeMode);
 
