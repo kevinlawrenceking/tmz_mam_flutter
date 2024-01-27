@@ -66,16 +66,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) =>
               params.isEmpty ? NavBarPage(initialPage: 'admin') : AdminWidget(),
         ),
-        FFRoute(
-          name: 'mediaPage',
-          path: '/mediaPage',
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: MediaPageWidget(),
-          ),
-        )
+        // Removed mediaPage route
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
+
 
 extension NavParamExtensions on Map<String, String?> {
   Map<String, String> get withoutNulls => Map.fromEntries(

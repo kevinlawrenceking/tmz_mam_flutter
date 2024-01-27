@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'theme_manager.dart';
-import 'app_theme.dart';
-import 'login_screen.dart'; // Ensure this file exists with your TestPage class
+import 'package:tmz_mam_flutter/test.dart'; // Import your ResponsiveLayout
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeManager(),
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isDarkMode = false;
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: Provider.of<ThemeManager>(context).themeMode,
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // Directly go to TestPage
+      title: 'Your App Title',
+      theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
+      home: ResponsiveLayout(toggleTheme: _toggleTheme),
     );
   }
 }

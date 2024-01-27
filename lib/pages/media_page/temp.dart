@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-// Import other necessary packages and widgets
-
 import '/components/media_page_control_bar_widget.dart';
 import '/components/search_bar_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'media_page_model.dart';
 export 'media_page_model.dart';
-import 'wireframe_layout.dart'; // Import the wireframe layout
-import '/inventory.dart'; // Assuming 'Inventory' is the correct model class
+
+// Assuming 'Inventory' is the correct model class you're using
+import '/inventory.dart';
 
 class MediaPageWidget extends StatefulWidget {
   final int id;
@@ -30,6 +30,7 @@ class MediaPageWidget extends StatefulWidget {
 
 class _MediaPageWidgetState extends State<MediaPageWidget> {
   late MediaPageModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -78,7 +79,7 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                 size: 30,
               ),
               onPressed: () async {
-                Navigator.pop(context);
+                context.pop();
               },
             ),
           ),
@@ -147,7 +148,7 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                       ),
                     ),
                   ),
-                  Flexible(
+                                    Flexible(
                     child: Align(
                       alignment: AlignmentDirectional(1, 0),
                       child: Padding(
@@ -166,77 +167,113 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
                   child: Text(
-                    'Appears In: Collection 1, Collection 36',
+                    'Appers In: Collection 1, Collection 36',
                     style: FlutterFlowTheme.of(context).bodyMedium,
                   ),
                 ),
               ),
-
-
-
-
-              Expanded(
-  child: LayoutBuilder(
-    builder: (BuildContext context, BoxConstraints constraints) {
-      // Check if the width is more than a certain threshold, for example 600 pixels
-      if (constraints.maxWidth > 600) {
-        // Wide layout (side by side)
-        return Row(
-          children: [
-            // Image container
-            Expanded(
-              child:             Container(
-  width: 640, // Set maximum width for the image container
-  child: ClipRRect(
-    borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(10),
-      bottomLeft: Radius.circular(10),
-    ),
-    child: Image.network(
-      'https://picsum.photos/seed/725/600',
-      width: 320, // Ensure the image takes the full width of the container
-      fit: BoxFit.cover, // Cover the entire space of the container
-    ),
-  ),
-),
-            ),
-            // Metadata container
-            Expanded(
-              child: Container(
-
-
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                      child: Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Stack(
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(-1, 0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        20, 20, 0, 20),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        'https://picsum.photos/seed/725/600',
+                                        width: 600,
+                                        height: 400,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(1, 0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        100, 0, 20, 0),
+                                    child: Container(
+                                      width: 673,
+                                      height: 435,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                      child: Align(
+                                        alignment: AlignmentDirectional(0, -1),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  20, 20, 20, 20),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                // Your additional widget children go here
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        );
-      } else {
-        // Narrow layout (stacked)
-        return Column(
-          children: [
-            // Image container
-            Container(
-  width: 320, // Set maximum width for the image container
-  child: ClipRRect(
-    borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(10),
-      bottomLeft: Radius.circular(10),
-    ),
-    child: Image.network(
-      'https://picsum.photos/seed/725/600',
-      width: 320, // Ensure the image takes the full width of the container
-      fit: BoxFit.cover, // Cover the entire space of the container
-    ),
-  ),
-),
-            // Metadata container
-            Container(
-              // Your metadata container code
-            ),
-          ],
-        );
-      }
-    },
-  ),),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                  child: Container(
+                    width: 1490,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).primaryBackground,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Your Row children for displaying content
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -245,23 +282,3 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
   }
 }
 
-class ExistingPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Existing Page'),
-      ),
-      body: Column(
-        children: <Widget>[
-          // Other existing content here
-          Text('Some existing content'),
-          // Include the wireframe layout here
-          WireframeLayout(),
-          // More existing content
-          Text('More existing content'),
-        ],
-      ),
-    );
-  }
-}

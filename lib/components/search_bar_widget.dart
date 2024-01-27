@@ -42,7 +42,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 15.0),
+      padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 15.0),
       child: TextFormField(
         controller: _model.textController,
         focusNode: _model.textFieldFocusNode,

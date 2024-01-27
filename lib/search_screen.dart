@@ -4,7 +4,7 @@ import 'theme_manager.dart';
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
 import 'inventory.dart'; // Import your Inventory model
-import 'details_screen.dart';
+import '/pages/media_page/media_page_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -170,13 +170,13 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => DetailsScreen(id: inventoryItem.id, inventoryItem: inventoryItem),
-          ),
+Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MediaPageWidget(id: inventoryItem.id, inventoryItem: inventoryItem),
+        ),
         );
       },
       child: AnimatedOpacity(
