@@ -53,13 +53,16 @@ class DesktopLayout extends StatelessWidget {
       children: [
         SearchBarWidget(), // Search bar component
         MediaPageControlBarWidget(), // Toolbar component
-        Divider(
+
+Divider(
           thickness: 1,
           indent: 5,
           endIndent: 5,
-          color: FlutterFlowTheme.of(context).secondaryText,
+          color: FlutterFlowTheme.of(context).secondaryText, // Make sure FlutterFlowTheme is correctly imported
         ),
-        Padding(
+
+
+Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -78,20 +81,45 @@ class DesktopLayout extends StatelessWidget {
             ],
           ),
         ),
-        Align(
-          alignment: AlignmentDirectional(-1, 0),
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 20), // Added bottom padding for spacing
-            child: Text(
-              'Appears in: Collection 1, Collection 36',
-              style: FlutterFlowTheme.of(context).bodyMedium,
-            ),
-          ),
-        ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated code for this Text Widget...
+Align(
+  alignment: AlignmentDirectional(-1, 0),
+  child: Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+    child: Text(
+      'Appers In: Collection 1, Collection 36',
+      style: FlutterFlowTheme.of(context).bodyMedium,
+    ),
+  ),
+),
+
+
+
+
+
         Expanded(
           child: Row(
             children: [
               Expanded(
+                
                 child: ImageContainer(),
               ),
               Expanded(
@@ -105,7 +133,6 @@ class DesktopLayout extends StatelessWidget {
     );
   }
 }
-
 
 // MobileLayout for narrower screens
 class MobileLayout extends StatelessWidget {
@@ -155,11 +182,11 @@ class PhotoInfoContainer extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Wrap(
-          spacing: 50, // Horizontal space between columns
+          spacing: 100, // Horizontal space between columns
           runSpacing: 0, // Vertical space between rows
           crossAxisAlignment: WrapCrossAlignment.start,
           children: [
-            infoColumn(context, 'ID', '2564104'),
+            infoColumn(context, 'IaD', '2564104'),
             infoColumn(context, 'Original File Name', '1836307089.jp'),
             infoColumn(context, 'CreatedBy', 'MawhinneEl'),
             infoColumn(context, 'Created', '2024-01-19 at 11:26:16 AM'),

@@ -40,6 +40,7 @@ class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
   }
 
   @override
+  
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
