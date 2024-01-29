@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +42,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 15.0),
+      padding: EdgeInsetsDirectional.fromSTEB(15,15,10,15),
       child: TextFormField(
         controller: _model.textController,
         focusNode: _model.textFieldFocusNode,

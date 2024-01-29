@@ -4,15 +4,17 @@ import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 
-
-
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'package:flutter/material.dart';
+import 'package:tmz_mam_flutter/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
+// import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+// import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
+//import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
+
+//import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
+
+import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 
 // ResponsiveLayout StatefulWidget to handle theme toggling
 class ResponsiveLayout extends StatefulWidget {
@@ -31,7 +33,7 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Page Title',
+        title: 'TMZ Media Asset Manager',
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),
@@ -54,22 +56,25 @@ class DesktopLayout extends StatelessWidget {
         SearchBarWidget(), // Search bar component
         MediaPageControlBarWidget(), // Toolbar component
 
-Divider(
-          thickness: 1,
-          indent: 5,
-          endIndent: 5,
-          color: FlutterFlowTheme.of(context).secondaryText, // Make sure FlutterFlowTheme is correctly imported
-        ),
+Padding(
+  padding: const EdgeInsets.all(8.0),
+  child: Divider(
+            thickness: 1,
+            indent: 8,
+            endIndent: 8,
+            color: FlutterFlowTheme.of(context).secondaryText, // Make sure FlutterFlowTheme is correctly imported
+          ),
+),
 
 
 Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
                 child: Text(
-                  'Tall Grass Blowing in the Wind',
+                  'Tallz Grass Blowing in the Wind',
                   textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).headlineLarge,
                 ),
@@ -129,6 +134,7 @@ Align(
           ),
         ),
         PhotoInfoContainer(),
+        BottomButtonsWidget(),
       ],
     );
   }
@@ -186,7 +192,7 @@ class PhotoInfoContainer extends StatelessWidget {
           runSpacing: 0, // Vertical space between rows
           crossAxisAlignment: WrapCrossAlignment.start,
           children: [
-            infoColumn(context, 'IaD', '2564104'),
+            infoColumn(context, 'ID', '2564104'),
             infoColumn(context, 'Original File Name', '1836307089.jp'),
             infoColumn(context, 'CreatedBy', 'MawhinneEl'),
             infoColumn(context, 'Created', '2024-01-19 at 11:26:16 AM'),

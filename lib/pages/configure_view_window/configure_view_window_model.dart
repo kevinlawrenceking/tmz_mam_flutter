@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'configure_view_window_widget.dart' show ConfigureViewWindowWidget;
 import 'package:flutter/material.dart';

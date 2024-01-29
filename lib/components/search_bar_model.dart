@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'search_bar_widget.dart' show SearchBarWidget;
 import 'package:flutter/material.dart';

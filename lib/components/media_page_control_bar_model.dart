@@ -1,5 +1,5 @@
 import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'media_page_control_bar_widget.dart' show MediaPageControlBarWidget;
 import 'package:flutter/material.dart';

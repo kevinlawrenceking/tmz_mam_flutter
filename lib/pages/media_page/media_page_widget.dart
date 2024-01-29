@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '/components/media_page_control_bar_widget.dart';
 import '/components/search_bar_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'media_page_model.dart';

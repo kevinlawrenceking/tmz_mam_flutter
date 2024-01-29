@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'admin_page_control_bar_widget.dart' show AdminPageControlBarWidget;
 import 'package:flutter/material.dart';

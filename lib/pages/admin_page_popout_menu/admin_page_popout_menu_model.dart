@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'admin_page_popout_menu_widget.dart' show AdminPagePopoutMenuWidget;
 import 'package:flutter/material.dart';

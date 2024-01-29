@@ -1,4 +1,4 @@
-import '/flutter_flow/flutter_flow_theme.dart';
+import '../../flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'filter_assets_dropdown_widget.dart' show FilterAssetsDropdownWidget;
 import 'package:flutter/material.dart';
