@@ -1,5 +1,5 @@
-import '../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import 'flutter_flow_theme.dart';
+import 'flutter_flow_util.dart';
 import 'actions_drop_down_menu_assets_widget.dart'
     show ActionsDropDownMenuAssetsWidget;
 import 'package:flutter/material.dart';
