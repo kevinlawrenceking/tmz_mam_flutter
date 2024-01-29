@@ -3,7 +3,7 @@ import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 
 import 'package:tmz_mam_flutter/search_screen.dart';
 import 'package:tmz_mam_flutter/pages/collections/collections_widget.dart';
-import 'package:tmz_mam_flutter/pages/admin/admin_widget.dart';
+import 'package:tmz_mam_flutter/admin_page.dart';
  
 class BottomButtonsWidget extends StatelessWidget {
   @override
@@ -37,7 +37,7 @@ class BottomButtonsWidget extends StatelessWidget {
               icon: Icons.admin_panel_settings_outlined,
               label: 'Admin',
               onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => AdminWidget(), // Navigate to Admin Screen
+                builder: (context) => AdminPage(), // Navigate to Admin Screen
               )),
             ),
           ],
