@@ -15,6 +15,7 @@ import '/flutter_flow/lat_lng.dart';
 import '/flutter_flow/place.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'serialization_util.dart';
+import '/collections_screen.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -57,8 +58,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'collections',
           path: '/collections',
           builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'collections')
-              : CollectionsWidget(),
+              ? NavBarPage(initialPage: 'collections_screen')
+              : CollectionsPage(),
         ),
         FFRoute(
           name: 'admin',

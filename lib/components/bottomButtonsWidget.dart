@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 
 import 'package:tmz_mam_flutter/search_screen.dart';
-import 'package:tmz_mam_flutter/pages/collections/collections_widget.dart';
+import 'package:tmz_mam_flutter/collections_screen.dart';
 import 'package:tmz_mam_flutter/pages/admin/admin_widget.dart';
  
 class BottomButtonsWidget extends StatelessWidget {
@@ -28,7 +28,7 @@ class BottomButtonsWidget extends StatelessWidget {
               icon: Icons.folder_outlined,
               label: 'Collections',
               onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => CollectionsWidget(), // Navigate to Collections Screen
+                builder: (context) => CollectionsPage(), // Navigate to Collections Screen
               )),
             ),
 
