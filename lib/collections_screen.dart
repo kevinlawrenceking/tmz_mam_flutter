@@ -13,7 +13,7 @@ class CollectionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Collections',
+        title: 'Collectionz',
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),

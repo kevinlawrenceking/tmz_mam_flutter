@@ -1,94 +1,65 @@
-import '../../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+// collections.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
+import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
+import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'collections_model.dart';
-export 'collections_model.dart';
 
-class CollectionsWidget extends StatefulWidget {
-  const CollectionsWidget({Key? key}) : super(key: key);
+class CollectionsPage extends StatelessWidget {
+  const CollectionsPage({Key? key}) : super(key: key);
 
-  @override
-  _CollectionsWidgetState createState() => _CollectionsWidgetState();
-}
-
-class _CollectionsWidgetState extends State<CollectionsWidget> {
-  late CollectionsModel _model;
-
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    super.initState();
-    _model = createModel(context, () => CollectionsModel());
-  }
-
-  @override
-  void dispose() {
-    _model.dispose();
-
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: 'Collectionz',
+        actions: [
+          IconButton(
+            icon: Icon(Icons.brightness_6),
+            onPressed: () {
+              // Implement theme toggle functionality
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          SearchBarWidget(), // Search bar component
+          MediaPageControlBarWidget(), // Toolbar component
 
-    return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          automaticallyImplyLeading: false,
-          leading: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(25.0, 0.0, 0.0, 0.0),
-            child: Icon(
-              FFIcons.ktmzLogoRed1,
-              color: FlutterFlowTheme.of(context).primaryBackground,
-              size: 24.0,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Divider(
+              thickness: 1,
+              indent: 8,
+              endIndent: 8,
+              color: FlutterFlowTheme.of(context).secondaryText,
             ),
           ),
-          title: Align(
-            alignment: AlignmentDirectional(0.0, 0.0),
-            child: Text(
-              'MAM',
-              style: FlutterFlowTheme.of(context).headlineLarge.override(
-                    fontFamily:
-                        FlutterFlowTheme.of(context).headlineLargeFamily,
-                    color: FlutterFlowTheme.of(context).primaryBackground,
-                    useGoogleFonts: GoogleFonts.asMap().containsKey(
-                        FlutterFlowTheme.of(context).headlineLargeFamily),
-                  ),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 25.0, 0.0),
-              child: Icon(
-                Icons.person,
-                color: FlutterFlowTheme.of(context).secondaryBackground,
-                size: 32.0,
+
+          // Title or any additional content can go here
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Your Collections',
+                style: FlutterFlowTheme.of(context).headlineLarge,
               ),
             ),
-          ],
-          centerTitle: false,
-          elevation: 2.0,
-        ),
+          ),
+
+          // Placeholder for future content
+          Expanded(
+            child: Center(
+              child: Text('No Collections Yet',
+                  style: Theme.of(context).textTheme.titleMedium),
+            ),
+          ),
+        ],
       ),
+      bottomNavigationBar: BottomButtonsWidget(),
     );
   }
 }

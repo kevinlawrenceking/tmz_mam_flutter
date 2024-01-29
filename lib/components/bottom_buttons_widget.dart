@@ -28,7 +28,7 @@ class BottomButtonsWidget extends StatelessWidget {
               icon: Icons.folder_outlined,
               label: 'Collections',
               onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => CollectionsWidget(), // Navigate to Collections Screen
+                builder: (context) => CollectionsPage(), // Navigate to Collections Screen
               )),
             ),
 
