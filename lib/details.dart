@@ -15,6 +15,8 @@ import 'package:google_fonts/google_fonts.dart';
 //import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
+import 'package:tmz_mam_flutter/pages/media_page/media_page_widget.dart';
+import 'package:tmz_mam_flutter/pages/media_page/media_page_model.dart';
 
 // ResponsiveLayout StatefulWidget to handle theme toggling
 class ResponsiveLayout extends StatefulWidget {

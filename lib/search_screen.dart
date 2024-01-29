@@ -4,7 +4,22 @@ import 'theme_manager.dart';
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
 import 'inventory.dart'; // Import your Inventory model
-import '/pages/media_page/media_page_widget.dart';
+
+import 'package:tmz_mam_flutter/details.dart';
+
+import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
+import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
+
+
+import 'package:tmz_mam_flutter/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
+
+
+
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -25,19 +40,17 @@ class _SearchScreenState extends State<SearchScreen> {
   bool isRightPanelOpen = false;
 
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TMZ Media Asset Manager'),
-        foregroundColor: Colors.white,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
+      appBar: CustomAppBar(
+        title: 'TMZ Media Asset Manager',
         actions: [
+          IconButton(
+            icon: Icon(Icons.brightness_6),
+            onPressed: () {
+              Provider.of<ThemeManager>(context, listen: false).toggleTheme();
+            },
+          ),
           IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
@@ -46,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
               );
             },
           ),
+          // Add more actions if needed
         ],
       ),
       drawer: Drawer(
@@ -113,6 +127,9 @@ class _SearchScreenState extends State<SearchScreen> {
         },
         child: Icon(Icons.brightness_4),
       ),
+
+      
+    bottomNavigationBar: BottomButtonsWidget(), // Adding BottomButtonsWidget here
     );
   }
 
@@ -175,7 +192,7 @@ Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
     onTap: () {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => MediaPageWidget(id: inventoryItem.id, inventoryItem: inventoryItem),
+          builder: (context) => ResponsiveLayout(id: inventoryItem.id, inventoryItem: inventoryItem),
         ),
         );
       },
