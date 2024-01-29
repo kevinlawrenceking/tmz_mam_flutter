@@ -19,16 +19,16 @@ import 'package:tmz_mam_flutter/pages/media_page/media_page_widget.dart';
 import 'package:tmz_mam_flutter/pages/media_page/media_page_model.dart';
 
 // ResponsiveLayout StatefulWidget to handle theme toggling
-class ResponsiveLayout extends StatefulWidget {
+class DetailsScreen extends StatefulWidget {
   final VoidCallback toggleTheme;
 
-  ResponsiveLayout({required this.toggleTheme});
+  DetailsScreen({required this.toggleTheme});
 
   @override                                                       
   _ResponsiveLayoutState createState() => _ResponsiveLayoutState();
 }
 
-class _ResponsiveLayoutState extends State<ResponsiveLayout> {
+class _ResponsiveLayoutState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 600;

@@ -189,14 +189,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
 Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
   return GestureDetector(
-    onTap: () {
+  onTap: () {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => ResponsiveLayout(id: inventoryItem.id, inventoryItem: inventoryItem),
+            builder: (context) =>   DetailsScreen(toggleTheme: () { 'dark'; },),
         ),
-        );
-      },
-      child: AnimatedOpacity(
+      );
+    },
+    child: AnimatedOpacity(
         opacity: 1.0,
         duration: Duration(milliseconds: 300),
         child: buildCard(context, inventoryItem),
