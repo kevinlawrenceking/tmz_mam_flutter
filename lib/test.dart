@@ -22,7 +22,7 @@ class ResponsiveLayout extends StatefulWidget {
 
   ResponsiveLayout({required this.toggleTheme});
 
-  @override
+  @override                                                       
   _ResponsiveLayoutState createState() => _ResponsiveLayoutState();
 }
 
