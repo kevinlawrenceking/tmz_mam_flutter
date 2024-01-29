@@ -5,9 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
-import 'NavBarPage.dart';
-
-
 import '/index.dart';
 import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -66,10 +63,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) =>
               params.isEmpty ? NavBarPage(initialPage: 'admin') : AdminWidget(),
         ),
-        // Removed mediaPage route
+        FFRoute(
+          name: 'mediaPage',
+          path: '/mediaPage',
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: MediaPageWidget(),
+          ),
+        )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
-
 
 extension NavParamExtensions on Map<String, String?> {
   Map<String, String> get withoutNulls => Map.fromEntries(
