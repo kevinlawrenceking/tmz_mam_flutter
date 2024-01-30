@@ -215,13 +215,13 @@ Widget infoColumn(BuildContext context, String title, String value) {
           title,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 12, // Smaller font size
+            fontSize: 11, // Smaller font size
           ),
         ),
         Text(
           value,
           style: TextStyle(
-            fontSize: 12, // Smaller font size
+            fontSize: 11, // Smaller font size
           ),
         ),
       ],

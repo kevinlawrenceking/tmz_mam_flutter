@@ -1,4 +1,4 @@
-import '../../flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'profile_menu_widget.dart' show ProfileMenuWidget;
 import 'package:flutter/material.dart';

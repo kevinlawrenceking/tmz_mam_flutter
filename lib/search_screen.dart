@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'theme_manager.dart';
+
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
 import 'inventory.dart'; // Import your Inventory model
@@ -10,10 +10,9 @@ import 'package:tmz_mam_flutter/details.dart';
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/main_page_control_bar2_widget.dart';
 
 
-import 'package:tmz_mam_flutter/flutter_flow_icon_button.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
@@ -25,6 +24,19 @@ class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
+
+class ThemeManager with ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.light; // Default to light mode
+
+  ThemeMode get themeMode => _themeMode;
+
+  // Toggles the theme between light and dark mode
+  void toggleTheme() {
+    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    notifyListeners(); // Notify all listeners about the theme change
+  }
+}
+
 
 class _SearchScreenState extends State<SearchScreen> {
   int limit = 10; // Number of items per page
@@ -72,15 +84,15 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  child: SearchBarWidget(),
+
+
                 ),
-                buildAdvancedSearchControls(), // Advanced search controls
+
+buildAdvancedSearchControls(), 
+ MainPageControlBarWidget(),
+ MainPageControlBar2Widget(),
+ // Advanced search controls
                 FutureBuilder<List<Inventory>>(
                   future: fetchInventory(limit, offset),
                   builder: (context, snapshot) {

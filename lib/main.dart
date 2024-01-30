@@ -23,7 +23,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Your App Title',
-      theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
+      debugShowCheckedModeBanner: false,
+      theme: _isDarkMode ? ThemeData.light() : ThemeData.dark(),
       home: DetailsScreen(toggleTheme: _toggleTheme),
     );
   }
