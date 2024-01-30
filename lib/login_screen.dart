@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'theme_Manager.dart';
 import 'search_screen.dart';
 import 'app_palette.dart';
+import 'app_theme.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override

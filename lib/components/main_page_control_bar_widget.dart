@@ -9,10 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'main_page_control_bar_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 export 'main_page_control_bar_model.dart';
 
 class MainPageControlBarWidget extends StatefulWidget {
   const MainPageControlBarWidget({Key? key}) : super(key: key);
+
+
 
   @override
   _MainPageControlBarWidgetState createState() =>
@@ -23,22 +27,17 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
   late MainPageControlBarModel _model;
 
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
-  }
-
-  @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => MainPageControlBarModel());
+    _model = MainPageControlBarModel(); // Initialize your model here if necessary
   }
 
-  @override
-  void dispose() {
-    _model.maybeDispose();
-
-    super.dispose();
+  // Define the _launchURL method here
+  Future<void> _launchURL() async {
+    final Uri url = Uri.parse('http://tmztools/reach/');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -69,10 +68,8 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                     padding:
                         EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 30.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () {
-                        print('Button pressed ...');
-                      },
-                      text: 'Upload',
+                      onPressed: _launchURL, // Use the _launchURL method when the button is pressed
+  text: 'Upload',
                       icon: Icon(
                         Icons.file_upload_outlined,
                         size: 15.0,

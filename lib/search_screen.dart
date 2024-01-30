@@ -22,6 +22,13 @@ class _SearchScreenState extends State<SearchScreen> {
   int limit = 10; // Number of items per page
   int offset = 0; // Starting offset
 
+    void updateLimit(int newLimit) {
+    setState(() {
+      limit = newLimit;
+    });
+    fetchInventory(limit, offset);
+  }
+
   Future<List<Inventory>> fetchInventory(int limit, int offset) async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
     List<Inventory> inventoryList = await apiService.fetchInventory(limit, offset);
@@ -64,9 +71,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   padding: EdgeInsets.all(16.0),
                   child: SearchBarWidget()
                 ),
-                buildAdvancedSearchControls(),
+            
                 MainPageControlBarWidget(),
-                MainPageControlBar2Widget(),
+                MainPageControlBar2Widget(updateLimitCallback: updateLimit),
                 // More content will follow in the next part
                 // Continuing from the FutureBuilder...
                 FutureBuilder<List<Inventory>>(
@@ -122,23 +129,16 @@ Widget buildAdvancedSearchControls() {
           TextButton(onPressed: () {}, child: Text('Advanced Search')),
           Row(
             children: [
-              DropdownButton<int>(
-                value: limit,
-                onChanged: (newLimit) {
-                  if (newLimit != null) {
-                    setState(() {
-                      limit = newLimit;
-                    });
-                  }
-                },
-                items: [10, 25, 50, 100, 250, 500].map<DropdownMenuItem<int>>((int value) {
-                  return DropdownMenuItem<int>(
-                    value: value,
-                    child: Text(value.toString()),
-                  );
-                }).toList(),
-              ),
+              
+
+
+
               SizedBox(width: 8),
+
+
+
+
+
               DropdownButton<String>(
                 value: 'Last Updated',
                 onChanged: (newValue) {},
@@ -221,20 +221,26 @@ Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
                       padding: const EdgeInsets.only(bottom: 4.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            label ?? '',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ) ?? TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            value ?? '-',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
+       children: [
+  SelectableText(
+    label ?? '',
+    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+      fontWeight: FontWeight.bold,
+    ) ?? TextStyle(fontWeight: FontWeight.bold),
+  ),
+  SelectableText(
+    value ?? '-',
+    maxLines: 1,
+    style: Theme.of(context).textTheme.bodySmall,
+    toolbarOptions: ToolbarOptions(
+      copy: true,
+      selectAll: true,
+      cut: false,
+      paste: false,
+    ),
+  ),
+],
+
                       ),
                     );
                   }).toList(),

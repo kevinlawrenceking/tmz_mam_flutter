@@ -6,17 +6,26 @@ import 'package:provider/provider.dart';
 import '../flutter_flow_theme.dart';
 import 'main_page_control_bar2_model.dart';
 import 'actions_drop_down_menu_assets_widget.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+ 
 class MainPageControlBar2Widget extends StatefulWidget {
-  const MainPageControlBar2Widget({Key? key}) : super(key: key);
+  final Function(int)? updateLimitCallback;
+
+
+
+  const MainPageControlBar2Widget({Key? key, this.updateLimitCallback}) : super(key: key);
 
   @override
   _MainPageControlBar2WidgetState createState() => _MainPageControlBar2WidgetState();
 }
 
+
 class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
   late MainPageControlBar2Model _model;
   String? dropDownValue = '50'; // Default value
+
+    int limit = 10; // Number of items per page
+  int offset = 0; // Starting offset
 
   @override
   void initState() {
@@ -26,12 +35,14 @@ class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+Widget build(BuildContext context) {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    child: Row(
       mainAxisSize: MainAxisSize.max,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 20.0),
+          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
           child: Text(
             'Assets (1242329)',
             style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -41,7 +52,7 @@ class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
                 ),
           ),
         ),
-        Spacer(),
+     
         GestureDetector(
           onTap: () {
             showModalBottomSheet(
@@ -51,23 +62,22 @@ class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
               },
             );
           },
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
-            child: FaIcon(
-              FontAwesomeIcons.ellipsis,
-              color: FlutterFlowTheme.of(context).primaryText,
-              size: 24.0,
-            ),
+          child: FaIcon(
+            FontAwesomeIcons.ellipsis,
+            color: FlutterFlowTheme.of(context).primaryText,
+            size: 24.0,
           ),
         ),
+        
+           Spacer(),
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+          padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                'Results per page',
+                'Results per page:',
                 style: FlutterFlowTheme.of(context).bodyLarge.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyLargeFamily,
                       fontSize: 18.0,
@@ -75,18 +85,23 @@ class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
                     ),
               ),
               SizedBox(width: 10),
-              DropdownButton<String>(
-                value: dropDownValue,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropDownValue = newValue;
-                  });
+              DropdownButton<int>(
+                value: limit,
+                icon: Icon(Icons.keyboard_arrow_down),
+                onChanged: (newLimit) {
+                  if (newLimit != null) {
+                    setState(() {
+                      limit = newLimit;
+                    });
+                    if (widget.updateLimitCallback != null) {
+                      widget.updateLimitCallback!(newLimit);
+                    }
+                  }
                 },
-                items: <String>['25', '50', '100', '150', '300', '500']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
+                items: [10, 25, 50, 100, 250, 500].map<DropdownMenuItem<int>>((int value) {
+                  return DropdownMenuItem<int>(
                     value: value,
-                    child: Text(value),
+                    child: Text(value.toString()),
                   );
                 }).toList(),
               ),
@@ -96,17 +111,22 @@ class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
               Icon(Icons.arrow_right_sharp, color: FlutterFlowTheme.of(context).primaryText, size: 32.0),
               SizedBox(width: 10),
               Text(
-                '1 of 500',
+                '1 of 500', // You might want to make this dynamic based on the actual pagination
                 style: FlutterFlowTheme.of(context).bodyLarge.override(
                       fontFamily: FlutterFlowTheme.of(context).bodyLargeFamily,
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,
-                    ),
+
+
+
+ ),
               ),
             ],
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
+ 
 }
