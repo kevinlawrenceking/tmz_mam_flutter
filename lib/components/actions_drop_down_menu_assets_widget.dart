@@ -1,245 +1,62 @@
-import '../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'actions_drop_down_menu_assets_model.dart';
-export 'actions_drop_down_menu_assets_model.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
 
-class ActionsDropDownMenuAssetsWidget extends StatefulWidget {
-  const ActionsDropDownMenuAssetsWidget({Key? key}) : super(key: key);
-
-  @override
-  _ActionsDropDownMenuAssetsWidgetState createState() =>
-      _ActionsDropDownMenuAssetsWidgetState();
-}
-
-class _ActionsDropDownMenuAssetsWidgetState
-    extends State<ActionsDropDownMenuAssetsWidget> {
-  late ActionsDropDownMenuAssetsModel _model;
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _model = createModel(context, () => ActionsDropDownMenuAssetsModel());
-  }
-
-  @override
-  void dispose() {
-    _model.maybeDispose();
-
-    super.dispose();
-  }
-
+class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300.0,
+      width: 300,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                'System Actions',
+      child: ListView(
+        shrinkWrap: true, // Ensure the ListView only occupies needed space
+        children: [
+          buildActionItem(context, 'System Actions', isHeader: true),
+          buildActionItem(context, 'Add to a Collection'),
+          buildActionItem(context, 'Batch Download'),
+          buildActionItem(context, 'Batch Update'),
+          buildActionItem(context, 'Delete'),
+          buildActionItem(context, 'Download Search Results as CSV'),
+          buildActionItem(context, 'Download Mezzanine'),
+          buildActionItem(context, 'Download Proxy'),
+          buildActionItem(context, 'Workflows', isHeader: true),
+          buildActionItem(context, 'Send To 1920 x 1080 Collection'),
+        ],
+      ),
+    );
+  }
+
+  Widget buildActionItem(BuildContext context, String title, {bool isHeader = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isHeader)
+            Text(
+              title,
+              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                color: FlutterFlowTheme.of(context).secondaryText,
+              ),
+            )
+          else
+            ListTile(
+              title: Text(
+                title,
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      useGoogleFonts: GoogleFonts.asMap().containsKey(
-                          FlutterFlowTheme.of(context).bodyMediumFamily),
-                    ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Add to a Collection',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
+                  fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
+                  color: FlutterFlowTheme.of(context).primaryText,
                 ),
               ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Batch Download',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Batch Update',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Delete',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Download Search Results as CSV',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Download Mezzanine',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Download Proxy',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Text(
-                'Workflows',
-                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: FlutterFlowTheme.of(context).bodyMediumFamily,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      useGoogleFonts: GoogleFonts.asMap().containsKey(
-                          FlutterFlowTheme.of(context).bodyMediumFamily),
-                    ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-              Align(
-                alignment: AlignmentDirectional(-1.0, 0.0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                  child: Text(
-                    'Send To 1920 x 1080 Collection',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyMediumFamily,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyMediumFamily),
-                        ),
-                  ),
-                ),
-              ),
-              Divider(
-                thickness: 1.0,
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
-            ],
-          ),
-        ),
+              onTap: () {
+                // Handle your action tap here
+              },
+            ),
+          Divider(color: FlutterFlowTheme.of(context).primaryBackground, thickness: 1),
+        ],
       ),
     );
   }

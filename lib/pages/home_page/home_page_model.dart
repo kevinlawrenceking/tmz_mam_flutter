@@ -10,6 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '/components/main_page_control_bar2_model.dart';
+
+
 class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   ///  State fields for stateful widgets in this page.
 
