@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/details.dart'; // Import your ResponsiveLayout
+import 'package:provider/provider.dart';
+import 'package:tmz_mam_flutter/details.dart'; // Your ResponsiveLayout import
+import 'package:tmz_mam_flutter/themeprovider.dart'; // Import your ThemeProvider
+import 'package:tmz_mam_flutter/login_screen.dart'; // Import your ThemeProvider
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool _isDarkMode = false;
-
-  void _toggleTheme() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-    });
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Your App Title',
-      debugShowCheckedModeBanner: false,
-      theme: _isDarkMode ? ThemeData.light() : ThemeData.dark(),
-      home: DetailsScreen(toggleTheme: _toggleTheme),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: 'Your App Title',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: themeProvider.themeMode, // Use ThemeMode from ThemeProvider
+            home: LoginScreen(), // Directly go to TestPage
+          );
+        },
+      ),
     );
   }
 }

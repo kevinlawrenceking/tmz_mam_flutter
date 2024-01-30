@@ -14,7 +14,7 @@ class _AdminWidgetState extends State<AdminWidget> {
   // Mock data for the DataTable
   final List<Map<String, dynamic>> mockDataTableRecordList = [
     {
-      'userName': 'JohnDoe',
+      'userName': 'JohnBoe',
       'email': 'john.doe@example.com',
       'firstName': 'John',
       'lastName': 'Doe',

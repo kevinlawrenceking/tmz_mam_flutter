@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:tmz_mam_flutter/themeprovider.dart'; // Ensure this is the correct import path for ThemeProvider
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // For secure storage
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
+import 'theme_Manager.dart';
 import 'search_screen.dart';
 import 'app_palette.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final storage = FlutterSecureStorage(); // Instance of FlutterSecureStorage
+  final storage = FlutterSecureStorage();
 
   Future<void> sendLoginCredentials(String username, String password) async {
-    var url = Uri.parse('http://tmztoolsdev:3000/login'); // Replace with your server's URL
+    var url = Uri.parse('http://tmztoolsdev:3000/login'); // Update with your actual URL
 
     try {
       var response = await http.post(
@@ -34,9 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (responseData['success'] == true && responseData['message'] != null) {
           await storage.write(key: 'jwt_token', value: responseData['message']);
           if (mounted) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => SearchScreen()),
-            );
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => SearchScreen(), // No need for toggleTheme parameter
+            ));
           }
         } else {
           _showSnackBar('Login failed: Invalid credentials');
@@ -156,12 +159,7 @@ Widget _buildLoginSection() {
         ),
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        Provider.of<ThemeManager>(context, listen: false).toggleTheme();
-      },
-      child: Icon(Icons.brightness_4), // Icon for theme toggle
-    ),
+
   );
 }
 }

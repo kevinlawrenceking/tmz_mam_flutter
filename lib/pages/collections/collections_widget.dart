@@ -6,6 +6,8 @@ import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:tmz_mam_flutter/themeprovider.dart';
 
 class CollectionsPage extends StatelessWidget {
   const CollectionsPage({Key? key}) : super(key: key);
@@ -17,8 +19,9 @@ class CollectionsPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),
-            onPressed: () {
-              // Implement theme toggle functionality
+          onPressed: () {
+              // Use Provider to toggle the theme
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
           ),
         ],

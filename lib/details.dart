@@ -1,34 +1,16 @@
 // Import necessary Flutter packages
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tmz_mam_flutter/themeprovider.dart'; // Import your ThemeProvider
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
-
-import 'package:tmz_mam_flutter/flutter_flow_icon_button.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-// import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
-// import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
-//import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-//import 'package:provider/provider.dart';
-
-//import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
-
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import 'package:tmz_mam_flutter/pages/media_page/media_page_widget.dart';
-import 'package:tmz_mam_flutter/pages/media_page/media_page_model.dart';
+import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // ResponsiveLayout StatefulWidget to handle theme toggling
-class DetailsScreen extends StatefulWidget {
-  final VoidCallback toggleTheme;
-
-  DetailsScreen({required this.toggleTheme});
-
-  @override                                                       
-  _ResponsiveLayoutState createState() => _ResponsiveLayoutState();
-}
-
-class _ResponsiveLayoutState extends State<DetailsScreen> {
+class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 600;
@@ -39,7 +21,10 @@ class _ResponsiveLayoutState extends State<DetailsScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),
-            onPressed: widget.toggleTheme,
+            onPressed: () {
+              // Use Provider to toggle the theme
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
           ),
           // Other actions can be added here
         ],

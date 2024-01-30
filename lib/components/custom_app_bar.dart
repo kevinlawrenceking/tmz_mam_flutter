@@ -3,27 +3,49 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '/pages/profile_menu/profile_menu_widget.dart'; // Make sure to import the ProfileMenuWidget
 
+import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
+import 'main_page_control_bar_widget.dart' show MainPageControlBarWidget;
+
+import '/search_screen.dart';
+
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
 
   CustomAppBar({required this.title, this.actions});
 
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: FlutterFlowTheme.of(context).primary,
-      automaticallyImplyLeading: false,
-     leading: Padding(
-  padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-  child: Center(
-    child: Icon(
-      Icons.account_circle, // Changed from Icons.logo to Icons.account_circle
-      color: FlutterFlowTheme.of(context).primaryBackground,
-      size: 20,
+@override
+Widget build(BuildContext context) {
+  return AppBar(
+    backgroundColor: FlutterFlowTheme.of(context).primary,
+    automaticallyImplyLeading: false,
+    leading: InkWell(
+    onTap: () {
+          // Simple navigation to SearchScreen without toggleTheme
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SearchScreen(),
+            ),
+          );
+      },
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+        child: Center(
+          child: Icon(
+            FFIcons.ktmzLogo1,
+            color: FlutterFlowTheme.of(context).primaryBackground,
+            size: 20,
           ),
         ),
       ),
+    ),
+ 
       title: Text(
         'TMZ MAM',
         style: FlutterFlowTheme.of(context).headlineMedium.override(

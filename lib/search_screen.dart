@@ -1,42 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:tmz_mam_flutter/themeprovider.dart'; // Ensure correct path
 import 'account_settings_screen.dart';
 import 'api_service.dart'; // Import your API service
 import 'inventory.dart'; // Import your Inventory model
-
-import 'package:tmz_mam_flutter/details.dart';
-
-import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
-import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
-import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
-import 'package:tmz_mam_flutter/components/main_page_control_bar2_widget.dart';
-
-
-
+import 'details.dart';
+import 'components/custom_app_bar.dart';
+import 'components/search_bar_widget.dart';
+import 'components/main_page_control_bar_widget.dart';
+import 'components/main_page_control_bar2_widget.dart';
+import 'components/bottom_buttons_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-
-
-
 
 class SearchScreen extends StatefulWidget {
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
-
-class ThemeManager with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light; // Default to light mode
-
-  ThemeMode get themeMode => _themeMode;
-
-  // Toggles the theme between light and dark mode
-  void toggleTheme() {
-    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-    notifyListeners(); // Notify all listeners about the theme change
-  }
-}
-
 
 class _SearchScreenState extends State<SearchScreen> {
   int limit = 10; // Number of items per page
@@ -44,34 +24,32 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<List<Inventory>> fetchInventory(int limit, int offset) async {
     var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    List<Inventory> inventoryList =
-        await apiService.fetchInventory(limit, offset);
+    List<Inventory> inventoryList = await apiService.fetchInventory(limit, offset);
     return inventoryList;
   }
 
   bool isRightPanelOpen = false;
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'TMZ Media Asset Manager',
-        actions: [
-          IconButton(
-            icon: Icon(Icons.brightness_6),
+  title: 'TMZ Media Asset Manager', // Pass a String directly
+  actions: [
+    IconButton(
+      icon: Icon(Icons.brightness_6),
             onPressed: () {
-              Provider.of<ThemeManager>(context, listen: false).toggleTheme();
+              // Use Provider to toggle the theme
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
-          ),
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
-              );
-            },
-          ),
-          // Add more actions if needed
+    ),
+    IconButton(
+      icon: Icon(Icons.account_circle),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AccountSettingsScreen()));
+      },
+    ),
+    // Additional actions can be added here
         ],
       ),
       drawer: Drawer(
@@ -84,15 +62,13 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: SearchBarWidget(),
-
-
+                  child: SearchBarWidget()
                 ),
-
-buildAdvancedSearchControls(), 
- MainPageControlBarWidget(),
- MainPageControlBar2Widget(),
- // Advanced search controls
+                buildAdvancedSearchControls(),
+                MainPageControlBarWidget(),
+                MainPageControlBar2Widget(),
+                // More content will follow in the next part
+                // Continuing from the FutureBuilder...
                 FutureBuilder<List<Inventory>>(
                   future: fetchInventory(limit, offset),
                   builder: (context, snapshot) {
@@ -133,19 +109,11 @@ buildAdvancedSearchControls(),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<ThemeManager>(context, listen: false).toggleTheme();
-        },
-        child: Icon(Icons.brightness_4),
-      ),
-
-      
-    bottomNavigationBar: BottomButtonsWidget(), // Adding BottomButtonsWidget here
+      bottomNavigationBar: BottomButtonsWidget(),
     );
   }
 
-  Widget buildAdvancedSearchControls() {
+Widget buildAdvancedSearchControls() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Row(
@@ -204,7 +172,7 @@ Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
   onTap: () {
       Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (context) =>   DetailsScreen(toggleTheme: () { 'dark'; },),
+            builder: (context) =>   DetailsScreen(),
         ),
       );
     },
@@ -279,8 +247,6 @@ Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
     );
   }
 }
-
-
 
 
 void main() {

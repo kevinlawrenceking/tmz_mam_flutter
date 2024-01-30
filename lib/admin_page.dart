@@ -6,6 +6,9 @@ import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tmz_mam_flutter/themeprovider.dart';
+import 'package:provider/provider.dart';
+
 
 class AdminPage extends StatelessWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -39,9 +42,11 @@ class AdminPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.brightness_6),
             onPressed: () {
-              // Implement theme toggle functionality
+              // Use Provider to toggle the theme
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
           ),
+          // Other actions can be added here
         ],
       ),
       body: Column(
