@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 Widget _buildLogoSection() {
   bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-  String logoAsset = isDarkTheme ? 'assets/images/logo_dark.png' : 'assets/images/logo_light.png';
+  String logoAsset = isDarkTheme ? 'assets/images/logo_light.png' : 'assets/images/logo_dark.png';
   return Expanded(
     flex: 1,
     child: Padding(
