@@ -221,26 +221,20 @@ Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
                       padding: const EdgeInsets.only(bottom: 4.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-       children: [
-  SelectableText(
-    label ?? '',
-    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-      fontWeight: FontWeight.bold,
-    ) ?? TextStyle(fontWeight: FontWeight.bold),
-  ),
-  SelectableText(
-    value ?? '-',
-    maxLines: 1,
-    style: Theme.of(context).textTheme.bodySmall,
-    toolbarOptions: ToolbarOptions(
-      copy: true,
-      selectAll: true,
-      cut: false,
-      paste: false,
-    ),
-  ),
-],
-
+                        children: [
+                          Text(
+                            label ?? '',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ) ?? TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            value ?? '-',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
                       ),
                     );
                   }).toList(),
