@@ -32,4 +32,6 @@ class ApiService {
       throw Exception('Error occurred while fetching inventory: $e');
     }
   }
+
+  
 }

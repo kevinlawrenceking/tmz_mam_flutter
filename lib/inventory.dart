@@ -25,12 +25,11 @@ class InventoryResponse {
   InventoryResponse({required this.inventoryList, required this.totalRecords});
 
   factory InventoryResponse.fromJson(Map<String, dynamic> json) {
-  return InventoryResponse(
-    inventoryList: (json['inventoryList'] as List)
-        .map((item) => Inventory.fromJson(item))
-        .toList(),
-    totalRecords: json['totalRecords'] as int,
-  );
-}
-
+    return InventoryResponse(
+      inventoryList: (json['inventoryList'] as List)
+          .map((item) => Inventory.fromJson(item))
+          .toList(),
+      totalRecords: json['totalRecords'] as int,
+    );
+  }
 }

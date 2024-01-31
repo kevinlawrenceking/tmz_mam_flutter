@@ -36,7 +36,6 @@ Future<InventoryResponse> fetchInventory(int limit, int offset) async {
   return inventoryResponse;
 }
 
-
   bool isRightPanelOpen = false;
 
   @override
@@ -71,8 +70,6 @@ drawer: Container(
   // For example, to add a background color:
   // color: Colors.white,
 ),
-
-
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -83,10 +80,10 @@ drawer: Container(
                   child: SearchBarWidget(),
                 ),
                 MainPageControlBarWidget(),
-                MainPageControlBar2Widget(updateLimitCallback: updateLimit),
-                // More content will follow in the next part
-                // Continuing from the FutureBuilder...
-   FutureBuilder<InventoryResponse>(
+                MainPageControlBar2Widget(updateLimitCallback: updateLimit,
+  totalRecords: 0 )// Pass the correct value here),
+          ,
+FutureBuilder<InventoryResponse>(
   future: fetchInventory(limit, offset),
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting && offset == 0) {
@@ -94,20 +91,24 @@ drawer: Container(
     } else if (snapshot.hasError) {
       return Center(child: Text('Error: ${snapshot.error}'));
     } else if (snapshot.hasData) {
-      // Access the inventory list from the InventoryResponse
       final inventoryList = snapshot.data!.inventoryList;
+      final totalRecords = snapshot.data!.totalRecords; // Update totalRecords here
 
-      // Use inventoryList to build your UI
-      return AnimatedSwitcher(
-        duration: Duration(milliseconds: 500),
-        child: buildGridContent(inventoryList),
+      return Column(
+        children: [
+          // Display totalRecords somewhere in your UI
+          Text('Total Records: $totalRecords'),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: buildGridContent(inventoryList),
+          ),
+        ],
       );
     } else {
       return Center(child: Text('No data found'));
     }
   },
 )
-
 
 
               ],
