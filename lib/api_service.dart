@@ -10,6 +10,7 @@ class ApiService {
   // Fetch inventory data from the API with pagination
   Future<InventoryResponse> fetchInventory(int limit, int offset) async {
     final url = Uri.parse('$baseUrl/inventory/light?limit=$limit&offset=$offset');
+    
     try {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
