@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'inventory.dart'; // Replace with the path to your Inventory model
+import 'inventory.dart'; // Ensure this path is correct
 
 class ApiService {
   final String baseUrl;
@@ -8,34 +8,27 @@ class ApiService {
   ApiService({required this.baseUrl});
 
   // Fetch inventory data from the API with pagination
-  Future<List<Inventory>> fetchInventory(int limit, int offset) async {
+  Future<InventoryResponse> fetchInventory(int limit, int offset) async {
+    final url = Uri.parse('$baseUrl/inventory/light?limit=$limit&offset=$offset');
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/inventory/light?limit=$limit&offset=$offset'),
-        headers: {
-          'Content-Type': 'application/json',
-          'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Your API key
-        },
-      );
+      final response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Consider securing your API key
+      });
 
       if (response.statusCode == 200) {
-        List<dynamic> body = jsonDecode(response.body);
-        List<Inventory> inventory = body.map((dynamic item) => Inventory.fromJson(item)).toList();
-        return inventory;
+        final data = jsonDecode(response.body);
+
+        // Print the total records for debugging
+        print('Total Records from API: ${data['totalRecords']}');
+
+        return InventoryResponse.fromJson(data);
       } else {
-        // Log the status code and response body for debugging
-        print('Request failed with status: ${response.statusCode}.');
-        print('Response body: ${response.body}');
-        throw Exception('Failed to load inventory. Status code: ${response.statusCode}');
+        throw Exception('Failed to load inventory. Status code: ${response.statusCode}. Response body: ${response.body}');
       }
-    } on FormatException catch (e) {
-      // Handle JSON format errors
-      print('Format error: $e');
-      throw Exception('Error occurred while decoding data: $e');
     } catch (e) {
-      // Handle other exceptions
-      print('Error occurred: $e');
-      throw Exception('Error occurred: $e');
+      print('Error occurred while fetching inventory: $e');
+      throw Exception('Error occurred while fetching inventory: $e');
     }
   }
 }

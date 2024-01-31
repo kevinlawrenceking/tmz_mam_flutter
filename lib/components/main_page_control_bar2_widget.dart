@@ -10,12 +10,16 @@ import 'package:url_launcher/url_launcher.dart';
  
 class MainPageControlBar2Widget extends StatefulWidget {
   final Function(int)? updateLimitCallback;
+  final int totalRecords; // Add this line
 
 
+   const MainPageControlBar2Widget({
+    Key? key,
+    this.updateLimitCallback,
+    this.totalRecords = 0, // Provide a default value
+  }) : super(key: key);
 
-  const MainPageControlBar2Widget({Key? key, this.updateLimitCallback}) : super(key: key);
-
-  @override
+ @override
   _MainPageControlBar2WidgetState createState() => _MainPageControlBar2WidgetState();
 }
 
@@ -44,7 +48,7 @@ Widget build(BuildContext context) {
         Padding(
           padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
           child: Text(
-            'Assets (1242329)',
+            'Assets (${widget.totalRecords})',
             style: FlutterFlowTheme.of(context).bodyLarge.override(
                   fontFamily: FlutterFlowTheme.of(context).bodyLargeFamily,
                   fontSize: 18.0,

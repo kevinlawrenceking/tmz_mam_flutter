@@ -29,11 +29,13 @@ class _SearchScreenState extends State<SearchScreen> {
     fetchInventory(limit, offset);
   }
 
-  Future<List<Inventory>> fetchInventory(int limit, int offset) async {
-    var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    List<Inventory> inventoryList = await apiService.fetchInventory(limit, offset);
-    return inventoryList;
-  }
+Future<InventoryResponse> fetchInventory(int limit, int offset) async {
+  var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
+  // This should return InventoryResponse, not List<Inventory>
+  InventoryResponse inventoryResponse = await apiService.fetchInventory(limit, offset);
+  return inventoryResponse;
+}
+
 
   bool isRightPanelOpen = false;
 
@@ -84,25 +86,30 @@ drawer: Container(
                 MainPageControlBar2Widget(updateLimitCallback: updateLimit),
                 // More content will follow in the next part
                 // Continuing from the FutureBuilder...
-                FutureBuilder<List<Inventory>>(
-                  future: fetchInventory(limit, offset),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting && offset == 0) {
-                      // Show spinner only during initial load
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (snapshot.hasData) {
-                      return AnimatedSwitcher(
-                        duration: Duration(milliseconds: 500),
-                        child: buildGridContent(snapshot.data!),
-                      );
-                    } else {
-                      // Show a placeholder or message if no data is found
-                      return Center(child: Text('No data found'));
-                    }
-                  },
-                ),
+   FutureBuilder<InventoryResponse>(
+  future: fetchInventory(limit, offset),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting && offset == 0) {
+      return Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Error: ${snapshot.error}'));
+    } else if (snapshot.hasData) {
+      // Access the inventory list from the InventoryResponse
+      final inventoryList = snapshot.data!.inventoryList;
+
+      // Use inventoryList to build your UI
+      return AnimatedSwitcher(
+        duration: Duration(milliseconds: 500),
+        child: buildGridContent(inventoryList),
+      );
+    } else {
+      return Center(child: Text('No data found'));
+    }
+  },
+)
+
+
+
               ],
             ),
           ),
@@ -166,14 +173,14 @@ Widget buildAdvancedSearchControls() {
     );
   }
 
-  Widget buildGridContent(List<Inventory> data) {
-    return Wrap(
-      key: ValueKey<int>(offset), // Unique key for AnimatedSwitcher
-      spacing: 8.0,
-      runSpacing: 8.0,
-      children: data.map((inventoryItem) => buildAnimatedCard(context, inventoryItem)).toList(),
-    );
-  }
+Widget buildGridContent(List<Inventory> data) {
+  return Wrap(
+    key: ValueKey<int>(offset),
+    spacing: 8.0,
+    runSpacing: 8.0,
+    children: data.map((inventoryItem) => buildAnimatedCard(context, inventoryItem)).toList(),
+  );
+}
 
 Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
   return GestureDetector(
