@@ -16,7 +16,7 @@ class MainPageControlBar2Widget extends StatefulWidget {
    const MainPageControlBar2Widget({
     Key? key,
     this.updateLimitCallback,
-    this.totalRecords = 0, // Provide a default value
+   required this.totalRecords, // Make sure it's required // Provide a default value
   }) : super(key: key);
 
  @override
