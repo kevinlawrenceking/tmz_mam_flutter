@@ -10,8 +10,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'main_page_control_bar_model.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 export 'main_page_control_bar_model.dart';
+import '/advanced_search_window_widget.dart';
 
 class MainPageControlBarWidget extends StatefulWidget {
   const MainPageControlBarWidget({Key? key}) : super(key: key);
@@ -42,6 +43,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
 
   @override
   Widget build(BuildContext context) {
+     double drawerWidth = 300; // Set your desired width here
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -114,9 +116,27 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                         color: FlutterFlowTheme.of(context).primaryText,
                         size: 24.0,
                       ),
+
+
+
                       onPressed: () {
-                        print('IconButton pressed ...');
-                      },
+              // Opens the drawer
+              Scaffold.of(context).openDrawer();
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     ),
                   ),
                   FlutterFlowIconButton(

@@ -11,7 +11,7 @@ import 'components/main_page_control_bar_widget.dart';
 import 'components/main_page_control_bar2_widget.dart';
 import 'components/bottom_buttons_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import '/advanced_search_window_widget.dart';
 class SearchScreen extends StatefulWidget {
 
   @override
@@ -39,6 +39,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double drawerWidth = 9999; // Adjust this value as needed
+
     return Scaffold(
       appBar: CustomAppBar(
   title: 'TMZ Media Asset Manager', // Pass a String directly
@@ -59,9 +61,16 @@ class _SearchScreenState extends State<SearchScreen> {
     // Additional actions can be added here
         ],
       ),
-      drawer: Drawer(
-        child: Center(child: Text('Left Panel Content')),
-      ),
+    
+drawer: Container(
+  width: 900, // Set the drawer width
+  child: AdvancedSearchWindowWidget(), // Place your widget here
+  // You can also add color or decoration to the container if needed
+  // For example, to add a background color:
+  // color: Colors.white,
+),
+
+
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -69,9 +78,8 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: SearchBarWidget()
+                  child: SearchBarWidget(),
                 ),
-            
                 MainPageControlBarWidget(),
                 MainPageControlBar2Widget(updateLimitCallback: updateLimit),
                 // More content will follow in the next part
