@@ -38,11 +38,11 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
         width: 100.0,
         height: 75.0,
         decoration: BoxDecoration(
-          color: Colors.red, // Red background color
+          color: FlutterFlowTheme.of(context).primary, // Use primary color
           boxShadow: [
             BoxShadow(
               blurRadius: 4.0,
-              color: Color(0x33000000),
+              color: FlutterFlowTheme.of(context).darkThemeShadowColor,
               offset: Offset(0.0, 2.0),
             ),
           ],
@@ -51,8 +51,8 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              color: Colors.white, // White font color
-              fontSize: 18.0, // Adjust the font size as needed
+              color: FlutterFlowTheme.of(context).primaryText, // Use primary text color
+              fontSize: 18.0,
             ),
           ),
         ),
@@ -61,7 +61,17 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
       // Add your code for non-header items here
       // You can customize the appearance of non-header items in this block
       return Container(
-        // Customize the appearance of non-header items here
+        width: 100.0, // Customize width as needed
+        height: 50.0, // Customize height as needed
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: FlutterFlowTheme.of(context).primaryText, // Use primary text color
+              fontSize: 16.0, // Customize font size for non-header items
+            ),
+          ),
+        ),
       );
     }
   }
