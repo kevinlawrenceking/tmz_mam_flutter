@@ -8,7 +8,6 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
     return Material(
       child: Container(
         width: 250,
-
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
           borderRadius: BorderRadius.circular(12),
@@ -33,44 +32,37 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
     );
   }
 
-  Widget buildActionItem(BuildContext context, String title, {bool isHeader = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isHeader)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4.0), // Reduced padding for header
-              child: Text(
-                title,
-                style: FlutterFlowTheme.of(context).bodySmall.override(
-                  fontFamily: 'Roboto', // Assuming 'Roboto' as an example
-                  color: FlutterFlowTheme.of(context).secondaryText,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
-          else
-            ListTile(
-              title: Text(
-                title,
-                style: FlutterFlowTheme.of(context).bodySmall.override(
-                  fontFamily: 'Roboto', // Assuming 'Roboto' as an example
-                  color: FlutterFlowTheme.of(context).primaryText,
-                ),
-              ),
-              onTap: () {
-                // Handle your action tap here
-                Navigator.pop(context); // Close the modal when an item is tapped
-              },
+  Widget buildActionItem(BuildContext context, String text, {bool isHeader = false}) {
+    if (isHeader) {
+      return Container(
+        width: 100.0,
+        height: 75.0,
+        decoration: BoxDecoration(
+          color: Colors.red, // Red background color
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 4.0,
+              color: Color(0x33000000),
+              offset: Offset(0.0, 2.0),
             ),
-          Divider(
-            color: FlutterFlowTheme.of(context).primaryBackground,
-            height: 1,
+          ],
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.white, // White font color
+              fontSize: 18.0, // Adjust the font size as needed
+            ),
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    } else {
+      // Add your code for non-header items here
+      // You can customize the appearance of non-header items in this block
+      return Container(
+        // Customize the appearance of non-header items here
+      );
+    }
   }
 }
