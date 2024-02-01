@@ -56,22 +56,40 @@ Widget build(BuildContext context) {
                 ),
           ),
         ),
-     
-        GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return ActionsDropDownMenuAssetsWidget();
-              },
-            );
-          },
-          child: FaIcon(
-            FontAwesomeIcons.ellipsis,
-            color: FlutterFlowTheme.of(context).primaryText,
-            size: 24.0,
-          ),
-        ),
+GestureDetector(
+  onTap: () {
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5), // Background color
+      barrierDismissible: true, // Whether the dialog is dismissible by tapping outside
+      barrierLabel: 'Dismiss', // Providing a label for the barrier
+      transitionDuration: const Duration(milliseconds: 300), // Transition duration
+      pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+        // Modal content
+        return Align(
+          alignment: Alignment.bottomLeft, // Aligns the modal to the bottom left
+          child: ActionsDropDownMenuAssetsWidget(), // Your custom widget
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        // Custom enter/exit animation
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(-1, 0), // Start from the left
+            end: Offset.zero, // End at its final position
+          ).animate(animation),
+          child: child,
+        );
+      },
+    );
+  },
+  child: FaIcon(
+    FontAwesomeIcons.ellipsis,
+    color: FlutterFlowTheme.of(context).primaryText,
+    size: 34.0, // Updated to match your original icon size
+  ),
+),
+
         
            Spacer(),
         Padding(

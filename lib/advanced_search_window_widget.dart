@@ -114,6 +114,8 @@ class _AdvancedSearchWindowWidgetState
                       ),
                       child: Stack(
                         children: [
+
+
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 10.0, 20.0, 20.0, 0.0),
@@ -121,21 +123,20 @@ class _AdvancedSearchWindowWidgetState
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
-                                    child: Text(
-                                      'Advanced Search',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .headlineLarge,
-                                    ),
-                                  ),
-                                  Divider(
-                                    thickness: 1.0,
-                                    color:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                  ),
+                                  
+
+
+
+
+
+
+
+
+
+
+
+
+                                  
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 20.0, 0.0, 0.0),
@@ -165,6 +166,31 @@ class _AdvancedSearchWindowWidgetState
                                                 ),
                                           ),
                                         ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -216,7 +242,7 @@ class _AdvancedSearchWindowWidgetState
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 20.0, 0.0, 0.0),
+                                        0.0, 15.0, 0.0, 0.0),
                                     child: Row(
                                       
                                       children: [
@@ -243,83 +269,81 @@ class _AdvancedSearchWindowWidgetState
                                                 ),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 20.0, 0.0),
-                                            child: TextFormField(
-                                              controller:
-                                                  _model.textController1,
-                                              focusNode:
-                                                  _model.textFieldFocusNode1,
-                                              autofocus: true,
-                                              obscureText: false,
-                                              decoration: InputDecoration(
-                                                labelText: 'Select item ...',
-                                                labelStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium,
-                                                hintStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium,
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .alternate,
-                                                    width: 2.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primary,
-                                                    width: 2.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .error,
-                                                    width: 2.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                focusedErrorBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .error,
-                                                    width: 2.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                              ),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall,
-                                              validator: _model
-                                                  .textController1Validator
-                                                  .asValidator(context),
-                                            ),
-                                          ),
-                                        ),
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                Expanded(
+  child: Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+    child: TextFormField(
+      controller: _model.textController1,
+      focusNode: _model.textFieldFocusNode1,
+      autofocus: true,
+      obscureText: false,
+      decoration: InputDecoration(
+        labelText: 'Select item ...',
+        labelStyle: FlutterFlowTheme.of(context).labelMedium,
+        hintStyle: FlutterFlowTheme.of(context).labelMedium,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: FlutterFlowTheme.of(context).alternate,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: FlutterFlowTheme.of(context).primary,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: FlutterFlowTheme.of(context).error,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: FlutterFlowTheme.of(context).error,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0), // Adjust padding here
+      ),
+      style: FlutterFlowTheme.of(context).bodySmall,
+      validator: _model.textController1Validator.asValidator(context),
+    ),
+  ),
+),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                       ],
                                     ),
                                   ),
@@ -2471,7 +2495,7 @@ class _AdvancedSearchWindowWidgetState
                                                 _model.dropDownValue3 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
-                                                0.08,
+                                                0.15,
                                        height:40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
@@ -2520,7 +2544,7 @@ class _AdvancedSearchWindowWidgetState
                                                 _model.dropDownValue4 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
-                                                0.10,
+                                                0.15,
                                             height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
@@ -2560,7 +2584,7 @@ class _AdvancedSearchWindowWidgetState
                                                 _model.dropDownValue5 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
-                                                0.10,
+                                                0.15,
                                              height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
