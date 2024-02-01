@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import '/actions_page.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import '/actions_page.dart';
+
 class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = FlutterFlowTheme.of(context);
-
     return Material(
       child: Container(
         width: 250,
         decoration: BoxDecoration(
-          color: theme.secondaryBackground,
+          color: FlutterFlowTheme.of(context).secondaryBackground,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: theme.darkThemeShadowColor.withOpacity(0.2),
+              color: FlutterFlowTheme.of(context)
+                  .darkThemeShadowColor
+                  .withOpacity(0.2),
               blurRadius: 4.0,
               spreadRadius: 2.0,
               offset: Offset(0.0, 2.0),
@@ -29,11 +30,13 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
             buildActionItem(context, 'Batch Download'),
             buildActionItem(context, 'Batch Update'),
             buildActionItem(context, 'Delete'),
-            buildActionItem(context, 'Download Search Results as CSV'),
+            buildActionItem(
+                context, 'Download Search Results as CSV'),
             buildActionItem(context, 'Download Mezzanine'),
             buildActionItem(context, 'Download Proxy'),
             buildActionItem(context, 'Workflows', isHeader: true),
-            buildActionItem(context, 'Send To 1920 x 1080 Collection'),
+            buildActionItem(
+                context, 'Send To 1920 x 1080 Collection'),
             // Add more items as needed
           ],
         ),
@@ -41,7 +44,8 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
     );
   }
 
-  Widget buildActionItem(BuildContext context, String text, {bool isHeader = false}) {
+  Widget buildActionItem(BuildContext context, String text,
+      {bool isHeader = false}) {
     final theme = FlutterFlowTheme.of(context);
 
     return Material(
@@ -57,14 +61,11 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
             );
           }
         },
-        splashColor: theme.accent1.withOpacity(0.5),
+        splashColor: Colors.transparent, // No splash effect on tap
+        hoverColor: Colors.transparent, // Color when hovered
         child: MouseRegion(
-          onEnter: (_) {
+          onHover: (_) {
             // Handle hover effects here
-            // You can add animations or change the appearance here
-          },
-          onExit: (_) {
-            // Reset hover effects here if needed
           },
           child: Container(
             height: isHeader ? 75.0 : 50.0,
@@ -84,21 +85,6 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
                       ),
                     )
                   : null,
-              boxShadow: isHeader
-                  ? [
-                      BoxShadow(
-                        color: theme.accent1.withOpacity(0.5),
-                        blurRadius: 10.0,
-                        spreadRadius: 5.0,
-                      ),
-                    ]
-                  : [
-                      BoxShadow(
-                        color: theme.accent1.withOpacity(0.5),
-                        blurRadius: 5.0,
-                        spreadRadius: 2.0,
-                      ),
-                    ],
             ),
             child: Center(
               child: Text(

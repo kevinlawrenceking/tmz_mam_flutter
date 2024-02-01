@@ -121,21 +121,8 @@ class _AdvancedSearchWindowWidgetState
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
-                                    child: Text(
-                                      'Advanced Search',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .headlineLarge,
-                                    ),
-                                  ),
-                                  Divider(
-                                    thickness: 1.0,
-                                    color:
-                                        FlutterFlowTheme.of(context).tertiary,
-                                  ),
+                                
+                                    
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 20.0, 0.0, 0.0),
@@ -2471,7 +2458,7 @@ class _AdvancedSearchWindowWidgetState
                                                 _model.dropDownValue3 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
-                                                0.08,
+                                                0.12,
                                        height:40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
@@ -2560,7 +2547,7 @@ class _AdvancedSearchWindowWidgetState
                                                 _model.dropDownValue5 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
-                                                0.10,
+                                                0.12,
                                              height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
