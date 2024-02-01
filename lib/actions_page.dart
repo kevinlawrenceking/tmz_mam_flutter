@@ -8,6 +8,7 @@ import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 
 
 
+
 class ActionsPage extends StatefulWidget {
   final String title;
 
@@ -21,18 +22,17 @@ class _ActionsPageState extends State<ActionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-           appBar: CustomAppBar(
-  title: 'TMZ Media Asset Manager', // Pass a String directly
-  actions: [
-    IconButton(
-      icon: Icon(Icons.brightness_6),
+        appBar: CustomAppBar(
+        title: 'TMZ Media Asset Manager',
+        actions: [
+          IconButton(
+            icon: Icon(Icons.brightness_6),
             onPressed: () {
               // Use Provider to toggle the theme
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
-    ),
-    
-    // Additional actions can be added here
+          ),
+          // Other actions can be added here
         ],
       ),
       body: Center(
@@ -53,9 +53,11 @@ class _ActionsPageState extends State<ActionsPage> {
                 fontSize: 16.0,
               ),
             ),
+            // You can add more widgets here as needed
           ],
         ),
       ),
+      bottomNavigationBar: BottomButtonsWidget(), // Added BottomButtonsWidget here
     );
   }
 }
