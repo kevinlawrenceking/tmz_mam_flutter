@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import 'actions_page.dart';
 
 class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Wrapping the content with a Material widget
     return Material(
       child: Container(
         width: 250,
@@ -13,14 +13,15 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: FlutterFlowTheme.of(context).accent1.withOpacity(0.5), // Add a glow effect
-              blurRadius: 10.0,
-              spreadRadius: 5.0,
+              color: FlutterFlowTheme.of(context).darkThemeShadowColor.withOpacity(0.2),
+              blurRadius: 4.0,
+              spreadRadius: 2.0,
+              offset: Offset(0.0, 2.0),
             ),
           ],
         ),
         child: ListView(
-          shrinkWrap: true, // Ensures the ListView takes up only the space it needs
+          shrinkWrap: true,
           children: <Widget>[
             buildActionItem(context, 'System Actions', isHeader: true),
             buildActionItem(context, 'Add to a Collection'),
@@ -40,57 +41,59 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
   }
 
   Widget buildActionItem(BuildContext context, String text, {bool isHeader = false}) {
-    if (isHeader) {
-      return Container(
-        width: 100.0,
-        height: 75.0,
-        decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).primary, // Use primary color
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 4.0,
-              color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-              offset: Offset(0.0, 2.0),
+  final theme = FlutterFlowTheme.of(context);
+
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+      onTap: () {
+        if (!isHeader) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ActionsPage(title: text),
             ),
-          ],
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: FlutterFlowTheme.of(context).primaryText, // Use primary text color
-              fontSize: 18.0,
+          );
+        }
+      },
+      splashColor: theme.accent1.withOpacity(0.5),
+      child: MouseRegion(
+        onHover: (_) {
+          // Handle hover effects here
+          // You can add animations or change the appearance here
+        },
+        child: Container(
+          height: isHeader ? 75.0 : 50.0,
+          decoration: BoxDecoration(
+            color: isHeader ? theme.primary : theme.secondaryBackground,
+            borderRadius: isHeader
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  )
+                : null,
+            border: !isHeader
+                ? Border(
+                    bottom: BorderSide(
+                      color: theme.lightGray,
+                      width: 0.5,
+                    ),
+                  )
+                : null,
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: theme.primaryText,
+                fontSize: isHeader ? 18.0 : 16.0,
+                fontWeight: isHeader ? FontWeight.bold : FontWeight.bold : FontWeight.normal,
+                ),
+              ),
             ),
           ),
         ),
-      );
-    } else {
-      // Add your code for non-header items here
-      // You can customize the appearance of non-header items in this block
-      return Container(
-        width: 100.0, // Customize width as needed
-        height: 50.0, // Customize height as needed
-        decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).primary.withOpacity(0.7), // Add a slight opacity for a glow effect
-          borderRadius: BorderRadius.circular(8.0), // Add rounded corners
-          boxShadow: [
-            BoxShadow(
-              color: FlutterFlowTheme.of(context).accent1.withOpacity(0.5), // Add a glow effect
-              blurRadius: 5.0,
-              spreadRadius: 2.0,
-            ),
-          ],
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              color: FlutterFlowTheme.of(context).primaryText, // Use primary text color
-              fontSize: 16.0, // Customize font size for non-header items
-            ),
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 }
