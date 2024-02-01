@@ -80,8 +80,7 @@ drawer: Container(
                   child: SearchBarWidget(),
                 ),
                 MainPageControlBarWidget(),
-                MainPageControlBar2Widget(updateLimitCallback: updateLimit,
-  totalRecords: 0 )// Pass the correct value here),
+                MainPageControlBar2Widget(updateLimitCallback: updateLimit)// Pass the correct value here),
           ,
 FutureBuilder<InventoryResponse>(
   future: fetchInventory(limit, offset),

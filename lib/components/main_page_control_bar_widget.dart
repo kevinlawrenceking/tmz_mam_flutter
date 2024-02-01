@@ -71,7 +71,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                         EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 30.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: _launchURL, // Use the _launchURL method when the button is pressed
-  text: 'Upload',
+  text: 'Uploadz',
                       icon: Icon(
                         Icons.file_upload_outlined,
                         size: 15.0,
