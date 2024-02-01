@@ -11,6 +11,13 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: FlutterFlowTheme.of(context).accent1.withOpacity(0.5), // Add a glow effect
+              blurRadius: 10.0,
+              spreadRadius: 5.0,
+            ),
+          ],
         ),
         child: ListView(
           shrinkWrap: true, // Ensures the ListView takes up only the space it needs
@@ -63,6 +70,17 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
       return Container(
         width: 100.0, // Customize width as needed
         height: 50.0, // Customize height as needed
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).primary.withOpacity(0.7), // Add a slight opacity for a glow effect
+          borderRadius: BorderRadius.circular(8.0), // Add rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: FlutterFlowTheme.of(context).accent1.withOpacity(0.5), // Add a glow effect
+              blurRadius: 5.0,
+              spreadRadius: 2.0,
+            ),
+          ],
+        ),
         child: Center(
           child: Text(
             text,
