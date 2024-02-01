@@ -15,7 +15,7 @@ class ActionsPage extends StatelessWidget {
   ActionsPage({required this.title, required this.subheading});
 
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 600;
 
     return Scaffold(
@@ -32,7 +32,7 @@ class ActionsPage extends StatelessWidget {
           // Other actions can be added here
         ],
       ),
-      body: isDesktop ? DesktopLayout() : MobileLayout(),
+      body: isDesktop ? DesktopLayout(subheading: subheading) : MobileLayout(subheading: subheading),
     );
   }
 }
@@ -46,7 +46,41 @@ class DesktopLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Existing content remains here
+        SearchBarWidget(), // Search bar component
+        MediaPageControlBarWidget(), // Toolbar component
+
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Divider(
+            thickness: 1,
+            indent: 8,
+            endIndent: 8,
+            color: FlutterFlowTheme.of(context).secondaryText, // Make sure FlutterFlowTheme is correctly imported
+          ),
+        ),
+
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: Text(
+                  'Tallz Grass Blowing in the Wind',
+                  textAlign: TextAlign.start,
+                  style: FlutterFlowTheme.of(context).headlineLarge,
+                ),
+              ),
+              Text(
+                'Categories: Specials, TV',
+                style: FlutterFlowTheme.of(context).bodyLarge,
+              ),
+            ],
+          ),
+        ),
+
+        // ... Other content ...
+
         Text(
           subheading,
           style: TextStyle(
@@ -54,6 +88,7 @@ class DesktopLayout extends StatelessWidget {
             color: Colors.grey,
           ),
         ),
+
         // Remaining content...
       ],
     );
@@ -69,7 +104,11 @@ class MobileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Existing content remains here
+        SearchBarWidget(), // Search bar component
+        MediaPageControlBarWidget(), // Toolbar component
+
+        // ... Other content ...
+
         Text(
           subheading,
           style: TextStyle(
@@ -77,6 +116,7 @@ class MobileLayout extends StatelessWidget {
             color: Colors.grey,
           ),
         ),
+
         // Remaining content...
       ],
     );
