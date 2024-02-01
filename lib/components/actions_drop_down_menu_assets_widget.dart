@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/actions_page.dart';
+import 'package:flutter/actions_page.dart';
 
 class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+
     return Material(
       child: Container(
         width: 250,
         decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).secondaryBackground,
+          color: theme.secondaryBackground,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: FlutterFlowTheme.of(context).darkThemeShadowColor.withOpacity(0.2),
+              color: theme.darkThemeShadowColor.withOpacity(0.2),
               blurRadius: 4.0,
               spreadRadius: 2.0,
               offset: Offset(0.0, 2.0),
@@ -41,53 +43,71 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
   }
 
   Widget buildActionItem(BuildContext context, String text, {bool isHeader = false}) {
-  final theme = FlutterFlowTheme.of(context);
+    final theme = FlutterFlowTheme.of(context);
 
-  return Material(
-    color: Colors.transparent,
-    child: InkWell(
-      onTap: () {
-        if (!isHeader) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ActionsPage(title: text),
-            ),
-          );
-        }
-      },
-      splashColor: theme.accent1.withOpacity(0.5),
-      child: MouseRegion(
-        onHover: (_) {
-          // Handle hover effects here
-          // You can add animations or change the appearance here
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          if (!isHeader) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ActionsPage(title: text),
+              ),
+            );
+          }
         },
-        child: Container(
-          height: isHeader ? 75.0 : 50.0,
-          decoration: BoxDecoration(
-            color: isHeader ? theme.primary : theme.secondaryBackground,
-            borderRadius: isHeader
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  )
-                : null,
-            border: !isHeader
-                ? Border(
-                    bottom: BorderSide(
-                      color: theme.lightGray,
-                      width: 0.5,
-                    ),
-                  )
-                : null,
-          ),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: theme.primaryText,
-                fontSize: isHeader ? 18.0 : 16.0,
-                fontWeight: isHeader ? FontWeight.bold : FontWeight.bold : FontWeight.normal,
+        splashColor: theme.accent1.withOpacity(0.5),
+        child: MouseRegion(
+          onEnter: (_) {
+            // Handle hover effects here
+            // You can add animations or change the appearance here
+          },
+          onExit: (_) {
+            // Reset hover effects here if needed
+          },
+          child: Container(
+            height: isHeader ? 75.0 : 50.0,
+            decoration: BoxDecoration(
+              color: isHeader ? theme.primary : theme.secondaryBackground,
+              borderRadius: isHeader
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    )
+                  : null,
+              border: !isHeader
+                  ? Border(
+                      bottom: BorderSide(
+                        color: theme.lightGray,
+                        width: 0.5,
+                      ),
+                    )
+                  : null,
+              boxShadow: isHeader
+                  ? [
+                      BoxShadow(
+                        color: theme.accent1.withOpacity(0.5),
+                        blurRadius: 10.0,
+                        spreadRadius: 5.0,
+                      ),
+                    ]
+                  : [
+                      BoxShadow(
+                        color: theme.accent1.withOpacity(0.5),
+                        blurRadius: 5.0,
+                        spreadRadius: 2.0,
+                      ),
+                    ],
+            ),
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: theme.primaryText,
+                  fontSize: isHeader ? 18.0 : 16.0,
+                  fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
             ),
