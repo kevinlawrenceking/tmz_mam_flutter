@@ -199,7 +199,7 @@ Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
   onTap: () {
       Navigator.of(context).push(
   MaterialPageRoute(
-    builder: (context) => DetailsScreen(toggleTheme: toggleTheme),
+    builder: (context) => DetailsScreen(),
   ),
 );
     },

@@ -48,11 +48,14 @@ class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
             icon: Icons.file_download_outlined,
             onPressed: () => print('Download IconButton pressed'),
           ),
-          buildIconButton(
-            context,
-            icon: Icons.edit_sharp,
-            onPressed: () => print('Edit IconButton pressed'),
-          ),
+    buildIconButton(
+  context,
+  icon: Icons.edit_sharp,
+  onPressed: () {
+    Scaffold.of(context).openEndDrawer(); // This opens the drawer
+  },
+),
+
           buildIconButton(
             context,
             icon: Icons.create_new_folder,
