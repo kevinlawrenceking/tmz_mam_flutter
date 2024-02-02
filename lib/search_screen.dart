@@ -12,10 +12,15 @@ import 'components/main_page_control_bar2_widget.dart';
 import 'components/bottom_buttons_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '/advanced_search_window_widget.dart';
+
+
 class SearchScreen extends StatefulWidget {
+  
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
+
+
 }
 
 class _SearchScreenState extends State<SearchScreen> {
@@ -183,13 +188,18 @@ Widget buildGridContent(List<Inventory> data) {
 }
 
 Widget buildAnimatedCard(BuildContext context, Inventory inventoryItem) {
+
+  void toggleTheme() {
+  // Toggle the theme
+  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+}
   return GestureDetector(
   onTap: () {
       Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) =>   DetailsScreen(),
-        ),
-      );
+  MaterialPageRoute(
+    builder: (context) => DetailsScreen(toggleTheme: toggleTheme),
+  ),
+);
     },
     child: AnimatedOpacity(
         opacity: 1.0,

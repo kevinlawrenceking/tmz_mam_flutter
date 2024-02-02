@@ -12,8 +12,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'advanced_search_window_model.dart';
-
-
+import 'save_your_search_widget.dart';
+import 'package:motion_toast/motion_toast.dart';
 class AdvancedSearchWindowWidget extends StatefulWidget {
   const AdvancedSearchWindowWidget({super.key});
 
@@ -2846,10 +2846,21 @@ class _AdvancedSearchWindowWidgetState
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            text: 'Save Search',
+                           onPressed: () {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // You can adjust the dialog style and behavior here
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: SaveYourSearchWidget(), // Your custom widget inside the dialog
+        );
+      },
+    );
+  },
+  text: 'Save Search',
                             icon: Icon(
                               Icons.star,
                            
@@ -2891,9 +2902,16 @@ class _AdvancedSearchWindowWidgetState
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 15.0, 0.0),
                                   child: FFButtonWidget(
-                                    onPressed: () {
-                                      print('Button pressed ...');
-                                    },
+                                          onPressed: () {
+                // Show motion toast
+                MotionToast.info(
+                  title: Text("Reset"),
+                  description: Text("Your form has been reset."),
+                  animationType: AnimationType.fromTop,
+                  position: MotionToastPosition.top,
+                  width: 300, // Customizing the width of the toast
+                ).show(context);
+              },
                                     text: 'Reset',
                                     options: FFButtonOptions(
                                        height: 40.0,

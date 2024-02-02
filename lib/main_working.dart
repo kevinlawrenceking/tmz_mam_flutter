@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Your App Title',
       theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
-      home: DetailsScreen(),
+
     );
   }
 }

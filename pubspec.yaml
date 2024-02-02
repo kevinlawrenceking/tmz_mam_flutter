@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  motion_toast: ^2.8.0
   photo_view: ^0.14.0 # Check for the latest version on pub.dev
   http: ^1.1.2
   flutter_secure_storage: ^9.0.0
