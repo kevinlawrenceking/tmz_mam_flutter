@@ -1,55 +1,50 @@
-// Import necessary Flutter packages
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'themeprovider.dart'; // Import your ThemeProvider
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
-
-import 'package:tmz_mam_flutter/flutter_flow_icon_button.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-// import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
-// import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
-//import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-//import 'package:provider/theme_manger.dart';
-
-//import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
-
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import 'package:tmz_mam_flutter/pages/media_page/media_page_widget.dart';
-import 'package:tmz_mam_flutter/pages/media_page/media_page_model.dart';
+import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'metadata_update_form_widget.dart'; // Adjust the import path as needed
 
-// ResponsiveLayout StatefulWidget to handle theme toggling
-class DetailsScreen extends StatefulWidget {
-  final VoidCallback toggleTheme;
+class DetailsScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  DetailsScreen({required this.toggleTheme});
-
-  @override                                                       
-  _ResponsiveLayoutState createState() => _ResponsiveLayoutState();
-}
-
-class _ResponsiveLayoutState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDesktop = MediaQuery.of(context).size.width >= 600;
 
     return Scaffold(
+      key: _scaffoldKey, // Use the GlobalKey for Scaffold
       appBar: CustomAppBar(
         title: 'TMZ Media Asset Manager',
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),
-            onPressed: widget.toggleTheme,
+            onPressed: () {
+              // Use Provider to toggle the theme
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.edit), // Pencil icon for editing metadata
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer(); // Open the drawer
+            },
           ),
           // Other actions can be added here
         ],
+      ),
+      drawer: Drawer(
+        child: MetadataUpdateFormWidget(), // Drawer content
       ),
       body: isDesktop ? DesktopLayout() : MobileLayout(),
     );
   }
 }
 
-// DesktopLayout for wider screens
 class DesktopLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,92 +52,21 @@ class DesktopLayout extends StatelessWidget {
       children: [
         SearchBarWidget(), // Search bar component
         MediaPageControlBarWidget(), // Toolbar component
-
-Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Divider(
-            thickness: 1,
-            indent: 8,
-            endIndent: 8,
-            color: FlutterFlowTheme.of(context).secondaryText, // Make sure FlutterFlowTheme is correctly imported
-          ),
-),
-
-
-Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Text(
-                  'Tallz Grass Blowing in the Wind',
-                  textAlign: TextAlign.start,
-                  style: FlutterFlowTheme.of(context).headlineLarge,
-                ),
-              ),
-              Text(
-                'Categories: Specials, TV',
-                style: FlutterFlowTheme.of(context).bodyLarge,
-              ),
-            ],
-          ),
-        ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Generated code for this Text Widget...
-Align(
-  alignment: AlignmentDirectional(-1, 0),
-  child: Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-    child: Text(
-      'Appers In: Collection 1, Collection 36',
-      style: FlutterFlowTheme.of(context).bodyMedium,
-    ),
-  ),
-),
-
-
-
-
-
+        // Additional UI components...
         Expanded(
           child: Row(
             children: [
-              Expanded(
-                
-                child: ImageContainer(),
-              ),
-              Expanded(
-                child: MetadataContainer(),
-              ),
+              ImageContainer(),
+              MetadataContainer(),
             ],
           ),
         ),
-        PhotoInfoContainer(),
         BottomButtonsWidget(),
       ],
     );
   }
 }
 
-// MobileLayout for narrower screens
 class MobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -150,9 +74,9 @@ class MobileLayout extends StatelessWidget {
       children: [
         SearchBarWidget(), // Search bar component
         MediaPageControlBarWidget(), // Toolbar component
+        // Additional UI components...
         ImageContainer(),
-        PhotoInfoContainer(),
-        MetadataContainer(),
+        BottomButtonsWidget(),
       ],
     );
   }

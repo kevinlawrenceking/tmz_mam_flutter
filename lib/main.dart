@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/details.dart'; // Your ResponsiveLayout import
-import 'package:tmz_mam_flutter/themeprovider.dart'; // Import your ThemeProvider
-import 'package:tmz_mam_flutter/login_screen.dart'; // Import your ThemeProvider
+import 'package:tmz_mam_flutter/ThemeProvider.dart'; // Import your ThemeProvider
+import 'package:tmz_mam_flutter/login_screen.dart'; // Import your LoginScreen
 
 void main() {
   runApp(MyApp());
@@ -18,10 +17,10 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Your App Title',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
+            theme: ThemeData.light(), // Define your light theme here
+            darkTheme: ThemeData.dark(), // Define your dark theme here
             themeMode: themeProvider.themeMode, // Use ThemeMode from ThemeProvider
-            home: LoginScreen(), // Directly go to TestPage
+            home: LoginScreen(), // Set LoginScreen as the first screen
           );
         },
       ),
