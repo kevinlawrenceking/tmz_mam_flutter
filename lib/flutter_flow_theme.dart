@@ -19,13 +19,13 @@ abstract class FlutterFlowTheme {
 
   static Future initialize() async =>
       _prefs = await SharedPreferences.getInstance();
-static ThemeMode get themeMode {
-  final darkMode = _prefs?.getBool(kThemeModeKey);
-  return darkMode == null
-      ? ThemeMode.dark // Default to dark mode if no preference is set
-      : darkMode
-          ? ThemeMode.dark
-          : ThemeMode.light;
+  static ThemeMode get themeMode {
+    final darkMode = _prefs?.getBool(kThemeModeKey);
+    return darkMode == null
+        ? ThemeMode.dark // Default to dark mode if no preference is set
+        : darkMode
+            ? ThemeMode.dark
+            : ThemeMode.light;
   }
 
   static void saveThemeMode(ThemeMode mode) => mode == ThemeMode.system
@@ -88,9 +88,9 @@ static ThemeMode get themeMode {
   @Deprecated('Use titleSmall instead')
   TextStyle get subtitle2 => typography.titleSmall;
   @Deprecated('Use bodyMediumFamily instead')
-  String get bodyText1Family => typography.bodyMediumFamily;
+  String get bodyMediumFamily => typography.bodyMediumFamily;
   @Deprecated('Use bodyMedium instead')
-  TextStyle get bodyText1 => typography.bodyMedium;
+  TextStyle get bodyMedium => typography.bodyMedium;
   @Deprecated('Use bodySmallFamily instead')
   String get bodyText2Family => typography.bodySmallFamily;
   @Deprecated('Use bodySmall instead')
@@ -122,8 +122,7 @@ static ThemeMode get themeMode {
   TextStyle get labelSmall => typography.labelSmall;
   String get bodyLargeFamily => typography.bodyLargeFamily;
   TextStyle get bodyLarge => typography.bodyLarge;
-  String get bodyMediumFamily => typography.bodyMediumFamily;
-  TextStyle get bodyMedium => typography.bodyMedium;
+
   String get bodySmallFamily => typography.bodySmallFamily;
   TextStyle get bodySmall => typography.bodySmall;
 

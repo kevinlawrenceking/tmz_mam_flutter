@@ -1,8 +1,10 @@
 // Import necessary Flutter packages
 
+// ignore_for_file: deprecated_member_use_from_same_package, duplicate_ignore
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/themeprovider.dart'; // Ensure the path is correct
+import 'package:tmz_mam_flutter/theme_provider.dart'; // Ensure the path is correct
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
@@ -30,15 +32,17 @@ class DetailsScreen extends StatelessWidget {
             icon: const Icon(Icons.brightness_6),
             onPressed: () => toggleTheme(context),
           ),
-    // Additional actions can be added here
+          // Additional actions can be added here
         ],
       ),
-  endDrawer: Drawer(
-  child: SizedBox(
-    width: MediaQuery.of(context).size.width * 0.75, // Custom width: 75% of screen width
-    child: const MetadataUpdateFormWidget(), // Your widget inside the drawer
-  ),
-),
+      endDrawer: Drawer(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width *
+              0.75, // Custom width: 75% of screen width
+          child:
+              const MetadataUpdateFormWidget(), // Your widget inside the drawer
+        ),
+      ),
       body: isDesktop ? const DesktopLayout() : const MobileLayout(),
     );
   }
@@ -55,18 +59,18 @@ class DesktopLayout extends StatelessWidget {
         const SearchBarWidget(), // Search bar component
         const MediaPageControlBarWidget(), // Toolbar component
 
-Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Divider(
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Divider(
             thickness: 1,
             indent: 8,
             endIndent: 8,
-            color: FlutterFlowTheme.of(context).secondaryText, // Make sure FlutterFlowTheme is correctly imported
+            color: FlutterFlowTheme.of(context)
+                .secondaryText, // Make sure FlutterFlowTheme is correctly imported
           ),
-),
+        ),
 
-
-Padding(
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -86,44 +90,22 @@ Padding(
           ),
         ),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Generated code for this Text Widget...
-Align(
-  alignment: const AlignmentDirectional(-1, 0),
-  child: Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-    child: Text(
-      'Appers In: Collection 1, Collection 36',
-      style: FlutterFlowTheme.of(context).bodyMedium,
-    ),
-  ),
-),
-
-
-
-
+        Align(
+          alignment: const AlignmentDirectional(-1, 0),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+            child: Text(
+              'Appers In: Collection 1, Collection 36',
+              style: FlutterFlowTheme.of(context).bodyMedium,
+            ),
+          ),
+        ),
 
         const Expanded(
           child: Row(
             children: [
               Expanded(
-                
                 child: ImageContainer(),
               ),
               Expanded(
@@ -157,7 +139,6 @@ class MobileLayout extends StatelessWidget {
   }
 }
 
- 
 // ImageContainer widget with background color matching the MetadataContainer
 class ImageContainer extends StatelessWidget {
   const ImageContainer({super.key});
@@ -165,22 +146,25 @@ class ImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: FlutterFlowTheme.of(context).secondaryBackground, // Matches the MetadataContainer background
+      color: FlutterFlowTheme.of(context)
+          .secondaryBackground, // Matches the MetadataContainer background
       child: AspectRatio(
         aspectRatio: 16 / 9, // Maintain a 16:9 aspect ratio for the image
         child: Container(
           decoration: const BoxDecoration(
-           // Inner color for the aspect ratio area
-          ),
+              // Inner color for the aspect ratio area
+              ),
           child: Image.asset(
             'assets/images/test.jpg',
-            fit: BoxFit.contain, // Image fits within the container while maintaining its aspect ratio
+            fit: BoxFit
+                .contain, // Image fits within the container while maintaining its aspect ratio
           ),
         ),
       ),
     );
   }
 }
+
 // PhotoInfoContainer widget
 class PhotoInfoContainer extends StatelessWidget {
   const PhotoInfoContainer({super.key});
@@ -209,7 +193,7 @@ class PhotoInfoContainer extends StatelessWidget {
     );
   }
 
-Widget infoColumn(BuildContext context, String title, String value) {
+  Widget infoColumn(BuildContext context, String title, String value) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,167 +224,192 @@ class MetadataContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
-  color: FlutterFlowTheme.of(context).secondaryBackground, // Specific background color
+      color: FlutterFlowTheme.of(context)
+          .secondaryBackground, // Specific background color
       child: Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-    child: Container(
-      height: 435,
-      decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).secondaryBackground,
-      ),
-      child: Align(
-        alignment: const AlignmentDirectional(0, -1),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(20,0, 20, 20),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
-                    child: Text(
-                      'Metadata',
-                      textAlign: TextAlign.start,
-                      style: FlutterFlowTheme.of(context).titleLarge.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).titleLargeFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context)
-                                    .titleLargeFamily),
-                          ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Text(
-                    'Celebrity',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).bodyLarge.override(
-                          fontFamily:
-                              FlutterFlowTheme.of(context).bodyLargeFamily,
-                          fontWeight: FontWeight.bold,
-                          useGoogleFonts: GoogleFonts.asMap().containsKey(
-                              FlutterFlowTheme.of(context).bodyLargeFamily),
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+        child: Container(
+          height: 435,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+          ),
+          child: Align(
+            alignment: const AlignmentDirectional(0, -1),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
+                        child: Text(
+                          'Metadata',
+                          textAlign: TextAlign.start,
+                          style: FlutterFlowTheme.of(context)
+                              .titleLarge
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .titleLargeFamily,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .titleLargeFamily),
+                              ),
                         ),
-                  ),
-                ),
-                Text(
-                  'Not applicable',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Text(
-                      'Associated Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyLargeFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyLargeFamily),
-                          ),
+                      ),
                     ),
-                  ),
-                ),
-                Text(
-                  'Not applicable',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyLargeFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyLargeFamily),
-                          ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Text(
+                        'Celebrity',
+                        textAlign: TextAlign.start,
+                        style: FlutterFlowTheme.of(context).bodyLarge.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyLargeFamily,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context).bodyLargeFamily),
+                            ),
+                      ),
                     ),
-                  ),
-                ),
-                Text(
-                  'NEW YORK, NEW YORK - DECEMBER 06: Alec Baldwin speaks onstage during the Robert F. Kennedy Human Rights\' 2023 Ripple of Hope Gala on December 06, 2023 in New York City. (Photo by Mike Coppola/Getty Images for Robert F. Kennedy Human Rights)',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyLargeFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyLargeFamily),
-                          ),
+                    Text(
+                      'Not applicable',
+                      // ignore: deprecated_member_use_from_same_package
+                      style: FlutterFlowTheme.of(context).bodyMedium,
                     ),
-                  ),
-                ),
-                Text(
-                  'Free (Non-TMZ)',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Text(
-                      'Rights Details',
-                      style: FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyLargeFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyLargeFamily),
-                          ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: Text(
+                          'Associated Celebrity',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyLargeFamily,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyLargeFamily),
+                              ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Text(
-                  'Getty-1234567',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyLarge.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyLargeFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyLargeFamily),
-                          ),
+                    Text(
+                      'Not applicable',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
                     ),
-                  ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: Text(
+                          'Shot Description',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyLargeFamily,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyLargeFamily),
+                              ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'NEW YORK, NEW YORK - DECEMBER 06: Alec Baldwin speaks onstage during the Robert F. Kennedy Human Rights\' 2023 Ripple of Hope Gala on December 06, 2023 in New York City. (Photo by Mike Coppola/Getty Images for Robert F. Kennedy Human Rights)',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: Text(
+                          'Rights Summary',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyLargeFamily,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyLargeFamily),
+                              ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Free (Non-TMZ)',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: Text(
+                          'Rights Details',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyLargeFamily,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyLargeFamily),
+                              ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Getty-1234567',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: Text(
+                          'Credit',
+                          style: FlutterFlowTheme.of(context)
+                              .bodyLarge
+                              .override(
+                                fontFamily: FlutterFlowTheme.of(context)
+                                    .bodyLargeFamily,
+                                fontWeight: FontWeight.bold,
+                                useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                    FlutterFlowTheme.of(context)
+                                        .bodyLargeFamily),
+                              ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Getty',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ],
                 ),
-                Text(
-                  'Getty',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
-                ),
-              ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  ),
     );
   }
 }

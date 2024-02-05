@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';

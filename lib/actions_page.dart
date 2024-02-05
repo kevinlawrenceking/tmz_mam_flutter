@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/themeprovider.dart'; // Import your ThemeProvider
+import 'package:tmz_mam_flutter/theme_provider.dart'; // Import your ThemeProvider
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-
 
 class ActionsPage extends StatefulWidget {
   final String title;
@@ -11,14 +10,14 @@ class ActionsPage extends StatefulWidget {
   const ActionsPage({super.key, required this.title});
 
   @override
-  _ActionsPageState createState() => _ActionsPageState();
+  ActionsPageState createState() => ActionsPageState();
 }
 
-class _ActionsPageState extends State<ActionsPage> {
+class ActionsPageState extends State<ActionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
+      appBar: CustomAppBar(
         title: 'TMZ Media Asset Manager',
         actions: [
           IconButton(
@@ -53,7 +52,8 @@ class _ActionsPageState extends State<ActionsPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomButtonsWidget(), // Added BottomButtonsWidget here
+      bottomNavigationBar:
+          const BottomButtonsWidget(), // Added BottomButtonsWidget here
     );
   }
 }

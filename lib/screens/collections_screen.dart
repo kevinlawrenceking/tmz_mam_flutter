@@ -6,7 +6,8 @@ import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/themeprovider.dart';
+import 'package:tmz_mam_flutter/theme_provider.dart';
+
 
 class CollectionsPage extends StatelessWidget {
   const CollectionsPage({super.key});

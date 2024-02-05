@@ -15,7 +15,7 @@ import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 
 import '/advanced_search_window_widget.dart';
 
-import '../ThemeProvider.dart';
+import '../theme_provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

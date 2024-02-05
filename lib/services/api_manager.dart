@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:core';
 import 'dart:typed_data';
 
-import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 import 'package:http_parser/http_parser.dart';
@@ -12,19 +11,19 @@ import 'package:mime_type/mime_type.dart';
 import '../flutter_flow/uploaded_file.dart';
 
 enum ApiCallType {
-  GET,
-  POST,
-  DELETE,
-  PUT,
-  PATCH,
+  get,
+  post,
+  delete,
+  put,
+  patch,
 }
 
 enum BodyType {
-  NONE,
-  JSON,
-  TEXT,
-  X_WWW_FORM_URL_ENCODED,
-  MULTIPART,
+  none,
+  json,
+  text,
+  xWwwFormUrlEncoded,
+  multipart,
 }
 
 class ApiCallRecord extends Equatable {
@@ -67,7 +66,7 @@ class ApiCallResponse {
     bool returnBody,
     bool decodeUtf8,
   ) {
-    var jsonBody;
+    dynamic jsonBody;
     try {
       final responseBody = decodeUtf8 && returnBody
           ? const Utf8Decoder().convert(response.bodyBytes)
@@ -132,7 +131,7 @@ class ApiManager {
           Uri.parse(apiUrl).queryParameters.isNotEmpty ? '&' : '?';
       apiUrl = '$apiUrl$specifier${asQueryParams(params)}';
     }
-    final makeRequest = callType == ApiCallType.GET
+    final makeRequest = callType == ApiCallType.get
         ? (client != null ? client.get : http.get)
         : (client != null ? client.delete : http.delete);
     final response =
@@ -154,23 +153,23 @@ class ApiManager {
     http.Client? client,
   }) async {
     assert(
-      {ApiCallType.POST, ApiCallType.PUT, ApiCallType.PATCH}.contains(type) ||
-          (alwaysAllowBody && type == ApiCallType.DELETE),
+      {ApiCallType.post, ApiCallType.put, ApiCallType.patch}.contains(type) ||
+          (alwaysAllowBody && type == ApiCallType.delete),
       'Invalid ApiCallType $type for request with body',
     );
     final postBody =
         createBody(headers, params, body, bodyType, encodeBodyUtf8);
 
-    if (bodyType == BodyType.MULTIPART) {
+    if (bodyType == BodyType.multipart) {
       return multipartRequest(type, apiUrl, headers, params, returnBody,
           decodeUtf8, alwaysAllowBody);
     }
 
     final requestFn = {
-      ApiCallType.POST: client != null ? client.post : http.post,
-      ApiCallType.PUT: client != null ? client.put : http.put,
-      ApiCallType.PATCH: client != null ? client.patch : http.patch,
-      ApiCallType.DELETE: client != null ? client.delete : http.delete,
+      ApiCallType.post: client != null ? client.post : http.post,
+      ApiCallType.put: client != null ? client.put : http.put,
+      ApiCallType.patch: client != null ? client.patch : http.patch,
+      ApiCallType.delete: client != null ? client.delete : http.delete,
     }[type]!;
     final response = await requestFn(Uri.parse(apiUrl),
         headers: toStringMap(headers), body: postBody);
@@ -187,8 +186,8 @@ class ApiManager {
     bool alwaysAllowBody,
   ) async {
     assert(
-      {ApiCallType.POST, ApiCallType.PUT, ApiCallType.PATCH}.contains(type) ||
-          (alwaysAllowBody && type == ApiCallType.DELETE),
+      {ApiCallType.post, ApiCallType.put, ApiCallType.patch}.contains(type) ||
+          (alwaysAllowBody && type == ApiCallType.delete),
       'Invalid ApiCallType $type for request with body',
     );
     isFile(e) =>
@@ -207,13 +206,13 @@ class ApiManager {
           : [param as FFUploadedFile];
       for (var uploadedFile in uploadedFiles) {
         files.add(
-            http.MultipartFile.fromBytes(
-              e.key,
-              uploadedFile.bytes ?? Uint8List.fromList([]),
-              filename: uploadedFile.name,
-              contentType: _getMediaType(uploadedFile.name),
-            ),
-          );
+          http.MultipartFile.fromBytes(
+            e.key,
+            uploadedFile.bytes ?? Uint8List.fromList([]),
+            filename: uploadedFile.name,
+            contentType: _getMediaType(uploadedFile.name),
+          ),
+        );
       }
     });
 
@@ -249,23 +248,23 @@ class ApiManager {
     String? contentType;
     dynamic postBody;
     switch (bodyType) {
-      case BodyType.JSON:
+      case BodyType.json:
         contentType = 'application/json';
         postBody = body ?? json.encode(params ?? {});
         break;
-      case BodyType.TEXT:
+      case BodyType.text:
         contentType = 'text/plain';
         postBody = body ?? json.encode(params ?? {});
         break;
-      case BodyType.X_WWW_FORM_URL_ENCODED:
+      case BodyType.xWwwFormUrlEncoded:
         contentType = 'application/x-www-form-urlencoded';
         postBody = toStringMap(params ?? {});
         break;
-      case BodyType.MULTIPART:
+      case BodyType.multipart:
         contentType = 'multipart/form-data';
         postBody = params;
         break;
-      case BodyType.NONE:
+      case BodyType.none:
       case null:
         break;
     }
@@ -313,7 +312,7 @@ class ApiManager {
     ApiCallResponse result;
     try {
       switch (callType) {
-        case ApiCallType.GET:
+        case ApiCallType.get:
           result = await urlRequest(
             callType,
             apiUrl,
@@ -324,7 +323,7 @@ class ApiManager {
             client: client,
           );
           break;
-        case ApiCallType.DELETE:
+        case ApiCallType.delete:
           result = alwaysAllowBody
               ? await requestWithBody(
                   callType,
@@ -349,9 +348,9 @@ class ApiManager {
                   client: client,
                 );
           break;
-        case ApiCallType.POST:
-        case ApiCallType.PUT:
-        case ApiCallType.PATCH:
+        case ApiCallType.post:
+        case ApiCallType.put:
+        case ApiCallType.patch:
           result = await requestWithBody(
             callType,
             apiUrl,

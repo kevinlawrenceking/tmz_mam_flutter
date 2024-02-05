@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/ThemeProvider.dart'; // Import your ThemeProvider
+import 'package:tmz_mam_flutter/theme_provider.dart'; // Import your ThemeProvider
 import 'package:tmz_mam_flutter/screens/login_screen.dart'; // Import your LoginScreen
 
 void main() {

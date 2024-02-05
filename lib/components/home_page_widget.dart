@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
@@ -15,10 +16,10 @@ class HomePageWidget extends StatefulWidget {
   const HomePageWidget({super.key});
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  HomePageWidgetState createState() => HomePageWidgetState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
+class HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -80,7 +81,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             Align(
               alignment: const AlignmentDirectional(1.0, 0.0),
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
                 child: Icon(
                   Icons.person,
                   color: FlutterFlowTheme.of(context).primaryBackground,
@@ -91,7 +93,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             Align(
               alignment: const AlignmentDirectional(0.0, 0.0),
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 25.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 25.0, 0.0),
                 child: Text(
                   'BM',
                   style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -137,11 +140,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        20.0, 0.0, 20.0, 0.0),
                     child: GridView(
                       padding: EdgeInsets.zero,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 10.0,
                         mainAxisSpacing: 10.0,
@@ -177,10 +181,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -205,7 +211,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -223,10 +230,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -235,7 +244,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -253,10 +263,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -265,7 +277,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -283,10 +296,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -295,7 +310,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -313,7 +329,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -352,10 +369,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -380,7 +399,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -398,10 +418,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -410,7 +432,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -428,10 +451,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -440,7 +465,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -458,10 +484,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -470,7 +498,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -488,7 +517,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -527,10 +557,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -555,7 +587,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -573,10 +606,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -585,7 +620,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -603,10 +639,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -615,7 +653,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -633,10 +672,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -645,7 +686,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -663,7 +705,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -702,10 +745,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -730,7 +775,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -748,10 +794,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -760,7 +808,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -778,10 +827,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -790,7 +841,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -808,10 +860,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -820,7 +874,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -838,7 +893,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -877,10 +933,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -905,7 +963,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -923,10 +982,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -935,7 +996,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -953,10 +1015,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -965,7 +1029,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -983,10 +1048,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -995,7 +1062,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -1013,7 +1081,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -1052,10 +1121,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -1080,7 +1151,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -1098,10 +1170,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1110,7 +1184,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -1128,10 +1203,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1140,7 +1217,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -1158,10 +1236,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1170,7 +1250,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -1188,7 +1269,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -1227,10 +1309,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -1255,7 +1339,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -1273,10 +1358,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1285,7 +1372,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -1303,10 +1391,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1315,7 +1405,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -1333,10 +1424,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1345,7 +1438,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -1363,7 +1457,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -1402,10 +1497,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -1430,7 +1527,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -1448,10 +1546,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1460,7 +1560,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -1478,10 +1579,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1490,7 +1593,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -1508,10 +1612,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1520,7 +1626,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -1538,7 +1645,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:
@@ -1577,10 +1685,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 0.0, 0.0),
                                     child: Text(
                                       'Close Up of a Lion\'s Face',
                                       style: FlutterFlowTheme.of(context)
@@ -1605,7 +1715,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       .darkThemeShadowColor,
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Celebrity',
                                     style: FlutterFlowTheme.of(context)
@@ -1623,10 +1734,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1635,7 +1748,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Shot Description',
                                     style: FlutterFlowTheme.of(context)
@@ -1653,10 +1767,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1665,7 +1781,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Rights Summary',
                                     style: FlutterFlowTheme.of(context)
@@ -1683,10 +1800,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 10.0),
                                     child: Text(
                                       'Hello World',
                                       style: FlutterFlowTheme.of(context)
@@ -1695,7 +1814,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Credit',
                                     style: FlutterFlowTheme.of(context)
@@ -1713,7 +1833,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.0),
                                   child: Text(
                                     'Hello World',
                                     style:

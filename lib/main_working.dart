@@ -9,11 +9,11 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  bool _isDarkMode = false;
+class MyAppState extends State<MyApp> {
+  final bool _isDarkMode = false;
 
   @override
   Widget build(BuildContext context) {

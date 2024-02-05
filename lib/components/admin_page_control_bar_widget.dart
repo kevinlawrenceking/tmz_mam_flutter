@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package, duplicate_ignore
+
 import '../flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,6 @@ class AdminPageControlBarWidget extends StatefulWidget {
   @override
   // ignore: library_private_types_in_public_api
   _AdminPageControlBarWidgetState createState() =>
-  
       _AdminPageControlBarWidgetState();
 }
 
@@ -87,11 +88,14 @@ class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
                     child: Text(
                       'Users (4)',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            // ignore: duplicate_ignore
                             fontFamily:
+                                // ignore: deprecated_member_use_from_same_package
                                 FlutterFlowTheme.of(context).bodyMediumFamily,
                             fontSize: 18.0,
                             fontWeight: FontWeight.w600,
                             useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                // ignore: deprecated_member_use_from_same_package
                                 FlutterFlowTheme.of(context).bodyMediumFamily),
                           ),
                     ),

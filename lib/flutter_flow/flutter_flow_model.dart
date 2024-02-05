@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -123,6 +124,7 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
     return model != null ? getValue(model) : null;
   }
 
+  // ignore: avoid_function_literals_in_foreach_calls
   void dispose() => _childrenModels.values.forEach((model) => model.dispose());
 
   void _updateActiveKeys(String uniqueKey) {
@@ -150,13 +152,13 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
 
 T? _getDefaultValue<T>() {
   switch (T) {
-    case int:
+    case const (int):
       return 0 as T;
-    case double:
+    case const (double):
       return 0.0 as T;
-    case String:
+    case const (String):
       return '' as T;
-    case bool:
+    case const (bool):
       return false as T;
     default:
       return null as T;

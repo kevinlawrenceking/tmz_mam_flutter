@@ -5,7 +5,7 @@ class DetailsScreen extends StatelessWidget {
   final int id;
   final Inventory inventoryItem; // Assuming you pass the whole inventory item
 
-  DetailsScreen({required this.id, required this.inventoryItem});
+  const DetailsScreen({super.key, required this.id, required this.inventoryItem});
 
 @override
 Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ Widget build(BuildContext context) {
     child: Scaffold(
       appBar: AppBar(
         title: Text('Details for ${inventoryItem.name}'),
-        bottom: TabBar(
+        bottom: const TabBar(
           labelColor: Colors.white, // Set the color of the text of the selected tab
           unselectedLabelColor: Colors.white60, // Color of the unselected tabs
           tabs: [
@@ -52,7 +52,7 @@ Widget build(BuildContext context) {
 
   Widget buildAssetInfoTab() {
     // Populate with asset info
-    return Center(child: Text("Asset Info Content"));
+    return const Center(child: Text("Asset Info Content"));
   }
 
   Widget buildMetadataTab() {
@@ -71,6 +71,6 @@ Widget build(BuildContext context) {
 
   Widget buildUsageTab() {
     // Populate with usage info
-    return Center(child: Text("Usage Content"));
+    return const Center(child: Text("Usage Content"));
   }
 }

@@ -205,6 +205,7 @@ class _AdvancedSearchWindowWidgetState
                                           child: Text(
                                             'Collections: ',
                                             style: FlutterFlowTheme.of(context)
+                                                // ignore: deprecated_member_use_from_same_package
                                                 .bodyMedium
                                                 .override(
                                                   fontFamily:
@@ -217,6 +218,7 @@ class _AdvancedSearchWindowWidgetState
                                                       .containsKey(
                                                           FlutterFlowTheme.of(
                                                                   context)
+                                                              // ignore: deprecated_member_use_from_same_package
                                                               .bodyMediumFamily),
                                                 ),
                                           ),

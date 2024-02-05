@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,22 +26,23 @@ class MediaPageWidget extends StatefulWidget {
   });
 
   @override
-  _MediaPageWidgetState createState() => _MediaPageWidgetState();
+  MediaPageWidgetState createState() => MediaPageWidgetState();
 }
 
-class _MediaPageWidgetState extends State<MediaPageWidget> {
-  late MediaPageModel _model;
+class MediaPageWidgetState extends State<MediaPageWidget> {
+  late MediaPageModel model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => MediaPageModel(widget.id, widget.inventoryItem));
+    model = createModel(
+        context, () => MediaPageModel(widget.id, widget.inventoryItem));
   }
 
   @override
   void dispose() {
-    _model.dispose();
+    model.dispose();
     super.dispose();
   }
 
@@ -55,8 +58,8 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
     }
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+      onTap: () => model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(model.unfocusNode)
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
@@ -113,7 +116,7 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                 child: wrapWithModel(
-                  model: _model.searchBarModel,
+                  model: model.searchBarModel,
                   updateCallback: () => setState(() {}),
                   child: const SearchBarWidget(),
                 ),
@@ -121,7 +124,7 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 10),
                 child: wrapWithModel(
-                  model: _model.mediaPageControlBarModel,
+                  model: model.mediaPageControlBarModel,
                   updateCallback: () => setState(() {}),
                   child: const MediaPageControlBarWidget(),
                 ),
@@ -138,7 +141,8 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                   Align(
                     alignment: const AlignmentDirectional(-1, 0),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
                       child: Text(
                         'Tall Grass Blowing in the Wind',
                         textAlign: TextAlign.start,
@@ -150,7 +154,8 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                     child: Align(
                       alignment: const AlignmentDirectional(1, 0),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 20, 0),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 15, 20, 0),
                         child: Text(
                           'Categories: Specials, TV',
                           style: FlutterFlowTheme.of(context).bodyLarge,
@@ -170,72 +175,72 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                   ),
                 ),
               ),
-
-
-
-
               Expanded(
-  child: LayoutBuilder(
-    builder: (BuildContext context, BoxConstraints constraints) {
-      // Check if the width is more than a certain threshold, for example 600 pixels
-      if (constraints.maxWidth > 600) {
-        // Wide layout (side by side)
-        return Row(
-          children: [
-            // Image container
-            Expanded(
-              child:             SizedBox(
-  width: 640, // Set maximum width for the image container
-  child: ClipRRect(
-    borderRadius: const BorderRadius.only(
-      topLeft: Radius.circular(10),
-      bottomLeft: Radius.circular(10),
-    ),
-    child: Image.network(
-      'https://picsum.photos/seed/725/600',
-      width: 320, // Ensure the image takes the full width of the container
-      fit: BoxFit.cover, // Cover the entire space of the container
-    ),
-  ),
-),
-            ),
-            // Metadata container
-            Expanded(
-              child: Container(
-
-
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    // Check if the width is more than a certain threshold, for example 600 pixels
+                    if (constraints.maxWidth > 600) {
+                      // Wide layout (side by side)
+                      return Row(
+                        children: [
+                          // Image container
+                          Expanded(
+                            child: SizedBox(
+                              width:
+                                  640, // Set maximum width for the image container
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                ),
+                                child: Image.network(
+                                  'https://picsum.photos/seed/725/600',
+                                  width:
+                                      320, // Ensure the image takes the full width of the container
+                                  fit: BoxFit
+                                      .cover, // Cover the entire space of the container
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Metadata container
+                          Expanded(
+                            child: Container(),
+                          ),
+                        ],
+                      );
+                    } else {
+                      // Narrow layout (stacked)
+                      return Column(
+                        children: [
+                          // Image container
+                          SizedBox(
+                            width:
+                                320, // Set maximum width for the image container
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                              ),
+                              child: Image.network(
+                                'https://picsum.photos/seed/725/600',
+                                width:
+                                    320, // Ensure the image takes the full width of the container
+                                fit: BoxFit
+                                    .cover, // Cover the entire space of the container
+                              ),
+                            ),
+                          ),
+                          // Metadata container
+                          Container(
+                              // Your metadata container code
+                              ),
+                        ],
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
-        );
-      } else {
-        // Narrow layout (stacked)
-        return Column(
-          children: [
-            // Image container
-            SizedBox(
-  width: 320, // Set maximum width for the image container
-  child: ClipRRect(
-    borderRadius: const BorderRadius.only(
-      topLeft: Radius.circular(10),
-      bottomLeft: Radius.circular(10),
-    ),
-    child: Image.network(
-      'https://picsum.photos/seed/725/600',
-      width: 320, // Ensure the image takes the full width of the container
-      fit: BoxFit.cover, // Cover the entire space of the container
-    ),
-  ),
-),
-            // Metadata container
-            Container(
-              // Your metadata container code
-            ),
-          ],
-        );
-      }
-    },
-  ),),
             ],
           ),
         ),

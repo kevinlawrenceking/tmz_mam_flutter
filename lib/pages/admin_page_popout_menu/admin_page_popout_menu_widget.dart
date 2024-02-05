@@ -10,16 +10,16 @@ class AdminPagePopoutMenuWidget extends StatefulWidget {
   const AdminPagePopoutMenuWidget({super.key});
 
   @override
-  _AdminPagePopoutMenuWidgetState createState() =>
-      _AdminPagePopoutMenuWidgetState();
+  AdminPagePopoutMenuWidgetState createState() =>
+      AdminPagePopoutMenuWidgetState();
 }
 
-class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
+class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
   late AdminPagePopoutMenuModel _model;
 
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
+  void setState(VoidCallback fn) {
+    super.setState(fn);
     _model.onUpdate();
   }
 
@@ -71,8 +71,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 24.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 24.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -82,8 +82,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                         size: 34.0,
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            12.0, 0.0, 0.0, 0.0),
                         child: Text(
                           'Admin',
                           style: FlutterFlowTheme.of(context)
@@ -103,8 +103,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -114,8 +114,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -164,8 +164,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -175,8 +175,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -225,8 +225,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -236,8 +236,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -286,8 +286,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -297,8 +297,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -347,8 +347,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -358,8 +358,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -406,8 +406,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -417,8 +417,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -465,8 +465,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     height: 50.0,
@@ -476,8 +476,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          12.0, 0.0, 12.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -527,8 +527,8 @@ class _AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 16.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,

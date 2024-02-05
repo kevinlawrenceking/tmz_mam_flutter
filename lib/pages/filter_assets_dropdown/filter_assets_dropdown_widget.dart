@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import '../../flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +11,17 @@ class FilterAssetsDropdownWidget extends StatefulWidget {
   const FilterAssetsDropdownWidget({super.key});
 
   @override
-  _FilterAssetsDropdownWidgetState createState() =>
-      _FilterAssetsDropdownWidgetState();
+  FilterAssetsDropdownWidgetState createState() =>
+      FilterAssetsDropdownWidgetState();
 }
 
-class _FilterAssetsDropdownWidgetState
+class FilterAssetsDropdownWidgetState
     extends State<FilterAssetsDropdownWidget> {
   late FilterAssetsDropdownModel _model;
 
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
+  void setState(VoidCallback fn) {
+    super.setState(fn);
     _model.onUpdate();
   }
 
@@ -60,7 +62,8 @@ class _FilterAssetsDropdownWidgetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 0.0, 0.0),
                 child: Text(
                   'Filters',
                   textAlign: TextAlign.start,
@@ -68,14 +71,16 @@ class _FilterAssetsDropdownWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 8.0, 0.0, 8.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -131,13 +136,14 @@ class _FilterAssetsDropdownWidgetState
                   color: FlutterFlowTheme.of(context).secondaryBackground,
                 ),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            12.0, 0.0, 0.0, 0.0),
                         child: FaIcon(
                           FontAwesomeIcons.genderless,
                           color: FlutterFlowTheme.of(context).primaryText,
@@ -186,13 +192,14 @@ class _FilterAssetsDropdownWidgetState
                   color: FlutterFlowTheme.of(context).secondaryBackground,
                 ),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            12.0, 0.0, 0.0, 0.0),
                         child: Icon(
                           Icons.today,
                           color: FlutterFlowTheme.of(context).primaryText,
@@ -241,13 +248,14 @@ class _FilterAssetsDropdownWidgetState
                   color: FlutterFlowTheme.of(context).secondaryBackground,
                 ),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            12.0, 0.0, 0.0, 0.0),
                         child: Icon(
                           Icons.calendar_month,
                           color: FlutterFlowTheme.of(context).primaryText,

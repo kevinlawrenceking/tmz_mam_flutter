@@ -4,24 +4,28 @@ import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/screens/search_screen.dart';
 import 'package:tmz_mam_flutter/pages/collections/collections_widget.dart';
 import 'package:tmz_mam_flutter/screens/admin_screen.dart';
- 
+
 class BottomButtonsWidget extends StatelessWidget {
   const BottomButtonsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: FlutterFlowTheme.of(context).secondaryBackground, // Background color
+      color:
+          FlutterFlowTheme.of(context).secondaryBackground, // Background color
       child: SafeArea(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Space the buttons evenly
+          mainAxisAlignment:
+              MainAxisAlignment.spaceEvenly, // Space the buttons evenly
           children: [
             // Assets Button
             _BottomButton(
               icon: Icons.image_search,
               label: 'Assets',
-              onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => SearchScreen(), // Navigate to Assets Screen
+              onTap: () =>
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    const SearchScreen(), // Navigate to Assets Screen
               )),
             ),
 
@@ -29,8 +33,10 @@ class BottomButtonsWidget extends StatelessWidget {
             _BottomButton(
               icon: Icons.folder_outlined,
               label: 'Collections',
-              onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const CollectionsPage(), // Navigate to Collections Screen
+              onTap: () =>
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    const CollectionsPage(), // Navigate to Collections Screen
               )),
             ),
 
@@ -38,8 +44,10 @@ class BottomButtonsWidget extends StatelessWidget {
             _BottomButton(
               icon: Icons.admin_panel_settings_outlined,
               label: 'Admin',
-              onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const AdminPage(), // Navigate to Admin Screen
+              onTap: () =>
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    const AdminPage(), // Navigate to Admin Screen
               )),
             ),
           ],
@@ -67,11 +75,13 @@ class _BottomButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min, // Take up minimum space
         children: [
-          Icon(icon, color: FlutterFlowTheme.of(context).primaryText), // Icon color
-          Text(label, style: TextStyle(
-            color: FlutterFlowTheme.of(context).primaryText, // Text color
-            fontSize: 11.0, // Font size
-          )),
+          Icon(icon,
+              color: FlutterFlowTheme.of(context).primaryText), // Icon color
+          Text(label,
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText, // Text color
+                fontSize: 11.0, // Font size
+              )),
         ],
       ),
     );

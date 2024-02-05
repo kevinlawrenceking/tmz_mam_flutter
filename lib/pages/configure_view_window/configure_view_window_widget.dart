@@ -8,28 +8,28 @@ class ConfigureViewWindowWidget extends StatefulWidget {
   const ConfigureViewWindowWidget({super.key});
 
   @override
-  _ConfigureViewWindowWidgetState createState() =>
-      _ConfigureViewWindowWidgetState();
+  ConfigureViewWindowWidgetState createState() =>
+      ConfigureViewWindowWidgetState();
 }
 
-class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
-  late ConfigureViewWindowModel _model;
+class ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
+  late ConfigureViewWindowModel model;
 
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    model.onUpdate();
   }
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => ConfigureViewWindowModel());
+    model = createModel(context, () => ConfigureViewWindowModel());
   }
 
   @override
   void dispose() {
-    _model.maybeDispose();
+    model.maybeDispose();
 
     super.dispose();
   }
@@ -56,7 +56,8 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 50.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 50.0, 0.0),
                 child: Container(
                   width: 350.0,
                   height: 350.0,
@@ -205,7 +206,8 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(50.0, 0.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(50.0, 0.0, 0.0, 0.0),
                 child: Container(
                   width: 350.0,
                   height: 350.0,

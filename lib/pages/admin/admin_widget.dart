@@ -3,13 +3,13 @@ import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
 
 class AdminWidget extends StatefulWidget {
-  const AdminWidget({Key? key}) : super(key: key);
+  const AdminWidget({super.key});
 
   @override
-  _AdminWidgetState createState() => _AdminWidgetState();
+  AdminWidgetState createState() => AdminWidgetState();
 }
 
-class _AdminWidgetState extends State<AdminWidget> {
+class AdminWidgetState extends State<AdminWidget> {
   // Mock data for the DataTable
   final List<Map<String, dynamic>> mockDataTableRecordList = [
     {
@@ -35,17 +35,17 @@ class _AdminWidgetState extends State<AdminWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Page'),
+        title: const Text('Admin Page'),
         centerTitle: true,
       ),
       body: SafeArea(
         child: Column(
           children: [
-            SearchBarWidget(),
-            AdminPageControlBarWidget(),
+            const SearchBarWidget(),
+            const AdminPageControlBarWidget(),
             Expanded(
               child: DataTable(
-                columns: [
+                columns: const [
                   DataColumn(label: Text('User Name')),
                   DataColumn(label: Text('Email Address')),
                   DataColumn(label: Text('First Name')),
@@ -53,14 +53,16 @@ class _AdminWidgetState extends State<AdminWidget> {
                   DataColumn(label: Text('Enabled')),
                   DataColumn(label: Text('Roles')),
                 ],
-                rows: mockDataTableRecordList.map((record) => DataRow(cells: [
-                  DataCell(Text(record['userName'] ?? '')),
-                  DataCell(Text(record['email'] ?? '')),
-                  DataCell(Text(record['firstName'] ?? '')),
-                  DataCell(Text(record['lastName'] ?? '')),
-                  DataCell(Text(record['enabled'] ?? '')),
-                  DataCell(Text(record['roles'] ?? '')),
-                ])).toList(),
+                rows: mockDataTableRecordList
+                    .map((record) => DataRow(cells: [
+                          DataCell(Text(record['userName'] ?? '')),
+                          DataCell(Text(record['email'] ?? '')),
+                          DataCell(Text(record['firstName'] ?? '')),
+                          DataCell(Text(record['lastName'] ?? '')),
+                          DataCell(Text(record['enabled'] ?? '')),
+                          DataCell(Text(record['roles'] ?? '')),
+                        ]))
+                    .toList(),
               ),
             ),
           ],

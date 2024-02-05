@@ -9,11 +9,11 @@ class MediaPageControlBarWidget extends StatefulWidget {
   const MediaPageControlBarWidget({super.key});
 
   @override
-  _MediaPageControlBarWidgetState createState() =>
-      _MediaPageControlBarWidgetState();
+  MediaPageControlBarWidgetState createState() =>
+      MediaPageControlBarWidgetState();
 }
 
-class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
+class MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
   @override
   void initState() {
     super.initState();

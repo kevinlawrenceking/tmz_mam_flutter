@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -66,7 +68,7 @@ String? serializeParam(
         return placeToString(param as FFPlace);
       case ParamType.FFUploadedFile:
         return uploadedFileToString(param as FFUploadedFile);
-      case ParamType.JSON:
+      case ParamType.json:
         return json.encode(param);
 
       default:
@@ -142,7 +144,7 @@ enum ParamType {
   Color,
   FFPlace,
   FFUploadedFile,
-  JSON,
+  json,
 }
 
 dynamic deserializeParam<T>(
@@ -191,7 +193,7 @@ dynamic deserializeParam<T>(
         return placeFromString(param);
       case ParamType.FFUploadedFile:
         return uploadedFileFromString(param);
-      case ParamType.JSON:
+      case ParamType.json:
         return json.decode(param);
 
       default:

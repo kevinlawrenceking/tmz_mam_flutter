@@ -1,8 +1,9 @@
+// ignore_for_file: unused_element
+
 import 'dart:convert';
 import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
-
 
 class UsersCall {
   static Future<ApiCallResponse> call() async {
@@ -10,7 +11,7 @@ class UsersCall {
       callName: 'users',
       apiUrl:
           'https://12ebb237-1b2a-42fc-88f9-05ac1898ebbc.mock.pstmn.io/users/',
-      callType: ApiCallType.GET,
+      callType: ApiCallType.get,
       headers: {
         'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002',
       },
@@ -29,7 +30,7 @@ class CategoriesCall {
     return ApiManager.instance.makeApiCall(
       callName: 'categories',
       apiUrl: 'http://tmztoolsdev:3000/categories/',
-      callType: ApiCallType.GET,
+      callType: ApiCallType.get,
       headers: {
         'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002',
       },
@@ -57,15 +58,6 @@ class ApiPagingParams {
   @override
   String toString() =>
       'PagingParams(nextPageNumber: $nextPageNumber, numItems: $numItems, lastResponse: $lastResponse,)';
-}
-
-String _serializeList(List? list) {
-  list ??= <String>[];
-  try {
-    return json.encode(list);
-  } catch (_) {
-    return '[]';
-  }
 }
 
 String _serializeJson(dynamic jsonVar, [bool isList = false]) {

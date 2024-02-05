@@ -175,12 +175,11 @@ Theme wrapInMaterialTimePickerTheme(
   );
 }
 
-Future launchURL(String url) async {
-  var uri = Uri.parse(url).toString();
-  try {
-    await launch(uri);
-  } catch (e) {
-    throw 'Could not launch $uri: $e';
+Future<void> launchURL(String url) async {
+  final Uri uri = Uri.parse(url);
+  final bool launched = await launchUrl(uri);
+  if (!launched) {
+    throw 'Could not launch $url';
   }
 }
 

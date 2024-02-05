@@ -5,9 +5,8 @@ import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/themeprovider.dart';
+import 'package:tmz_mam_flutter/theme_provider.dart';
 import 'package:provider/provider.dart';
-
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
@@ -73,14 +72,16 @@ class AdminPage extends StatelessWidget {
                 DataColumn(label: Text('Enabled')),
                 DataColumn(label: Text('Roles')),
               ],
-              rows: mockDataTableRecordList.map((record) => DataRow(cells: [
-                DataCell(Text(record['userName'] ?? '')),
-                DataCell(Text(record['email'] ?? '')),
-                DataCell(Text(record['firstName'] ?? '')),
-                DataCell(Text(record['lastName'] ?? '')),
-                DataCell(Text(record['enabled'] ?? '')),
-                DataCell(Text(record['roles'] ?? '')),
-              ])).toList(),
+              rows: mockDataTableRecordList
+                  .map((record) => DataRow(cells: [
+                        DataCell(Text(record['userName'] ?? '')),
+                        DataCell(Text(record['email'] ?? '')),
+                        DataCell(Text(record['firstName'] ?? '')),
+                        DataCell(Text(record['lastName'] ?? '')),
+                        DataCell(Text(record['enabled'] ?? '')),
+                        DataCell(Text(record['roles'] ?? '')),
+                      ]))
+                  .toList(),
             ),
           ),
         ],
