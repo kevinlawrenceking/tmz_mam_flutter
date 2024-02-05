@@ -1,3 +1,5 @@
+
+
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
@@ -51,7 +53,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
               boxShadow: [
-                const BoxShadow(
+                BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
                   offset: Offset(0.0, 2.0),
