@@ -1,11 +1,6 @@
-import 'themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
 import 'save_your_search_widget.dart' show SaveYourSearchWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class SaveYourSearchModel extends FlutterFlowModel<SaveYourSearchWidget> {
   ///  State fields for stateful widgets in this component.
@@ -17,8 +12,10 @@ class SaveYourSearchModel extends FlutterFlowModel<SaveYourSearchWidget> {
 
   /// Initialization and disposal methods.
 
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     textFieldFocusNode?.dispose();
     textController?.dispose();
@@ -28,4 +25,3 @@ class SaveYourSearchModel extends FlutterFlowModel<SaveYourSearchWidget> {
 
   /// Additional helper methods are added here.
 }
-

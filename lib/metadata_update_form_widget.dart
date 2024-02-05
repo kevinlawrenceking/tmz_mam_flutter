@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'flutter_flow_theme.dart'; // Make sure this import points to the correct file location
 
 class MetadataUpdateFormWidget extends StatefulWidget {
-  const MetadataUpdateFormWidget({Key? key}) : super(key: key);
+  const MetadataUpdateFormWidget({super.key});
 
   @override
   _MetadataUpdateFormWidgetState createState() => _MetadataUpdateFormWidgetState();
@@ -36,7 +36,7 @@ class _MetadataUpdateFormWidgetState extends State<MetadataUpdateFormWidget> {
       labelText: label,
       hintText: hint,
       // Here's where you adjust the padding inside the text field
-      contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -96,24 +96,23 @@ Widget buildFormCard(FlutterFlowTheme theme) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: theme.subtitle2.override(fontFamily: 'Roboto')), // Adjust the style to match your needs
+          onPressed: () => Navigator.pop(context), // Adjust the style to match your needs
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: theme.secondary)),
             backgroundColor: theme.secondaryBackground,
           ),
+          child: Text('Cancel', style: theme.subtitle2.override(fontFamily: 'Roboto')),
         ),
         ElevatedButton(
           onPressed: () {
             // Save changes logic
-          },
-          child: Text('Save Changes', style: theme.subtitle2.override(fontFamily: 'Roboto')), // Adjust the style to match your needs
+          }, // Adjust the style to match your needs
           style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), backgroundColor: theme.primary,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            primary: theme.primary,
           ),
+          child: Text('Save Changes', style: theme.subtitle2.override(fontFamily: 'Roboto')),
         ),
       ],
     );

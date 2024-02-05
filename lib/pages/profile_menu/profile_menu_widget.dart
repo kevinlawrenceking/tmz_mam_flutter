@@ -3,13 +3,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
+  const ProfileMenuWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 300,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 4,
             color: Color(0x33000000),
@@ -23,7 +25,7 @@ class ProfileMenuWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             child: Text(
               'My Profile',
               style: FlutterFlowTheme.of(context).titleLarge,

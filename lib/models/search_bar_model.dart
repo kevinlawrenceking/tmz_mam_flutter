@@ -1,10 +1,6 @@
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import '../components/search_bar_widget.dart' show SearchBarWidget;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class SearchBarModel extends FlutterFlowModel<SearchBarWidget> {
   ///  State fields for stateful widgets in this component.
@@ -16,8 +12,10 @@ class SearchBarModel extends FlutterFlowModel<SearchBarWidget> {
 
   /// Initialization and disposal methods.
 
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {
     textFieldFocusNode?.dispose();
     textController?.dispose();

@@ -1,14 +1,8 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:tmz_mam_flutter/components/collections_page_control_bar2_widget.dart'
     show CollectionsPageControlBar2Widget;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class CollectionsPageControlBar2Model
     extends FlutterFlowModel<CollectionsPageControlBar2Widget> {
@@ -20,8 +14,10 @@ class CollectionsPageControlBar2Model
 
   /// Initialization and disposal methods.
 
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {}
 
   /// Action blocks are added here.

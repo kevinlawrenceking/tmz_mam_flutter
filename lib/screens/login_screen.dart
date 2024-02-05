@@ -6,6 +6,8 @@ import 'search_screen.dart';
 import '../themes/app_palette.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -14,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
 
   Future<void> sendLoginCredentials(String username, String password) async {
     var url = Uri.parse('http://tmztoolsdev:3000/login'); // Update with your actual URL
@@ -69,9 +71,9 @@ Widget _buildLogoSection() {
   return Expanded(
     flex: 1,
     child: Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Center(
-        child: Container(
+        child: SizedBox(
           width: 100,
           height: 100,
           child: Image.asset(logoAsset, fit: BoxFit.contain),
@@ -85,7 +87,7 @@ Widget _buildLoginSection() {
   return Expanded(
     flex: 2,
     child: Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -97,7 +99,7 @@ Widget _buildLoginSection() {
               labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextField(
             controller: _passwordController,
             obscureText: true,
@@ -107,7 +109,7 @@ Widget _buildLoginSection() {
               labelStyle: Theme.of(context).inputDecorationTheme.labelStyle,
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
               String username = _usernameController.text;
@@ -118,7 +120,7 @@ Widget _buildLoginSection() {
                 _showSnackBar('Please enter both username and password');
               }
             },
-            child: Text('LOGIN'),
+            child: const Text('LOGIN'),
           ),
         ],
       ),
@@ -144,7 +146,7 @@ Widget _buildLoginSection() {
               color: shadowColor, // Adjust the color and opacity
               spreadRadius: 0,
               blurRadius: 10, // Adjust blur radius
-              offset: Offset(0, 4), // Changes position of shadow
+              offset: const Offset(0, 4), // Changes position of shadow
             ),
           ],
         ),

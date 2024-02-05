@@ -5,20 +5,20 @@ import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tmz_mam_flutter/themeprovider.dart';
 
 class CollectionsPage extends StatelessWidget {
-  const CollectionsPage({Key? key}) : super(key: key);
+  const CollectionsPage({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Collections',
         actions: [
           IconButton(
-         icon: Icon(Icons.brightness_6),
+         icon: const Icon(Icons.brightness_6),
            onPressed: () {
               // Use Provider to toggle the theme
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
@@ -28,8 +28,8 @@ class CollectionsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SearchBarWidget(), // Search bar component
-          MediaPageControlBarWidget(), // Toolbar component
+          const SearchBarWidget(), // Search bar component
+          const MediaPageControlBarWidget(), // Toolbar component
 
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -43,7 +43,7 @@ class CollectionsPage extends StatelessWidget {
 
           // Title or any additional content can go here
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -62,7 +62,7 @@ class CollectionsPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomButtonsWidget(),
+      bottomNavigationBar: const BottomButtonsWidget(),
     );
   }
 }

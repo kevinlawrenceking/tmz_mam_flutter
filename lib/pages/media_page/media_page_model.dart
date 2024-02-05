@@ -24,6 +24,7 @@ class MediaPageModel extends FlutterFlowModel<MediaPageWidget> {
 
   /// Initialization and disposal methods.
 
+  @override
   void initState(BuildContext context) {
     searchBarModel = createModel(context, () => SearchBarModel());
     mediaPageControlBarModel =
@@ -31,6 +32,7 @@ class MediaPageModel extends FlutterFlowModel<MediaPageWidget> {
     // You might want to use id and inventoryItem here for initialization
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     searchBarModel.dispose();

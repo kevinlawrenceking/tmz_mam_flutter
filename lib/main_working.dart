@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/screens/details_screen.dart'; // Import your ResponsiveLayout
+// Import your ResponsiveLayout
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -13,18 +15,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isDarkMode = false;
 
-  void _toggleTheme() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Your App Title',
       theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
-
     );
   }
 }

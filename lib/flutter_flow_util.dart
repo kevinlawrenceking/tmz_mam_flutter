@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
@@ -7,11 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
-
-import '../main.dart';
-
-import 'lat_lng.dart';
-
 export 'keep_alive_wrapper.dart';
 export 'lat_lng.dart';
 export 'place.dart';
@@ -23,7 +17,6 @@ export 'dart:convert' show jsonEncode, jsonDecode;
 export 'package:intl/intl.dart';
 export 'package:page_transition/page_transition.dart';
 export 'themes/custom_icons.dart' show FFIcons;
-
 
 T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;
@@ -395,10 +388,10 @@ extension IterableExt<T> on Iterable<T> {
 }
 
 // void setAppLanguage(BuildContext context, String language) =>
- // v   MyApp.of(context).setLocale(language);
+// v   MyApp.of(context).setLocale(language);
 
 // vvoid setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
- // v   MyApp.of(context).setThemeMode(themeMode);
+// v   MyApp.of(context).setThemeMode(themeMode);
 
 void showSnackbar(
   BuildContext context,

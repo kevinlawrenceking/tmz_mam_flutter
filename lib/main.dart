@@ -4,10 +4,12 @@ import 'package:tmz_mam_flutter/ThemeProvider.dart'; // Import your ThemeProvide
 import 'package:tmz_mam_flutter/screens/login_screen.dart'; // Import your LoginScreen
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData.light(), // Define your light theme here
             darkTheme: ThemeData.dark(), // Define your dark theme here
             themeMode: themeProvider.themeMode, // Use ThemeMode from ThemeProvider
-            home: LoginScreen(), // Set LoginScreen as the first screen
+            home: const LoginScreen(), // Set LoginScreen as the first screen
           );
         },
       ),

@@ -8,7 +8,6 @@ import '/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import '../../flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
 import 'media_page_model.dart';
 export 'media_page_model.dart';
 import 'wireframe_layout.dart'; // Import the wireframe layout
@@ -19,10 +18,10 @@ class MediaPageWidget extends StatefulWidget {
   final Inventory inventoryItem;
 
   const MediaPageWidget({
-    Key? key,
+    super.key,
     required this.id,
     required this.inventoryItem,
-  }) : super(key: key);
+  });
 
   @override
   _MediaPageWidgetState createState() => _MediaPageWidgetState();
@@ -66,13 +65,13 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
           leading: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(25, 0, 0, 0),
+            padding: const EdgeInsetsDirectional.fromSTEB(25, 0, 0, 0),
             child: FlutterFlowIconButton(
               borderColor: Colors.transparent,
               borderRadius: 30,
               borderWidth: 1,
               buttonSize: 60,
-              icon: Icon(
+              icon: const Icon(
                 FFIcons.ktmzLogo1,
                 color: Colors.white,
                 size: 30,
@@ -95,7 +94,7 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
           ),
           actions: [
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 25, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 25, 0),
               child: Icon(
                 Icons.person,
                 color: FlutterFlowTheme.of(context).primaryBackground,
@@ -112,19 +111,19 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                 child: wrapWithModel(
                   model: _model.searchBarModel,
                   updateCallback: () => setState(() {}),
-                  child: SearchBarWidget(),
+                  child: const SearchBarWidget(),
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 10),
+                padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 10),
                 child: wrapWithModel(
                   model: _model.mediaPageControlBarModel,
                   updateCallback: () => setState(() {}),
-                  child: MediaPageControlBarWidget(),
+                  child: const MediaPageControlBarWidget(),
                 ),
               ),
               Divider(
@@ -137,9 +136,9 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(-1, 0),
+                    alignment: const AlignmentDirectional(-1, 0),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
                       child: Text(
                         'Tall Grass Blowing in the Wind',
                         textAlign: TextAlign.start,
@@ -149,9 +148,9 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                   ),
                   Flexible(
                     child: Align(
-                      alignment: AlignmentDirectional(1, 0),
+                      alignment: const AlignmentDirectional(1, 0),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 15, 20, 0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 20, 0),
                         child: Text(
                           'Categories: Specials, TV',
                           style: FlutterFlowTheme.of(context).bodyLarge,
@@ -162,9 +161,9 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
                 ],
               ),
               Align(
-                alignment: AlignmentDirectional(-1, 0),
+                alignment: const AlignmentDirectional(-1, 0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
                   child: Text(
                     'Appears In: Collection 1, Collection 36',
                     style: FlutterFlowTheme.of(context).bodyMedium,
@@ -185,10 +184,10 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
           children: [
             // Image container
             Expanded(
-              child:             Container(
+              child:             SizedBox(
   width: 640, // Set maximum width for the image container
   child: ClipRRect(
-    borderRadius: BorderRadius.only(
+    borderRadius: const BorderRadius.only(
       topLeft: Radius.circular(10),
       bottomLeft: Radius.circular(10),
     ),
@@ -214,10 +213,10 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
         return Column(
           children: [
             // Image container
-            Container(
+            SizedBox(
   width: 320, // Set maximum width for the image container
   child: ClipRRect(
-    borderRadius: BorderRadius.only(
+    borderRadius: const BorderRadius.only(
       topLeft: Radius.circular(10),
       bottomLeft: Radius.circular(10),
     ),
@@ -246,13 +245,15 @@ class _MediaPageWidgetState extends State<MediaPageWidget> {
 }
 
 class ExistingPage extends StatelessWidget {
+  const ExistingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Existing Page'),
+        title: const Text('My Existing Page'),
       ),
-      body: Column(
+      body: const Column(
         children: <Widget>[
           // Other existing content here
           Text('Some existing content'),

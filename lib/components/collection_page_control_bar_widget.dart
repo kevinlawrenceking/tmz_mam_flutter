@@ -56,9 +56,10 @@ class _CollectionPageControlBarWidgetState
             mainAxisSize: MainAxisSize.max,
             children: [
               Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
+                alignment: const AlignmentDirectional(0.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
                   child: Text(
                     'Assets (118)',
                     style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -73,9 +74,10 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                 child: FaIcon(
-                  FontAwesomeIcons.ellipsisH,
+                  FontAwesomeIcons.ellipsis,
                   color: FlutterFlowTheme.of(context).primaryText,
                   size: 24.0,
                 ),
@@ -86,7 +88,8 @@ class _CollectionPageControlBarWidgetState
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
                 child: FlutterFlowIconButton(
                   borderColor: FlutterFlowTheme.of(context).primary,
                   borderRadius: 15.0,
@@ -98,9 +101,7 @@ class _CollectionPageControlBarWidgetState
                     color: FlutterFlowTheme.of(context).primaryText,
                     size: 24.0,
                   ),
-                  onPressed: () {
-                    print('advancedSeach pressed ...');
-                  },
+                  onPressed: () {},
                 ),
               ),
               Icon(
@@ -109,7 +110,8 @@ class _CollectionPageControlBarWidgetState
                 size: 24.0,
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
                 child: Icon(
                   Icons.arrow_downward,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -117,11 +119,12 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: FlutterFlowDropDown<String>(
                   controller: _model.sortByFieldsValueController ??=
                       FormFieldController<String>(null),
-                  options: [
+                  options: const [
                     'CreatedBy',
                     'QC Notes',
                     'Headline',
@@ -145,7 +148,8 @@ class _CollectionPageControlBarWidgetState
                   borderColor: FlutterFlowTheme.of(context).alternate,
                   borderWidth: 2.0,
                   borderRadius: 8.0,
-                  margin: EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                  margin: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 4.0, 16.0, 4.0),
                   hidesUnderline: true,
                   isOverButton: true,
                   isSearchable: false,
@@ -163,7 +167,8 @@ class _CollectionPageControlBarWidgetState
                 size: 32.0,
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.image_outlined,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -171,7 +176,8 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
                 child: Icon(
                   Icons.grid_on,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -179,7 +185,8 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.list,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -187,7 +194,8 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.filter_list,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -195,9 +203,10 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
                   child: Text(
                     'Results per page',
                     style: FlutterFlowTheme.of(context).bodyMedium,
@@ -205,13 +214,14 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                 child: FlutterFlowDropDown<String>(
                   controller: _model.dropDownValueController ??=
                       FormFieldController<String>(
                     _model.dropDownValue ??= '50',
                   ),
-                  options: ['25', '50', '100', '150', '300', '500'],
+                  options: const ['25', '50', '100', '150', '300', '500'],
                   onChanged: (val) =>
                       setState(() => _model.dropDownValue = val),
                   width: 75.0,
@@ -227,7 +237,8 @@ class _CollectionPageControlBarWidgetState
                   borderColor: FlutterFlowTheme.of(context).alternate,
                   borderWidth: 2.0,
                   borderRadius: 8.0,
-                  margin: EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                  margin: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 4.0, 16.0, 4.0),
                   hidesUnderline: true,
                   isOverButton: true,
                   isSearchable: false,
@@ -235,9 +246,10 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                   child: Icon(
                     Icons.arrow_left_sharp,
                     color: FlutterFlowTheme.of(context).primaryText,
@@ -246,9 +258,10 @@ class _CollectionPageControlBarWidgetState
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                   child: Icon(
                     Icons.arrow_right_sharp,
                     color: FlutterFlowTheme.of(context).primaryText,

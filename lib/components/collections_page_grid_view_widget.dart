@@ -1,9 +1,7 @@
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../models/collections_page_grid_view_model.dart';
 export '../models/collections_page_grid_view_model.dart';
 
@@ -41,10 +39,10 @@ class _CollectionsPageGridViewWidgetState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
       child: GridView(
         padding: EdgeInsets.zero,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
           crossAxisSpacing: 10.0,
           mainAxisSpacing: 10.0,
@@ -58,7 +56,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -68,13 +66,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -91,7 +89,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -112,7 +110,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -122,13 +120,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -145,7 +143,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -166,7 +164,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -176,13 +174,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -199,7 +197,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -220,7 +218,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -230,13 +228,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -253,7 +251,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -274,7 +272,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -284,13 +282,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -307,7 +305,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -328,7 +326,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -338,13 +336,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -361,7 +359,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -382,7 +380,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -392,13 +390,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -415,7 +413,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -436,7 +434,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -446,13 +444,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -469,7 +467,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -490,7 +488,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -500,13 +498,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -523,7 +521,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -544,7 +542,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -554,13 +552,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -577,7 +575,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -598,7 +596,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -608,13 +606,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -631,7 +629,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -652,7 +650,7 @@ class _CollectionsPageGridViewWidgetState
             height: 10.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -662,13 +660,13 @@ class _CollectionsPageGridViewWidgetState
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 10.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -685,7 +683,7 @@ class _CollectionsPageGridViewWidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
                       'TMZ Investigates - Kanye West',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(

@@ -4,7 +4,7 @@ class NavBarPage extends StatefulWidget {
   final String? initialPage;
   final Widget? page;
 
-  const NavBarPage({Key? key, this.initialPage, this.page}) : super(key: key);
+  const NavBarPage({super.key, this.initialPage, this.page});
 
   @override
   _NavBarPageState createState() => _NavBarPageState();
@@ -26,10 +26,10 @@ class _NavBarPageState extends State<NavBarPage> {
     // Implement your bottom navigation bar and page view logic here
     return Scaffold(
       appBar: AppBar(
-        title: Text('NavBarPage'),
+        title: const Text('NavBarPage'),
       ),
       body: Center(
-        child: _currentPage ?? Text('Page not found'),
+        child: _currentPage ?? const Text('Page not found'),
       ),
     );
   }

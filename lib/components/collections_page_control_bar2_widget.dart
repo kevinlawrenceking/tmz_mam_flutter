@@ -3,10 +3,8 @@ import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../models/collections_page_control_bar2_model.dart';
 export '../models/collections_page_control_bar2_model.dart';
 
@@ -47,17 +45,17 @@ class _CollectionsPageControlBar2WidgetState
       mainAxisSize: MainAxisSize.max,
       children: [
         Align(
-          alignment: AlignmentDirectional(0.0, 0.0),
+          alignment: const AlignmentDirectional(0.0, 0.0),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 20.0),
+            padding: const EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 20.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Align(
-                  alignment: AlignmentDirectional(0.0, 0.0),
+                  alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
                     child: Text(
                       'Collections (8000)',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -72,7 +70,7 @@ class _CollectionsPageControlBar2WidgetState
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                   child: FaIcon(
                     FontAwesomeIcons.ellipsisH,
                     color: FlutterFlowTheme.of(context).primaryText,
@@ -85,18 +83,18 @@ class _CollectionsPageControlBar2WidgetState
         ),
         Expanded(
           child: Align(
-            alignment: AlignmentDirectional(1.0, 0.0),
+            alignment: const AlignmentDirectional(1.0, 0.0),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 20.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 20.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Align(
-                    alignment: AlignmentDirectional(1.0, 0.0),
+                    alignment: const AlignmentDirectional(1.0, 0.0),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
                       child: Text(
                         'Results per page',
                         style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -112,13 +110,13 @@ class _CollectionsPageControlBar2WidgetState
                   ),
                   Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                     child: FlutterFlowDropDown<String>(
                       controller: _model.dropDownValueController ??=
                           FormFieldController<String>(
                         _model.dropDownValue ??= '50',
                       ),
-                      options: ['25', '50', '100', '150', '300', '500'],
+                      options: const ['25', '50', '100', '150', '300', '500'],
                       onChanged: (val) =>
                           setState(() => _model.dropDownValue = val),
                       width: 75.0,
@@ -136,7 +134,7 @@ class _CollectionsPageControlBar2WidgetState
                       borderWidth: 2.0,
                       borderRadius: 8.0,
                       margin:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
                       hidesUnderline: true,
                       isOverButton: true,
                       isSearchable: false,
@@ -144,10 +142,10 @@ class _CollectionsPageControlBar2WidgetState
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(1.0, 0.0),
+                    alignment: const AlignmentDirectional(1.0, 0.0),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                       child: Icon(
                         Icons.arrow_left_sharp,
                         color: FlutterFlowTheme.of(context).primaryText,
@@ -156,10 +154,10 @@ class _CollectionsPageControlBar2WidgetState
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(1.0, 0.0),
+                    alignment: const AlignmentDirectional(1.0, 0.0),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                       child: Icon(
                         Icons.arrow_right_sharp,
                         color: FlutterFlowTheme.of(context).primaryText,
@@ -168,10 +166,10 @@ class _CollectionsPageControlBar2WidgetState
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(1.0, 0.0),
+                    alignment: const AlignmentDirectional(1.0, 0.0),
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 25.0, 0.0),
+                          const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 25.0, 0.0),
                       child: Text(
                         '1 of 50',
                         style: FlutterFlowTheme.of(context).bodyLarge.override(

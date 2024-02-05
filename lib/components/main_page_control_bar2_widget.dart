@@ -10,10 +10,10 @@ class MainPageControlBar2Widget extends StatefulWidget {
   final int totalRecords; // Add this line
 
   const MainPageControlBar2Widget({
-    Key? key,
+    super.key,
     this.updateLimitCallback,
     this.totalRecords = 33, // Make it optional with a default value of 0
-  }) : super(key: key);
+  });
 
   @override
   _MainPageControlBar2WidgetState createState() =>
@@ -38,12 +38,12 @@ class _MainPageControlBar2WidgetState extends State<MainPageControlBar2Widget> {
   @override
 Widget build(BuildContext context) {
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
     child: Row(
       mainAxisSize: MainAxisSize.max,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
           child: Text(
             'Assets (${widget.totalRecords})',
             style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -67,9 +67,9 @@ onTap: () {
       // Modal content
       return Align(
         alignment: Alignment.bottomLeft, // Aligns the modal to the bottom left
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height, // Set height to full screen height
-          child: ActionsDropDownMenuAssetsWidget(), // Your custom widget
+          child: const ActionsDropDownMenuAssetsWidget(), // Your custom widget
           // Optionally, set width or other properties as needed
         ),
       );
@@ -113,9 +113,9 @@ onTap: () {
 ),
 
         
-           Spacer(),
+           const Spacer(),
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
@@ -128,10 +128,10 @@ onTap: () {
                       fontWeight: FontWeight.w600,
                     ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               DropdownButton<int>(
                 value: limit,
-                icon: Icon(Icons.keyboard_arrow_down),
+                icon: const Icon(Icons.keyboard_arrow_down),
                 onChanged: (newLimit) {
                   if (newLimit != null) {
                     setState(() {
@@ -149,11 +149,11 @@ onTap: () {
                   );
                 }).toList(),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Icon(Icons.arrow_left_sharp, color: FlutterFlowTheme.of(context).primaryText, size: 32.0),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Icon(Icons.arrow_right_sharp, color: FlutterFlowTheme.of(context).primaryText, size: 32.0),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text(
                 '1 of 500', // You might want to make this dynamic based on the actual pagination
                 style: FlutterFlowTheme.of(context).bodyLarge.override(

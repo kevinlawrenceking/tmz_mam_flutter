@@ -8,7 +8,7 @@ import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 class ActionsPage extends StatefulWidget {
   final String title;
 
-  ActionsPage({required this.title});
+  const ActionsPage({super.key, required this.title});
 
   @override
   _ActionsPageState createState() => _ActionsPageState();
@@ -22,7 +22,7 @@ class _ActionsPageState extends State<ActionsPage> {
         title: 'TMZ Media Asset Manager',
         actions: [
           IconButton(
-            icon: Icon(Icons.brightness_6),
+            icon: const Icon(Icons.brightness_6),
             onPressed: () {
               // Use Provider to toggle the theme
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
@@ -37,13 +37,13 @@ class _ActionsPageState extends State<ActionsPage> {
           children: <Widget>[
             Text(
               widget.title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Coming soon!', // Updated subheading text
               style: TextStyle(
                 fontSize: 16.0,
@@ -53,7 +53,7 @@ class _ActionsPageState extends State<ActionsPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomButtonsWidget(), // Added BottomButtonsWidget here
+      bottomNavigationBar: const BottomButtonsWidget(), // Added BottomButtonsWidget here
     );
   }
 }

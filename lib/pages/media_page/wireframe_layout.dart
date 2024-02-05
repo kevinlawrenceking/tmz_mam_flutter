@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class WireframeLayout extends StatelessWidget {
+  const WireframeLayout({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Determine the screen width
@@ -16,13 +18,13 @@ class WireframeLayout extends StatelessWidget {
         children: <Widget>[
           // First cell with an image
           Container(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Image.network('your_image_url_here'),
           ),
           // Second cell with a card
           Container(
-            padding: EdgeInsets.all(20.0),
-            child: Card(
+            padding: const EdgeInsets.all(20.0),
+            child: const Card(
               elevation: 5.0,
               child: Column(
                 children: <Widget>[

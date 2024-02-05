@@ -48,7 +48,7 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
       height: 226,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).primaryBackground,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 4,
             color: Color(0x33000000),
@@ -61,7 +61,7 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +70,7 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                   child: Icon(
                     Icons.star,
                     color: FlutterFlowTheme.of(context).primary,
@@ -88,7 +88,7 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
               color: FlutterFlowTheme.of(context).tertiary,
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(5, 10, 0, 10),
+              padding: const EdgeInsetsDirectional.fromSTEB(5, 10, 0, 10),
               child: Text(
                 'Name Your Search',
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -100,7 +100,7 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
               child: TextFormField(
                 controller: _model.textController,
                 focusNode: _model.textFieldFocusNode,
@@ -144,16 +144,16 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
               ),
             ),
             Align(
-              alignment: AlignmentDirectional(1, 0),
+              alignment: const AlignmentDirectional(1, 0),
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 5, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 5, 0),
                 child: FFButtonWidget(
                   onPressed: () {
     Navigator.of(context).pop(); // Close the modal dialog
 
     MotionToast.success(
-      title: Text("Success"),
-      description: Text("Your search has been saved!"),
+      title: const Text("Success"),
+      description: const Text("Your search has been saved!"),
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.top,
       dismissable: true,
@@ -162,8 +162,8 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
                   text: 'Save',
                   options: FFButtonOptions(
                     height: 50,
-                    padding: EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
-                    iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(30, 0, 30, 0),
+                    iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     color: FlutterFlowTheme.of(context).primary,
                     textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily:
@@ -173,7 +173,7 @@ class _SaveYourSearchWidgetState extends State<SaveYourSearchWidget> {
                               FlutterFlowTheme.of(context).titleSmallFamily),
                         ),
                     elevation: 3,
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.transparent,
                       width: 1,
                     ),

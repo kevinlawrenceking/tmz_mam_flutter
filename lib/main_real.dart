@@ -8,12 +8,14 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeManager(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: Provider.of<ThemeManager>(context).themeMode,
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // Directly go to TestPage
+      home: const LoginScreen(), // Directly go to TestPage
     );
   }
 }

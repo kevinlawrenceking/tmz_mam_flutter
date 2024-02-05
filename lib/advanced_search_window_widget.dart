@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
@@ -12,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/models/advanced_search_window_model.dart';
 import 'save_your_search_widget.dart';
 import 'package:motion_toast/motion_toast.dart';
+
 class AdvancedSearchWindowWidget extends StatefulWidget {
   const AdvancedSearchWindowWidget({super.key});
 
@@ -52,7 +55,6 @@ class _AdvancedSearchWindowWidgetState
   @override
   Widget build(BuildContext context) {
     return Container(
-    
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondary,
         borderRadius: BorderRadius.circular(10.0),
@@ -69,29 +71,27 @@ class _AdvancedSearchWindowWidgetState
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
                               10.0, 20.0, 0.0, 0.0),
                           child: wrapWithModel(
                             model: _model.searchBarModel,
                             updateCallback: () => setState(() {}),
-                            child: SearchBarWidget(),
+                            child: const SearchBarWidget(),
                           ),
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 20.0, 0.0),
                         child: FlutterFlowIconButton(
                           borderColor: FlutterFlowTheme.of(context).primary,
                           borderRadius: 15.0,
                           borderWidth: 2.0,
-                       
                           fillColor:
                               FlutterFlowTheme.of(context).primaryBackground,
                           icon: Icon(
                             Icons.star,
                             color: FlutterFlowTheme.of(context).primaryText,
-                     
                           ),
                           onPressed: () {
                             print('IconButton pressed ...');
@@ -101,11 +101,12 @@ class _AdvancedSearchWindowWidgetState
                     ],
                   ),
                   Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        20.0, 0.0, 20.0, 0.0),
                     child: Container(
-          width: MediaQuery.of(context).size.width * .75, // Adjust based on your needs
- // Consider making this dynamic as well
+                      width: MediaQuery.of(context).size.width *
+                          .75, // Adjust based on your needs
+                      // Consider making this dynamic as well
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                         borderRadius: BorderRadius.circular(15.0),
@@ -113,24 +114,22 @@ class _AdvancedSearchWindowWidgetState
                       child: Stack(
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 10.0, 20.0, 20.0, 0.0),
                             child: SingleChildScrollView(
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                
-                                    
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 20.0, 0.0, 0.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20.0, 0.0, 40.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(20.0, 0.0, 40.0, 0.0),
                                           child: Text(
                                             'Asset Type: ',
                                             style: FlutterFlowTheme.of(context)
@@ -151,16 +150,14 @@ class _AdvancedSearchWindowWidgetState
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 10.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                           child: FlutterFlowIconButton(
                                             borderColor:
                                                 FlutterFlowTheme.of(context)
                                                     .primary,
                                             borderRadius: 10.0,
                                             borderWidth: 2.0,
-                                   
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
                                                     .primary,
@@ -169,7 +166,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText,
-                                          
                                             ),
                                             onPressed: () {
                                               print('IconButton pressed ...');
@@ -182,7 +178,6 @@ class _AdvancedSearchWindowWidgetState
                                                   .accent2,
                                           borderRadius: 10.0,
                                           borderWidth: 1.0,
-                                           
                                           fillColor:
                                               FlutterFlowTheme.of(context)
                                                   .accent2,
@@ -190,7 +185,6 @@ class _AdvancedSearchWindowWidgetState
                                             FontAwesomeIcons.folderOpen,
                                             color: FlutterFlowTheme.of(context)
                                                 .primaryText,
-                                            
                                           ),
                                           onPressed: () {
                                             print('IconButton pressed ...');
@@ -200,15 +194,14 @@ class _AdvancedSearchWindowWidgetState
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 20.0, 0.0, 0.0),
                                     child: Row(
-                                      
                                       children: [
                                         Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20.0, 0.0, 39.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(20.0, 0.0, 39.0, 0.0),
                                           child: Text(
                                             'Collections: ',
                                             style: FlutterFlowTheme.of(context)
@@ -230,9 +223,8 @@ class _AdvancedSearchWindowWidgetState
                                         ),
                                         Expanded(
                                           child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 20.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 20.0, 0.0),
                                             child: TextFormField(
                                               controller:
                                                   _model.textController1,
@@ -309,15 +301,14 @@ class _AdvancedSearchWindowWidgetState
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 20.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 20.0, 0.0, 0.0),
                                     child: Row(
-                                     
                                       children: [
                                         Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20.0, 0.0, 41.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(20.0, 0.0, 41.0, 0.0),
                                           child: Text(
                                             'Categories: ',
                                             style: FlutterFlowTheme.of(context)
@@ -339,9 +330,8 @@ class _AdvancedSearchWindowWidgetState
                                         ),
                                         Expanded(
                                           child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 20.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 20.0, 0.0),
                                             child: TextFormField(
                                               controller:
                                                   _model.textController2,
@@ -423,15 +413,15 @@ class _AdvancedSearchWindowWidgetState
                                     tablet: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 20.0, 0.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 20.0, 0.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 0.0, 58.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(20.0, 0.0, 58.0, 0.0),
                                             child: Text(
                                               'Created: ',
                                               style:
@@ -454,16 +444,14 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 10.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                             child: FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               borderRadius: 15.0,
                                               borderWidth: 2.0,
-                                               
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -472,14 +460,13 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
-                                                
                                               ),
                                               onPressed: () async {
                                                 await showModalBottomSheet<
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked1CupertinoTheme =
+                                                      final datePicked1CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -497,10 +484,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked1CupertinoTheme
+                                                              datePicked1CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked1CupertinoTheme
+                                                                datePicked1CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -548,9 +535,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 5.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'mm/dd/yyyy',
                                               style:
@@ -574,9 +560,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 60.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 60.0, 0.0),
                                             child: InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -588,7 +573,7 @@ class _AdvancedSearchWindowWidgetState
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked2CupertinoTheme =
+                                                      final datePicked2CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -606,10 +591,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked2CupertinoTheme
+                                                              datePicked2CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked2CupertinoTheme
+                                                                datePicked2CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -659,21 +644,18 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
-                                                
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 10.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                             child: FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               borderRadius: 15.0,
                                               borderWidth: 2.0,
-                                               
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -682,14 +664,13 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
-                                                
                                               ),
                                               onPressed: () async {
                                                 await showModalBottomSheet<
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked3CupertinoTheme =
+                                                      final datePicked3CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -707,10 +688,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked3CupertinoTheme
+                                                              datePicked3CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked3CupertinoTheme
+                                                                datePicked3CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -758,9 +739,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 5.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'mm/dd/yyyy',
                                               style:
@@ -792,7 +772,7 @@ class _AdvancedSearchWindowWidgetState
                                               await showModalBottomSheet<bool>(
                                                   context: context,
                                                   builder: (context) {
-                                                    final _datePicked4CupertinoTheme =
+                                                    final datePicked4CupertinoTheme =
                                                         CupertinoTheme.of(
                                                             context);
                                                     return Container(
@@ -810,10 +790,10 @@ class _AdvancedSearchWindowWidgetState
                                                           .secondaryBackground,
                                                       child: CupertinoTheme(
                                                         data:
-                                                            _datePicked4CupertinoTheme
+                                                            datePicked4CupertinoTheme
                                                                 .copyWith(
                                                           textTheme:
-                                                              _datePicked4CupertinoTheme
+                                                              datePicked4CupertinoTheme
                                                                   .textTheme
                                                                   .copyWith(
                                                             dateTimePickerTextStyle:
@@ -867,7 +847,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                           ),
                                         ],
@@ -879,17 +858,17 @@ class _AdvancedSearchWindowWidgetState
                                     desktop: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          20.0, 20.0, 0.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              20.0, 20.0, 0.0, 0.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 58.0, 10.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 58.0, 10.0),
                                             child: Text(
                                               'Created: ',
                                               style:
@@ -912,15 +891,15 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 0.0, 10.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 0.0, 10.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
                                                           0.0, 0.0, 10.0, 0.0),
                                                   child: FlutterFlowIconButton(
                                                     borderColor:
@@ -929,7 +908,6 @@ class _AdvancedSearchWindowWidgetState
                                                             .primary,
                                                     borderRadius: 15.0,
                                                     borderWidth: 2.0,
-                                                     
                                                     fillColor: FlutterFlowTheme
                                                             .of(context)
                                                         .secondaryBackground,
@@ -939,14 +917,13 @@ class _AdvancedSearchWindowWidgetState
                                                           FlutterFlowTheme.of(
                                                                   context)
                                                               .primaryText,
-                                                      
                                                     ),
                                                     onPressed: () async {
                                                       await showModalBottomSheet<
                                                               bool>(
                                                           context: context,
                                                           builder: (context) {
-                                                            final _datePicked5CupertinoTheme =
+                                                            final datePicked5CupertinoTheme =
                                                                 CupertinoTheme
                                                                     .of(context);
                                                             return Container(
@@ -965,9 +942,9 @@ class _AdvancedSearchWindowWidgetState
                                                                   .secondaryBackground,
                                                               child:
                                                                   CupertinoTheme(
-                                                                data: _datePicked5CupertinoTheme
+                                                                data: datePicked5CupertinoTheme
                                                                     .copyWith(
-                                                                  textTheme: _datePicked5CupertinoTheme
+                                                                  textTheme: datePicked5CupertinoTheme
                                                                       .textTheme
                                                                       .copyWith(
                                                                     dateTimePickerTextStyle: FlutterFlowTheme.of(
@@ -1017,8 +994,9 @@ class _AdvancedSearchWindowWidgetState
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
                                                           0.0, 0.0, 5.0, 0.0),
                                                   child: Text(
                                                     'mm/dd/yyyy',
@@ -1056,7 +1034,7 @@ class _AdvancedSearchWindowWidgetState
                                                             bool>(
                                                         context: context,
                                                         builder: (context) {
-                                                          final _datePicked6CupertinoTheme =
+                                                          final datePicked6CupertinoTheme =
                                                               CupertinoTheme.of(
                                                                   context);
                                                           return Container(
@@ -1076,10 +1054,10 @@ class _AdvancedSearchWindowWidgetState
                                                             child:
                                                                 CupertinoTheme(
                                                               data:
-                                                                  _datePicked6CupertinoTheme
+                                                                  datePicked6CupertinoTheme
                                                                       .copyWith(
                                                                 textTheme:
-                                                                    _datePicked6CupertinoTheme
+                                                                    datePicked6CupertinoTheme
                                                                         .textTheme
                                                                         .copyWith(
                                                                   dateTimePickerTextStyle: FlutterFlowTheme.of(
@@ -1132,7 +1110,6 @@ class _AdvancedSearchWindowWidgetState
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .secondaryText,
-                                                    
                                                   ),
                                                 ),
                                               ],
@@ -1142,8 +1119,9 @@ class _AdvancedSearchWindowWidgetState
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         0.0, 0.0, 10.0, 0.0),
                                                 child: FlutterFlowIconButton(
                                                   borderColor:
@@ -1152,7 +1130,6 @@ class _AdvancedSearchWindowWidgetState
                                                           .primary,
                                                   borderRadius: 15.0,
                                                   borderWidth: 2.0,
-                                                   
                                                   fillColor:
                                                       FlutterFlowTheme.of(
                                                               context)
@@ -1162,14 +1139,13 @@ class _AdvancedSearchWindowWidgetState
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .primaryText,
-                                                    
                                                   ),
                                                   onPressed: () async {
                                                     await showModalBottomSheet<
                                                             bool>(
                                                         context: context,
                                                         builder: (context) {
-                                                          final _datePicked7CupertinoTheme =
+                                                          final datePicked7CupertinoTheme =
                                                               CupertinoTheme.of(
                                                                   context);
                                                           return Container(
@@ -1189,10 +1165,10 @@ class _AdvancedSearchWindowWidgetState
                                                             child:
                                                                 CupertinoTheme(
                                                               data:
-                                                                  _datePicked7CupertinoTheme
+                                                                  datePicked7CupertinoTheme
                                                                       .copyWith(
                                                                 textTheme:
-                                                                    _datePicked7CupertinoTheme
+                                                                    datePicked7CupertinoTheme
                                                                         .textTheme
                                                                         .copyWith(
                                                                   dateTimePickerTextStyle: FlutterFlowTheme.of(
@@ -1242,8 +1218,9 @@ class _AdvancedSearchWindowWidgetState
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         0.0, 0.0, 5.0, 0.0),
                                                 child: Text(
                                                   'mm/dd/yyyy',
@@ -1278,7 +1255,7 @@ class _AdvancedSearchWindowWidgetState
                                                           bool>(
                                                       context: context,
                                                       builder: (context) {
-                                                        final _datePicked8CupertinoTheme =
+                                                        final datePicked8CupertinoTheme =
                                                             CupertinoTheme.of(
                                                                 context);
                                                         return Container(
@@ -1296,10 +1273,10 @@ class _AdvancedSearchWindowWidgetState
                                                               .secondaryBackground,
                                                           child: CupertinoTheme(
                                                             data:
-                                                                _datePicked8CupertinoTheme
+                                                                datePicked8CupertinoTheme
                                                                     .copyWith(
                                                               textTheme:
-                                                                  _datePicked8CupertinoTheme
+                                                                  datePicked8CupertinoTheme
                                                                       .textTheme
                                                                       .copyWith(
                                                                 dateTimePickerTextStyle:
@@ -1353,7 +1330,6 @@ class _AdvancedSearchWindowWidgetState
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .secondaryText,
-                                                  
                                                 ),
                                               ),
                                             ],
@@ -1367,15 +1343,15 @@ class _AdvancedSearchWindowWidgetState
                                     tablet: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 20.0, 0.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 20.0, 0.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 0.0, 55.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(20.0, 0.0, 55.0, 0.0),
                                             child: Text(
                                               'Updated: ',
                                               style:
@@ -1398,16 +1374,14 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 10.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                             child: FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               borderRadius: 15.0,
                                               borderWidth: 2.0,
-                                               
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -1416,14 +1390,13 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
-                                                
                                               ),
                                               onPressed: () async {
                                                 await showModalBottomSheet<
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked9CupertinoTheme =
+                                                      final datePicked9CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -1441,10 +1414,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked9CupertinoTheme
+                                                              datePicked9CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked9CupertinoTheme
+                                                                datePicked9CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -1492,9 +1465,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 5.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'mm/dd/yyyy',
                                               style:
@@ -1518,9 +1490,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 60.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 60.0, 0.0),
                                             child: InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -1532,7 +1503,7 @@ class _AdvancedSearchWindowWidgetState
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked10CupertinoTheme =
+                                                      final datePicked10CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -1550,10 +1521,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked10CupertinoTheme
+                                                              datePicked10CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked10CupertinoTheme
+                                                                datePicked10CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -1603,21 +1574,18 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
-                                                
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 10.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                             child: FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               borderRadius: 15.0,
                                               borderWidth: 2.0,
-                                               
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -1626,14 +1594,13 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
-                                                
                                               ),
                                               onPressed: () async {
                                                 await showModalBottomSheet<
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked11CupertinoTheme =
+                                                      final datePicked11CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -1651,10 +1618,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked11CupertinoTheme
+                                                              datePicked11CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked11CupertinoTheme
+                                                                datePicked11CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -1702,9 +1669,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 5.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'mm/dd/yyyy',
                                               style:
@@ -1736,7 +1702,7 @@ class _AdvancedSearchWindowWidgetState
                                               await showModalBottomSheet<bool>(
                                                   context: context,
                                                   builder: (context) {
-                                                    final _datePicked12CupertinoTheme =
+                                                    final datePicked12CupertinoTheme =
                                                         CupertinoTheme.of(
                                                             context);
                                                     return Container(
@@ -1754,10 +1720,10 @@ class _AdvancedSearchWindowWidgetState
                                                           .secondaryBackground,
                                                       child: CupertinoTheme(
                                                         data:
-                                                            _datePicked12CupertinoTheme
+                                                            datePicked12CupertinoTheme
                                                                 .copyWith(
                                                           textTheme:
-                                                              _datePicked12CupertinoTheme
+                                                              datePicked12CupertinoTheme
                                                                   .textTheme
                                                                   .copyWith(
                                                             dateTimePickerTextStyle:
@@ -1811,7 +1777,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                           ),
                                         ],
@@ -1823,15 +1788,15 @@ class _AdvancedSearchWindowWidgetState
                                     desktop: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 20.0, 0.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 20.0, 0.0, 0.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 0.0, 55.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(20.0, 0.0, 55.0, 0.0),
                                             child: Text(
                                               'Updated: ',
                                               style:
@@ -1854,16 +1819,14 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 10.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                             child: FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               borderRadius: 15.0,
                                               borderWidth: 2.0,
-                                               
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -1872,14 +1835,13 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
-                                                
                                               ),
                                               onPressed: () async {
                                                 await showModalBottomSheet<
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked13CupertinoTheme =
+                                                      final datePicked13CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -1897,10 +1859,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked13CupertinoTheme
+                                                              datePicked13CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked13CupertinoTheme
+                                                                datePicked13CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -1948,9 +1910,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 5.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'mm/dd/yyyy',
                                               style:
@@ -1974,9 +1935,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 60.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 60.0, 0.0),
                                             child: InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -1988,7 +1948,7 @@ class _AdvancedSearchWindowWidgetState
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked14CupertinoTheme =
+                                                      final datePicked14CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -2006,10 +1966,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked14CupertinoTheme
+                                                              datePicked14CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked14CupertinoTheme
+                                                                datePicked14CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -2059,21 +2019,18 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
-                                                
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 10.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 10.0, 0.0),
                                             child: FlutterFlowIconButton(
                                               borderColor:
                                                   FlutterFlowTheme.of(context)
                                                       .primary,
                                               borderRadius: 15.0,
                                               borderWidth: 2.0,
-                                               
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -2082,14 +2039,13 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .primaryText,
-                                                
                                               ),
                                               onPressed: () async {
                                                 await showModalBottomSheet<
                                                         bool>(
                                                     context: context,
                                                     builder: (context) {
-                                                      final _datePicked15CupertinoTheme =
+                                                      final datePicked15CupertinoTheme =
                                                           CupertinoTheme.of(
                                                               context);
                                                       return Container(
@@ -2107,10 +2063,10 @@ class _AdvancedSearchWindowWidgetState
                                                             .secondaryBackground,
                                                         child: CupertinoTheme(
                                                           data:
-                                                              _datePicked15CupertinoTheme
+                                                              datePicked15CupertinoTheme
                                                                   .copyWith(
                                                             textTheme:
-                                                                _datePicked15CupertinoTheme
+                                                                datePicked15CupertinoTheme
                                                                     .textTheme
                                                                     .copyWith(
                                                               dateTimePickerTextStyle:
@@ -2158,9 +2114,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 5.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 5.0, 0.0),
                                             child: Text(
                                               'mm/dd/yyyy',
                                               style:
@@ -2192,7 +2147,7 @@ class _AdvancedSearchWindowWidgetState
                                               await showModalBottomSheet<bool>(
                                                   context: context,
                                                   builder: (context) {
-                                                    final _datePicked16CupertinoTheme =
+                                                    final datePicked16CupertinoTheme =
                                                         CupertinoTheme.of(
                                                             context);
                                                     return Container(
@@ -2210,10 +2165,10 @@ class _AdvancedSearchWindowWidgetState
                                                           .secondaryBackground,
                                                       child: CupertinoTheme(
                                                         data:
-                                                            _datePicked16CupertinoTheme
+                                                            datePicked16CupertinoTheme
                                                                 .copyWith(
                                                           textTheme:
-                                                              _datePicked16CupertinoTheme
+                                                              datePicked16CupertinoTheme
                                                                   .textTheme
                                                                   .copyWith(
                                                             dateTimePickerTextStyle:
@@ -2267,7 +2222,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                           ),
                                         ],
@@ -2279,15 +2233,15 @@ class _AdvancedSearchWindowWidgetState
                                     tablet: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 10.0, 10.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10.0, 10.0, 10.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 25.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 25.0, 0.0),
                                             child: Text(
                                               'Search the following if',
                                               style:
@@ -2295,32 +2249,35 @@ class _AdvancedSearchWindowWidgetState
                                                       .bodyMedium,
                                             ),
                                           ),
-                                          Container(height: 40.0,
+                                          SizedBox(
+                                            height: 40.0,
                                             child: Padding(
                                               padding:
-                                                  EdgeInsetsDirectional.fromSTEB(
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
                                                       0.0, 0.0, 10.0, 0.0),
-                                              child: FlutterFlowDropDown<String>(
+                                              child:
+                                                  FlutterFlowDropDown<String>(
                                                 controller: _model
                                                         .dropDownValueController1 ??=
                                                     FormFieldController<String>(
-                                                  _model.dropDownValue1 ??= 'Any',
+                                                  _model.dropDownValue1 ??=
+                                                      'Any',
                                                 ),
-                                                options: ['Any', 'All'],
-                                                onChanged: (val) => setState(() =>
-                                                    _model.dropDownValue1 = val),
+                                                options: const ['Any', 'All'],
+                                                onChanged: (val) => setState(
+                                                    () => _model
+                                                        .dropDownValue1 = val),
                                                 width: 100.0,
-                                               
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium,
                                                 icon: Icon(
                                                   Icons
                                                       .keyboard_arrow_down_rounded,
-                                                  color:
-                                                      FlutterFlowTheme.of(context)
-                                                          .secondaryText,
-                                                  
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
                                                 ),
                                                 fillColor:
                                                     FlutterFlowTheme.of(context)
@@ -2331,8 +2288,9 @@ class _AdvancedSearchWindowWidgetState
                                                         .alternate,
                                                 borderWidth: 2.0,
                                                 borderRadius: 8.0,
-                                                margin: EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                margin:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         16.0, 4.0, 16.0, 4.0),
                                                 hidesUnderline: true,
                                                 isOverButton: true,
@@ -2342,9 +2300,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 25.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 25.0, 0.0),
                                             child: Text(
                                               'conditions are a match:',
                                               style:
@@ -2361,15 +2318,15 @@ class _AdvancedSearchWindowWidgetState
                                     desktop: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          20.0, 20.0, 20.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              20.0, 20.0, 20.0, 0.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 25.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 25.0, 0.0),
                                             child: Text(
                                               'Search the following if',
                                               style:
@@ -2378,20 +2335,17 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 20.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 20.0, 0.0),
                                             child: FlutterFlowDropDown<String>(
                                               controller: _model
                                                       .dropDownValueController2 ??=
                                                   FormFieldController<String>(
                                                 _model.dropDownValue2 ??= 'Any',
                                               ),
-                                              options: ['Any', 'All'],
+                                              options: const ['Any', 'All'],
                                               onChanged: (val) => setState(() =>
                                                   _model.dropDownValue2 = val),
-                                              
-                                             
                                               textStyle:
                                                   FlutterFlowTheme.of(context)
                                                       .bodySmall,
@@ -2401,7 +2355,6 @@ class _AdvancedSearchWindowWidgetState
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
-                                                
                                               ),
                                               fillColor:
                                                   FlutterFlowTheme.of(context)
@@ -2412,8 +2365,9 @@ class _AdvancedSearchWindowWidgetState
                                                       .alternate,
                                               borderWidth: 2.0,
                                               borderRadius: 8.0,
-                                              margin: EdgeInsetsDirectional
-                                                  .fromSTEB(
+                                              margin:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
                                                       16.0, 4.0, 16.0, 4.0),
                                               hidesUnderline: true,
                                               isOverButton: true,
@@ -2422,9 +2376,8 @@ class _AdvancedSearchWindowWidgetState
                                             ),
                                           ),
                                           Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 25.0, 0.0),
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(0.0, 0.0, 25.0, 0.0),
                                             child: Text(
                                               'conditions are a match:',
                                               style:
@@ -2441,8 +2394,9 @@ class _AdvancedSearchWindowWidgetState
                                     tablet: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 10.0, 10.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10.0, 10.0, 10.0, 0.0),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -2451,13 +2405,13 @@ class _AdvancedSearchWindowWidgetState
                                                     .dropDownValueController3 ??=
                                                 FormFieldController<String>(
                                                     null),
-                                            options: ['Option 1'],
+                                            options: const ['Option 1'],
                                             onChanged: (val) => setState(() =>
                                                 _model.dropDownValue3 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
                                                 0.12,
-                                       height:40.0,
+                                            height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyMedium,
@@ -2467,7 +2421,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -2478,9 +2431,8 @@ class _AdvancedSearchWindowWidgetState
                                                     .alternate,
                                             borderWidth: 2.0,
                                             borderRadius: 8.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                            margin: const EdgeInsetsDirectional
+                                                .fromSTEB(16.0, 4.0, 16.0, 4.0),
                                             hidesUnderline: true,
                                             isOverButton: true,
                                             isSearchable: false,
@@ -2491,7 +2443,7 @@ class _AdvancedSearchWindowWidgetState
                                                     .dropDownValueController4 ??=
                                                 FormFieldController<String>(
                                                     null),
-                                            options: [
+                                            options: const [
                                               'Equals',
                                               'Not Equals',
                                               'In',
@@ -2516,7 +2468,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -2527,9 +2478,8 @@ class _AdvancedSearchWindowWidgetState
                                                     .alternate,
                                             borderWidth: 2.0,
                                             borderRadius: 8.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                            margin: const EdgeInsetsDirectional
+                                                .fromSTEB(16.0, 4.0, 16.0, 4.0),
                                             hidesUnderline: true,
                                             isOverButton: true,
                                             isSearchable: false,
@@ -2540,13 +2490,13 @@ class _AdvancedSearchWindowWidgetState
                                                     .dropDownValueController5 ??=
                                                 FormFieldController<String>(
                                                     null),
-                                            options: ['Option 1'],
+                                            options: const ['Option 1'],
                                             onChanged: (val) => setState(() =>
                                                 _model.dropDownValue5 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
                                                 0.12,
-                                             height: 40.0,
+                                            height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyMedium,
@@ -2556,7 +2506,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -2567,9 +2516,8 @@ class _AdvancedSearchWindowWidgetState
                                                     .alternate,
                                             borderWidth: 2.0,
                                             borderRadius: 8.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                            margin: const EdgeInsetsDirectional
+                                                .fromSTEB(16.0, 4.0, 16.0, 4.0),
                                             hidesUnderline: true,
                                             isOverButton: true,
                                             isSearchable: false,
@@ -2581,7 +2529,6 @@ class _AdvancedSearchWindowWidgetState
                                                     .primary,
                                             borderRadius: 15.0,
                                             borderWidth: 2.0,
-                                             
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
                                                     .secondaryBackground,
@@ -2590,13 +2537,12 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText,
-                                              
                                             ),
                                             onPressed: () {
                                               print('IconButton pressed ...');
                                             },
                                           ),
-                                        ].divide(SizedBox(width: 10.0)),
+                                        ].divide(const SizedBox(width: 10.0)),
                                       ),
                                     ),
                                   if (responsiveVisibility(
@@ -2605,8 +2551,9 @@ class _AdvancedSearchWindowWidgetState
                                     desktop: false,
                                   ))
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10.0, 10.0, 10.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              10.0, 10.0, 10.0, 0.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -2615,13 +2562,13 @@ class _AdvancedSearchWindowWidgetState
                                                     .dropDownValueController6 ??=
                                                 FormFieldController<String>(
                                                     null),
-                                            options: ['Option 1'],
+                                            options: const ['Option 1'],
                                             onChanged: (val) => setState(() =>
                                                 _model.dropDownValue6 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
                                                 0.10,
-                                             height: 40.0,
+                                            height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyMedium,
@@ -2631,7 +2578,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -2642,9 +2588,8 @@ class _AdvancedSearchWindowWidgetState
                                                     .alternate,
                                             borderWidth: 2.0,
                                             borderRadius: 8.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                            margin: const EdgeInsetsDirectional
+                                                .fromSTEB(16.0, 4.0, 16.0, 4.0),
                                             hidesUnderline: true,
                                             isOverButton: true,
                                             isSearchable: false,
@@ -2655,13 +2600,13 @@ class _AdvancedSearchWindowWidgetState
                                                     .dropDownValueController7 ??=
                                                 FormFieldController<String>(
                                                     null),
-                                            options: ['Option 1'],
+                                            options: const ['Option 1'],
                                             onChanged: (val) => setState(() =>
                                                 _model.dropDownValue7 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
                                                 0.10,
-                                             height: 40.0,
+                                            height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyMedium,
@@ -2671,7 +2616,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -2682,9 +2626,8 @@ class _AdvancedSearchWindowWidgetState
                                                     .alternate,
                                             borderWidth: 2.0,
                                             borderRadius: 8.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                            margin: const EdgeInsetsDirectional
+                                                .fromSTEB(16.0, 4.0, 16.0, 4.0),
                                             hidesUnderline: true,
                                             isOverButton: true,
                                             isSearchable: false,
@@ -2695,13 +2638,13 @@ class _AdvancedSearchWindowWidgetState
                                                     .dropDownValueController8 ??=
                                                 FormFieldController<String>(
                                                     null),
-                                            options: ['Option 1'],
+                                            options: const ['Option 1'],
                                             onChanged: (val) => setState(() =>
                                                 _model.dropDownValue8 = val),
                                             width: MediaQuery.sizeOf(context)
                                                     .width *
                                                 0.10,
-                                             height: 40.0,
+                                            height: 40.0,
                                             textStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .bodyMedium,
@@ -2711,7 +2654,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              
                                             ),
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
@@ -2722,9 +2664,8 @@ class _AdvancedSearchWindowWidgetState
                                                     .alternate,
                                             borderWidth: 2.0,
                                             borderRadius: 8.0,
-                                            margin:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                            margin: const EdgeInsetsDirectional
+                                                .fromSTEB(16.0, 4.0, 16.0, 4.0),
                                             hidesUnderline: true,
                                             isOverButton: true,
                                             isSearchable: false,
@@ -2736,7 +2677,6 @@ class _AdvancedSearchWindowWidgetState
                                                     .primary,
                                             borderRadius: 15.0,
                                             borderWidth: 2.0,
-                                         
                                             fillColor:
                                                 FlutterFlowTheme.of(context)
                                                     .secondaryBackground,
@@ -2745,7 +2685,6 @@ class _AdvancedSearchWindowWidgetState
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText,
-                                              
                                             ),
                                             onPressed: () {
                                               print('IconButton pressed ...');
@@ -2755,37 +2694,35 @@ class _AdvancedSearchWindowWidgetState
                                       ),
                                     ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        10.0, 10.0, 0.0, 10.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            10.0, 10.0, 0.0, 10.0),
                                     child: Row(
-                                      
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Align(
-                                          alignment:
-                                              AlignmentDirectional(-1.0, 0.0),
+                                          alignment: const AlignmentDirectional(
+                                              -1.0, 0.0),
                                           child: FFButtonWidget(
                                             onPressed: () {
                                               print('Button pressed ...');
                                             },
                                             text: 'Add Condition',
-                                            
                                             icon: Icon(
                                               Icons.add,
-                                             
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .primaryText,
-                                            
                                             ),
                                             options: FFButtonOptions(
-                                            
-                                          
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
                                                       24.0, 0.0, 24.0, 0.0),
-                                              iconPadding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              iconPadding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                      0.0, 0.0, 0.0, 0.0),
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryBackground,
@@ -2837,37 +2774,37 @@ class _AdvancedSearchWindowWidgetState
                     tablet: false,
                   ))
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
                           30.0, 10.0, 30.0, 20.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FFButtonWidget(
-                           onPressed: () {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // You can adjust the dialog style and behavior here
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: SaveYourSearchWidget(), // Your custom widget inside the dialog
-        );
-      },
-    );
-  },
-  text: 'Save Search',
-                            icon: Icon(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // You can adjust the dialog style and behavior here
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child:
+                                        const SaveYourSearchWidget(), // Your custom widget inside the dialog
+                                  );
+                                },
+                              );
+                            },
+                            text: 'Save Search',
+                            icon: const Icon(
                               Icons.star,
-                           
                             ),
                             options: FFButtonOptions(
-                               height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              height: 40.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   30.0, 0.0, 30.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
                               color: FlutterFlowTheme.of(context).primary,
                               textStyle: FlutterFlowTheme.of(context)
@@ -2885,38 +2822,41 @@ class _AdvancedSearchWindowWidgetState
                               borderSide: BorderSide(
                                 color: FlutterFlowTheme.of(context)
                                     .primaryBackground,
-                                width: 2.0, 
+                                width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(1.0, 0.0),
+                            alignment: const AlignmentDirectional(1.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 15.0, 0.0),
                                   child: FFButtonWidget(
-                                          onPressed: () {
-                // Show motion toast
-                MotionToast.info(
-                  title: Text("Reset"),
-                  description: Text("Your form has been reset."),
-                  animationType: AnimationType.fromTop,
-                  position: MotionToastPosition.top,
-                  width: 300, // Customizing the width of the toast
-                ).show(context);
-              },
+                                    onPressed: () {
+                                      // Show motion toast
+                                      MotionToast.info(
+                                        title: const Text("Reset"),
+                                        description: const Text(
+                                            "Your form has been reset."),
+                                        animationType: AnimationType.fromTop,
+                                        position: MotionToastPosition.top,
+                                        width:
+                                            300, // Customizing the width of the toast
+                                      ).show(context);
+                                    },
                                     text: 'Reset',
                                     options: FFButtonOptions(
-                                       height: 40.0,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          30.0, 0.0, 30.0, 0.0),
+                                      height: 40.0,
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              30.0, 0.0, 30.0, 0.0),
                                       iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
+                                          const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
                                       color: FlutterFlowTheme.of(context)
                                           .secondary,
@@ -2948,11 +2888,13 @@ class _AdvancedSearchWindowWidgetState
                                   },
                                   text: 'Search',
                                   options: FFButtonOptions(
-                                     height: 40.0,
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        30.0, 0.0, 30.0, 0.0),
-                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
+                                    height: 40.0,
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            30.0, 0.0, 30.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
                                     color: FlutterFlowTheme.of(context).primary,
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -2987,7 +2929,7 @@ class _AdvancedSearchWindowWidgetState
                     desktop: false,
                   ))
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
                           30.0, 10.0, 30.0, 20.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -2997,15 +2939,14 @@ class _AdvancedSearchWindowWidgetState
                               print('Button pressed ...');
                             },
                             text: 'Save Search',
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.star,
-                          
                             ),
                             options: FFButtonOptions(
-                               height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
+                              height: 40.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   30.0, 0.0, 30.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 0.0),
                               color: FlutterFlowTheme.of(context).primary,
                               textStyle: FlutterFlowTheme.of(context)
@@ -3029,13 +2970,13 @@ class _AdvancedSearchWindowWidgetState
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(1.0, 0.0),
+                            alignment: const AlignmentDirectional(1.0, 0.0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 15.0, 0.0),
                                   child: FFButtonWidget(
                                     onPressed: () {
@@ -3043,11 +2984,12 @@ class _AdvancedSearchWindowWidgetState
                                     },
                                     text: 'Reset',
                                     options: FFButtonOptions(
-                                       height: 40.0,
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          30.0, 0.0, 30.0, 0.0),
+                                      height: 40.0,
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              30.0, 0.0, 30.0, 0.0),
                                       iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
+                                          const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
                                       color: FlutterFlowTheme.of(context)
                                           .secondary,
@@ -3079,11 +3021,13 @@ class _AdvancedSearchWindowWidgetState
                                   },
                                   text: 'Search',
                                   options: FFButtonOptions(
-                                     height: 40.0,
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        30.0, 0.0, 30.0, 0.0),
-                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
+                                    height: 40.0,
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            30.0, 0.0, 30.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
                                     color: FlutterFlowTheme.of(context).primary,
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall

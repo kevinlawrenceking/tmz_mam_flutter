@@ -4,7 +4,7 @@ import 'app_palette.dart'; // Make sure this file exists with your color definit
 class AppTheme {
   // Light theme
   static final ThemeData light = ThemeData.light().copyWith(
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       labelStyle: TextStyle(color: AppPalette.darkGray),
       border: OutlineInputBorder(
         borderSide: BorderSide(color: AppPalette.lightBorderColor),
@@ -12,10 +12,10 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: AppPalette.lightBorderColor),
+        side: const BorderSide(color: AppPalette.lightBorderColor),
       ),
     ),
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: AppPalette.darkRed,
       onPrimary: AppPalette.white,
       secondary: AppPalette.red,
@@ -28,12 +28,12 @@ class AppTheme {
       onError: AppPalette.white,
     ),
     scaffoldBackgroundColor: AppPalette.lightGray,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       titleTextStyle: TextStyle(color: AppPalette.black),
       color: AppPalette.darkRed,
       iconTheme: IconThemeData(color: AppPalette.white),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       titleMedium: TextStyle(color: AppPalette.lightInputTextColor), // For light theme input text
       titleSmall: TextStyle(color: AppPalette.darkGray),
       titleLarge: TextStyle(color: AppPalette.red),
@@ -47,7 +47,7 @@ class AppTheme {
   );
   // Dark theme
   static final ThemeData dark = ThemeData.dark().copyWith(
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       labelStyle: TextStyle(color: AppPalette.darkGray),
       border: OutlineInputBorder(
         borderSide: BorderSide(color: AppPalette.darkBorderColor),
@@ -55,10 +55,10 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: AppPalette.darkBorderColor),
+        side: const BorderSide(color: AppPalette.darkBorderColor),
       ),
     ),
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: AppPalette.red,
       onPrimary: AppPalette.darkGray,
       secondary: AppPalette.darkRed,
@@ -71,12 +71,12 @@ class AppTheme {
       onError: AppPalette.black,
     ),
     scaffoldBackgroundColor: AppPalette.black,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       color: AppPalette.darkRed,
       titleTextStyle: TextStyle(color: AppPalette.white),
       iconTheme: IconThemeData(color: AppPalette.darkGray),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       titleMedium: TextStyle(color: AppPalette.white), // For light theme input text
       titleSmall: TextStyle(color: AppPalette.white60),
       titleLarge: TextStyle(color: AppPalette.white),

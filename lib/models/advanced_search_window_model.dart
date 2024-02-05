@@ -63,10 +63,12 @@ class AdvancedSearchWindowModel
 
   /// Initialization and disposal methods.
 
+  @override
   void initState(BuildContext context) {
     searchBarModel = createModel(context, () => SearchBarModel());
   }
 
+  @override
   void dispose() {
     searchBarModel.dispose();
     textFieldFocusNode1?.dispose();

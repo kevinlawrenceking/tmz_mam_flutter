@@ -1,9 +1,7 @@
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../models/search_bar_model.dart';
 export '../models/search_bar_model.dart';
 
@@ -42,7 +40,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 15.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 15.0),
       child: TextFormField(
         controller: _model.textController,
         focusNode: _model.textFieldFocusNode,
@@ -92,11 +90,11 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           ),
           filled: true,
           fillColor: FlutterFlowTheme.of(context).primaryBackground,
-          contentPadding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 0.0, 24.0),
-          prefixIcon: Icon(
+          contentPadding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 0.0, 24.0),
+          prefixIcon: const Icon(
             Icons.search_outlined,
           ),
-          suffixIcon: Icon(
+          suffixIcon: const Icon(
             Icons.highlight_off_outlined,
           ),
         ),

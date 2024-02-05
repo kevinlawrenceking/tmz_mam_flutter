@@ -1,14 +1,11 @@
 import '../../flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'configure_view_window_model.dart';
 export 'configure_view_window_model.dart';
 
 class ConfigureViewWindowWidget extends StatefulWidget {
-  const ConfigureViewWindowWidget({Key? key}) : super(key: key);
+  const ConfigureViewWindowWidget({super.key});
 
   @override
   _ConfigureViewWindowWidgetState createState() =>
@@ -46,7 +43,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
           height: 700.0,
           decoration: BoxDecoration(
             color: FlutterFlowTheme.of(context).secondaryBackground,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 4.0,
                 color: Color(0x33000000),
@@ -59,13 +56,13 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 50.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 50.0, 0.0),
                 child: Container(
                   width: 350.0,
                   height: 350.0,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         blurRadius: 4.0,
                         color: Color(0x33000000),
@@ -208,13 +205,13 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(50.0, 0.0, 0.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(50.0, 0.0, 0.0, 0.0),
                 child: Container(
                   width: 350.0,
                   height: 350.0,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         blurRadius: 4.0,
                         color: Color(0x33000000),
@@ -227,7 +224,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.arrow_back_ios,
                             size: 20.0,
                           ),
@@ -240,7 +237,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                           dense: false,
                         ),
                         ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.arrow_back_ios,
                             size: 20.0,
                           ),
@@ -253,7 +250,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                           dense: false,
                         ),
                         ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.arrow_back_ios,
                             size: 20.0,
                           ),
@@ -266,7 +263,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                           dense: false,
                         ),
                         ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.arrow_back_ios,
                             size: 20.0,
                           ),
@@ -279,7 +276,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                           dense: false,
                         ),
                         ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.arrow_back_ios,
                             size: 20.0,
                           ),
@@ -292,7 +289,7 @@ class _ConfigureViewWindowWidgetState extends State<ConfigureViewWindowWidget> {
                           dense: false,
                         ),
                         ListTile(
-                          leading: Icon(
+                          leading: const Icon(
                             Icons.arrow_back_ios,
                             size: 20.0,
                           ),

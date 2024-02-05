@@ -26,12 +26,12 @@ Widget build(BuildContext context) {
           // Simple navigation to SearchScreen without toggleTheme
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => SearchScreen(),
+              builder: (context) => const SearchScreen(),
             ),
           );
       },
       child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
         child: Center(
           child: Icon(
             FFIcons.ktmzLogo1,
@@ -56,13 +56,13 @@ Widget build(BuildContext context) {
       actions: [
         ...?actions, // Keep other actions if any
         Align(
-          alignment: AlignmentDirectional(0, 0),
+          alignment: const AlignmentDirectional(0, 0),
           child: GestureDetector(
            onTap: () {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Dialog(
+      return const Dialog(
         backgroundColor: Colors.transparent, // Make dialog background transparent
         child: Align(
           alignment: Alignment.topRight, // Align dialog to the top right
@@ -73,7 +73,7 @@ Widget build(BuildContext context) {
   );
 },
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 25, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 25, 0),
               child: Text(
                 'BM',
                 style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -95,5 +95,5 @@ Widget build(BuildContext context) {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

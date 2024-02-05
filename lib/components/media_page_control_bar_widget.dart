@@ -1,20 +1,12 @@
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../models/media_page_control_bar_model.dart';
 export '../models/media_page_control_bar_model.dart';
 
-import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow_theme.dart';
 
 class MediaPageControlBarWidget extends StatefulWidget {
-  const MediaPageControlBarWidget({Key? key}) : super(key: key);
+  const MediaPageControlBarWidget({super.key});
 
   @override
   _MediaPageControlBarWidgetState createState() =>
@@ -39,7 +31,7 @@ class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(15.0, 0, 15.0, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0, 15.0, 0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -71,7 +63,7 @@ class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
             icon: Icons.more_vert,
             onPressed: () => print('More Options IconButton pressed'),
           ),
-          Spacer(),
+          const Spacer(),
           buildIconButton(
             context,
             icon: Icons.navigate_before,

@@ -20,6 +20,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   /// Initialization and disposal methods.
 
+  @override
   void initState(BuildContext context) {
     searchBarModel = createModel(context, () => SearchBarModel());
     mainPageControlBarModel =
@@ -28,6 +29,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
         createModel(context, () => MainPageControlBar2Model());
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     searchBarModel.dispose();

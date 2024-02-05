@@ -12,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/metadata_update_form_widget.dart'; // Ensure this is the correct path to your MetadataUpdateFormWidget
 
 class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({super.key});
+
   void toggleTheme(BuildContext context) {
     Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
   }
@@ -25,31 +27,33 @@ class DetailsScreen extends StatelessWidget {
         title: 'TMZ Media Asset Manager',
         actions: [
           IconButton(
-            icon: Icon(Icons.brightness_6),
+            icon: const Icon(Icons.brightness_6),
             onPressed: () => toggleTheme(context),
           ),
     // Additional actions can be added here
         ],
       ),
   endDrawer: Drawer(
-  child: Container(
+  child: SizedBox(
     width: MediaQuery.of(context).size.width * 0.75, // Custom width: 75% of screen width
-    child: MetadataUpdateFormWidget(), // Your widget inside the drawer
+    child: const MetadataUpdateFormWidget(), // Your widget inside the drawer
   ),
 ),
-      body: isDesktop ? DesktopLayout() : MobileLayout(),
+      body: isDesktop ? const DesktopLayout() : const MobileLayout(),
     );
   }
 }
 
 // DesktopLayout for wider screens
 class DesktopLayout extends StatelessWidget {
+  const DesktopLayout({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SearchBarWidget(), // Search bar component
-        MediaPageControlBarWidget(), // Toolbar component
+        const SearchBarWidget(), // Search bar component
+        const MediaPageControlBarWidget(), // Toolbar component
 
 Padding(
   padding: const EdgeInsets.all(8.0),
@@ -63,7 +67,7 @@ Padding(
 
 
 Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -101,9 +105,9 @@ Padding(
 
 // Generated code for this Text Widget...
 Align(
-  alignment: AlignmentDirectional(-1, 0),
+  alignment: const AlignmentDirectional(-1, 0),
   child: Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+    padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
     child: Text(
       'Appers In: Collection 1, Collection 36',
       style: FlutterFlowTheme.of(context).bodyMedium,
@@ -115,7 +119,7 @@ Align(
 
 
 
-        Expanded(
+        const Expanded(
           child: Row(
             children: [
               Expanded(
@@ -128,8 +132,8 @@ Align(
             ],
           ),
         ),
-        PhotoInfoContainer(),
-        BottomButtonsWidget(),
+        const PhotoInfoContainer(),
+        const BottomButtonsWidget(),
       ],
     );
   }
@@ -137,9 +141,11 @@ Align(
 
 // MobileLayout for narrower screens
 class MobileLayout extends StatelessWidget {
+  const MobileLayout({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         SearchBarWidget(), // Search bar component
         MediaPageControlBarWidget(), // Toolbar component
@@ -154,6 +160,8 @@ class MobileLayout extends StatelessWidget {
  
 // ImageContainer widget with background color matching the MetadataContainer
 class ImageContainer extends StatelessWidget {
+  const ImageContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -161,7 +169,7 @@ class ImageContainer extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 16 / 9, // Maintain a 16:9 aspect ratio for the image
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
            // Inner color for the aspect ratio area
           ),
           child: Image.asset(
@@ -175,13 +183,15 @@ class ImageContainer extends StatelessWidget {
 }
 // PhotoInfoContainer widget
 class PhotoInfoContainer extends StatelessWidget {
+  const PhotoInfoContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity, // Make the container take full width
-      padding: EdgeInsets.all(8), // Padding around the entire container
+      padding: const EdgeInsets.all(8), // Padding around the entire container
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Wrap(
           spacing: 100, // Horizontal space between columns
           runSpacing: 0, // Vertical space between rows
@@ -206,14 +216,14 @@ Widget infoColumn(BuildContext context, String title, String value) {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 11, // Smaller font size
           ),
         ),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 11, // Smaller font size
           ),
         ),
@@ -224,22 +234,24 @@ Widget infoColumn(BuildContext context, String title, String value) {
 
 // MetadataContainer widget
 class MetadataContainer extends StatelessWidget {
+  const MetadataContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
+      padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
   color: FlutterFlowTheme.of(context).secondaryBackground, // Specific background color
       child: Padding(
-    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
     child: Container(
       height: 435,
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
       ),
       child: Align(
-        alignment: AlignmentDirectional(0, -1),
+        alignment: const AlignmentDirectional(0, -1),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(20,0, 20, 20),
+          padding: const EdgeInsetsDirectional.fromSTEB(20,0, 20, 20),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -247,9 +259,9 @@ class MetadataContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20),
                     child: Text(
                       'Metadata',
                       textAlign: TextAlign.start,
@@ -265,7 +277,7 @@ class MetadataContainer extends StatelessWidget {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Text(
                     'Celebrity',
                     textAlign: TextAlign.start,
@@ -283,9 +295,9 @@ class MetadataContainer extends StatelessWidget {
                   style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: Text(
                       'Associated Celebrity',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -303,9 +315,9 @@ class MetadataContainer extends StatelessWidget {
                   style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: Text(
                       'Shot Description',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -323,9 +335,9 @@ class MetadataContainer extends StatelessWidget {
                   style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: Text(
                       'Rights Summary',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -343,9 +355,9 @@ class MetadataContainer extends StatelessWidget {
                   style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: Text(
                       'Rights Details',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -363,9 +375,9 @@ class MetadataContainer extends StatelessWidget {
                   style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                     child: Text(
                       'Credit',
                       style: FlutterFlowTheme.of(context).bodyLarge.override(
