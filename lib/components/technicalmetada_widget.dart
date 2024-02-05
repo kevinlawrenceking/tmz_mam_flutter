@@ -38,7 +38,7 @@ class _TechnicalmetadaWidgetState extends State<TechnicalmetadaWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
+      padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
       child: Container(
         width: 1490.0,
         height: 64.0,
@@ -46,7 +46,7 @@ class _TechnicalmetadaWidgetState extends State<TechnicalmetadaWidget> {
           color: FlutterFlowTheme.of(context).primaryBackground,
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +171,7 @@ class _TechnicalmetadaWidgetState extends State<TechnicalmetadaWidget> {
                   ),
                 ],
               ),
-            ].divide(SizedBox(width: 75.0)),
+            ].divide(const SizedBox(width: 75.0)),
           ),
         ),
       ),

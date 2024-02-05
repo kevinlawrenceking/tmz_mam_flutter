@@ -1,9 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
-import '../models/media_page_control_bar_model.dart';
 export '../models/media_page_control_bar_model.dart';
-
 
 class MediaPageControlBarWidget extends StatefulWidget {
   const MediaPageControlBarWidget({super.key});
@@ -14,8 +14,6 @@ class MediaPageControlBarWidget extends StatefulWidget {
 }
 
 class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
-  late MediaPageControlBarModel _model;
-
   @override
   void initState() {
     super.initState();
@@ -40,14 +38,13 @@ class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
             icon: Icons.file_download_outlined,
             onPressed: () => print('Download IconButton pressed'),
           ),
-    buildIconButton(
-  context,
-  icon: Icons.edit_sharp,
-  onPressed: () {
-    Scaffold.of(context).openEndDrawer(); // This opens the drawer
-  },
-),
-
+          buildIconButton(
+            context,
+            icon: Icons.edit_sharp,
+            onPressed: () {
+              Scaffold.of(context).openEndDrawer(); // This opens the drawer
+            },
+          ),
           buildIconButton(
             context,
             icon: Icons.create_new_folder,
@@ -84,7 +81,8 @@ class _MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
     );
   }
 
-  Widget buildIconButton(BuildContext context, {required IconData icon, required VoidCallback onPressed}) {
+  Widget buildIconButton(BuildContext context,
+      {required IconData icon, required VoidCallback onPressed}) {
     return FlutterFlowIconButton(
       borderColor: FlutterFlowTheme.of(context).primary,
       borderRadius: 15.0,
