@@ -1,5 +1,3 @@
-
-
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
@@ -22,7 +20,7 @@ class MainPageControlBarWidget extends StatefulWidget {
 class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
   late MainPageControlBarModel _model;
 
-FormFieldController<String?>? sortByFieldsValueController;
+  FormFieldController<String?>? sortByFieldsValueController;
 
   @override
   void setState(VoidCallback callback) {
@@ -35,7 +33,7 @@ FormFieldController<String?>? sortByFieldsValueController;
     super.initState();
     _model = createModel(context, () => MainPageControlBarModel());
 
-     // Initialize sortByFieldsValueController if it's not already initialized by the model
+    // Initialize sortByFieldsValueController if it's not already initialized by the model
     sortByFieldsValueController ??= FormFieldController<String?>(null);
   }
 
@@ -68,28 +66,29 @@ FormFieldController<String?>? sortByFieldsValueController;
               ],
             ),
             child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 30.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        30.0, 0.0, 30.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () {
                         print('uploadButton pressed ...');
                       },
                       text: 'Upload',
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.file_upload_outlined,
                         size: 15.0,
                       ),
                       options: FFButtonOptions(
                         height: 50.0,
-                        padding: EdgeInsetsDirectional.fromSTEB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                             30.0, 0.0, 30.0, 0.0),
-                        iconPadding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
                         textStyle: FlutterFlowTheme.of(context)
                             .titleSmall
@@ -102,7 +101,7 @@ FormFieldController<String?>? sortByFieldsValueController;
                                       .titleSmallFamily),
                             ),
                         elevation: 3.0,
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.transparent,
                           width: 1.0,
                         ),
@@ -111,8 +110,8 @@ FormFieldController<String?>? sortByFieldsValueController;
                     ),
                   ),
                   Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 10.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 10.0, 0.0),
                     child: FlutterFlowIconButton(
                       borderColor: FlutterFlowTheme.of(context).primary,
                       borderRadius: 15.0,
@@ -124,9 +123,7 @@ FormFieldController<String?>? sortByFieldsValueController;
                         color: FlutterFlowTheme.of(context).primaryText,
                         size: 24.0,
                       ),
-                      onPressed: () {
-                        print('advancedSeach pressed ...');
-                      },
+                      onPressed: () {},
                     ),
                   ),
                   FlutterFlowIconButton(
@@ -146,7 +143,7 @@ FormFieldController<String?>? sortByFieldsValueController;
                   ),
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(1.0, 0.0),
+                      alignment: const AlignmentDirectional(1.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -157,7 +154,7 @@ FormFieldController<String?>? sortByFieldsValueController;
                             size: 32.0,
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 5.0, 0.0),
                             child: Icon(
                               Icons.arrow_downward,
@@ -165,21 +162,32 @@ FormFieldController<String?>? sortByFieldsValueController;
                               size: 32.0,
                             ),
                           ),
-Padding(
-  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
-  child: FlutterFlowDropDown<String>(
-    // Use the sortByFieldsValueController directly without conditional assignment
-    controller: sortByFieldsValueController,
-    options: ['CreatedBy', 'QC Notes', 'Headline', 'Celebrity', 'Created', 'Updated'],
-    onChanged: (val) => setState(() => _model.sortByFieldsValue = val),
-    width: 150.0,
-    height: 50.0,
-    textStyle: FlutterFlowTheme.of(context).bodyMedium,
-    hintText: 'Sort By',
-    icon: Icon(
-      Icons.keyboard_arrow_down_rounded,
-      color: FlutterFlowTheme.of(context).secondaryText,
-      size: 24.0,
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 45.0, 0.0),
+                            child: FlutterFlowDropDown<String>(
+                              // Use the sortByFieldsValueController directly without conditional assignment
+                              controller: sortByFieldsValueController,
+                              options: const [
+                                'CreatedBy',
+                                'QC Notes',
+                                'Headline',
+                                'Celebrity',
+                                'Created',
+                                'Updated'
+                              ],
+                              onChanged: (val) => setState(
+                                  () => _model.sortByFieldsValue = val),
+                              width: 150.0,
+                              height: 50.0,
+                              textStyle:
+                                  FlutterFlowTheme.of(context).bodyMedium,
+                              hintText: 'Sort By',
+                              icon: Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 24.0,
                               ),
                               fillColor: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
@@ -188,7 +196,7 @@ Padding(
                                   FlutterFlowTheme.of(context).alternate,
                               borderWidth: 2.0,
                               borderRadius: 8.0,
-                              margin: EdgeInsetsDirectional.fromSTEB(
+                              margin: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 4.0, 16.0, 4.0),
                               hidesUnderline: true,
                               isOverButton: true,
@@ -207,7 +215,7 @@ Padding(
                             size: 32.0,
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 45.0, 0.0),
                             child: Icon(
                               Icons.image_outlined,
@@ -216,7 +224,7 @@ Padding(
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 5.0, 0.0, 5.0, 0.0),
                             child: Icon(
                               Icons.grid_on,
@@ -225,7 +233,7 @@ Padding(
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 45.0, 0.0),
                             child: Icon(
                               Icons.list,

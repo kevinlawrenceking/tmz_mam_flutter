@@ -6,6 +6,8 @@ import 'package:tmz_mam_flutter/pages/collections/collections_widget.dart';
 import 'package:tmz_mam_flutter/screens/admin_screen.dart';
  
 class BottomButtonsWidget extends StatelessWidget {
+  const BottomButtonsWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +30,7 @@ class BottomButtonsWidget extends StatelessWidget {
               icon: Icons.folder_outlined,
               label: 'Collections',
               onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => CollectionsPage(), // Navigate to Collections Screen
+                builder: (context) => const CollectionsPage(), // Navigate to Collections Screen
               )),
             ),
 
@@ -37,7 +39,7 @@ class BottomButtonsWidget extends StatelessWidget {
               icon: Icons.admin_panel_settings_outlined,
               label: 'Admin',
               onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => AdminPage(), // Navigate to Admin Screen
+                builder: (context) => const AdminPage(), // Navigate to Admin Screen
               )),
             ),
           ],

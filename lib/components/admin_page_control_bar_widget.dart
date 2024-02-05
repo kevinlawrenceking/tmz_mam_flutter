@@ -57,13 +57,14 @@ class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
         child: Stack(
           children: [
             Padding(
-              padding:  const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Align(
-                    alignment:  const AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Icon(
                       Icons.menu_sharp,
                       color: FlutterFlowTheme.of(context).secondaryText,
@@ -74,7 +75,8 @@ class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -95,8 +97,8 @@ class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
                   ),
                   Flexible(
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          5.0, 0.0, 0.0, 0.0),
                       child: FaIcon(
                         FontAwesomeIcons.ellipsis,
                         color:

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
@@ -53,7 +55,8 @@ class _CollectionPageControlBarPHONEWidgetState
               Align(
                 alignment: const AlignmentDirectional(0.0, 0.0),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
                   child: Text(
                     'Assets (118)',
                     style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -68,7 +71,8 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
                 child: FaIcon(
                   FontAwesomeIcons.ellipsis,
                   color: FlutterFlowTheme.of(context).primaryText,
@@ -81,7 +85,8 @@ class _CollectionPageControlBarPHONEWidgetState
                 desktop: false,
               ))
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      10.0, 0.0, 45.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderColor: FlutterFlowTheme.of(context).primary,
                     borderRadius: 15.0,
@@ -117,7 +122,8 @@ class _CollectionPageControlBarPHONEWidgetState
                 size: 32.0,
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.image_outlined,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -125,7 +131,8 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
                 child: Icon(
                   Icons.grid_on,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -133,7 +140,8 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.list,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -144,12 +152,13 @@ class _CollectionPageControlBarPHONEWidgetState
           ),
         ),
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -159,8 +168,8 @@ class _CollectionPageControlBarPHONEWidgetState
                       size: 24.0,
                     ),
                     Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 5.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 5.0, 0.0),
                       child: Icon(
                         Icons.arrow_downward,
                         color: FlutterFlowTheme.of(context).secondaryText,
@@ -168,12 +177,12 @@ class _CollectionPageControlBarPHONEWidgetState
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 45.0, 0.0),
                       child: FlutterFlowDropDown<String>(
                         controller: _model.sortByFieldsValueController ??=
                             FormFieldController<String>(null),
-                        options: [
+                        options: const [
                           'CreatedBy',
                           'QC Notes',
                           'Headline',
@@ -198,7 +207,7 @@ class _CollectionPageControlBarPHONEWidgetState
                         borderColor: FlutterFlowTheme.of(context).alternate,
                         borderWidth: 2.0,
                         borderRadius: 8.0,
-                        margin: EdgeInsetsDirectional.fromSTEB(
+                        margin: const EdgeInsetsDirectional.fromSTEB(
                             16.0, 4.0, 16.0, 4.0),
                         hidesUnderline: true,
                         isOverButton: true,
@@ -207,8 +216,8 @@ class _CollectionPageControlBarPHONEWidgetState
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 45.0, 0.0),
                       child: Icon(
                         Icons.filter_list,
                         color: FlutterFlowTheme.of(context).secondaryText,
@@ -222,18 +231,19 @@ class _CollectionPageControlBarPHONEWidgetState
           ),
         ),
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                 child: FlutterFlowDropDown<String>(
                   controller: _model.dropDownValueController ??=
                       FormFieldController<String>(
                     _model.dropDownValue ??= '50',
                   ),
-                  options: ['25', '50', '100', '150', '300', '500'],
+                  options: const ['25', '50', '100', '150', '300', '500'],
                   onChanged: (val) =>
                       setState(() => _model.dropDownValue = val),
                   width: 75.0,
@@ -249,7 +259,8 @@ class _CollectionPageControlBarPHONEWidgetState
                   borderColor: FlutterFlowTheme.of(context).alternate,
                   borderWidth: 2.0,
                   borderRadius: 8.0,
-                  margin: EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                  margin: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 4.0, 16.0, 4.0),
                   hidesUnderline: true,
                   isOverButton: true,
                   isSearchable: false,
@@ -257,9 +268,10 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
                   child: Icon(
                     Icons.arrow_left_sharp,
                     color: FlutterFlowTheme.of(context).primaryText,
@@ -268,9 +280,10 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(1.0, 0.0),
+                alignment: const AlignmentDirectional(1.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
                   child: Icon(
                     Icons.arrow_right_sharp,
                     color: FlutterFlowTheme.of(context).primaryText,

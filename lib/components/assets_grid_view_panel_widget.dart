@@ -57,13 +57,14 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -75,10 +76,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
                       child: Text(
                         'Close Up of a Lion\'s Face',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -98,7 +99,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     color: FlutterFlowTheme.of(context).darkThemeShadowColor,
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Celebrity',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -111,874 +112,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        'https://picsum.photos/seed/645/600',
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
-                      child: Text(
-                        'Close Up of a Lion\'s Face',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                            ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1.0,
-                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        'https://picsum.photos/seed/645/600',
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
-                      child: Text(
-                        'Close Up of a Lion\'s Face',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                            ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1.0,
-                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        'https://picsum.photos/seed/645/600',
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
-                      child: Text(
-                        'Close Up of a Lion\'s Face',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                            ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1.0,
-                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        'https://picsum.photos/seed/645/600',
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
-                      child: Text(
-                        'Close Up of a Lion\'s Face',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                            ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1.0,
-                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        'https://picsum.photos/seed/645/600',
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
-                      child: Text(
-                        'Close Up of a Lion\'s Face',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                            ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1.0,
-                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Shot Description',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Rights Summary',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
-                      child: Text(
-                        'Hello World',
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Credit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Hello World',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            elevation: 4.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        'https://picsum.photos/seed/645/600',
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
-                      child: Text(
-                        'Close Up of a Lion\'s Face',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily:
-                                  FlutterFlowTheme.of(context).bodyMediumFamily,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                  FlutterFlowTheme.of(context)
-                                      .bodyMediumFamily),
-                            ),
-                      ),
-                    ),
-                  ),
-                  Divider(
-                    thickness: 1.0,
-                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Text(
-                      'Celebrity',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily:
-                                FlutterFlowTheme.of(context).bodyMediumFamily,
-                            fontWeight: FontWeight.bold,
-                            useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
-                          ),
-                    ),
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1001,8 +138,8 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                   Align(
                     alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1010,7 +147,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                   alignment: const AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Rights Summary',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1023,10 +160,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1034,7 +171,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Credit',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1047,7 +184,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Hello World',
                       style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1065,13 +202,14 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -1083,10 +221,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
                       child: Text(
                         'Close Up of a Lion\'s Face',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1106,7 +244,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     color: FlutterFlowTheme.of(context).darkThemeShadowColor,
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Celebrity',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1119,10 +257,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1130,7 +268,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Shot Description',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1143,10 +281,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1154,7 +292,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Rights Summary',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1167,10 +305,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1178,7 +316,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Credit',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1191,7 +329,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Hello World',
                       style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1209,13 +347,14 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
@@ -1227,10 +366,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(0.0, 0.0),
+                    alignment: const AlignmentDirectional(0.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
                       child: Text(
                         'Close Up of a Lion\'s Face',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1250,7 +389,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     color: FlutterFlowTheme.of(context).darkThemeShadowColor,
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Celebrity',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1263,10 +402,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1274,7 +413,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Shot Description',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1287,10 +426,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1298,7 +437,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Rights Summary',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1311,10 +450,10 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
                       child: Text(
                         'Hello World',
                         style: FlutterFlowTheme.of(context).bodyMedium,
@@ -1322,7 +461,7 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Credit',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1335,7 +474,877 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
                     ),
                   ),
                   Align(
-                    alignment: AlignmentDirectional(-1.0, 0.0),
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Hello World',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        'https://picsum.photos/seed/645/600',
+                        width: 300.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Close Up of a Lion\'s Face',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                            ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Celebrity',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Shot Description',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Rights Summary',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Credit',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Hello World',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        'https://picsum.photos/seed/645/600',
+                        width: 300.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Close Up of a Lion\'s Face',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                            ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Celebrity',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Shot Description',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Rights Summary',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Credit',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Hello World',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        'https://picsum.photos/seed/645/600',
+                        width: 300.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Close Up of a Lion\'s Face',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                            ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Celebrity',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Shot Description',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Rights Summary',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Credit',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Hello World',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        'https://picsum.photos/seed/645/600',
+                        width: 300.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Close Up of a Lion\'s Face',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                            ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Celebrity',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Shot Description',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Rights Summary',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Credit',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Hello World',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        'https://picsum.photos/seed/645/600',
+                        width: 300.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Close Up of a Lion\'s Face',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                            ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Celebrity',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Shot Description',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Rights Summary',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Credit',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Hello World',
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 10.0, 0.0, 0.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        'https://picsum.photos/seed/645/600',
+                        width: 300.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Close Up of a Lion\'s Face',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily:
+                                  FlutterFlowTheme.of(context).bodyMediumFamily,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                  FlutterFlowTheme.of(context)
+                                      .bodyMediumFamily),
+                            ),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).darkThemeShadowColor,
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Celebrity',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Shot Description',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Rights Summary',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 10.0),
+                      child: Text(
+                        'Hello World',
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
+                    child: Text(
+                      'Credit',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily:
+                                FlutterFlowTheme.of(context).bodyMediumFamily,
+                            fontWeight: FontWeight.bold,
+                            useGoogleFonts: GoogleFonts.asMap().containsKey(
+                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                          ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const AlignmentDirectional(-1.0, 0.0),
                     child: Text(
                       'Hello World',
                       style: FlutterFlowTheme.of(context).bodyMedium,

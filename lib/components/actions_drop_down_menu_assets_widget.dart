@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import '../themes/flutter_flow_theme.dart';
 import '/actions_page.dart';
 
+/// A widget that displays a dropdown menu for actions.
+///
+/// This dropdown menu includes system actions and workflows that can be triggered by the user.
+/// Each action is represented as an item in the list, and selecting an action navigates to the [ActionsPage].
+
 class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
+  /// Creates an [ActionsDropDownMenuAssetsWidget].
   const ActionsDropDownMenuAssetsWidget({super.key});
 
   @override
@@ -32,13 +38,12 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
             buildActionItem(context, 'Batch Download'),
             buildActionItem(context, 'Batch Update'),
             buildActionItem(context, 'Delete'),
-            buildActionItem(
-                context, 'Download Search Results as CSV'),
+            buildActionItem(context, 'Download Search Results as CSV'),
             buildActionItem(context, 'Download Mezzanine'),
             buildActionItem(context, 'Download Proxy'),
             buildActionItem(context, 'Workflows', isHeader: true),
-            buildActionItem(
-                context, 'Send To 1920 x 1080 Collection'),
+            buildActionItem(context, 'Send To 1920 x 1080 Collection'),
+
             // Add more items as needed
           ],
         ),
@@ -63,8 +68,12 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
             );
           }
         },
-        splashColor: Colors.transparent, // No splash effect on tap
-        hoverColor: Colors.transparent, // Color when hovered
+        splashColor: Colors.transparent,
+
+        // No splash effect on tap
+        hoverColor: Colors.transparent,
+
+        // Color when hovered
         child: MouseRegion(
           onHover: (_) {
             // Handle hover effects here

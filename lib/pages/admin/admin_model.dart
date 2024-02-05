@@ -1,15 +1,9 @@
-import '../../services/api_calls.dart';
 import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
 import 'admin_widget.dart' show AdminWidget;
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 class AdminModel extends FlutterFlowModel<AdminWidget> {
   ///  State fields for stateful widgets in this page.
@@ -24,8 +18,7 @@ class AdminModel extends FlutterFlowModel<AdminWidget> {
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {
     searchBarModel = createModel(context, () => SearchBarModel());
     adminPageControlBarModel =
@@ -34,6 +27,7 @@ class AdminModel extends FlutterFlowModel<AdminWidget> {
     dataTableShowLogs = false; // Disables noisy DataTable2 debug statements.
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     searchBarModel.dispose();
