@@ -5,11 +5,11 @@ import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
-import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
+import 'package:tmz_mam_flutter/controllers/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/main_page_control_bar_model.dart';
-export '../models/main_page_control_bar_model.dart';
+import 'package:tmz_mam_flutter/models/main_page_control_bar_model.dart';
+export 'package:tmz_mam_flutter/models/main_page_control_bar_model.dart';
 
 class MainPageControlBarWidget extends StatefulWidget {
   const MainPageControlBarWidget({super.key});
@@ -22,6 +22,8 @@ class MainPageControlBarWidget extends StatefulWidget {
 class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
   late MainPageControlBarModel _model;
 
+FormFieldController<String?>? sortByFieldsValueController;
+
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -32,12 +34,17 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MainPageControlBarModel());
+
+     // Initialize sortByFieldsValueController if it's not already initialized by the model
+    sortByFieldsValueController ??= FormFieldController<String?>(null);
   }
 
   @override
   void dispose() {
-    _model.maybeDispose();
+    // Dispose of sortByFieldsValueController if necessary
+    sortByFieldsValueController?.dispose();
 
+    _model.maybeDispose();
     super.dispose();
   }
 
@@ -52,7 +59,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
             height: 75.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
@@ -61,7 +68,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
               ],
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 20.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -158,32 +165,21 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                               size: 32.0,
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 45.0, 0.0),
-                            child: FlutterFlowDropDown<String>(
-                              controller: _model.sortByFieldsValueController ??=
-                                  FormFieldController<String>(null),
-                              options: [
-                                'CreatedBy',
-                                'QC Notes',
-                                'Headline',
-                                'Celebrity',
-                                'Created',
-                                'Updated'
-                              ],
-                              onChanged: (val) => setState(
-                                  () => _model.sortByFieldsValue = val),
-                              width: 150.0,
-                              height: 50.0,
-                              textStyle:
-                                  FlutterFlowTheme.of(context).bodyMedium,
-                              hintText: 'Sort By',
-                              icon: Icon(
-                                Icons.keyboard_arrow_down_rounded,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                size: 24.0,
+Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+  child: FlutterFlowDropDown<String>(
+    // Use the sortByFieldsValueController directly without conditional assignment
+    controller: sortByFieldsValueController,
+    options: ['CreatedBy', 'QC Notes', 'Headline', 'Celebrity', 'Created', 'Updated'],
+    onChanged: (val) => setState(() => _model.sortByFieldsValue = val),
+    width: 150.0,
+    height: 50.0,
+    textStyle: FlutterFlowTheme.of(context).bodyMedium,
+    hintText: 'Sort By',
+    icon: Icon(
+      Icons.keyboard_arrow_down_rounded,
+      color: FlutterFlowTheme.of(context).secondaryText,
+      size: 24.0,
                               ),
                               fillColor: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
