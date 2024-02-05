@@ -1,9 +1,7 @@
 import '../themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../models/assets_grid_view_panel_model.dart';
 export '../models/assets_grid_view_panel_model.dart';
 

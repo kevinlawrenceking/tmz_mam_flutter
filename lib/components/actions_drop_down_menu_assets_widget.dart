@@ -3,6 +3,8 @@ import '../themes/flutter_flow_theme.dart';
 import '/actions_page.dart';
 
 class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
+  const ActionsDropDownMenuAssetsWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -18,7 +20,7 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
                   .withOpacity(0.2),
               blurRadius: 4.0,
               spreadRadius: 2.0,
-              offset: Offset(0.0, 2.0),
+              offset: const Offset(0.0, 2.0),
             ),
           ],
         ),
@@ -72,7 +74,7 @@ class ActionsDropDownMenuAssetsWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: isHeader ? theme.primary : theme.secondaryBackground,
               borderRadius: isHeader
-                  ? BorderRadius.only(
+                  ? const BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
                     )

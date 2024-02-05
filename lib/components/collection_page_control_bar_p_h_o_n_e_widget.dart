@@ -4,10 +4,8 @@ import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:tmz_mam_flutter/models/collection_page_control_bar_p_h_o_n_e_model.dart';
 export 'package:tmz_mam_flutter/models/collection_page_control_bar_p_h_o_n_e_model.dart';
 
@@ -48,14 +46,14 @@ class _CollectionPageControlBarPHONEWidgetState
       mainAxisSize: MainAxisSize.max,
       children: [
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
               Align(
-                alignment: AlignmentDirectional(0.0, 0.0),
+                alignment: const AlignmentDirectional(0.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
                   child: Text(
                     'Assets (118)',
                     style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -70,9 +68,9 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
                 child: FaIcon(
-                  FontAwesomeIcons.ellipsisH,
+                  FontAwesomeIcons.ellipsis,
                   color: FlutterFlowTheme.of(context).primaryText,
                   size: 24.0,
                 ),
@@ -83,7 +81,7 @@ class _CollectionPageControlBarPHONEWidgetState
                 desktop: false,
               ))
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 45.0, 0.0),
                   child: FlutterFlowIconButton(
                     borderColor: FlutterFlowTheme.of(context).primary,
                     borderRadius: 15.0,
@@ -104,7 +102,7 @@ class _CollectionPageControlBarPHONEWidgetState
           ),
         ),
         Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -119,7 +117,7 @@ class _CollectionPageControlBarPHONEWidgetState
                 size: 32.0,
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.image_outlined,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -127,7 +125,7 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 5.0, 0.0),
                 child: Icon(
                   Icons.grid_on,
                   color: FlutterFlowTheme.of(context).secondaryText,
@@ -135,7 +133,7 @@ class _CollectionPageControlBarPHONEWidgetState
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 45.0, 0.0),
                 child: Icon(
                   Icons.list,
                   color: FlutterFlowTheme.of(context).secondaryText,
