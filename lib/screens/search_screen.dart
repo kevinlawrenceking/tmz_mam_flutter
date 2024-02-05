@@ -1,21 +1,22 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'account_settings_screen.dart';
-import '../services/api_service.dart'; // Import your API service
-import '../inventory.dart'; // Import your Inventory model
-import 'details_screen.dart';
+import 'package:tmz_mam_flutter/screens/account_settings_screen.dart';
+import 'package:tmz_mam_flutter/services/api_service.dart'; // Import your API service
+import 'package:tmz_mam_flutter/inventory.dart'; // Import your Inventory model
+import 'package:tmz_mam_flutter/screens/details_screen.dart';
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar2_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-
 import '/advanced_search_window_widget.dart';
+import 'package:tmz_mam_flutter/theme_provider.dart';
 
-import '../theme_provider.dart';
+/// A screen that provides search functionality for photo assets within the TMZ Media Asset Manager.
+///
+/// This screen allows users to search for assets using various criteria, view search results in a grid format,
+/// and access detailed information about each asset. It includes an advanced search drawer, toggleable theme,
+/// and a bottom navigation bar for additional actions.
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
