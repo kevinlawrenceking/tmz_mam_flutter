@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../flutter_flow_theme.dart';
-import '/components/search_bar_widget.dart';
-import '/components/admin_page_control_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
 
 class AdminWidget extends StatefulWidget {
   const AdminWidget({Key? key}) : super(key: key);

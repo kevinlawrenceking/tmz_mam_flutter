@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
 
-import 'package:tmz_mam_flutter/search_screen.dart';
+import 'package:tmz_mam_flutter/screens/search_screen.dart';
 import 'package:tmz_mam_flutter/pages/collections/collections_widget.dart';
-import 'package:tmz_mam_flutter/admin_page.dart';
+import 'package:tmz_mam_flutter/screens/admin_screen.dart';
  
 class BottomButtonsWidget extends StatelessWidget {
   @override

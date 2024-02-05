@@ -1,26 +1,19 @@
-import '/flutter_flow/flutter_flow_drop_down.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
+import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'main_page_control_bar_model.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
-export 'main_page_control_bar_model.dart';
-import '/advanced_search_window_widget.dart';
+import '../models/main_page_control_bar_model.dart';
+export '../models/main_page_control_bar_model.dart';
 
 class MainPageControlBarWidget extends StatefulWidget {
-  const MainPageControlBarWidget({Key? key}) : super(key: key);
-
-
+  const MainPageControlBarWidget({super.key});
 
   @override
-  _MainPageControlBarWidgetState createState() =>
+  State<MainPageControlBarWidget> createState() =>
       _MainPageControlBarWidgetState();
 }
 
@@ -28,22 +21,26 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
   late MainPageControlBarModel _model;
 
   @override
-  void initState() {
-    super.initState();
-    _model = MainPageControlBarModel(); // Initialize your model here if necessary
+  void setState(VoidCallback callback) {
+    super.setState(callback);
+    _model.onUpdate();
   }
 
-  // Define the _launchURL method here
-  Future<void> _launchURL() async {
-    final Uri url = Uri.parse('http://tmztools/reach/');
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw 'Could not launch $url';
-    }
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => MainPageControlBarModel());
+  }
+
+  @override
+  void dispose() {
+    _model.maybeDispose();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-     double drawerWidth = 300; // Set your desired width here
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -54,7 +51,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
               boxShadow: [
-                BoxShadow(
+                const BoxShadow(
                   blurRadius: 4.0,
                   color: Color(0x33000000),
                   offset: Offset(0.0, 2.0),
@@ -70,8 +67,10 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                     padding:
                         EdgeInsetsDirectional.fromSTEB(30.0, 0.0, 30.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: _launchURL, // Use the _launchURL method when the button is pressed
-  text: 'Upload',
+                      onPressed: () {
+                        print('uploadButton pressed ...');
+                      },
+                      text: 'Upload',
                       icon: Icon(
                         Icons.file_upload_outlined,
                         size: 15.0,
@@ -116,27 +115,9 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                         color: FlutterFlowTheme.of(context).primaryText,
                         size: 24.0,
                       ),
-
-
-
                       onPressed: () {
-              // Opens the drawer
-              Scaffold.of(context).openDrawer();
-            },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        print('advancedSeach pressed ...');
+                      },
                     ),
                   ),
                   FlutterFlowIconButton(
@@ -151,7 +132,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                       size: 24.0,
                     ),
                     onPressed: () {
-                      print('IconButton pressed ...');
+                      print('SavedSearch pressed ...');
                     },
                   ),
                   Expanded(
@@ -179,7 +160,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 45.0, 0.0),
                             child: FlutterFlowDropDown<String>(
-                              controller: _model.dropDownValueController ??=
+                              controller: _model.sortByFieldsValueController ??=
                                   FormFieldController<String>(null),
                               options: [
                                 'CreatedBy',
@@ -189,8 +170,8 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                                 'Created',
                                 'Updated'
                               ],
-                              onChanged: (val) =>
-                                  setState(() => _model.dropDownValue = val),
+                              onChanged: (val) => setState(
+                                  () => _model.sortByFieldsValue = val),
                               width: 150.0,
                               height: 50.0,
                               textStyle:

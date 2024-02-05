@@ -1,12 +1,10 @@
 import '../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'admin_page_control_bar_model.dart';
-export 'admin_page_control_bar_model.dart';
+import 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
+export 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
 
 class AdminPageControlBarWidget extends StatefulWidget {
   const AdminPageControlBarWidget({Key? key}) : super(key: key);

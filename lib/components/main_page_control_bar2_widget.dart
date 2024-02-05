@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import '../flutter_flow_theme.dart';
-import 'main_page_control_bar2_model.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/models/main_page_control_bar2_model.dart';
 import 'actions_drop_down_menu_assets_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
+
  
 class MainPageControlBar2Widget extends StatefulWidget {
   final Function(int)? updateLimitCallback;

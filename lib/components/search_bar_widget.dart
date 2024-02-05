@@ -1,17 +1,17 @@
-import '../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'search_bar_model.dart';
-export 'search_bar_model.dart';
+import '../models/search_bar_model.dart';
+export '../models/search_bar_model.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  const SearchBarWidget({Key? key}) : super(key: key);
+  const SearchBarWidget({super.key});
 
   @override
-  _SearchBarWidgetState createState() => _SearchBarWidgetState();
+  State<SearchBarWidget> createState() => _SearchBarWidgetState();
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
@@ -42,7 +42,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(15,15,10,15),
+      padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 15.0),
       child: TextFormField(
         controller: _model.textController,
         focusNode: _model.textFieldFocusNode,

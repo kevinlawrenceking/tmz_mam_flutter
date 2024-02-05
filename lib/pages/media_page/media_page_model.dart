@@ -1,6 +1,6 @@
 import '/components/media_page_control_bar_widget.dart';
 import '/components/search_bar_widget.dart';
-import '/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 
 import 'media_page_widget.dart' show MediaPageWidget;
 import 'package:flutter/material.dart';

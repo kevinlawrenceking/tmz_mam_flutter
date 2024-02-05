@@ -1,6 +1,6 @@
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+import 'themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
 import 'save_your_search_widget.dart' show SaveYourSearchWidget;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

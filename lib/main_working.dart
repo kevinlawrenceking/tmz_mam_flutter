@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/details.dart'; // Import your ResponsiveLayout
+import 'package:tmz_mam_flutter/screens/details_screen.dart'; // Import your ResponsiveLayout
 
 void main() {
   runApp(MyApp());

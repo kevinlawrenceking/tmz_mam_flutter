@@ -5,7 +5,6 @@ import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tmz_mam_flutter/themeprovider.dart';
 

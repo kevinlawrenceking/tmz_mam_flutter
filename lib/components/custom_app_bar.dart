@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
+import '../themes/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '/pages/profile_menu/profile_menu_widget.dart'; // Make sure to import the ProfileMenuWidget
+import 'package:tmz_mam_flutter/screens/search_screen.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
 
-import '/flutter_flow/flutter_flow_drop_down.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
-import 'main_page_control_bar_widget.dart' show MainPageControlBarWidget;
 
-import '/search_screen.dart';
+
 
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

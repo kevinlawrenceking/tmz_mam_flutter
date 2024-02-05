@@ -1,17 +1,15 @@
-import '/components/search_bar_widget.dart';
-import '/flutter_flow/flutter_flow_drop_down.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
+import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
+import 'themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
+import 'controllers/form_field_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'advanced_search_window_model.dart';
+import 'package:tmz_mam_flutter/models/advanced_search_window_model.dart';
 import 'save_your_search_widget.dart';
 import 'package:motion_toast/motion_toast.dart';
 class AdvancedSearchWindowWidget extends StatefulWidget {

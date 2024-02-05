@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'theme_manager.dart';
-import 'app_theme.dart';
-import 'login_screen.dart'; // Ensure this file exists with your TestPage class
+import 'themes/theme_manager.dart';
+import 'themes/app_theme.dart';
+import 'screens/login_screen.dart'; // Ensure this file exists with your TestPage class
 
 void main() {
   runApp(

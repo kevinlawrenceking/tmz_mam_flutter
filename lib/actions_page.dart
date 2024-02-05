@@ -3,10 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:tmz_mam_flutter/themeprovider.dart'; // Import your ThemeProvider
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-
-
-
 
 
 class ActionsPage extends StatefulWidget {

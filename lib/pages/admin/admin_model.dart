@@ -1,9 +1,9 @@
-import '/backend/api_requests/api_calls.dart';
-import '/components/admin_page_control_bar_widget.dart';
-import '/components/search_bar_widget.dart';
-import '../../flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+import '../../services/api_calls.dart';
+import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
 import 'admin_widget.dart' show AdminWidget;
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
