@@ -1,12 +1,25 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/collections_page_control_bar2_model.dart';
-export '../models/collections_page_control_bar2_model.dart';
+import 'package:tmz_mam_flutter/models/collections_page_control_bar2_model.dart';
+export 'package:tmz_mam_flutter/models/collections_page_control_bar2_model.dart';
+
+/// CollectionsPageControlBar2Widget provides a user interface for navigating and
+/// managing a vast collection of items within the application. It showcases the total
+/// number of collections and allows users to adjust the number of results displayed
+/// per page through a dropdown menu. Additionally, navigation buttons are provided
+/// to move through the collection pages, enhancing the user experience in handling
+/// large datasets.
+///
+/// Key Features:
+/// - Displays the total count of collections available.
+/// - Offers a dropdown menu to select the number of items to display per page.
+/// - Includes navigation arrows for paging through collections.
+/// - Displays the current page position out of the total number of pages.
 
 class CollectionsPageControlBar2Widget extends StatefulWidget {
   const CollectionsPageControlBar2Widget({super.key});

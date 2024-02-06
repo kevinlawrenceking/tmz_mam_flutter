@@ -1,4 +1,4 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:tmz_mam_flutter/components/collections_page_control_bar2_widget.dart'
     show CollectionsPageControlBar2Widget;

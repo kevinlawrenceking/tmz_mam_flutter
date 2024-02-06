@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../themes/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '/pages/profile_menu/profile_menu_widget.dart'; // Make sure to import the ProfileMenuWidget
+import 'profile_menu_widget.dart'; // Make sure to import the ProfileMenuWidget
 import 'package:tmz_mam_flutter/screens/search_screen.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 
 
 

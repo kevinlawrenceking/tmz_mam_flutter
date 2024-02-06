@@ -4,8 +4,8 @@ import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/theme_provider.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class AdminPage extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/search_bar_model.dart';
-export '../models/search_bar_model.dart';
+import 'package:tmz_mam_flutter/models/search_bar_model.dart';
+export 'package:tmz_mam_flutter/models/search_bar_model.dart';
 
 class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({super.key});
@@ -90,7 +90,8 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           ),
           filled: true,
           fillColor: FlutterFlowTheme.of(context).primaryBackground,
-          contentPadding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 0.0, 24.0),
+          contentPadding:
+              const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 0.0, 24.0),
           prefixIcon: const Icon(
             Icons.search_outlined,
           ),

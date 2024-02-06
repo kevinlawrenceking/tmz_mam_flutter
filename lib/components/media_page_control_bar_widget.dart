@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
-export '../models/media_page_control_bar_model.dart';
+export 'package:tmz_mam_flutter/models/media_page_control_bar_model.dart';
 
 class MediaPageControlBarWidget extends StatefulWidget {
   const MediaPageControlBarWidget({super.key});

@@ -1,13 +1,38 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/models/collection_page_control_bar_model.dart';
 export 'package:tmz_mam_flutter/models/collection_page_control_bar_model.dart';
+
+/// CollectionPageControlBarWidget is a control bar designed for the collection
+/// page, providing various functionalities to enhance user interaction and
+/// navigation within the collection. It offers a comprehensive set of controls
+/// including sorting, filtering, view toggling, and pagination.
+///
+/// Features include:
+/// - Displaying the total number of assets within the collection.
+/// - An ellipsis icon that potentially opens up more options or actions.
+/// - A customizable sorting dropdown that allows users to sort the collection
+///   by different criteria such as creation date, update date, or other metadata.
+/// - View toggling icons that enable users to switch between different view
+///   modes (e.g., list, grid) for the assets.
+/// - A filter icon to apply specific filters to the collection.
+/// - Pagination controls including a dropdown to select the number of results
+///   per page and arrow icons for navigating through pages.
+///
+/// This widget leverages the `FlutterFlowTheme` for styling to ensure consistency
+/// with the application's design system. It also uses custom Flutter Flow widgets
+/// like `FlutterFlowDropDown` and `FlutterFlowIconButton` for dropdowns and
+/// icon buttons, respectively, providing a cohesive and user-friendly interface.
+///
+/// Usage:
+/// Place this widget at a suitable location within your collection page layout
+/// where users can easily access and interact with the control options.
 
 class CollectionPageControlBarWidget extends StatefulWidget {
   const CollectionPageControlBarWidget({super.key});

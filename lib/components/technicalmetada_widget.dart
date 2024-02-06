@@ -1,10 +1,10 @@
 import '../themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import '../models/technicalmetada_model.dart';
-export '../models/technicalmetada_model.dart';
+import 'package:tmz_mam_flutter/models/technicalmetada_model.dart';
+export 'package:tmz_mam_flutter/models/technicalmetada_model.dart';
 
 class TechnicalmetadaWidget extends StatefulWidget {
   const TechnicalmetadaWidget({super.key});

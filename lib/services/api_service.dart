@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../inventory.dart'; // Ensure this path is correct
+import 'package:tmz_mam_flutter/models/inventory.dart'; // Ensure this path is correct
 
 class ApiService {
   final String baseUrl;
@@ -11,12 +11,14 @@ class ApiService {
 
   // Fetch inventory data from the API with pagination
   Future<InventoryResponse> fetchInventory(int limit, int offset) async {
-    final url = Uri.parse('$baseUrl/inventory/light?limit=$limit&offset=$offset');
-    
+    final url =
+        Uri.parse('$baseUrl/inventory/light?limit=$limit&offset=$offset');
+
     try {
       final response = await http.get(url, headers: {
         'Content-Type': 'application/json',
-        'apiKey': 'ec2d2742-834f-11ee-b962-0242ac120002', // Consider securing your API key
+        'apiKey':
+            'ec2d2742-834f-11ee-b962-0242ac120002', // Consider securing your API key
       });
 
       if (response.statusCode == 200) {
@@ -27,13 +29,12 @@ class ApiService {
 
         return InventoryResponse.fromJson(data);
       } else {
-        throw Exception('Failed to load inventory. Status code: ${response.statusCode}. Response body: ${response.body}');
+        throw Exception(
+            'Failed to load inventory. Status code: ${response.statusCode}. Response body: ${response.body}');
       }
     } catch (e) {
       print('Error occurred while fetching inventory: $e');
       throw Exception('Error occurred while fetching inventory: $e');
     }
   }
-
-  
 }

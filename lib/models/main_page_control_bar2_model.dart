@@ -1,5 +1,5 @@
 
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers/form_field_controller.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar2_widget.dart' show MainPageControlBar2Widget;
 import 'package:flutter/material.dart';

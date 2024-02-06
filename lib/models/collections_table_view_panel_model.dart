@@ -1,5 +1,5 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_data_table.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_data_table.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/components/collections_table_view_panel_widget.dart'
     show CollectionsTableViewPanelWidget;
 import 'package:flutter/material.dart';

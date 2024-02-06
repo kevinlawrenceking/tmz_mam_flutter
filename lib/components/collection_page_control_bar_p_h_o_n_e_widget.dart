@@ -1,15 +1,38 @@
 // ignore_for_file: avoid_print
 
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/models/collection_page_control_bar_p_h_o_n_e_model.dart';
 export 'package:tmz_mam_flutter/models/collection_page_control_bar_p_h_o_n_e_model.dart';
+
+/// A widget that provides control options for the collection page on mobile devices.
+///
+/// This widget includes a set of control buttons and dropdown menus that allow
+/// users to interact with the collection page. Features include sorting,
+/// filtering, and navigating through the collection items. It is designed
+/// specifically for phone layouts, providing a responsive and intuitive
+/// user interface.
+///
+/// The control bar consists of multiple rows, each offering different
+/// functionalities:
+/// - The first row displays the total number of assets and an ellipsis icon
+///   for additional options.
+/// - The second row offers different view options for the assets, such as
+///   grid or list view.
+/// - The third row includes sorting options, allowing users to sort assets
+///   by various fields.
+/// - The final row contains a dropdown for pagination and navigation arrows
+///   to move between pages.
+///
+/// The widget utilizes the `FlutterFlowTheme` for consistent styling across
+/// the app and leverages custom widgets like `FlutterFlowDropDown` and
+/// `FlutterFlowIconButton` for dropdowns and buttons respectively.
 
 class CollectionPageControlBarPHONEWidget extends StatefulWidget {
   const CollectionPageControlBarPHONEWidget({super.key});

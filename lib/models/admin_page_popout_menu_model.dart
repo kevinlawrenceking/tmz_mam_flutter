@@ -1,10 +1,9 @@
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/components/actions_drop_down_menu_assets_widget.dart'
-    show ActionsDropDownMenuAssetsWidget;
+import '../components/admin_page_popout_menu_widget.dart' show AdminPagePopoutMenuWidget;
 import 'package:flutter/material.dart';
 
-class ActionsDropDownMenuAssetsModel
-    extends FlutterFlowModel<ActionsDropDownMenuAssetsWidget> {
+class AdminPagePopoutMenuModel
+    extends FlutterFlowModel<AdminPagePopoutMenuWidget> {
   /// Initialization and disposal methods.
 
   @override

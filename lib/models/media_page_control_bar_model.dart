@@ -1,4 +1,4 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart' show MediaPageControlBarWidget;
 import 'package:flutter/material.dart';
 

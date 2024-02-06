@@ -15,7 +15,7 @@ class CollectionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Collections',
+        title: 'Collectionz',
         actions: [
           IconButton(
             icon: const Icon(Icons.brightness_6),
@@ -47,7 +47,7 @@ class CollectionsPage extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Your Collectionz',
+                'Your Collections',
                 style: FlutterFlowTheme.of(context).headlineLarge,
               ),
             ),

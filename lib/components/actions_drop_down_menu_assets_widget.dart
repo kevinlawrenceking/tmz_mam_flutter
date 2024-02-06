@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../themes/flutter_flow_theme.dart';
-import '/actions_page.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/screens/actions_page.dart';
 
 /// A widget that displays a dropdown menu for actions.
 ///

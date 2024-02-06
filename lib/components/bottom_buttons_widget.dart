@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
-
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/screens/search_screen.dart';
-import 'package:tmz_mam_flutter/pages/collections/collections_widget.dart';
+import 'package:tmz_mam_flutter/components/collections_widget.dart';
 import 'package:tmz_mam_flutter/screens/admin_screen.dart';
+
+/// Builds the bottom navigation bar for the app.
+///
+/// This method returns a container with a row of bottom navigation buttons.
+/// Each button represents a different section of the app, allowing the user to
+/// navigate between the assets, collections, and admin screens.
+///
+/// The navigation bar uses a [SafeArea] widget to ensure it is not obscured
+/// by the lower part of the screen, such as the bottom notch or the
+/// system navigation bar on certain devices. The buttons are spaced evenly
+/// across the width of the screen using [MainAxisAlignment.spaceEvenly].
+///
+/// Each button is an instance of the [_BottomButton] private widget, configured
+/// with an icon, a label, and a callback function that navigates to the
+/// respective screen using a [MaterialPageRoute].
+///
 
 class BottomButtonsWidget extends StatelessWidget {
   const BottomButtonsWidget({super.key});

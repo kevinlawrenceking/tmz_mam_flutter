@@ -1,6 +1,6 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_data_table.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_data_table.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/models/collections_table_view_panel_model.dart';

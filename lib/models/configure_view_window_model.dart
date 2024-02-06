@@ -1,10 +1,9 @@
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/components/actions_drop_down_menu_assets_widget.dart'
-    show ActionsDropDownMenuAssetsWidget;
+import '../components/configure_view_window_widget.dart' show ConfigureViewWindowWidget;
 import 'package:flutter/material.dart';
 
-class ActionsDropDownMenuAssetsModel
-    extends FlutterFlowModel<ActionsDropDownMenuAssetsWidget> {
+class ConfigureViewWindowModel
+    extends FlutterFlowModel<ConfigureViewWindowWidget> {
   /// Initialization and disposal methods.
 
   @override

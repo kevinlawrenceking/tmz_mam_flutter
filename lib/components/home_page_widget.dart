@@ -2,15 +2,15 @@
 
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
-import '../flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../models/home_page_model.dart';
-export '../models/home_page_model.dart';
+import 'package:tmz_mam_flutter/models/home_page_model.dart';
+export 'package:tmz_mam_flutter/models/home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({super.key});

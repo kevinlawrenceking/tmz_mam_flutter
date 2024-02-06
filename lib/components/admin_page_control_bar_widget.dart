@@ -1,46 +1,48 @@
 // ignore_for_file: deprecated_member_use_from_same_package, duplicate_ignore
 
-import '../flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
+
+/// A widget used in the admin section of the TMZ Media Asset Manager to provide control options.
+///
+/// This widget displays a control bar at the top of the admin page, allowing administrators
+/// to access various administrative functionalities such as navigating through menu options
+/// and viewing the number of users. It's designed to enhance the admin user experience
+/// by providing quick access to common tasks.
 export 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
 
 class AdminPageControlBarWidget extends StatefulWidget {
   const AdminPageControlBarWidget({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AdminPageControlBarWidgetState createState() =>
-      _AdminPageControlBarWidgetState();
+  AdminPageControlBarWidgetState createState() =>
+      AdminPageControlBarWidgetState();
 }
 
-class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
+class AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
   late AdminPageControlBarModel _model;
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
-  }
 
   @override
   void initState() {
     super.initState();
+    // Initialize the AdminPageControlBarModel.
     _model = createModel(context, () => AdminPageControlBarModel());
   }
 
   @override
   void dispose() {
+    // Dispose of the model to clean up resources when the widget is removed from the widget tree.
     _model.maybeDispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Build the admin control bar UI.
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
       child: Container(
@@ -58,6 +60,7 @@ class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
         ),
         child: Stack(
           children: [
+            // Menu icon and user count display.
             Padding(
               padding:
                   const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
@@ -88,15 +91,13 @@ class _AdminPageControlBarWidgetState extends State<AdminPageControlBarWidget> {
                     child: Text(
                       'Users (4)',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            // ignore: duplicate_ignore
                             fontFamily:
-                                // ignore: deprecated_member_use_from_same_package
                                 FlutterFlowTheme.of(context).bodyMediumFamily,
                             fontSize: 18.0,
                             fontWeight: FontWeight.w600,
                             useGoogleFonts: GoogleFonts.asMap().containsKey(
-                                // ignore: deprecated_member_use_from_same_package
-                                FlutterFlowTheme.of(context).bodyMediumFamily),
+                              FlutterFlowTheme.of(context).bodyMediumFamily,
+                            ),
                           ),
                     ),
                   ),

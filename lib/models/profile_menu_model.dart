@@ -1,10 +1,8 @@
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/components/actions_drop_down_menu_assets_widget.dart'
-    show ActionsDropDownMenuAssetsWidget;
+import '../components/profile_menu_widget.dart' show ProfileMenuWidget;
 import 'package:flutter/material.dart';
 
-class ActionsDropDownMenuAssetsModel
-    extends FlutterFlowModel<ActionsDropDownMenuAssetsWidget> {
+class ProfileMenuModel extends FlutterFlowModel<ProfileMenuWidget> {
   /// Initialization and disposal methods.
 
   @override

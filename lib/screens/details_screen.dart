@@ -4,14 +4,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/theme_provider.dart'; // Ensure the path is correct
+import 'package:tmz_mam_flutter/themes/theme_provider.dart'; // Ensure the path is correct
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import 'package:tmz_mam_flutter/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/metadata_update_form_widget.dart'; // Ensure this is the correct path to your MetadataUpdateFormWidget
+import 'package:tmz_mam_flutter/components/metadata_update_form_widget.dart'; // Ensure this is the correct path to your MetadataUpdateFormWidget
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key});

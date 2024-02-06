@@ -1,4 +1,4 @@
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/components/collections_page_grid_view_widget.dart'
     show CollectionsPageGridViewWidget;
 import 'package:flutter/material.dart';

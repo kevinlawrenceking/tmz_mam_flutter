@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_drop_down.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_icon_button.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_widgets.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
+import 'package:tmz_mam_flutter/components/flutter_flow_widgets.dart';
 import 'package:tmz_mam_flutter/controllers/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

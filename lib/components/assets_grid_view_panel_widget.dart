@@ -1,9 +1,15 @@
-import '../themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/flutter_flow/flutter_flow_util.dart';
+/// A widget that displays a grid view of assets.
+///
+/// This widget shows a collection of cards, each representing an asset with
+/// an image and associated metadata. It is designed to be used within the
+/// context of an asset management application.
+library;
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/assets_grid_view_panel_model.dart';
-export '../models/assets_grid_view_panel_model.dart';
+import 'package:tmz_mam_flutter/models/assets_grid_view_panel_model.dart';
+export 'package:tmz_mam_flutter/models/assets_grid_view_panel_model.dart';
 
 class AssetsGridViewPanelWidget extends StatefulWidget {
   const AssetsGridViewPanelWidget({super.key});
@@ -13,6 +19,10 @@ class AssetsGridViewPanelWidget extends StatefulWidget {
       _AssetsGridViewPanelWidgetState();
 }
 
+/// The state class for [AssetsGridViewPanelWidget].
+///
+/// This class manages the state for the grid view of assets, including the
+/// fetching of asset data and handling user interactions.
 class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
   late AssetsGridViewPanelModel _model;
 
@@ -25,13 +35,14 @@ class _AssetsGridViewPanelWidgetState extends State<AssetsGridViewPanelWidget> {
   @override
   void initState() {
     super.initState();
+    // Initialize the model with a context and a factory method.
     _model = createModel(context, () => AssetsGridViewPanelModel());
   }
 
   @override
   void dispose() {
+    // Dispose of the model if necessary.
     _model.maybeDispose();
-
     super.dispose();
   }
 
