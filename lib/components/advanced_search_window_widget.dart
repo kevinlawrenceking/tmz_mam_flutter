@@ -215,11 +215,10 @@ class _AdvancedSearchWindowWidgetState
                                                   fontWeight: FontWeight.w600,
                                                   useGoogleFonts: GoogleFonts
                                                           .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              // ignore: deprecated_member_use_from_same_package
-                                                              .bodyMediumFamily),
+                                                      .containsKey(FlutterFlowTheme
+                                                              .of(context)
+                                                          // ignore: deprecated_member_use_from_same_package
+                                                          .bodyMediumFamily),
                                                 ),
                                           ),
                                         ),

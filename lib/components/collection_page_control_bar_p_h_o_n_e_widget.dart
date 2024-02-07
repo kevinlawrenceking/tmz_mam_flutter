@@ -114,7 +114,7 @@ class _CollectionPageControlBarPHONEWidgetState
                     borderColor: FlutterFlowTheme.of(context).primary,
                     borderRadius: 15.0,
                     borderWidth: 2.0,
-                    buttonSize: 40.0,
+                    buttonSize: 36.0,
                     fillColor: FlutterFlowTheme.of(context).primaryBackground,
                     icon: Icon(
                       Icons.manage_search_rounded,

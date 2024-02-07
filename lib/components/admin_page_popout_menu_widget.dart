@@ -106,8 +106,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   padding: const EdgeInsetsDirectional.fromSTEB(
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
-                    width: double.infinity,
-                    height: 50.0,
+            
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),
@@ -168,7 +167,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
-                    height: 50.0,
+            
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),
@@ -229,7 +228,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
-                    height: 50.0,
+           
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),
@@ -290,7 +289,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
-                    height: 50.0,
+              
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),
@@ -351,7 +350,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
-                    height: 50.0,
+          
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),
@@ -410,7 +409,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
                     width: double.infinity,
-                    height: 50.0,
+         
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),
@@ -468,8 +467,7 @@ class AdminPagePopoutMenuWidgetState extends State<AdminPagePopoutMenuWidget> {
                   padding: const EdgeInsetsDirectional.fromSTEB(
                       16.0, 0.0, 16.0, 12.0),
                   child: Container(
-                    width: double.infinity,
-                    height: 50.0,
+       
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).primary,
                       borderRadius: BorderRadius.circular(12.0),

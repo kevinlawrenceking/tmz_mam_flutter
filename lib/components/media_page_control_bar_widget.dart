@@ -29,7 +29,7 @@ class MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(15.0, 0, 15.0, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(15.0, 5, 15.0, 5),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -87,7 +87,7 @@ class MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
       borderColor: FlutterFlowTheme.of(context).primary,
       borderRadius: 15.0,
       borderWidth: 2.0,
-      buttonSize: 40.0,
+      buttonSize: 36.0,
       fillColor: FlutterFlowTheme.of(context).secondaryBackground,
       icon: Icon(
         icon,

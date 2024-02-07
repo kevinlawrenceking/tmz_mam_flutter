@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/models/main_page_control_bar_model.dart';
 export 'package:tmz_mam_flutter/models/main_page_control_bar_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainPageControlBarWidget extends StatefulWidget {
   const MainPageControlBarWidget({super.key});
@@ -39,6 +39,14 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
     sortByFieldsValueController ??= FormFieldController<String?>(null);
   }
 
+  // Define the _launchURL method here
+  Future<void> _launchURL() async {
+    final Uri url = Uri.parse('http://tmztools/reach/');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   void dispose() {
     // Dispose of sortByFieldsValueController if necessary
@@ -51,18 +59,17 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
           child: Container(
             width: 100.0,
-            height: 75.0,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).secondaryBackground,
               boxShadow: const [
                 BoxShadow(
                   blurRadius: 4.0,
-                  color: Color(0x33000000),
+                  color: Color.fromARGB(51, 73, 68, 68),
                   offset: Offset(0.0, 2.0),
                 )
               ],
@@ -75,20 +82,17 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(
-                        30.0, 0.0, 30.0, 0.0),
+                        20.0, 0.0, 20.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () {
-                        print('uploadButton pressed ...');
-                      },
+                      onPressed: _launchURL,
                       text: 'Upload',
                       icon: const Icon(
                         Icons.file_upload_outlined,
                         size: 15.0,
                       ),
                       options: FFButtonOptions(
-                        height: 50.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            30.0, 0.0, 30.0, 0.0),
+                            20.0, 0.0, 20.0, 0.0),
                         iconPadding: const EdgeInsetsDirectional.fromSTEB(
                             0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
@@ -104,7 +108,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                             ),
                         elevation: 3.0,
                         borderSide: const BorderSide(
-                          color: Colors.transparent,
+                          color: Color.fromARGB(116, 3, 3, 3),
                           width: 1.0,
                         ),
                         borderRadius: BorderRadius.circular(30.0),
@@ -116,28 +120,31 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                         0.0, 0.0, 10.0, 0.0),
                     child: FlutterFlowIconButton(
                       borderColor: FlutterFlowTheme.of(context).primary,
-                      borderRadius: 15.0,
+                      borderRadius: 12.0,
                       borderWidth: 2.0,
-                      buttonSize: 40.0,
+                      buttonSize: 36.0,
                       fillColor: FlutterFlowTheme.of(context).primaryBackground,
                       icon: Icon(
                         Icons.manage_search_rounded,
                         color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24.0,
+                        size: 18.0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        // Opens the drawer
+                        Scaffold.of(context).openDrawer();
+                      },
                     ),
                   ),
                   FlutterFlowIconButton(
                     borderColor: FlutterFlowTheme.of(context).primary,
-                    borderRadius: 15.0,
-                    borderWidth: 2.0,
-                    buttonSize: 40.0,
+                    borderRadius: 12.0,
+                    borderWidth: 1.0,
+                    buttonSize: 36.0,
                     fillColor: FlutterFlowTheme.of(context).primaryBackground,
                     icon: Icon(
                       Icons.star,
                       color: FlutterFlowTheme.of(context).primaryText,
-                      size: 24.0,
+                      size: 18.0,
                     ),
                     onPressed: () {
                       print('SavedSearch pressed ...');
@@ -153,7 +160,6 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                           Icon(
                             Icons.arrow_upward,
                             color: FlutterFlowTheme.of(context).secondaryText,
-                            size: 32.0,
                           ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
@@ -161,61 +167,53 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                             child: Icon(
                               Icons.arrow_downward,
                               color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 32.0,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 45.0, 0.0),
-                            child: FlutterFlowDropDown<String>(
-                              // Use the sortByFieldsValueController directly without conditional assignment
-                              controller: sortByFieldsValueController,
-                              options: const [
-                                'CreatedBy',
-                                'QC Notes',
-                                'Headline',
-                                'Celebrity',
-                                'Created',
-                                'Updated'
+                                20.0, 10.0, 20, 10),
+                            child: DropdownButton<String>(
+                              value: _model.sortByFieldsValue,
+                              onChanged: (val) {
+                                setState(() {
+                                  _model.sortByFieldsValue = val;
+                                });
+                              },
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 'CreatedBy',
+                                  child: Text('Created By'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'QC Notes',
+                                  child: Text('QC Notes'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'Headline',
+                                  child: Text('Headline'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'Celebrity',
+                                  child: Text('Celebrity'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'Created',
+                                  child: Text('Created'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'Updated',
+                                  child: Text('Updated'),
+                                ),
                               ],
-                              onChanged: (val) => setState(
-                                  () => _model.sortByFieldsValue = val),
-                              width: 150.0,
-                              height: 50.0,
-                              textStyle:
-                                  FlutterFlowTheme.of(context).bodyMedium,
-                              hintText: 'Sort By',
-                              icon: Icon(
-                                Icons.keyboard_arrow_down_rounded,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                size: 24.0,
-                              ),
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              elevation: 2.0,
-                              borderColor:
-                                  FlutterFlowTheme.of(context).alternate,
-                              borderWidth: 2.0,
-                              borderRadius: 8.0,
-                              margin: const EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 4.0, 16.0, 4.0),
-                              hidesUnderline: true,
-                              isOverButton: true,
-                              isSearchable: false,
-                              isMultiSelect: false,
+                              hint: Text('Sort By'),
                             ),
                           ),
-                          Icon(
-                            Icons.image_outlined,
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            size: 24.0,
-                          ),
-                          Icon(
-                            Icons.image_outlined,
-                            color: FlutterFlowTheme.of(context).secondaryText,
-                            size: 32.0,
-                          ),
+                          Icon(Icons.image_outlined,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              size: 28),
+                          Icon(Icons.image_outlined,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              size: 32),
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 45.0, 0.0),

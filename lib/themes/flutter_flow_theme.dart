@@ -15,6 +15,8 @@ enum DeviceSize {
 }
 
 abstract class FlutterFlowTheme {
+  late Color customColor;
+  Color get shadowColor;
   static DeviceSize deviceSize = DeviceSize.mobile;
 
   static Future initialize() async =>
@@ -45,6 +47,9 @@ abstract class FlutterFlowTheme {
   Color get secondaryColor => secondary;
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
+
+  // late EdgeInsets buttonPadding;
+  // late EdgeInsets containerPadding;
 
   late Color primary;
   late Color secondary;
@@ -146,14 +151,37 @@ DeviceSize getDeviceSize(BuildContext context) {
 }
 
 class LightModeTheme extends FlutterFlowTheme {
+  ThemeData get themeData {
+    return ThemeData(
+      buttonTheme: const ButtonThemeData(
+        // Set default button padding here
+        padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 12.0),
+
+        // Additional decoration properties
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 15.0),
+          // Other style properties...
+        ),
+      ),
+      // Other ThemeData customizations...
+    );
+  }
+
   @Deprecated('Use primary instead')
   Color get primaryColor => primary;
   @Deprecated('Use secondary instead')
   Color get secondaryColor => secondary;
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
-
+  Color get shadowColor => const Color(0xFFE0E0E0);
+  late Color customColor = const Color(0xFFE0E0E0);
   late Color primary = const Color(0xFFCF0000);
+
   late Color secondary = const Color(0xFF000000);
   late Color tertiary = const Color(0xFF8E0000);
   late Color alternate = const Color(0xFF1A1A1A);
@@ -545,13 +573,31 @@ class DesktopTypography extends Typography {
 }
 
 class DarkModeTheme extends FlutterFlowTheme {
+  ThemeData get themeData {
+    return ThemeData(
+      inputDecorationTheme: const InputDecorationTheme(
+        contentPadding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 12.0),
+        // Additional decoration properties
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+          // Other style properties...
+        ),
+      ),
+      // Other ThemeData customizations...
+    );
+  }
+
   @Deprecated('Use primary instead')
   Color get primaryColor => primary;
   @Deprecated('Use secondary instead')
   Color get secondaryColor => secondary;
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
-
+  Color get shadowColor => const Color(0xFF303030); // Dark theme shadow color
+  late Color customColor =
+      const Color(0xFF303030); // Example dark mode custom color
   late Color primary = const Color(0xFF8E0000);
   late Color secondary = const Color(0xFF1A1A1A);
   late Color tertiary = const Color(0xFF590000);
