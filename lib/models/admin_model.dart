@@ -4,6 +4,7 @@ import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/components/admin_widget.dart' show AdminWidget;
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:tmz_mam_flutter/models/search_bar_model.dart';
 
 class AdminModel extends FlutterFlowModel<AdminWidget> {
   ///  State fields for stateful widgets in this page.

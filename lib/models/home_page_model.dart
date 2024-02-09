@@ -1,11 +1,10 @@
-
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
 import '/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import '../components/home_page_widget.dart' show HomePageWidget;
 import 'package:flutter/material.dart';
 import 'main_page_control_bar2_model.dart';
-
+import 'package:tmz_mam_flutter/models/search_bar_model.dart';
 
 class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   ///  State fields for stateful widgets in this page.

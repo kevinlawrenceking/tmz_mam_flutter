@@ -34,6 +34,7 @@ class ApiService {
         final data = jsonDecode(response.body);
 
         // Print the total records for debugging
+        print('Total Records from API: ${data['totalRecords']}');
 
         return InventoryResponse.fromJson(data);
       } else {
@@ -41,6 +42,7 @@ class ApiService {
             'Failed to load inventory. Status code: ${response.statusCode}. Response body: ${response.body}');
       }
     } catch (e) {
+      print('Error occurred while fetching inventory: $e');
       throw Exception('Error occurred while fetching inventory: $e');
     }
   }

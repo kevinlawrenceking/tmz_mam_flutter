@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
 
-import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
 import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
 import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import '../themes/flutter_flow_theme.dart';
@@ -76,7 +76,7 @@ class _AdvancedSearchWindowWidgetState
                           child: wrapWithModel(
                             model: _model.searchBarModel,
                             updateCallback: () => setState(() {}),
-                            child: const SearchBarWidget(),
+                            child: const SearchBarOldWidget(),
                           ),
                         ),
                       ),

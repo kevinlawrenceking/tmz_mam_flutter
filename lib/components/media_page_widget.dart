@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 // Import other necessary packages and widgets
 
 import '/components/media_page_control_bar_widget.dart';
-import '/components/search_bar_widget.dart';
+import '/components/search_bar_old_widget.dart';
 import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
@@ -118,7 +118,7 @@ class MediaPageWidgetState extends State<MediaPageWidget> {
                 child: wrapWithModel(
                   model: model.searchBarModel,
                   updateCallback: () => setState(() {}),
-                  child: const SearchBarWidget(),
+                  child: const SearchBarOldWidget(),
                 ),
               ),
               Padding(

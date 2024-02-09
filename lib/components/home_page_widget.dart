@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
-import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 
@@ -123,7 +123,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
                 wrapWithModel(
                   model: _model.searchBarModel,
                   updateCallback: () => setState(() {}),
-                  child: const SearchBarWidget(),
+                  child: const SearchBarOldWidget(),
                 ),
                 wrapWithModel(
                   model: _model.mainPageControlBarModel,

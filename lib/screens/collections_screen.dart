@@ -1,7 +1,7 @@
 // collections.dart
 import 'package:flutter/material.dart';
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
-import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
@@ -28,7 +28,7 @@ class CollectionsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const SearchBarWidget(), // Search bar component
+          const SearchBarOldWidget(), // Search bar component
           const MediaPageControlBarWidget(), // Toolbar component
 
           Padding(

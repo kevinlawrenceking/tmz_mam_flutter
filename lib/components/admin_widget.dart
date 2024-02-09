@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
+import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
 import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
 
 /// AdminWidget is a comprehensive administration interface within the application,
@@ -64,7 +64,7 @@ class AdminWidgetState extends State<AdminWidget> {
       body: SafeArea(
         child: Column(
           children: [
-            const SearchBarWidget(),
+            const SearchBarOldWidget(),
             const AdminPageControlBarWidget(),
             Expanded(
               child: DataTable(

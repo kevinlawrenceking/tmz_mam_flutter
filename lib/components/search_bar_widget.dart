@@ -1,39 +1,29 @@
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/search_bar_model.dart';
-export 'package:tmz_mam_flutter/models/search_bar_model.dart';
+import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  const SearchBarWidget({super.key});
+  final Function(String) onSearchSubmit;
+
+  const SearchBarWidget({Key? key, required this.onSearchSubmit})
+      : super(key: key);
 
   @override
-  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+  _SearchBarWidgetState createState() => _SearchBarWidgetState();
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
-  late SearchBarModel _model;
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-    _model.onUpdate();
-  }
+  late TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => SearchBarModel());
-
-    _model.textController ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
+    _textController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _model.maybeDispose();
-
+    _textController.dispose();
     super.dispose();
   }
 
@@ -42,10 +32,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 10.0),
       child: TextFormField(
-        controller: _model.textController,
-        focusNode: _model.textFieldFocusNode,
-        autofocus: true,
-        obscureText: false,
+        controller: _textController,
         decoration: InputDecoration(
           labelText: 'Search ...',
           labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
@@ -74,33 +61,17 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             ),
             borderRadius: BorderRadius.circular(12.0),
           ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: FlutterFlowTheme.of(context).error,
-              width: 2.0,
-            ),
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: FlutterFlowTheme.of(context).error,
-              width: 2.0,
-            ),
-            borderRadius: BorderRadius.circular(12.0),
-          ),
           filled: true,
           fillColor: FlutterFlowTheme.of(context).primaryBackground,
-          contentPadding:
-              const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 0.0, 24.0),
-          prefixIcon: const Icon(
-            Icons.search_outlined,
-          ),
-          suffixIcon: const Icon(
-            Icons.highlight_off_outlined,
+          prefixIcon: const Icon(Icons.search_outlined),
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.clear),
+            onPressed: () => _textController.clear(),
           ),
         ),
-        style: FlutterFlowTheme.of(context).bodyMedium,
-        validator: _model.textControllerValidator.asValidator(context),
+        onFieldSubmitted: (value) {
+          widget.onSearchSubmit(value);
+        },
       ),
     );
   }

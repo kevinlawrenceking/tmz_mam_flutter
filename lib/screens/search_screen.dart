@@ -12,185 +12,119 @@ import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import '../components/advanced_search_window_widget.dart';
 import 'package:tmz_mam_flutter/themes/theme_provider.dart';
 
-/// A screen that provides search functionality for photo assets within the TMZ Media Asset Manager.
-///
-/// This screen allows users to search for assets using various criteria, view search results in a grid format,
-/// and access detailed information about each asset. It includes an advanced search drawer, toggleable theme,
-/// and a bottom navigation bar for additional actions.
-
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({Key? key}) : super(key: key);
 
   @override
   SearchScreenState createState() => SearchScreenState();
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  int limit = 10; // Number of items per page
-  int offset = 0; // Starting offset
+  int limit = 10;
+  int offset = 0;
+  String searchTerm = '';
+  late Future<InventoryResponse> futureInventoryResponse;
 
-  void toggleTheme() {
-    // Toggle the theme
-    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+  @override
+  void initState() {
+    super.initState();
+    futureInventoryResponse =
+        fetchInventory(); // Initialize futureInventoryResponse here
+  }
+
+  Future<InventoryResponse> fetchInventory() async {
+    var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
+    return await apiService.fetchInventory(limit, offset,
+        searchTerm: searchTerm);
   }
 
   void updateLimit(int newLimit) {
     setState(() {
       limit = newLimit;
+      offset = 0; // Reset offset to start from the beginning with new limit
+      futureInventoryResponse = fetchInventory(); // Re-fetch with new limit
     });
-    fetchInventory(limit, offset);
   }
 
-  Future<InventoryResponse> fetchInventory(int limit, int offset) async {
-    var apiService = ApiService(baseUrl: 'http://tmztoolsdev:3000');
-    // This should return InventoryResponse, not List<Inventory>
-    InventoryResponse inventoryResponse =
-        await apiService.fetchInventory(limit, offset);
-    return inventoryResponse;
+  void loadMore() {
+    setState(() {
+      offset += limit; // Increase offset to fetch the next set of items
+      futureInventoryResponse = fetchInventory(); // Re-fetch with new offset
+    });
   }
-
-  bool isRightPanelOpen = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'TMZ Media Asset Manager', // Pass a String directly
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.brightness_6),
-            onPressed: () {
-              // Use Provider to toggle the theme
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AccountSettingsScreen()));
-            },
-          ),
-          // Additional actions can be added here
-        ],
-      ),
-      drawer: const SizedBox(
-        width: 900, // Set the drawer width
-        child: AdvancedSearchWindowWidget(), // Place your widget here
-        // You can also add color or decoration to the container if needed
-        // For example, to add a background color:
-        // color: Colors.white,
-      ),
+      appBar: CustomAppBar(title: 'TMZ Media Asset Manager'),
+      drawer: const SizedBox(width: 900, child: AdvancedSearchWindowWidget()),
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(0.0),
-                  child: SearchBarWidget(),
+                SearchBarWidget(
+                  onSearchSubmit: (String term) {
+                    setState(() {
+                      searchTerm = term;
+                      offset =
+                          0; // Reset offset to start from the first page after search
+                    });
+                    fetchInventory();
+                  },
                 ),
                 const MainPageControlBarWidget(),
-                MainPageControlBar2Widget(
-                    updateLimitCallback:
-                        updateLimit) // Pass the correct value here),
-                ,
+                MainPageControlBar2Widget(updateLimitCallback: updateLimit),
                 FutureBuilder<InventoryResponse>(
-                  future: fetchInventory(limit, offset),
+                  future: futureInventoryResponse,
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting &&
-                        offset == 0) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
+                    }
+                    if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (snapshot.hasData) {
+                    }
+                    if (snapshot.hasData) {
                       final inventoryList = snapshot.data!.inventoryList;
-                      final totalRecords = snapshot
-                          .data!.totalRecords; // Update totalRecords here
-
+                      final totalRecords = snapshot.data!.totalRecords;
                       return Column(
                         children: [
-                          // Display totalRecords somewhere in your UI
                           Text('Total Records: $totalRecords'),
                           AnimatedSwitcher(
                             duration: const Duration(milliseconds: 500),
                             child: buildGridContent(inventoryList),
                           ),
+                          if (inventoryList.length <
+                              totalRecords) // Show load more button only if there are more items to load
+                            ElevatedButton(
+                              onPressed: loadMore,
+                              child: Text('Load More'),
+                            )
                         ],
                       );
-                    } else {
-                      return const Center(child: Text('No data found'));
                     }
+                    return const Center(child: Text('No data found'));
                   },
                 )
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isRightPanelOpen = !isRightPanelOpen;
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: isRightPanelOpen
-                    ? MediaQuery.of(context).size.width * 0.25
-                    : 0,
-                color: Colors.grey[850],
-                child: isRightPanelOpen
-                    ? const Center(child: Text('Right Panel Content'))
-                    : null,
-              ),
-            ),
-          ),
+          // Additional UI elements...
         ],
       ),
       bottomNavigationBar: const BottomButtonsWidget(),
     );
   }
 
-  Widget buildAdvancedSearchControls() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(onPressed: () {}, child: const Text('Advanced Search')),
-          Row(
-            children: [
-              const SizedBox(width: 8),
-              DropdownButton<String>(
-                value: 'Last Updated',
-                onChanged: (newValue) {},
-                items: <String>[
-                  'Last Updated',
-                  'Created',
-                  'Celebrity',
-                  'Headline'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              Switch(value: true, onChanged: (val) {}),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Build grid content and other helper methods...
 
-  Widget buildGridContent(List<Inventory> data) {
+  Widget buildGridContent(List<Inventory> inventoryList) {
     return Wrap(
-      key: ValueKey<int>(offset),
+      key: ValueKey<int>(
+          offset), // Use offset as key to ensure widget rebuilds when offset changes
       spacing: 8.0,
       runSpacing: 8.0,
-      children: data
+      children: inventoryList
           .map((inventoryItem) => buildAnimatedCard(context, inventoryItem))
           .toList(),
     );
@@ -201,8 +135,9 @@ class SearchScreenState extends State<SearchScreen> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const DetailsScreen(),
-          ),
+              builder: (context) => DetailsScreen(
+                  inventoryItem:
+                      inventoryItem)), // Make sure DetailsScreen accepts an Inventory item as a parameter
         );
       },
       child: AnimatedOpacity(
@@ -215,7 +150,8 @@ class SearchScreenState extends State<SearchScreen> {
 
   Widget buildCard(BuildContext context, Inventory inventoryItem) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 5 - 16,
+      width: MediaQuery.of(context).size.width / 5 -
+          16, // Adjust the width as needed
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -223,10 +159,10 @@ class SearchScreenState extends State<SearchScreen> {
           children: [
             Container(
               color: Colors.grey,
-              height: 180,
+              height: 180, // Adjust the height as needed
               child: Image.network(
                 inventoryItem.thumbnail,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
             Padding(
@@ -244,8 +180,8 @@ class SearchScreenState extends State<SearchScreen> {
                   const Divider(),
                   const SizedBox(height: 4),
                   ...inventoryItem.metadata.map((metadataItem) {
-                    var label = metadataItem["metalabel"];
-                    var value = metadataItem["metavalue"];
+                    var label = metadataItem['metalabel'];
+                    var value = metadataItem['metavalue'];
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
                       child: Column(
@@ -256,9 +192,7 @@ class SearchScreenState extends State<SearchScreen> {
                             style: Theme.of(context)
                                     .textTheme
                                     .bodySmall
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ) ??
+                                    ?.copyWith(fontWeight: FontWeight.bold) ??
                                 const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
@@ -270,7 +204,7 @@ class SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                     );
-                  }),
+                  }).toList(),
                 ],
               ),
             ),
@@ -279,8 +213,10 @@ class SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-}
 
-void main() {
-  runApp(const MaterialApp(home: SearchScreen()));
+  @override
+  void dispose() {
+    super.dispose();
+    // Perform any necessary cleanup
+  }
 }
