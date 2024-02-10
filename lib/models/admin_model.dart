@@ -1,5 +1,4 @@
 import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
-import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:tmz_mam_flutter/components/admin_widget.dart' show AdminWidget;
 import 'package:data_table_2/data_table_2.dart';
