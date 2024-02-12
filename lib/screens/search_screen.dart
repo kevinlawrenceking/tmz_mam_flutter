@@ -4,6 +4,7 @@ import 'package:tmz_mam_flutter/screens/account_settings_screen.dart';
 import 'package:tmz_mam_flutter/services/api_service.dart'; // Import your API service
 import 'package:tmz_mam_flutter/models/inventory.dart'; // Import your Inventory model
 import 'package:tmz_mam_flutter/screens/details_screen.dart';
+import 'package:tmz_mam_flutter/models/InventoryDetail.dart';
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
@@ -69,6 +70,8 @@ class SearchScreenState extends State<SearchScreen> {
                       searchTerm = term;
                       offset =
                           0; // Reset offset to start from the first page after search
+                      futureInventoryResponse =
+                          fetchInventory(); // Re-fetch inventory with the new search term
                     });
                     fetchInventory();
                   },
@@ -112,7 +115,7 @@ class SearchScreenState extends State<SearchScreen> {
           // Additional UI elements...
         ],
       ),
-      bottomNavigationBar: const BottomButtonsWidget(),
+      bottomNavigationBar: const BottomButtonsWidget(currentScreen: 'Assets'),
     );
   }
 
@@ -135,9 +138,11 @@ class SearchScreenState extends State<SearchScreen> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => DetailsScreen(
-                  inventoryItem:
-                      inventoryItem)), // Make sure DetailsScreen accepts an Inventory item as a parameter
+            builder: (context) => DetailsScreen(
+              inventoryId: inventoryItem
+                  .id, // Pass the inventory ID to the DetailsScreen
+            ),
+          ),
         );
       },
       child: AnimatedOpacity(

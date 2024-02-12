@@ -37,41 +37,12 @@ class FlutterFlowIconButton extends StatefulWidget {
 
 class _FlutterFlowIconButtonState extends State<FlutterFlowIconButton> {
   bool loading = false;
-  late double? iconSize;
-  late Color? iconColor;
   late Widget effectiveIcon;
 
   @override
   void initState() {
     super.initState();
-    _updateIcon();
-  }
-
-  @override
-  void didUpdateWidget(FlutterFlowIconButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _updateIcon();
-  }
-
-  void _updateIcon() {
-    final isFontAwesome = widget.icon is FaIcon;
-    if (isFontAwesome) {
-      FaIcon icon = widget.icon as FaIcon;
-      effectiveIcon = FaIcon(
-        icon.icon,
-        size: icon.size,
-      );
-      iconSize = icon.size;
-      iconColor = icon.color;
-    } else {
-      Icon icon = widget.icon as Icon;
-      effectiveIcon = Icon(
-        icon.icon,
-        size: icon.size,
-      );
-      iconSize = icon.size;
-      iconColor = icon.color;
-    }
+    effectiveIcon = widget.icon;
   }
 
   @override
@@ -88,19 +59,8 @@ class _FlutterFlowIconButtonState extends State<FlutterFlowIconButton> {
           );
         },
       ),
-      iconColor: MaterialStateProperty.resolveWith<Color?>(
-        (states) {
-          if (states.contains(MaterialState.disabled) &&
-              widget.disabledIconColor != null) {
-            return widget.disabledIconColor;
-          }
-          if (states.contains(MaterialState.hovered) &&
-              widget.hoverIconColor != null) {
-            return widget.hoverIconColor;
-          }
-          return iconColor;
-        },
-      ),
+      padding:
+          MaterialStateProperty.all(EdgeInsets.zero), // Set padding to zero
       backgroundColor: MaterialStateProperty.resolveWith<Color?>(
         (states) {
           if (states.contains(MaterialState.disabled) &&
@@ -111,56 +71,42 @@ class _FlutterFlowIconButtonState extends State<FlutterFlowIconButton> {
               widget.hoverColor != null) {
             return widget.hoverColor;
           }
-
           return widget.fillColor;
         },
       ),
-      overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-        if (states.contains(MaterialState.pressed)) {
-          return null;
-        }
-        return widget.hoverColor == null ? null : Colors.transparent;
-      }),
     );
 
     return SizedBox(
       width: widget.buttonSize,
       height: widget.buttonSize,
-      child: Theme(
-        data: Theme.of(context).copyWith(),
-        child: IgnorePointer(
-          ignoring: (widget.showLoadingIndicator && loading),
-          child: IconButton(
-            icon: (widget.showLoadingIndicator && loading)
-                ? SizedBox(
-                    width: iconSize,
-                    height: iconSize,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        iconColor ?? Colors.white,
-                      ),
-                    ),
-                  )
-                : effectiveIcon,
-            onPressed: widget.onPressed == null
-                ? null
-                : () async {
-                    if (loading) {
-                      return;
-                    }
-                    setState(() => loading = true);
-                    try {
-                      await widget.onPressed!();
-                    } finally {
-                      if (mounted) {
-                        setState(() => loading = false);
-                      }
-                    }
-                  },
-            splashRadius: widget.buttonSize,
-            style: style,
-          ),
-        ),
+      child: IconButton(
+        icon: (widget.showLoadingIndicator && loading)
+            ? SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    widget.fillColor ?? Colors.white,
+                  ),
+                ),
+              )
+            : effectiveIcon,
+        onPressed: widget.onPressed == null
+            ? null
+            : () async {
+                if (loading) {
+                  return;
+                }
+                setState(() => loading = true);
+                try {
+                  await widget.onPressed!();
+                } finally {
+                  if (mounted) {
+                    setState(() => loading = false);
+                  }
+                }
+              },
+        style: style,
       ),
     );
   }

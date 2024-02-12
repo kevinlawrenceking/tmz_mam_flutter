@@ -86,7 +86,7 @@ class AdminPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomButtonsWidget(),
+      bottomNavigationBar: const BottomButtonsWidget(currentScreen: 'Admin'),
     );
   }
 }

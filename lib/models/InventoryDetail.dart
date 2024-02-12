@@ -4,6 +4,7 @@ class InventoryDetail {
   final String dateCreated;
   final String dateUpdated;
   final String status;
+  final String source;
   final String fileName;
   final String createdByDisplay;
   final String collectionDisplay;
@@ -16,6 +17,7 @@ class InventoryDetail {
     required this.dateCreated,
     required this.dateUpdated,
     required this.status,
+    required this.source,
     required this.fileName,
     required this.createdByDisplay,
     required this.collectionDisplay,
@@ -30,6 +32,7 @@ class InventoryDetail {
       dateCreated: json['dateCreated'] ?? '',
       dateUpdated: json['dateUpdated'] ?? '',
       status: json['status'] ?? '',
+      source: json['source'] ?? '',
       fileName: json['FileName'] ?? '',
       createdByDisplay: json['createdby_display'] ?? '',
       collectionDisplay: json['collection_display'] ?? '',

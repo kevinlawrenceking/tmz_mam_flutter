@@ -21,26 +21,27 @@ import 'package:tmz_mam_flutter/screens/admin_screen.dart';
 ///
 
 class BottomButtonsWidget extends StatelessWidget {
-  const BottomButtonsWidget({super.key});
+  final String currentScreen;
+
+  const BottomButtonsWidget({super.key, required this.currentScreen});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color:
-          FlutterFlowTheme.of(context).secondaryBackground, // Background color
+      color: FlutterFlowTheme.of(context).secondaryBackground,
       child: SafeArea(
         child: Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceEvenly, // Space the buttons evenly
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Assets Button
             _BottomButton(
               icon: Icons.image_search,
               label: 'Assets',
+              isActive: currentScreen ==
+                  'Assets', // Check if current screen is 'Assets'
               onTap: () =>
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    const SearchScreen(), // Navigate to Assets Screen
+                builder: (context) => const SearchScreen(),
               )),
             ),
 
@@ -48,10 +49,11 @@ class BottomButtonsWidget extends StatelessWidget {
             _BottomButton(
               icon: Icons.folder_outlined,
               label: 'Collections',
+              isActive: currentScreen ==
+                  'Collections', // Check if current screen is 'Collections'
               onTap: () =>
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    const CollectionsPage(), // Navigate to Collections Screen
+                builder: (context) => const CollectionsPage(),
               )),
             ),
 
@@ -59,10 +61,11 @@ class BottomButtonsWidget extends StatelessWidget {
             _BottomButton(
               icon: Icons.admin_panel_settings_outlined,
               label: 'Admin',
+              isActive: currentScreen ==
+                  'Admin', // Check if current screen is 'Admin'
               onTap: () =>
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    const AdminPage(), // Navigate to Admin Screen
+                builder: (context) => const AdminPage(),
               )),
             ),
           ],
@@ -75,12 +78,14 @@ class BottomButtonsWidget extends StatelessWidget {
 class _BottomButton extends StatelessWidget {
   final IconData icon;
   final String label;
+  final bool isActive;
   final VoidCallback onTap;
 
   const _BottomButton({
     required this.icon,
     required this.label,
     required this.onTap,
+    this.isActive = false,
   });
 
   @override
@@ -88,15 +93,24 @@ class _BottomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Take up minimum space
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon,
-              color: FlutterFlowTheme.of(context).primaryText), // Icon color
-          Text(label,
-              style: TextStyle(
-                color: FlutterFlowTheme.of(context).primaryText, // Text color
-                fontSize: 11.0, // Font size
-              )),
+          Icon(
+            icon,
+            color: isActive
+                ? Colors.red
+                : FlutterFlowTheme.of(context).primaryText, // Red if active
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              color: isActive
+                  ? Colors.red
+                  : FlutterFlowTheme.of(context)
+                      .primaryText, // Text color also red if active
+              fontSize: 11.0,
+            ),
+          ),
         ],
       ),
     );

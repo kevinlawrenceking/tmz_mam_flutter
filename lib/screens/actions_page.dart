@@ -52,8 +52,8 @@ class ActionsPageState extends State<ActionsPage> {
           ],
         ),
       ),
-      bottomNavigationBar:
-          const BottomButtonsWidget(), // Added BottomButtonsWidget here
+      bottomNavigationBar: const BottomButtonsWidget(
+          currentScreen: 'Assets'), // Added BottomButtonsWidget here
     );
   }
 }

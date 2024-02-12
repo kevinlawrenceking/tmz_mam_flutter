@@ -62,7 +62,8 @@ class CollectionsPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomButtonsWidget(),
+      bottomNavigationBar:
+          const BottomButtonsWidget(currentScreen: 'Collections'),
     );
   }
 }
