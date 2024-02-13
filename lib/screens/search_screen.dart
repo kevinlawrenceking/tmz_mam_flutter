@@ -210,7 +210,7 @@ class SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),
