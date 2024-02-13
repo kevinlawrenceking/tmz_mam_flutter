@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tmz_mam_flutter/models/inventory.dart'; // Ensure this path is correct
-import 'package:tmz_mam_flutter/models/InventoryDetail.dart'; // Ensure this path is correct
+import 'package:tmz_mam_flutter/models/inventory_detail.dart'; // Ensure this path is correct
 
 class ApiService {
   final String baseUrl;
@@ -41,8 +41,8 @@ class ApiService {
     }
   }
 
-  // Fetch InventoryDetail by ID
-  Future<InventoryDetail> fetchInventoryDetailById(int id) async {
+  // Fetch inventoryDetail by ID
+  Future<inventoryDetail> fetchinventoryDetailById(int id) async {
     final url = Uri.parse('$baseUrl/inventory/$id'); // Updated endpoint
 
     try {
@@ -54,7 +54,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return InventoryDetail.fromJson(data);
+        return inventoryDetail.fromJson(data);
       } else {
         throw Exception(
             'Failed to load inventory details: ${response.statusCode}');

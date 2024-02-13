@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tmz_mam_flutter/services/api_service.dart'; // Import ApiService
-import 'package:tmz_mam_flutter/models/InventoryDetail.dart'; // Import InventoryDetail model
+import 'package:tmz_mam_flutter/models/inventory_detail.dart'; // Import inventoryDetail model
 import 'package:tmz_mam_flutter/themes/theme_provider.dart';
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
 import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tmz_mam_flutter/components/metadata_update_form_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
   final int inventoryId;
 
-  const DetailsScreen({Key? key, required this.inventoryId}) : super(key: key);
+  const DetailsScreen({super.key, required this.inventoryId});
 
   @override
-  _DetailsScreenState createState() => _DetailsScreenState();
+  DetailsScreenState createState() => DetailsScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
-  late Future<InventoryDetail> futureInventoryDetail;
+class DetailsScreenState extends State<DetailsScreen> {
+  late Future<inventoryDetail> futureinventoryDetail;
 
   @override
   void initState() {
     super.initState();
-    futureInventoryDetail = ApiService(baseUrl: "http://tmztoolsdev:3000")
-        .fetchInventoryDetailById(widget.inventoryId);
+    futureinventoryDetail = ApiService(baseUrl: "http://tmztoolsdev:3000")
+        .fetchinventoryDetailById(widget.inventoryId);
   }
 
   void toggleTheme(BuildContext context) {
@@ -54,8 +53,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
           child: const MetadataUpdateFormWidget(),
         ),
       ),
-      body: FutureBuilder<InventoryDetail>(
-        future: futureInventoryDetail,
+      body: FutureBuilder<inventoryDetail>(
+        future: futureinventoryDetail,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -74,17 +73,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
 }
 
 class DesktopLayout extends StatelessWidget {
-  final InventoryDetail inventoryDetail;
+  final inventoryDetail;
 
-  const DesktopLayout({Key? key, required this.inventoryDetail})
-      : super(key: key);
+  const DesktopLayout({super.key, required this.inventoryDetail});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SearchBarOldWidget(),
-        const MediaPageControlBarWidget(),
+        MediaPageControlBarWidget(imageUrl: inventoryDetail.source),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Divider(
@@ -108,9 +106,9 @@ class DesktopLayout extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(
+                    const TextSpan(
                       text: 'Categories: ',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 11,
                           color: Colors.black),
@@ -132,9 +130,9 @@ class DesktopLayout extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'Appears In: ',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 11,
                         color: Colors.black), // Adjust color as needed
@@ -173,17 +171,16 @@ class DesktopLayout extends StatelessWidget {
 
 // MobileLayout for narrower screens
 class MobileLayout extends StatelessWidget {
-  final InventoryDetail inventoryDetail;
+  final inventoryDetail;
 
-  const MobileLayout({Key? key, required this.inventoryDetail})
-      : super(key: key);
+  const MobileLayout({super.key, required this.inventoryDetail});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SearchBarOldWidget(),
-        const MediaPageControlBarWidget(),
+        MediaPageControlBarWidget(imageUrl: inventoryDetail.source),
         ImageContainer(source: inventoryDetail.source),
         PhotoInfoContainer(inventoryDetail: inventoryDetail),
         MetadataContainer(metadata: inventoryDetail.metadata),
@@ -196,7 +193,7 @@ class MobileLayout extends StatelessWidget {
 class ImageContainer extends StatelessWidget {
   final String source; // Use this to pass the image URL
 
-  const ImageContainer({Key? key, required this.source}) : super(key: key);
+  const ImageContainer({super.key, required this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -233,10 +230,9 @@ class ImageContainer extends StatelessWidget {
 
 // PhotoInfoContainer widget
 class PhotoInfoContainer extends StatelessWidget {
-  final InventoryDetail inventoryDetail;
+  final inventoryDetail;
 
-  const PhotoInfoContainer({Key? key, required this.inventoryDetail})
-      : super(key: key);
+  const PhotoInfoContainer({super.key, required this.inventoryDetail});
 
   @override
   Widget build(BuildContext context) {

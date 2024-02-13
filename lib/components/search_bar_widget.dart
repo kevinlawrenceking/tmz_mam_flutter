@@ -5,14 +5,13 @@ import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 class SearchBarWidget extends StatefulWidget {
   final Function(String) onSearchSubmit;
 
-  const SearchBarWidget({Key? key, required this.onSearchSubmit})
-      : super(key: key);
+  const SearchBarWidget({super.key, required this.onSearchSubmit});
 
   @override
-  _SearchBarWidgetState createState() => _SearchBarWidgetState();
+  SearchBarWidgetState createState() => SearchBarWidgetState();
 }
 
-class _SearchBarWidgetState extends State<SearchBarWidget> {
+class SearchBarWidgetState extends State<SearchBarWidget> {
   late TextEditingController _textController;
 
   @override

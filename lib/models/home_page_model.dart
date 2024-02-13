@@ -1,5 +1,4 @@
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
-import '/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import '../components/home_page_widget.dart' show HomePageWidget;
 import 'package:flutter/material.dart';

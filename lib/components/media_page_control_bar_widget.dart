@@ -4,9 +4,15 @@ import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 export 'package:tmz_mam_flutter/models/media_page_control_bar_model.dart';
+import 'package:flutter/services.dart';
 
 class MediaPageControlBarWidget extends StatefulWidget {
-  const MediaPageControlBarWidget({super.key});
+  final String? imageUrl; // Make it nullable
+
+  const MediaPageControlBarWidget({
+    super.key,
+    this.imageUrl, // Remove `required` and provide a default value if needed
+  });
 
   @override
   MediaPageControlBarWidgetState createState() =>

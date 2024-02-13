@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SearchBarOldWidget extends StatefulWidget {
-  const SearchBarOldWidget({Key? key}) : super(key: key);
+  const SearchBarOldWidget({super.key});
 
   @override
-  _SearchBarOldWidgetState createState() => _SearchBarOldWidgetState();
+  SearchBarOldWidgetState createState() => SearchBarOldWidgetState();
 }
 
-class _SearchBarOldWidgetState extends State<SearchBarOldWidget> {
+class SearchBarOldWidgetState extends State<SearchBarOldWidget> {
   late TextEditingController _textController;
 
   @override

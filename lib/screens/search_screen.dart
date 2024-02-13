@@ -10,7 +10,7 @@ import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/components/advanced_search_window_widget.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  const SearchScreen({super.key});
 
   @override
   SearchScreenState createState() => SearchScreenState();
@@ -97,7 +97,7 @@ class SearchScreenState extends State<SearchScreen> {
                               totalRecords) // Show load more button only if there are more items to load
                             ElevatedButton(
                               onPressed: loadMore,
-                              child: Text('Load More'),
+                              child: const Text('Load More'),
                             )
                         ],
                       );

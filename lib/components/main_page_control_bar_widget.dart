@@ -205,7 +205,7 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                                   child: Text('Updated'),
                                 ),
                               ],
-                              hint: Text('Sort By'),
+                              hint: const Text('Sort By'),
                             ),
                           ),
                           Icon(Icons.image_outlined,
