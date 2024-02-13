@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/screens/account_settings_screen.dart';
 import 'package:tmz_mam_flutter/services/api_service.dart'; // Import your API service
 import 'package:tmz_mam_flutter/models/inventory.dart'; // Import your Inventory model
 import 'package:tmz_mam_flutter/screens/details_screen.dart';
-import 'package:tmz_mam_flutter/models/InventoryDetail.dart';
 import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
 import 'package:tmz_mam_flutter/components/search_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar2_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import '../components/advanced_search_window_widget.dart';
-import 'package:tmz_mam_flutter/themes/theme_provider.dart';
+import 'package:tmz_mam_flutter/components/advanced_search_window_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -57,7 +53,7 @@ class SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'TMZ Media Asset Manager'),
+      appBar: const CustomAppBar(title: 'TMZ Media Assets Manager'),
       drawer: const SizedBox(width: 900, child: AdvancedSearchWindowWidget()),
       body: Stack(
         children: [
@@ -125,8 +121,8 @@ class SearchScreenState extends State<SearchScreen> {
     return Wrap(
       key: ValueKey<int>(
           offset), // Use offset as key to ensure widget rebuilds when offset changes
-      spacing: 8.0,
-      runSpacing: 8.0,
+      spacing: 10.0,
+      runSpacing: 10.0,
       children: inventoryList
           .map((inventoryItem) => buildAnimatedCard(context, inventoryItem))
           .toList(),
@@ -159,15 +155,20 @@ class SearchScreenState extends State<SearchScreen> {
           16, // Adjust the width as needed
       child: Card(
         clipBehavior: Clip.antiAlias,
+        elevation: 8, // Adjust elevation to your preference
+        shadowColor: Colors.black.withOpacity(0.2), // Customize shadow color
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              color: Colors.grey,
-              height: 180, // Adjust the height as needed
-              child: Image.network(
-                inventoryItem.thumbnail,
-                fit: BoxFit.cover,
+            AspectRatio(
+              aspectRatio: 16 / 9, // Maintain a 16:9 aspect ratio for the image
+              child: Container(
+                color: Colors.grey,
+                child: Image.network(
+                  inventoryItem.thumbnail,
+                  fit:
+                      BoxFit.contain, // Cover the entire space of the Container
+                ),
               ),
             ),
             Padding(

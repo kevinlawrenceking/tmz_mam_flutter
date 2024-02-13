@@ -163,7 +163,7 @@ class DesktopLayout extends StatelessWidget {
           ),
         ),
         PhotoInfoContainer(inventoryDetail: inventoryDetail),
-       const BottomButtonsWidget(currentScreen: 'Assets'),
+        const BottomButtonsWidget(currentScreen: 'Assets'),
       ],
     );
   }
@@ -205,8 +205,7 @@ class ImageContainer extends StatelessWidget {
           20.0), // This adds padding around the entire container
       child: Container(
         decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context)
-                .secondaryBackground, // Background color
+            color: Colors.grey, // Background color
             border: Border.all(
                 color: Colors.black,
                 width: 0.1), // Very thin border around the image
