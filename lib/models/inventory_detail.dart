@@ -35,10 +35,10 @@ class InventoryDetail {
       dateUpdated: json['dateUpdated'] ?? '',
       status: json['status'] ?? '',
       source: json['source'] ?? '',
-      fileName: json['FileName'] ?? '',
-      createdByDisplay: json['createdby_display'] ?? '',
-      collectionDisplay: json['collection_display'] ?? '',
-      categoryDisplay: json['category_display'] ?? '',
+      fileName: json['fileName'] ?? '',
+      createdByDisplay: json['createdByDisplay'] ?? '',
+      collectionDisplay: json['collectionDisplay'] ?? '',
+      categoryDisplay: json['categoryDisplay'] ?? '',
       metadata: json['metadata'] != null
           ? (json['metadata'] as List)
               .map((item) => Metadata.fromJson(item))

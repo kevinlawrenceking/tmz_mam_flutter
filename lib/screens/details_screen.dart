@@ -279,7 +279,7 @@ class PhotoInfoContainer extends StatelessWidget {
               infoColumn(
                   context, 'Original File Name', inventoryDetail.fileName),
               infoColumn(
-                  context, 'CreatedBy', inventoryDetail.createdByDisplay),
+                  context, 'createdBy', inventoryDetail.createdByDisplay),
               infoColumn(context, 'Created', inventoryDetail.dateCreated),
               infoColumn(context, 'Updated', inventoryDetail.dateUpdated),
               infoColumn(context, 'Status', inventoryDetail.status),
