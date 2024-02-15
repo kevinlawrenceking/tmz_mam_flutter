@@ -42,7 +42,7 @@ class ApiService {
   }
 
   // Fetch inventoryDetail by ID
-  Future<inventoryDetail> fetchinventoryDetailById(int id) async {
+  Future<InventoryDetail> fetchinventoryDetailById(int id) async {
     final url = Uri.parse('$baseUrl/inventory/$id'); // Updated endpoint
 
     try {
@@ -54,7 +54,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return inventoryDetail.fromJson(data);
+        return InventoryDetail.fromJson(data);
       } else {
         throw Exception(
             'Failed to load inventory details: ${response.statusCode}');

@@ -29,7 +29,8 @@ class CollectionsPage extends StatelessWidget {
       body: Column(
         children: [
           const SearchBarOldWidget(), // Search bar component
-          const MediaPageControlBarWidget(), // Toolbar component
+          const MediaPageControlBarWidget(
+              imageUrl: "http://www.google.com" ?? 'placeholderOrEmptyString'),
 
           Padding(
             padding: const EdgeInsets.all(8.0),

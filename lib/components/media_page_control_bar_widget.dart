@@ -1,18 +1,13 @@
-// ignore_for_file: avoid_print
-
+import 'package:flutter/material.dart';
 import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:flutter/material.dart';
-export 'package:tmz_mam_flutter/models/media_page_control_bar_model.dart';
-import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart'; // Make sure to add url_launcher to your pubspec.yaml
 
 class MediaPageControlBarWidget extends StatefulWidget {
-  final String? imageUrl; // Make it nullable
+  final String? imageUrl; // Nullable imageUrl parameter
 
-  const MediaPageControlBarWidget({
-    super.key,
-    this.imageUrl, // Remove `required` and provide a default value if needed
-  });
+  const MediaPageControlBarWidget({Key? key, this.imageUrl})
+      : super(key: key); // Initialize imageUrl in constructor
 
   @override
   MediaPageControlBarWidgetState createState() =>
@@ -20,18 +15,6 @@ class MediaPageControlBarWidget extends StatefulWidget {
 }
 
 class MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
-  @override
-  void initState() {
-    super.initState();
-    // Initialize your model here
-  }
-
-  @override
-  void dispose() {
-    // Dispose your model here
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,7 +25,14 @@ class MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
           buildIconButton(
             context,
             icon: Icons.file_download_outlined,
-            onPressed: () => print('Download IconButton pressed'),
+            onPressed: widget.imageUrl != null
+                ? () async {
+                    final Uri url = Uri.parse(widget.imageUrl!);
+                    if (!await launchUrl(url)) {
+                      throw 'Could not launch $url';
+                    }
+                  }
+                : null, // Disable the button if imageUrl is null
           ),
           buildIconButton(
             context,
@@ -88,19 +78,23 @@ class MediaPageControlBarWidgetState extends State<MediaPageControlBarWidget> {
   }
 
   Widget buildIconButton(BuildContext context,
-      {required IconData icon, required VoidCallback onPressed}) {
-    return FlutterFlowIconButton(
-      borderColor: FlutterFlowTheme.of(context).primary,
-      borderRadius: 15.0,
-      borderWidth: 1.0,
-      buttonSize: 36.0,
-      fillColor: FlutterFlowTheme.of(context).secondaryBackground,
-      icon: Icon(
-        icon,
-        color: FlutterFlowTheme.of(context).primaryText,
-        size: 24.0,
+      {required IconData icon, VoidCallback? onPressed}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: 4.0), // Adjust the horizontal padding as needed
+      child: FlutterFlowIconButton(
+        borderColor: FlutterFlowTheme.of(context).primary,
+        borderRadius: 15.0,
+        borderWidth: 1.0,
+        buttonSize: 36.0,
+        fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+        icon: Icon(
+          icon,
+          color: FlutterFlowTheme.of(context).primaryText,
+          size: 24.0,
+        ),
+        onPressed: onPressed,
       ),
-      onPressed: onPressed,
     );
   }
 }

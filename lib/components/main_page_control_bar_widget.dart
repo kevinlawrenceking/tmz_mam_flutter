@@ -12,7 +12,8 @@ export 'package:tmz_mam_flutter/models/main_page_control_bar_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainPageControlBarWidget extends StatefulWidget {
-  const MainPageControlBarWidget({super.key});
+  final Function(String sortField, bool ascending)? onSortChanged;
+  const MainPageControlBarWidget({super.key, this.onSortChanged});
 
   @override
   State<MainPageControlBarWidget> createState() =>
@@ -37,7 +38,21 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
 
     // Initialize sortByFieldsValueController if it's not already initialized by the model
     sortByFieldsValueController ??= FormFieldController<String?>(null);
+
+    // Set a default value for sortByFieldsValue if necessary
+    if (_model.sortByFieldsValue == null ||
+        !_dropdownValues.contains(_model.sortByFieldsValue)) {
+      _model.sortByFieldsValue = 'createdBy'; // Default value
+    }
   }
+
+// Define your dropdown values to check against
+  final List<String> _dropdownValues = [
+    'createdBy',
+    'headline',
+    'dateCreated',
+    'dateUpdated',
+  ];
 
   // Define the _launchURL method here
   Future<void> _launchURL() async {
@@ -175,35 +190,29 @@ class _MainPageControlBarWidgetState extends State<MainPageControlBarWidget> {
                             child: DropdownButton<String>(
                               value: _model.sortByFieldsValue,
                               onChanged: (val) {
-                                setState(() {
-                                  _model.sortByFieldsValue = val;
-                                });
+                                if (val != null) {
+                                  setState(() {
+                                    _model.sortByFieldsValue = val;
+                                  });
+                                  bool ascending =
+                                      true; // Determine this based on your UI or logic
+                                  widget.onSortChanged?.call(val, ascending);
+                                }
                               },
+                              // Assuming 'val' contains the field name and you have a way to determine the sort direction
+
                               items: const [
                                 DropdownMenuItem(
-                                  value: 'CreatedBy',
-                                  child: Text('Created By'),
-                                ),
+                                    value: 'createdBy',
+                                    child: Text('Created By')),
                                 DropdownMenuItem(
-                                  value: 'QC Notes',
-                                  child: Text('QC Notes'),
-                                ),
+                                    value: 'headline', child: Text('Headline')),
                                 DropdownMenuItem(
-                                  value: 'Headline',
-                                  child: Text('Headline'),
-                                ),
+                                    value: 'dateCreated',
+                                    child: Text('Created')),
                                 DropdownMenuItem(
-                                  value: 'Celebrity',
-                                  child: Text('Celebrity'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'Created',
-                                  child: Text('Created'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'Updated',
-                                  child: Text('Updated'),
-                                ),
+                                    value: 'dateUpdated',
+                                    child: Text('Updated')),
                               ],
                               hint: const Text('Sort By'),
                             ),

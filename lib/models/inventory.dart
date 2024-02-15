@@ -3,16 +3,35 @@ class Inventory {
   final String name;
   final String thumbnail;
   final List<Map<String, String?>> metadata;
+  final String createdBy;
+  final DateTime dateCreated;
+  final DateTime dateUpdated;
+  final String headline;
 
-  Inventory({required this.id, this.name = "-", this.thumbnail = "Unknown", required this.metadata});
+  Inventory({
+    required this.id,
+    this.name = "-",
+    this.thumbnail = "Unknown",
+    required this.createdBy,
+    required this.dateCreated,
+    required this.dateUpdated,
+    required this.headline,
+    required this.metadata,
+  });
 
   factory Inventory.fromJson(Map<String, dynamic> json) {
     return Inventory(
       id: json['id'] as int,
       name: json['name'] ?? '',
       thumbnail: json['thumbnail'] ?? '',
+      createdBy: json['CreatedBy'] ?? '',
+      dateCreated: DateTime.parse(json['dateCreated']),
+      dateUpdated: DateTime.parse(json['dateUpdated']),
+      headline: json['headline'] ?? '',
       metadata: json['metadata'] != null
-          ? (json['metadata'] as List).map((item) => Map<String, String?>.from(item)).toList()
+          ? (json['metadata'] as List)
+              .map((item) => Map<String, String?>.from(item))
+              .toList()
           : [],
     );
   }

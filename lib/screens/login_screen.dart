@@ -147,7 +147,7 @@ class LoginScreenState extends State<LoginScreen> {
                           .white, // Ensure text color is white for visibility
                       // Other text style properties if needed
                     ),
-                elevation: 2, // Adjust elevation as needed
+
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       8), // Adjust border radius as needed
@@ -188,9 +188,9 @@ class LoginScreenState extends State<LoginScreen> {
                     color: FlutterFlowTheme.of(context)
                         .shadowColor, // Use shadowColor from the theme
                     spreadRadius: 0,
-                    blurRadius: 10, // Adjust blur radius as needed
+                    blurRadius: 0, // Adjust blur radius as needed
                     offset:
-                        const Offset(0, 4), // Adjust the position of the shadow
+                        const Offset(0, 0), // Adjust the position of the shadow
                   ),
                 ],
               ),

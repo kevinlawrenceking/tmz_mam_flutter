@@ -1,5 +1,6 @@
 // ignore: file_names
-class inventoryDetail {
+// ignore: file_names
+class InventoryDetail {
   final int id;
   final String name;
   final String dateCreated;
@@ -12,7 +13,7 @@ class inventoryDetail {
   final String categoryDisplay;
   final List<Metadata> metadata;
 
-  inventoryDetail({
+  InventoryDetail({
     required this.id,
     required this.name,
     required this.dateCreated,
@@ -26,8 +27,8 @@ class inventoryDetail {
     required this.metadata,
   });
 
-  factory inventoryDetail.fromJson(Map<String, dynamic> json) {
-    return inventoryDetail(
+  factory InventoryDetail.fromJson(Map<String, dynamic> json) {
+    return InventoryDetail(
       id: json['id'] as int,
       name: json['name'] ?? '',
       dateCreated: json['dateCreated'] ?? '',

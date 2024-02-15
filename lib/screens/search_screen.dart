@@ -8,7 +8,7 @@ import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
 import 'package:tmz_mam_flutter/components/main_page_control_bar2_widget.dart';
 import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
 import 'package:tmz_mam_flutter/components/advanced_search_window_widget.dart';
-
+import 'package:tmz_mam_flutter/themes/theme_provider.dart';
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 

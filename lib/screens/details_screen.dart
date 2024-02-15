@@ -20,7 +20,7 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class DetailsScreenState extends State<DetailsScreen> {
-  late Future<inventoryDetail> futureinventoryDetail;
+  late Future<InventoryDetail> futureinventoryDetail;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class DetailsScreenState extends State<DetailsScreen> {
           child: const MetadataUpdateFormWidget(),
         ),
       ),
-      body: FutureBuilder<inventoryDetail>(
+      body: FutureBuilder<InventoryDetail>(
         future: futureinventoryDetail,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -82,7 +82,9 @@ class DesktopLayout extends StatelessWidget {
     return Column(
       children: [
         const SearchBarOldWidget(),
-        MediaPageControlBarWidget(imageUrl: inventoryDetail.source),
+        MediaPageControlBarWidget(
+            imageUrl: inventoryDetail.source), // Pass the image URL here
+
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Divider(
@@ -197,6 +199,7 @@ class ImageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isValidUrl = Uri.tryParse(source)?.isAbsolute ?? false;
     return Padding(
       padding: const EdgeInsets.all(
           20.0), // This adds padding around the entire container
@@ -217,11 +220,20 @@ class ImageContainer extends StatelessWidget {
             ]),
         child: AspectRatio(
           aspectRatio: 16 / 9,
-          child: Image.network(
-            source,
-            fit: BoxFit
-                .contain, // Ensures the entire image is shown and centered without cropping
-          ),
+          child: isValidUrl
+              ? Image.network(
+                  source,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Handle loading error, e.g., by showing a placeholder or an error message
+                    return Center(
+                        child: Text(
+                            'No image available\n$source')); // Show the invalid URL
+                  },
+                )
+              : Center(
+                  child: Text(
+                      'Invalid image URL\n$source')), // Show the invalid URL
         ),
       ),
     );
