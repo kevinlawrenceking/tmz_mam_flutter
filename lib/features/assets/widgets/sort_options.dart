@@ -5,12 +5,12 @@ import 'package:tmz_mam_flutter/data/models/sort_direction_enum.dart';
 import 'package:tmz_mam_flutter/shared/widgets/dropdown_selector.dart';
 
 typedef SortOptionsChangedCallback = void Function(
-  InventorySortFieldEnum? field,
+  InventorySortFieldEnum field,
   SortDirectionEnum direction,
 );
 
 class SortOptions extends StatelessWidget {
-  final InventorySortFieldEnum? initialField;
+  final InventorySortFieldEnum initialField;
   final SortDirectionEnum initialDirection;
   final SortOptionsChangedCallback onChanged;
 
@@ -35,17 +35,15 @@ class SortOptions extends StatelessWidget {
   Widget _buildFieldSelector() {
     return SizedBox(
       width: 170,
-      child: DropdownSelector<InventorySortFieldEnum?>(
+      child: DropdownSelector<InventorySortFieldEnum>(
         initialValue: initialField,
         items: const [
-          InventorySortFieldEnum.id,
           InventorySortFieldEnum.name,
           InventorySortFieldEnum.dateCreated,
           InventorySortFieldEnum.dateUpdated,
         ],
         itemBuilder: (value) {
           final label = {
-                InventorySortFieldEnum.id: 'ID',
                 InventorySortFieldEnum.name: 'Name',
                 InventorySortFieldEnum.dateCreated: 'Date Created',
                 InventorySortFieldEnum.dateUpdated: 'Date Updated',
@@ -54,7 +52,10 @@ class SortOptions extends StatelessWidget {
 
           return Text(label);
         },
-        onSelectionChanged: (value) => onChanged(value, initialDirection),
+        onSelectionChanged: (value) => onChanged(
+          value ?? InventorySortFieldEnum.dateCreated,
+          initialDirection,
+        ),
       ),
     );
   }
@@ -67,10 +68,6 @@ class SortOptions extends StatelessWidget {
       icon = initialDirection == SortDirectionEnum.descending
           ? MdiIcons.sortCalendarAscending
           : MdiIcons.sortCalendarDescending;
-    } else if (initialField == InventorySortFieldEnum.id) {
-      icon = initialDirection == SortDirectionEnum.descending
-          ? MdiIcons.sortNumericDescendingVariant
-          : MdiIcons.sortNumericAscendingVariant;
     } else {
       icon = initialDirection == SortDirectionEnum.descending
           ? MdiIcons.sortAlphabeticalDescendingVariant

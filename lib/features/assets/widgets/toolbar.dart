@@ -7,7 +7,7 @@ import 'package:tmz_mam_flutter/features/assets/widgets/sort_options.dart';
 import 'package:tmz_mam_flutter/features/assets/widgets/thumbnail_size_selector.dart';
 
 class Toolbar extends StatefulWidget {
-  final InventorySortFieldEnum? sortField;
+  final InventorySortFieldEnum sortField;
   final SortDirectionEnum sortDirection;
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;

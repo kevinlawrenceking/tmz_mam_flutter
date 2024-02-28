@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 const String kUserAgent = 'TMZPhotoFlutterApp';
@@ -60,8 +61,11 @@ class RestClient implements IRestClient {
 
     final mergedHeaders = {
       'Cache-Control': 'no-cache',
-      'User-Agent': '$kUserAgent/$appVersion',
     };
+
+    if (!kIsWeb) {
+      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
+    }
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
@@ -91,8 +95,11 @@ class RestClient implements IRestClient {
     final mergedHeaders = {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json',
-      'User-Agent': '$kUserAgent/$appVersion',
     };
+
+    if (!kIsWeb) {
+      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
+    }
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);

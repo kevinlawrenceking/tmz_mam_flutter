@@ -161,6 +161,7 @@ class AppTheme {
           .copyWith(
             bodySmall: const TextStyle(
               fontSize: 14.0,
+              letterSpacing: 0.5,
             ),
             labelSmall: const TextStyle(
               fontSize: 11.0,
@@ -177,6 +178,7 @@ class AppTheme {
           )
           .apply(
             bodyColor: const Color(0xDEFFFFFF),
+            displayColor: const Color(0xDEFFFFFF),
           ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );

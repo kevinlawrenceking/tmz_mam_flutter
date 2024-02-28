@@ -91,9 +91,6 @@ class InventoryDataSource implements IInventoryDataSource {
               const paramKey = 'sortField';
 
               switch (sortField) {
-                case InventorySortFieldEnum.id:
-                  queryParams[paramKey] = 'id';
-                  break;
                 case InventorySortFieldEnum.name:
                   queryParams[paramKey] = 'name';
                   break;

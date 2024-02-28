@@ -27,7 +27,7 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   ScrollController? _scrollController;
-  InventorySortFieldEnum? _sortField;
+  InventorySortFieldEnum _sortField = InventorySortFieldEnum.dateCreated;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
   LayoutModeEnum _layoutMode = LayoutModeEnum.tile;
   ThumbnailSizeEnum _thumbnailSize = ThumbnailSizeEnum.medium;

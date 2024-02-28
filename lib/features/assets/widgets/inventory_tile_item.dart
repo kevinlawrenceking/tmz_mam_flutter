@@ -27,11 +27,11 @@ class _InventoryTileItemState extends State<InventoryTileItem> {
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         border: Border.all(
-          color: const Color(0x80000000),
-          width: 1.5,
+          color: const Color(0x20000000),
         ),
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: kElevationToShadow[3],
+        color: Colors.black,
       ),
       child: Card(
         child: Column(

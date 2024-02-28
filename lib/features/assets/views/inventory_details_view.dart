@@ -39,55 +39,52 @@ class InventoryDetailsView extends StatelessWidget {
             model.name,
             style: FlutterFlowTheme.of(context).headlineLarge,
           ),
-          const SizedBox(height: 10.0),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'CATEGORIES:   ',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.textTheme.labelSmall?.color?.withOpacity(0.4),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextSpan(
-                  text: model.categories,
-                  style: theme.textTheme.labelSmall,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10.0),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'APPEARS IN:   ',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.textTheme.labelSmall?.color?.withOpacity(0.4),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextSpan(
-                  text: model.collections,
-                  style: theme.textTheme.labelSmall,
-                ),
-              ],
-            ),
-          ),
           const SizedBox(height: 20),
           Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: Container(
-                      color: Colors.black,
-                      child: InventoryItemThumbnail(
-                        url: model.thumbnail,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Container(
+                          color: Colors.black,
+                          child: InventoryItemThumbnail(
+                            url: model.thumbnail,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'CATEGORIES:',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.textTheme.labelSmall?.color
+                              ?.withOpacity(0.4),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        model.categories,
+                        style: theme.textTheme.labelSmall,
+                      ),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'APPEARS IN:',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.textTheme.labelSmall?.color
+                              ?.withOpacity(0.4),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        model.collections,
+                        style: theme.textTheme.labelSmall,
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -122,16 +119,9 @@ class _MetadataContainer extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).secondaryBackground,
-        border: Border.all(width: 0.1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 12,
-            offset: const Offset(4, 4),
-          ),
-        ],
+        border: Border.all(width: 0.5),
+        borderRadius: BorderRadius.circular(6.0),
+        color: const Color(0x20000000),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,58 +187,79 @@ class _PhotoInfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const columnWidths = [160.0, 200.0, 340.0];
+
+    final theme = Theme.of(context);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).secondaryBackground,
-        border: Border.all(width: 0.1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 12,
-            offset: const Offset(4, 4),
-          ),
-        ],
+        border: Border.all(width: 0.5),
+        borderRadius: BorderRadius.circular(6.0),
+        color: const Color(0x20000000),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Wrap(
           runSpacing: 10,
           children: [
-            _buildColumn(
-              context: context,
-              title: 'ID',
-              value: model?.id.toString() ?? '',
+            SizedBox(
+              width: columnWidths[0],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                label: 'ID',
+                value: model?.id.toString() ?? '',
+              ),
             ),
-            _buildColumn(
-              context: context,
-              title: 'Original File Name',
-              value: File(model?.mediaPath ?? '')
-                  .path
-                  .split(RegExp(r'[\\/]'))
-                  .last,
+            SizedBox(
+              width: columnWidths[1],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                label: 'STATUS',
+                value: model?.status ?? '',
+              ),
             ),
-            _buildColumn(
-              context: context,
-              title: 'Created By',
-              value: model?.createdBy ?? '',
+            SizedBox(
+              width: columnWidths[2],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                label: 'ORIGINAL FILE NAME',
+                value: File(model?.mediaPath ?? '')
+                    .path
+                    .split(RegExp(r'[\\/]'))
+                    .last,
+              ),
             ),
-            _buildColumn(
-              context: context,
-              title: 'Created',
-              value: model?.dateCreated.toLocal().toString() ?? '',
+            SizedBox(
+              width: columnWidths[0],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                label: 'CREATED BY',
+                value: model?.createdBy ?? '',
+              ),
             ),
-            _buildColumn(
-              context: context,
-              title: 'Updated',
-              value: model?.dateUpdated.toLocal().toString() ?? '',
+            SizedBox(
+              width: columnWidths[1],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                label: 'CREATED',
+                value: model?.dateCreated.toLocal().toString() ?? '',
+              ),
             ),
-            _buildColumn(
-              context: context,
-              title: 'Status',
-              value: model?.status ?? '',
+            SizedBox(
+              width: columnWidths[2],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                label: 'UPDATED',
+                value: model?.dateUpdated.toLocal().toString() ?? '',
+              ),
             ),
           ],
         ),
@@ -258,30 +269,36 @@ class _PhotoInfoContainer extends StatelessWidget {
 
   Widget _buildColumn({
     required BuildContext context,
-    required String title,
+    required ThemeData theme,
+    required String label,
     required String value,
   }) {
-    return SizedBox(
-      width: 170,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 11,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Opacity(
+          opacity: 0.4,
+          child: Text(
+            label,
+            maxLines: 1,
+            softWrap: false,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w700,
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 11,
-            ),
+        ),
+        Text(
+          value,
+          maxLines: 1,
+          softWrap: false,
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w600,
+            overflow: TextOverflow.ellipsis,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -296,7 +313,7 @@ class _Toolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(5.0, 5, 5.0, 5),
+      padding: const EdgeInsets.all(5.0),
       child: Row(
         children: [
           _buildIconButton(
