@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tmz_mam_flutter/features/assets/views/search_view.dart';
 import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/screens/search_screen.dart';
 import 'package:tmz_mam_flutter/components/collections_widget.dart';
 import 'package:tmz_mam_flutter/screens/admin_screen.dart';
 
@@ -41,7 +41,7 @@ class BottomButtonsWidget extends StatelessWidget {
                   'Assets', // Check if current screen is 'Assets'
               onTap: () =>
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const SearchScreen(),
+                builder: (context) => const SearchView(),
               )),
             ),
 

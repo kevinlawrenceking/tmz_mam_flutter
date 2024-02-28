@@ -1,31 +1,43 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/themes/theme_provider.dart'; // Import your ThemeProvider
-import 'package:tmz_mam_flutter/screens/login_screen.dart'; // Import your LoginScreen
+import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:tmz_mam_flutter/app.dart';
+import 'package:tmz_mam_flutter/utils/service_locator.dart';
+import 'package:window_manager/window_manager.dart';
+
+Future<void> main() async {
+  HttpOverrides.global = CustomHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  initServiceLocator();
+
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    const windowOptions = WindowOptions(
+      center: true,
+      skipTaskbar: false,
+      size: Size(1200, 800),
+      minimumSize: Size(1200, 800),
+      title: 'TMZ Photo MAM',
+    );
+
+    await windowManager.waitUntilReadyToShow(
+      windowOptions,
+      () async {
+        await windowManager.show();
+        await windowManager.focus();
+      },
+    );
+  }
+
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class CustomHttpOverrides extends HttpOverrides {
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return MaterialApp(
-            title: 'Your App Title',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(), // Define your light theme here
-            darkTheme: ThemeData.dark(), // Define your dark theme here
-            themeMode: themeProvider.themeMode, // Use ThemeMode from ThemeProvider
-            home: const LoginScreen(), // Set LoginScreen as the first screen
-          );
-        },
-      ),
-    );
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+    client.badCertificateCallback = (cert, host, port) => true;
+    return client;
   }
 }

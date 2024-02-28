@@ -1,0 +1,4 @@
+enum SortDirectionEnum {
+  ascending,
+  descending,
+}
