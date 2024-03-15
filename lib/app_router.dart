@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/app_router.gr.dart';
+import 'package:tmz_damz/app_router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {

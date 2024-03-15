@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_mam_flutter/app_router.gr.dart';
+import 'package:tmz_damz/app_router.gr.dart';
 
 part 'menu_drawer.dart';
 part 'menu_drawer_header.dart';

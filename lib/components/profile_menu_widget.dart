@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
   const ProfileMenuWidget({super.key});
@@ -16,12 +16,13 @@ class ProfileMenuWidget extends StatelessWidget {
             blurRadius: 4,
             color: Color(0x33000000),
             offset: Offset(0, 2),
-          )
+          ),
         ],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Use MainAxisSize.min to fit the content
+        mainAxisSize:
+            MainAxisSize.min, // Use MainAxisSize.min to fit the content
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
@@ -32,16 +33,34 @@ class ProfileMenuWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.security, color: FlutterFlowTheme.of(context).primaryText),
-            title: Text('Permissions', style: FlutterFlowTheme.of(context).bodyMedium),
+            leading: Icon(
+              Icons.security,
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+            title: Text(
+              'Permissions',
+              style: FlutterFlowTheme.of(context).bodyMedium,
+            ),
           ),
           ListTile(
-            leading: Icon(Icons.grain, color: FlutterFlowTheme.of(context).primaryText),
-            title: Text('Configure View', style: FlutterFlowTheme.of(context).bodyMedium),
+            leading: Icon(
+              Icons.grain,
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+            title: Text(
+              'Configure View',
+              style: FlutterFlowTheme.of(context).bodyMedium,
+            ),
           ),
           ListTile(
-            leading: FaIcon(FontAwesomeIcons.rightFromBracket, color: FlutterFlowTheme.of(context).primaryText),
-            title: Text('Sign Out', style: FlutterFlowTheme.of(context).bodyMedium),
+            leading: FaIcon(
+              FontAwesomeIcons.rightFromBracket,
+              color: FlutterFlowTheme.of(context).primaryText,
+            ),
+            title: Text(
+              'Sign Out',
+              style: FlutterFlowTheme.of(context).bodyMedium,
+            ),
           ),
         ],
       ),

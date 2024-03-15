@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_sort_field_enum.dart';
-import 'package:tmz_mam_flutter/data/models/sort_direction_enum.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/layout_mode_selector.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/search_input.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/sort_options.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/thumbnail_size_selector.dart';
+import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
+import 'package:tmz_damz/features/assets/widgets/search_input.dart';
+import 'package:tmz_damz/features/assets/widgets/sort_options.dart';
+import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 
 class Toolbar extends StatefulWidget {
-  final InventorySortFieldEnum sortField;
+  final AssetSortFieldEnum sortField;
   final SortDirectionEnum sortDirection;
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;

@@ -1,23 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tmz_mam_flutter/data/models/inventory.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_details.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_sort_field_enum.dart';
-import 'package:tmz_mam_flutter/data/models/sort_direction_enum.dart';
-import 'package:tmz_mam_flutter/data/sources/inventory.dart';
-import 'package:tmz_mam_flutter/shared/errors/failures/failure.dart';
+import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/sources/asset.dart';
+import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:uuid/uuid.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class AssetsBloc extends Bloc<BlocEvent, BlocState> {
-  final IInventoryDataSource inventoryDataSource;
+  final IAssetDataSource inventoryDataSource;
 
   var _limit = 10;
   String? _searchTerm;
-  InventorySortFieldEnum? _sortField;
+  AssetSortFieldEnum? _sortField;
   SortDirectionEnum? _sortDirection;
 
   var _totalRecords = 0;
@@ -25,29 +24,29 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   AssetsBloc({
     required this.inventoryDataSource,
   }) : super(InitialState()) {
-    on<LoadInventoryDetailsEvent>(_loadInventoryDetailsEvent);
+    on<LoadAssetDetailsEvent>(_loadAssetDetailsEvent);
     on<PaginationChangedEvent>(_paginationChangedEvent);
     on<SearchEvent>(_searchEvent);
   }
 
-  Future<void> _loadInventoryDetailsEvent(
-    LoadInventoryDetailsEvent event,
+  Future<void> _loadAssetDetailsEvent(
+    LoadAssetDetailsEvent event,
     Emitter<BlocState> emit,
   ) async {
-    emit(InventoryDetailsLoadingState());
+    emit(AssetDetailsLoadingState());
 
     await Future<void>.delayed(
       const Duration(milliseconds: 250),
     );
 
-    final result = await inventoryDataSource.getInventoryDetails(
-      itemID: event.itemID,
+    final result = await inventoryDataSource.getAssetDetails(
+      assetID: event.assetID,
     );
 
     result.fold(
-      (failure) => emit(InventoryDetailsFailureState(failure)),
+      (failure) => emit(AssetDetailsFailureState(failure)),
       (details) => emit(
-        InventoryDetailsLoadedState(
+        AssetDetailsLoadedState(
           model: details,
         ),
       ),
@@ -60,7 +59,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   ) async {
     _limit = event.limit;
 
-    await _search(
+    await _getAssetList(
       emit: emit,
       offset: event.offset,
       limit: event.limit,
@@ -79,7 +78,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     _sortDirection = event.sortDirection;
     _totalRecords = 0;
 
-    await _search(
+    await _getAssetList(
       emit: emit,
       offset: 0,
       limit: _limit,
@@ -89,12 +88,12 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     );
   }
 
-  Future<void> _search({
+  Future<void> _getAssetList({
     required Emitter<BlocState> emit,
     required int offset,
     required int limit,
     required String? searchTerm,
-    required InventorySortFieldEnum? sortField,
+    required AssetSortFieldEnum? sortField,
     required SortDirectionEnum? sortDirection,
   }) async {
     emit(
@@ -111,7 +110,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       const Duration(milliseconds: 250),
     );
 
-    final result = await inventoryDataSource.search(
+    final result = await inventoryDataSource.getAssetList(
       offset: offset,
       limit: limit,
       searchTerm: searchTerm,
@@ -134,7 +133,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
         emit(
           SearchResultsLoadedState(
-            items: results.items,
+            assets: results.assets,
           ),
         );
       },

@@ -8,19 +8,19 @@ abstract class BlocState extends Equatable {
 
 class InitialState extends BlocState {}
 
-class InventoryDetailsFailureState extends BlocState {
+class AssetDetailsFailureState extends BlocState {
   final Failure failure;
 
-  InventoryDetailsFailureState(this.failure);
+  AssetDetailsFailureState(this.failure);
 
   @override
   List<Object?> get props => [failure];
 }
 
-class InventoryDetailsLoadedState extends BlocState {
-  final InventoryDetailsModel model;
+class AssetDetailsLoadedState extends BlocState {
+  final AssetDetailsModel model;
 
-  InventoryDetailsLoadedState({
+  AssetDetailsLoadedState({
     required this.model,
   });
 
@@ -28,7 +28,7 @@ class InventoryDetailsLoadedState extends BlocState {
   List<Object?> get props => [model];
 }
 
-class InventoryDetailsLoadingState extends BlocState {}
+class AssetDetailsLoadingState extends BlocState {}
 
 class PaginationChangedState extends BlocState {
   final int offset;
@@ -60,10 +60,10 @@ class SearchFailureState extends BlocState {
 
 class SearchResultsLoadedState extends BlocState {
   final String _stateID;
-  final List<InventoryModel> items;
+  final List<AssetDetailsModel> assets;
 
   SearchResultsLoadedState({
-    required this.items,
+    required this.assets,
   }) : _stateID = const Uuid().v1();
 
   @override

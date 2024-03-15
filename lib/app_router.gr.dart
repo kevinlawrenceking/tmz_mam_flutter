@@ -9,9 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i3;
-import 'package:tmz_mam_flutter/features/assets/views/search_view.dart' as _i2;
-import 'package:tmz_mam_flutter/features/authentication/views/login_view.dart'
-    as _i1;
+import 'package:tmz_damz/features/assets/views/search_view.dart' as _i2;
+import 'package:tmz_damz/features/authentication/views/login_view.dart' as _i1;
 
 abstract class $AppRouter extends _i3.RootStackRouter {
   $AppRouter({super.navigatorKey});

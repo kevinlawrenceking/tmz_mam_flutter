@@ -1,11 +1,11 @@
 // ignore_for_file: deprecated_member_use_from_same_package, duplicate_ignore
 
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
+import 'package:tmz_damz/models/admin_page_control_bar_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 /// A widget used in the admin section of the TMZ Media Asset Manager to provide control options.
 ///
@@ -13,7 +13,7 @@ import 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
 /// to access various administrative functionalities such as navigating through menu options
 /// and viewing the number of users. It's designed to enhance the admin user experience
 /// by providing quick access to common tasks.
-export 'package:tmz_mam_flutter/models/admin_page_control_bar_model.dart';
+export 'package:tmz_damz/models/admin_page_control_bar_model.dart';
 
 class AdminPageControlBarWidget extends StatefulWidget {
   const AdminPageControlBarWidget({super.key});

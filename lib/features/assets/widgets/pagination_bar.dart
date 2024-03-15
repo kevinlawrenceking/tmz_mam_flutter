@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_mam_flutter/features/assets/bloc/bloc.dart';
-import 'package:tmz_mam_flutter/shared/widgets/dropdown_selector.dart';
+import 'package:tmz_damz/features/assets/bloc/bloc.dart';
+import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 class PaginationBar extends StatelessWidget {
   static final kResultsPerPage = [10, 25, 50, 100, 250];

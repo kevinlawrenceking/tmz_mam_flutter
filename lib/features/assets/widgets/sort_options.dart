@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_sort_field_enum.dart';
-import 'package:tmz_mam_flutter/data/models/sort_direction_enum.dart';
-import 'package:tmz_mam_flutter/shared/widgets/dropdown_selector.dart';
+import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 typedef SortOptionsChangedCallback = void Function(
-  InventorySortFieldEnum field,
+  AssetSortFieldEnum field,
   SortDirectionEnum direction,
 );
 
 class SortOptions extends StatelessWidget {
-  final InventorySortFieldEnum initialField;
+  final AssetSortFieldEnum initialField;
   final SortDirectionEnum initialDirection;
   final SortOptionsChangedCallback onChanged;
 
@@ -35,25 +35,25 @@ class SortOptions extends StatelessWidget {
   Widget _buildFieldSelector() {
     return SizedBox(
       width: 170,
-      child: DropdownSelector<InventorySortFieldEnum>(
+      child: DropdownSelector<AssetSortFieldEnum>(
         initialValue: initialField,
         items: const [
-          InventorySortFieldEnum.name,
-          InventorySortFieldEnum.dateCreated,
-          InventorySortFieldEnum.dateUpdated,
+          AssetSortFieldEnum.headline,
+          AssetSortFieldEnum.createdAt,
+          AssetSortFieldEnum.updatedAt,
         ],
         itemBuilder: (value) {
           final label = {
-                InventorySortFieldEnum.name: 'Name',
-                InventorySortFieldEnum.dateCreated: 'Date Created',
-                InventorySortFieldEnum.dateUpdated: 'Date Updated',
+                AssetSortFieldEnum.headline: 'Headline',
+                AssetSortFieldEnum.createdAt: 'Date Created',
+                AssetSortFieldEnum.updatedAt: 'Date Updated',
               }[value] ??
               '';
 
           return Text(label);
         },
         onSelectionChanged: (value) => onChanged(
-          value ?? InventorySortFieldEnum.dateCreated,
+          value ?? AssetSortFieldEnum.createdAt,
           initialDirection,
         ),
       ),
@@ -63,8 +63,8 @@ class SortOptions extends StatelessWidget {
   Widget _buildSortDirectionButton() {
     IconData icon;
 
-    if ((initialField == InventorySortFieldEnum.dateCreated) ||
-        (initialField == InventorySortFieldEnum.dateUpdated)) {
+    if ((initialField == AssetSortFieldEnum.createdAt) ||
+        (initialField == AssetSortFieldEnum.updatedAt)) {
       icon = initialDirection == SortDirectionEnum.descending
           ? MdiIcons.sortCalendarAscending
           : MdiIcons.sortCalendarDescending;

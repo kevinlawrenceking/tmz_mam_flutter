@@ -2,9 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tmz_mam_flutter/app_router.gr.dart';
-import 'package:tmz_mam_flutter/features/authentication/bloc/bloc.dart';
-import 'package:tmz_mam_flutter/shared/widgets/toast.dart';
+import 'package:tmz_damz/app_router.gr.dart';
+import 'package:tmz_damz/features/authentication/bloc/bloc.dart';
+import 'package:tmz_damz/shared/widgets/toast.dart';
 
 @RoutePage(name: 'AuthenticationLoginRoute')
 class LoginView extends StatefulWidget {
@@ -102,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
                         const SizedBox(height: 24.0),
                         const Center(
                           child: Text(
-                            'PHOTO MAM',
+                            'DAMZ',
                             style: TextStyle(
                               fontSize: 24.0,
                               fontWeight: FontWeight.w700,

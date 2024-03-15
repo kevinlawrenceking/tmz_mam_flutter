@@ -1,10 +1,10 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/controllers/form_field_controller.dart';
-import '../components/advanced_search_window_widget.dart'
-    show AdvancedSearchWindowWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/models/search_bar_model.dart';
+import 'package:tmz_damz/components/advanced_search_window_widget.dart'
+    show AdvancedSearchWindowWidget;
+import 'package:tmz_damz/controllers/form_field_controller.dart';
+import 'package:tmz_damz/models/search_bar_model.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class AdvancedSearchWindowModel
     extends FlutterFlowModel<AdvancedSearchWindowWidget> {

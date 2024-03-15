@@ -1,6 +1,7 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart' show MediaPageControlBarWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/media_page_control_bar_widget.dart'
+    show MediaPageControlBarWidget;
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class MediaPageControlBarModel
     extends FlutterFlowModel<MediaPageControlBarWidget> {

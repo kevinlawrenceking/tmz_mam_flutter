@@ -1,10 +1,11 @@
-import 'package:tmz_mam_flutter/components/flutter_flow_data_table.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/collections_table_view_panel_model.dart';
-export 'package:tmz_mam_flutter/models/collections_table_view_panel_model.dart';
+import 'package:tmz_damz/components/flutter_flow_data_table.dart';
+import 'package:tmz_damz/models/collections_table_view_panel_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
+
+export 'package:tmz_damz/models/collections_table_view_panel_model.dart';
 
 class CollectionsTableViewPanelWidget extends StatefulWidget {
   const CollectionsTableViewPanelWidget({super.key});
@@ -37,34 +38,35 @@ class _CollectionsTableViewPanelWidgetState
     super.dispose();
   }
 
-@override
-Widget build(BuildContext context) {
-  // Use an empty list as data for the demo
-  final List<Map<String, dynamic>> demoData = [];
+  @override
+  Widget build(BuildContext context) {
+    // Use an empty list as data for the demo
+    final List<Map<String, dynamic>> demoData = [];
 
-  return FlutterFlowDataTable<dynamic>(
-    controller: _model.paginatedDataTableController,
-    data: demoData, // Pass the empty data list here
-    columnsBuilder: (onSortChanged) => [
-      DataColumn2(
-        label: DefaultTextStyle.merge(
-          softWrap: true,
-          child: Text(
-            'Name',
-            style: FlutterFlowTheme.of(context).labelLarge.override(
-              fontFamily: FlutterFlowTheme.of(context).labelLargeFamily,
-              color: FlutterFlowTheme.of(context).primaryBackground,
-              fontWeight: FontWeight.w500,
-              useGoogleFonts: GoogleFonts.asMap().containsKey(FlutterFlowTheme.of(context).labelLargeFamily),
+    return FlutterFlowDataTable<dynamic>(
+      controller: _model.paginatedDataTableController,
+      data: demoData, // Pass the empty data list here
+      columnsBuilder: (onSortChanged) => [
+        DataColumn2(
+          label: DefaultTextStyle.merge(
+            softWrap: true,
+            child: Text(
+              'Name',
+              style: FlutterFlowTheme.of(context).labelLarge.override(
+                    fontFamily: FlutterFlowTheme.of(context).labelLargeFamily,
+                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    fontWeight: FontWeight.w500,
+                    useGoogleFonts: GoogleFonts.asMap().containsKey(
+                        FlutterFlowTheme.of(context).labelLargeFamily),
+                  ),
             ),
           ),
         ),
-      ),
-      DataColumn2(
-        label: DefaultTextStyle.merge(
-          softWrap: true,
-          child: Text(
-            'Created',
+        DataColumn2(
+          label: DefaultTextStyle.merge(
+            softWrap: true,
+            child: Text(
+              'Created',
               style: FlutterFlowTheme.of(context).labelLarge.override(
                     fontFamily: FlutterFlowTheme.of(context).labelLargeFamily,
                     color: FlutterFlowTheme.of(context).primaryBackground,

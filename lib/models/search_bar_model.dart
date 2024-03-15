@@ -1,6 +1,7 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import '../components/search_bar_widget.dart' show SearchBarWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/search_bar_widget.dart'
+    show SearchBarWidget;
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class SearchBarModel extends FlutterFlowModel<SearchBarWidget> {
   ///  State fields for stateful widgets in this component.

@@ -1,6 +1,7 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import '../components/save_your_search_widget.dart' show SaveYourSearchWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/save_your_search_widget.dart'
+    show SaveYourSearchWidget;
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class SaveYourSearchModel extends FlutterFlowModel<SaveYourSearchWidget> {
   ///  State fields for stateful widgets in this component.

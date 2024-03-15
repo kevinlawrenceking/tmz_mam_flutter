@@ -4,12 +4,14 @@
 /// an image and associated metadata. It is designed to be used within the
 /// context of an asset management application.
 library;
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/assets_grid_view_panel_model.dart';
-export 'package:tmz_mam_flutter/models/assets_grid_view_panel_model.dart';
+import 'package:tmz_damz/models/assets_grid_view_panel_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
+
+export 'package:tmz_damz/models/assets_grid_view_panel_model.dart';
 
 class AssetsGridViewPanelWidget extends StatefulWidget {
   const AssetsGridViewPanelWidget({super.key});

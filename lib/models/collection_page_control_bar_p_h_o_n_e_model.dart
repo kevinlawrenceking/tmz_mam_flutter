@@ -1,10 +1,8 @@
-
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/controllers/form_field_controller.dart';
-import 'package:tmz_mam_flutter/components/collection_page_control_bar_p_h_o_n_e_widget.dart'
-    show CollectionPageControlBarPHONEWidget;
 import 'package:flutter/material.dart';
-
+import 'package:tmz_damz/components/collection_page_control_bar_p_h_o_n_e_widget.dart'
+    show CollectionPageControlBarPHONEWidget;
+import 'package:tmz_damz/controllers/form_field_controller.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class CollectionPageControlBarPHONEModel
     extends FlutterFlowModel<CollectionPageControlBarPHONEWidget> {

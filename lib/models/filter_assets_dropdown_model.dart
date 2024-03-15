@@ -1,6 +1,7 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import '../components/filter_assets_dropdown_widget.dart' show FilterAssetsDropdownWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/filter_assets_dropdown_widget.dart'
+    show FilterAssetsDropdownWidget;
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class FilterAssetsDropdownModel
     extends FlutterFlowModel<FilterAssetsDropdownWidget> {

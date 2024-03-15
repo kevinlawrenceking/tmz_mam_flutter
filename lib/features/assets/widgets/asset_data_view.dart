@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/data/models/inventory.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/inventory_tile_item.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/layout_mode_selector.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/thumbnail_size_selector.dart';
+import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/features/assets/widgets/asset_tile_item.dart';
+import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
+import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
+import 'package:tmz_damz/utils/config.dart';
 
-class InventoryDataView extends StatelessWidget {
+class AssetDataView extends StatelessWidget {
   final ScrollController scrollController;
-  final List<InventoryModel> items;
+  final Config config;
+  final List<AssetDetailsModel> assets;
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;
-  final void Function(InventoryModel model) onItemClicked;
+  final void Function(AssetDetailsModel model) onItemClicked;
 
-  const InventoryDataView({
+  const AssetDataView({
     super.key,
     required this.scrollController,
-    required this.items,
+    required this.config,
+    required this.assets,
     required this.layoutMode,
     required this.thumbnailSize,
     required this.onItemClicked,
@@ -33,14 +36,15 @@ class InventoryDataView extends StatelessWidget {
     required BuildContext context,
     required double margin,
     required double width,
-    required InventoryModel model,
+    required AssetDetailsModel model,
   }) {
     return GestureDetector(
       onTap: () => onItemClicked(model),
       child: Container(
         padding: EdgeInsets.all(margin),
         width: width,
-        child: InventoryTileItem(
+        child: AssetTileItem(
+          apiBaseUrl: config.apiBaseUrl,
           scrollController: scrollController,
           model: model,
         ),
@@ -71,7 +75,7 @@ class InventoryDataView extends StatelessWidget {
         final columns = (width / maxItemWidth).ceil();
 
         double itemWidth;
-        if (columns <= items.length) {
+        if (columns <= assets.length) {
           itemWidth = width / columns;
         } else {
           itemWidth = maxItemWidth;
@@ -80,7 +84,7 @@ class InventoryDataView extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(itemMargin),
           child: Wrap(
-            children: items
+            children: assets
                 .map(
                   (model) => _buildTileItem(
                     context: context,

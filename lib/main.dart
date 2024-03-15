@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/app.dart';
-import 'package:tmz_mam_flutter/utils/service_locator.dart';
+import 'package:tmz_damz/app.dart';
+import 'package:tmz_damz/utils/service_locator.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
@@ -20,7 +20,7 @@ Future<void> main() async {
       skipTaskbar: false,
       size: Size(1200, 800),
       minimumSize: Size(1200, 800),
-      title: 'TMZ Photo MAM',
+      title: 'TMZ DAMZ',
     );
 
     await windowManager.waitUntilReadyToShow(

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:tmz_mam_flutter/data/providers/rest_client.dart';
-import 'package:tmz_mam_flutter/shared/errors/exception_handler.dart';
-import 'package:tmz_mam_flutter/shared/errors/failures/failure.dart';
+import 'package:tmz_damz/data/providers/rest_client.dart';
+import 'package:tmz_damz/shared/errors/exception_handler.dart';
+import 'package:tmz_damz/shared/errors/failures/failure.dart';
 
 abstract class IAuthDataSource {
   Future<Either<Failure, String>> authenticate({

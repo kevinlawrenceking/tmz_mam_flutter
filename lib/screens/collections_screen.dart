@@ -1,12 +1,12 @@
 // collections.dart
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
-import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
-import 'package:tmz_mam_flutter/components/media_page_control_bar_widget.dart';
-import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/themes/theme_provider.dart';
+import 'package:tmz_damz/components/bottom_buttons_widget.dart';
+import 'package:tmz_damz/components/custom_app_bar.dart';
+import 'package:tmz_damz/components/media_page_control_bar_widget.dart';
+import 'package:tmz_damz/components/search_bar_old_widget.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/themes/theme_provider.dart';
 
 class CollectionsPage extends StatelessWidget {
   const CollectionsPage({super.key});
@@ -29,7 +29,8 @@ class CollectionsPage extends StatelessWidget {
       body: Column(
         children: [
           const SearchBarOldWidget(), // Search bar component
-          const MediaPageControlBarWidget(imageUrl: "http://www.google.com" ?? 'placeholderOrEmptyString'),
+          const MediaPageControlBarWidget(
+              imageUrl: "http://www.google.com" ?? 'placeholderOrEmptyString'),
 
           Padding(
             padding: const EdgeInsets.all(8.0),

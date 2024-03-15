@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-const String kUserAgent = 'TMZPhotoFlutterApp';
+const String kUserAgent = 'TMZDAMZ';
+
+// this should be updated to pull the actual version...
 const String appVersion = '1.0';
 
 abstract class IRestClient {
@@ -112,6 +114,7 @@ class RestClient implements IRestClient {
     final response = await http.post(
       url,
       headers: mergedHeaders,
+      body: body,
     );
 
     return response;

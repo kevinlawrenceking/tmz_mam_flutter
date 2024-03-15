@@ -1,19 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_details.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_metadata.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/inventory_item_thumbnail.dart';
-import 'package:tmz_mam_flutter/shared/widgets/toast.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:tmz_damz/components/flutter_flow_icon_button.dart';
+import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/inventory_metadata.dart';
+import 'package:tmz_damz/features/assets/widgets/asset_item_thumbnail.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
-class InventoryDetailsView extends StatelessWidget {
-  final InventoryDetailsModel model;
+class AssetDetailsView extends StatelessWidget {
+  final String apiBaseUrl;
+  final AssetDetailsModel model;
 
-  const InventoryDetailsView({
+  const AssetDetailsView({
     super.key,
+    required this.apiBaseUrl,
     required this.model,
   });
 
@@ -36,69 +34,64 @@ class InventoryDetailsView extends StatelessWidget {
             color: FlutterFlowTheme.of(context).secondaryText,
           ),
           Text(
-            model.name,
+            model.headline,
             style: FlutterFlowTheme.of(context).headlineLarge,
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Container(
-                          color: Colors.black,
-                          child: InventoryItemThumbnail(
-                            url: model.thumbnail,
-                          ),
-                        ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Container(
+                      color: Colors.black,
+                      child: AssetItemThumbnail(
+                        url: '$apiBaseUrl/asset/${model.id}/thumbnail',
                       ),
-                      const SizedBox(height: 20.0),
-                      Text(
-                        'CATEGORIES:',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.textTheme.labelSmall?.color
-                              ?.withOpacity(0.4),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 4.0),
-                      Text(
-                        model.categories,
-                        style: theme.textTheme.labelSmall,
-                      ),
-                      const SizedBox(height: 20.0),
-                      Text(
-                        'APPEARS IN:',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.textTheme.labelSmall?.color
-                              ?.withOpacity(0.4),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 4.0),
-                      Text(
-                        model.collections,
-                        style: theme.textTheme.labelSmall,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: _MetadataContainer(
-                    metadata: model.metadata,
+                  const SizedBox(height: 20.0),
+                  Text(
+                    'CATEGORIES:',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color:
+                          theme.textTheme.labelSmall?.color?.withOpacity(0.4),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4.0),
+                  Text(
+                    '-', // model.categories,
+                    style: theme.textTheme.labelSmall,
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    'APPEARS IN:',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color:
+                          theme.textTheme.labelSmall?.color?.withOpacity(0.4),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(
+                    '-', // model.collections,
+                    style: theme.textTheme.labelSmall,
+                  ),
+                  const SizedBox(height: 20),
+                  _MetadataContainer(
+                    metadata: [], //model.metadata,
+                  ),
+                  const SizedBox(height: 20),
+                  _PhotoInfoContainer(
+                    model: model,
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          _PhotoInfoContainer(
-            model: model,
           ),
         ],
       ),
@@ -133,45 +126,32 @@ class _MetadataContainer extends StatelessWidget {
               style: theme.textTheme.titleLarge,
             ),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 30.0, 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: metadata
-                      .map(
-                        (meta) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Opacity(
-                                opacity: 0.4,
-                                child: Text(
-                                  meta.label?.toUpperCase() ?? '',
-                                  softWrap: false,
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                meta.value ?? '-',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
+          ...metadata.map(
+            (meta) => Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Opacity(
+                    opacity: 0.4,
+                    child: Text(
+                      meta.label?.toUpperCase() ?? '',
+                      softWrap: false,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    meta.value ?? '-',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
@@ -179,7 +159,7 @@ class _MetadataContainer extends StatelessWidget {
 }
 
 class _PhotoInfoContainer extends StatelessWidget {
-  final InventoryDetailsModel? model;
+  final AssetDetailsModel? model;
 
   const _PhotoInfoContainer({
     required this.model,
@@ -210,7 +190,7 @@ class _PhotoInfoContainer extends StatelessWidget {
                 context: context,
                 theme: theme,
                 label: 'ID',
-                value: model?.id.toString() ?? '',
+                value: model?.id ?? '',
               ),
             ),
             SizedBox(
@@ -219,7 +199,16 @@ class _PhotoInfoContainer extends StatelessWidget {
                 context: context,
                 theme: theme,
                 label: 'STATUS',
-                value: model?.status ?? '',
+                value: () {
+                  switch (model?.status) {
+                    case AssetStatusEnum.available:
+                      return 'Available';
+                    case AssetStatusEnum.processing:
+                      return 'Processing';
+                    default:
+                      return '-';
+                  }
+                }(),
               ),
             ),
             SizedBox(
@@ -228,10 +217,7 @@ class _PhotoInfoContainer extends StatelessWidget {
                 context: context,
                 theme: theme,
                 label: 'ORIGINAL FILE NAME',
-                value: File(model?.mediaPath ?? '')
-                    .path
-                    .split(RegExp(r'[\\/]'))
-                    .last,
+                value: model?.originalFileName ?? '',
               ),
             ),
             SizedBox(
@@ -240,7 +226,15 @@ class _PhotoInfoContainer extends StatelessWidget {
                 context: context,
                 theme: theme,
                 label: 'CREATED BY',
-                value: model?.createdBy ?? '',
+                value: () {
+                  if (model?.createdBy != null) {
+                    final firstName = model!.createdBy.firstName;
+                    final lastName = model!.createdBy.lastName;
+                    return '$firstName $lastName';
+                  } else {
+                    return '';
+                  }
+                }(),
               ),
             ),
             SizedBox(
@@ -249,7 +243,7 @@ class _PhotoInfoContainer extends StatelessWidget {
                 context: context,
                 theme: theme,
                 label: 'CREATED',
-                value: model?.dateCreated.toLocal().toString() ?? '',
+                value: model?.createdAt.toLocal().toString() ?? '',
               ),
             ),
             SizedBox(
@@ -258,7 +252,7 @@ class _PhotoInfoContainer extends StatelessWidget {
                 context: context,
                 theme: theme,
                 label: 'UPDATED',
-                value: model?.dateUpdated.toLocal().toString() ?? '',
+                value: model?.updatedAt.toLocal().toString() ?? '',
               ),
             ),
           ],
@@ -304,7 +298,7 @@ class _PhotoInfoContainer extends StatelessWidget {
 }
 
 class _Toolbar extends StatelessWidget {
-  final InventoryDetailsModel model;
+  final AssetDetailsModel model;
 
   const _Toolbar({
     required this.model,
@@ -320,15 +314,15 @@ class _Toolbar extends StatelessWidget {
             context: context,
             icon: Icons.file_download_outlined,
             onPressed: () async {
-              final url = Uri.parse(model.mediaPath);
-              if (!await launchUrl(url)) {
-                Toast.showNotification(
-                  type: ToastTypeEnum.error,
-                  showDuration: const Duration(seconds: 8),
-                  title: '',
-                  message: 'Could not launch $url',
-                );
-              }
+              // final url = Uri.parse(model.mediaPath);
+              // if (!await launchUrl(url)) {
+              //   Toast.showNotification(
+              //     type: ToastTypeEnum.error,
+              //     showDuration: const Duration(seconds: 8),
+              //     title: '',
+              //     message: 'Could not launch $url',
+              //   );
+              // }
             },
           ),
           _buildIconButton(

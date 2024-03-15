@@ -1,4 +1,4 @@
-import 'lat_lng.dart';
+import 'package:tmz_damz/components/lat_lng.dart';
 
 class FFPlace {
   const FFPlace({

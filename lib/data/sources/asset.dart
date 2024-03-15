@@ -1,44 +1,43 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:tmz_mam_flutter/data/models/inventory.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_details.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_sort_field_enum.dart';
-import 'package:tmz_mam_flutter/data/models/sort_direction_enum.dart';
-import 'package:tmz_mam_flutter/data/providers/rest_client.dart';
-import 'package:tmz_mam_flutter/data/sources/auth.dart';
-import 'package:tmz_mam_flutter/shared/errors/exception_handler.dart';
-import 'package:tmz_mam_flutter/shared/errors/failures/failure.dart';
+import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/providers/rest_client.dart';
+import 'package:tmz_damz/data/sources/auth.dart';
+import 'package:tmz_damz/shared/errors/exception_handler.dart';
+import 'package:tmz_damz/shared/errors/failures/failure.dart';
 
-abstract class IInventoryDataSource {
-  Future<Either<Failure, InventoryDetailsModel>> getInventoryDetails({
-    required int itemID,
+abstract class IAssetDataSource {
+  Future<Either<Failure, AssetDetailsModel>> getAssetDetails({
+    required String assetID,
   });
 
-  Future<Either<Failure, InventorySearchResults>> search({
-    required int limit,
+  Future<Either<Failure, AssetSearchResults>> getAssetList({
     required int offset,
+    required int limit,
     String? searchTerm,
-    InventorySortFieldEnum? sortField,
+    AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
   });
 }
 
-class InventoryDataSource implements IInventoryDataSource {
+class AssetDataSource implements IAssetDataSource {
   final IAuthDataSource _auth;
   final IRestClient _client;
 
-  InventoryDataSource({
+  AssetDataSource({
     required IAuthDataSource auth,
     required IRestClient client,
   })  : _auth = auth,
         _client = client;
 
   @override
-  Future<Either<Failure, InventoryDetailsModel>> getInventoryDetails({
-    required int itemID,
+  Future<Either<Failure, AssetDetailsModel>> getAssetDetails({
+    required String assetID,
   }) async =>
-      ExceptionHandler<InventoryDetailsModel>(() async {
+      ExceptionHandler<AssetDetailsModel>(() async {
         final response = await _auth.getAuthToken();
 
         return response.fold(
@@ -46,13 +45,13 @@ class InventoryDataSource implements IInventoryDataSource {
           (authToken) async {
             final response = await _client.get(
               authToken: authToken,
-              endPoint: '/api/v1/inventory/$itemID',
+              endPoint: '/api/v1/asset/$assetID',
             );
 
             if (response.statusCode == 200) {
               final data = json.decode(response.body);
-              final item = InventoryDetailsModel.fromJson(data);
-              return Right(item);
+              final asset = AssetDetailsModel.fromJsonDto(data);
+              return Right(asset);
             } else {
               return Left(
                 GeneralFailure(
@@ -65,22 +64,22 @@ class InventoryDataSource implements IInventoryDataSource {
       })();
 
   @override
-  Future<Either<Failure, InventorySearchResults>> search({
-    required int limit,
+  Future<Either<Failure, AssetSearchResults>> getAssetList({
     required int offset,
+    required int limit,
     String? searchTerm,
-    InventorySortFieldEnum? sortField,
+    AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
   }) async =>
-      ExceptionHandler<InventorySearchResults>(() async {
+      ExceptionHandler<AssetSearchResults>(() async {
         final response = await _auth.getAuthToken();
 
         return response.fold(
           (failure) => Left(failure),
           (authToken) async {
             final queryParams = {
-              'limit': limit.toString(),
               'offset': offset.toString(),
+              'limit': limit.toString(),
             };
 
             if (searchTerm != null && searchTerm.isNotEmpty) {
@@ -91,14 +90,14 @@ class InventoryDataSource implements IInventoryDataSource {
               const paramKey = 'sortField';
 
               switch (sortField) {
-                case InventorySortFieldEnum.name:
-                  queryParams[paramKey] = 'name';
+                case AssetSortFieldEnum.headline:
+                  queryParams[paramKey] = 'headline';
                   break;
-                case InventorySortFieldEnum.dateCreated:
-                  queryParams[paramKey] = 'dateCreated';
+                case AssetSortFieldEnum.createdAt:
+                  queryParams[paramKey] = 'created_at';
                   break;
-                case InventorySortFieldEnum.dateUpdated:
-                  queryParams[paramKey] = 'dateUpdated';
+                case AssetSortFieldEnum.updatedAt:
+                  queryParams[paramKey] = 'updated_at';
                   break;
               }
             }
@@ -118,13 +117,13 @@ class InventoryDataSource implements IInventoryDataSource {
 
             final response = await _client.get(
               authToken: authToken,
-              endPoint: '/api/v1/inventory',
+              endPoint: '/api/v1/asset',
               queryParams: queryParams,
             );
 
             if (response.statusCode == 200) {
               final data = json.decode(response.body);
-              final results = InventorySearchResults.fromJson(data);
+              final results = AssetSearchResults.fromJsonDto(data);
               return Right(results);
             } else {
               return Left(
@@ -138,23 +137,28 @@ class InventoryDataSource implements IInventoryDataSource {
       })();
 }
 
-class InventorySearchResults {
+class AssetSearchResults {
   final int totalRecords;
-  final List<InventoryModel> items;
+  final List<AssetDetailsModel> assets;
 
-  InventorySearchResults({
+  AssetSearchResults({
     required this.totalRecords,
-    required this.items,
+    required this.assets,
   });
 
-  factory InventorySearchResults.fromJson(
-    Map<String, dynamic> json,
+  factory AssetSearchResults.fromJsonDto(
+    Map<String, dynamic> dto,
   ) {
-    return InventorySearchResults(
-      totalRecords: json['totalRecords'] as int,
-      items: ((json['inventoryList'] as List?) ?? [])
-          .map((item) => InventoryModel.fromJson(item))
-          .toList(),
+    return AssetSearchResults(
+      totalRecords: dto['totalRecords'] as int,
+      assets: (dto['assets'] as List?)
+              ?.map(
+                (_) => AssetDetailsModel.fromJsonDto(
+                  _,
+                ),
+              )
+              .toList() ??
+          [],
     );
   }
 }

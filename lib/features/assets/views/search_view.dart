@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tmz_mam_flutter/data/models/inventory.dart';
-import 'package:tmz_mam_flutter/data/models/inventory_sort_field_enum.dart';
-import 'package:tmz_mam_flutter/data/models/sort_direction_enum.dart';
-import 'package:tmz_mam_flutter/features/assets/bloc/bloc.dart';
-import 'package:tmz_mam_flutter/features/assets/views/inventory_details_view.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/inventory_data_view.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/layout_mode_selector.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/pagination_bar.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/thumbnail_size_selector.dart';
-import 'package:tmz_mam_flutter/features/assets/widgets/toolbar.dart';
-import 'package:tmz_mam_flutter/shared/widgets/app_scaffold/app_scaffold.dart';
-import 'package:tmz_mam_flutter/shared/widgets/toast.dart';
+import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/features/assets/bloc/bloc.dart';
+import 'package:tmz_damz/features/assets/views/asset_details_view.dart';
+import 'package:tmz_damz/features/assets/widgets/asset_data_view.dart';
+import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
+import 'package:tmz_damz/features/assets/widgets/pagination_bar.dart';
+import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
+import 'package:tmz_damz/features/assets/widgets/toolbar.dart';
+import 'package:tmz_damz/shared/widgets/app_scaffold/app_scaffold.dart';
+import 'package:tmz_damz/shared/widgets/toast.dart';
+import 'package:tmz_damz/utils/config.dart';
 
 @RoutePage(name: 'AssetsSearchRoute')
 class SearchView extends StatefulWidget {
@@ -27,7 +28,7 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   ScrollController? _scrollController;
-  InventorySortFieldEnum _sortField = InventorySortFieldEnum.dateCreated;
+  AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
   LayoutModeEnum _layoutMode = LayoutModeEnum.tile;
   ThumbnailSizeEnum _thumbnailSize = ThumbnailSizeEnum.medium;
@@ -136,10 +137,10 @@ class _SearchViewState extends State<SearchView> {
             child: CircularProgressIndicator(),
           );
         } else if (state is SearchResultsLoadedState) {
-          if (state.items.isNotEmpty) {
+          if (state.assets.isNotEmpty) {
             return _buildLoadedState(
               context: context,
-              items: state.items,
+              assets: state.assets,
             );
           } else {
             return const Center(
@@ -155,19 +156,20 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _buildLoadedState({
     required BuildContext context,
-    required List<InventoryModel> items,
+    required List<AssetDetailsModel> assets,
   }) {
     return SingleChildScrollView(
       controller: _scrollController,
-      child: InventoryDataView(
+      child: AssetDataView(
         scrollController: _scrollController ?? ScrollController(),
-        items: items,
+        config: GetIt.instance<Config>(),
+        assets: assets,
         layoutMode: _layoutMode,
         thumbnailSize: _thumbnailSize,
         onItemClicked: (model) {
           BlocProvider.of<AssetsBloc>(context).add(
-            LoadInventoryDetailsEvent(
-              itemID: model.id,
+            LoadAssetDetailsEvent(
+              assetID: model.id,
             ),
           );
 
@@ -191,7 +193,7 @@ class _SearchViewState extends State<SearchView> {
                   );
             },
             toastBuilder: (cancelFunc) {
-              return _buildInventoryDetailsDrawer(
+              return _buildAssetDetailsDrawer(
                 context: context,
                 cancelFunc: cancelFunc,
               );
@@ -202,7 +204,7 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
-  Widget _buildInventoryDetailsDrawer({
+  Widget _buildAssetDetailsDrawer({
     required BuildContext context,
     required void Function() cancelFunc,
   }) {
@@ -230,7 +232,7 @@ class _SearchViewState extends State<SearchView> {
                     color: const Color(0xFF232323),
                   ),
                   child: MouseRegion(
-                    child: _buildInventoryDetailsPanel(
+                    child: _buildAssetDetailsPanel(
                       context: context,
                       cancelFunc: cancelFunc,
                     ),
@@ -244,7 +246,7 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
-  Widget _buildInventoryDetailsPanel({
+  Widget _buildAssetDetailsPanel({
     required BuildContext context,
     required void Function() cancelFunc,
   }) {
@@ -252,9 +254,9 @@ class _SearchViewState extends State<SearchView> {
       child: BlocProvider<AssetsBloc>.value(
         value: BlocProvider.of<AssetsBloc>(context),
         child: BlocListener<AssetsBloc, BlocState>(
-          listenWhen: (_, state) => state is InventoryDetailsFailureState,
+          listenWhen: (_, state) => state is AssetDetailsFailureState,
           listener: (context, state) {
-            if (state is InventoryDetailsFailureState) {
+            if (state is AssetDetailsFailureState) {
               Toast.showNotification(
                 showDuration: const Duration(seconds: 8),
                 type: ToastTypeEnum.error,
@@ -267,15 +269,16 @@ class _SearchViewState extends State<SearchView> {
           },
           child: BlocBuilder<AssetsBloc, BlocState>(
             buildWhen: (_, state) =>
-                state is InventoryDetailsLoadedState ||
-                state is InventoryDetailsLoadingState,
+                state is AssetDetailsLoadedState ||
+                state is AssetDetailsLoadingState,
             builder: (context, state) {
-              if (state is InventoryDetailsLoadingState) {
+              if (state is AssetDetailsLoadingState) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else if (state is InventoryDetailsLoadedState) {
-                return InventoryDetailsView(
+              } else if (state is AssetDetailsLoadedState) {
+                return AssetDetailsView(
+                  apiBaseUrl: GetIt.instance<Config>().apiBaseUrl,
                   model: state.model,
                 );
               } else {

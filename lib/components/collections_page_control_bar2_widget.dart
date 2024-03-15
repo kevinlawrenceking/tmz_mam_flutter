@@ -1,12 +1,13 @@
-import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/collections_page_control_bar2_model.dart';
-export 'package:tmz_mam_flutter/models/collections_page_control_bar2_model.dart';
+import 'package:tmz_damz/components/flutter_flow_drop_down.dart';
+import 'package:tmz_damz/controllers//form_field_controller.dart';
+import 'package:tmz_damz/models/collections_page_control_bar2_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
+
+export 'package:tmz_damz/models/collections_page_control_bar2_model.dart';
 
 /// CollectionsPageControlBar2Widget provides a user interface for navigating and
 /// managing a vast collection of items within the application. It showcases the total

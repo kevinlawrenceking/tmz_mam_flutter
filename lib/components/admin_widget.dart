@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
-import 'package:tmz_mam_flutter/components/admin_page_control_bar_widget.dart';
+import 'package:tmz_damz/components/admin_page_control_bar_widget.dart';
+import 'package:tmz_damz/components/search_bar_old_widget.dart';
 
 /// AdminWidget is a comprehensive administration interface within the application,
 /// designed to allow privileged users to manage and view user-related data.

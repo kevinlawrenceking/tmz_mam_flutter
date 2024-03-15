@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tmz_mam_flutter/data/sources/auth.dart';
-import 'package:tmz_mam_flutter/shared/errors/failures/failure.dart';
+import 'package:tmz_damz/data/sources/auth.dart';
+import 'package:tmz_damz/shared/errors/failures/failure.dart';
 
 part 'event.dart';
 part 'state.dart';

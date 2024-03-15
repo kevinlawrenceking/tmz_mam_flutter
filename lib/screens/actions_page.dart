@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/themes/theme_provider.dart'; // Import your ThemeProvider
-import 'package:tmz_mam_flutter/components/custom_app_bar.dart';
-import 'package:tmz_mam_flutter/components/bottom_buttons_widget.dart';
+import 'package:tmz_damz/components/bottom_buttons_widget.dart';
+import 'package:tmz_damz/components/custom_app_bar.dart';
+import 'package:tmz_damz/themes/theme_provider.dart'; // Import your ThemeProvider
 
 class ActionsPage extends StatefulWidget {
   final String title;

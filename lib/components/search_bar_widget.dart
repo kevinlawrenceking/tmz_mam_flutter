@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
 class SearchBarWidget extends StatefulWidget {
   final Function(String) onSearchSubmit;

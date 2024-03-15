@@ -1,12 +1,12 @@
-import '../themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/components/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:tmz_damz/components/flutter_flow_widgets.dart';
+import 'package:tmz_damz/models/save_your_search_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
-import 'package:tmz_mam_flutter/models/save_your_search_model.dart';
-export 'package:tmz_mam_flutter/models/save_your_search_model.dart';
+export 'package:tmz_damz/models/save_your_search_model.dart';
 
 class SaveYourSearchWidget extends StatefulWidget {
   const SaveYourSearchWidget({super.key});

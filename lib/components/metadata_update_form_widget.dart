@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart'; // Make sure this import points to the correct file location
+import 'package:tmz_damz/themes/flutter_flow_theme.dart'; // Make sure this import points to the correct file location
 
 class MetadataUpdateFormWidget extends StatefulWidget {
   const MetadataUpdateFormWidget({super.key});

@@ -1,8 +1,8 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
-import 'package:tmz_mam_flutter/components/collections_page_control_bar2_widget.dart'
-    show CollectionsPageControlBar2Widget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/collections_page_control_bar2_widget.dart'
+    show CollectionsPageControlBar2Widget;
+import 'package:tmz_damz/controllers//form_field_controller.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class CollectionsPageControlBar2Model
     extends FlutterFlowModel<CollectionsPageControlBar2Widget> {

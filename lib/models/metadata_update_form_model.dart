@@ -1,8 +1,9 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import '../controllers/form_field_controller.dart';
-import '../components/metadata_update_form_widget.dart' show MetadataUpdateFormWidget;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/metadata_update_form_widget.dart'
+    show MetadataUpdateFormWidget;
+import 'package:tmz_damz/controllers/form_field_controller.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class MetadataUpdateFormModel
     extends FlutterFlowModel<MetadataUpdateFormWidget> {

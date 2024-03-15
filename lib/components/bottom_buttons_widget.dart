@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/features/assets/views/search_view.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/components/collections_widget.dart';
-import 'package:tmz_mam_flutter/screens/admin_screen.dart';
+import 'package:tmz_damz/components/collections_widget.dart';
+import 'package:tmz_damz/features/assets/views/search_view.dart';
+import 'package:tmz_damz/screens/admin_screen.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
 /// Builds the bottom navigation bar for the app.
 ///

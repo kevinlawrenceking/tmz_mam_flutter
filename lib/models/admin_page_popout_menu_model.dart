@@ -1,6 +1,7 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import '../components/admin_page_popout_menu_widget.dart' show AdminPagePopoutMenuWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/admin_page_popout_menu_widget.dart'
+    show AdminPagePopoutMenuWidget;
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class AdminPagePopoutMenuModel
     extends FlutterFlowModel<AdminPagePopoutMenuWidget> {

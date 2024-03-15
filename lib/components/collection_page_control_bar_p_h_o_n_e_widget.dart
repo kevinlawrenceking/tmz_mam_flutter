@@ -1,15 +1,16 @@
 // ignore_for_file: avoid_print
 
-import 'package:tmz_mam_flutter/components/flutter_flow_drop_down.dart';
-import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import 'package:tmz_mam_flutter/controllers//form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/collection_page_control_bar_p_h_o_n_e_model.dart';
-export 'package:tmz_mam_flutter/models/collection_page_control_bar_p_h_o_n_e_model.dart';
+import 'package:tmz_damz/components/flutter_flow_drop_down.dart';
+import 'package:tmz_damz/components/flutter_flow_icon_button.dart';
+import 'package:tmz_damz/controllers//form_field_controller.dart';
+import 'package:tmz_damz/models/collection_page_control_bar_p_h_o_n_e_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
+
+export 'package:tmz_damz/models/collection_page_control_bar_p_h_o_n_e_model.dart';
 
 /// A widget that provides control options for the collection page on mobile devices.
 ///

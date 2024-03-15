@@ -1,9 +1,10 @@
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tmz_mam_flutter/models/collections_page_grid_view_model.dart';
-export 'package:tmz_mam_flutter/models/collections_page_grid_view_model.dart';
+import 'package:tmz_damz/models/collections_page_grid_view_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
+
+export 'package:tmz_damz/models/collections_page_grid_view_model.dart';
 
 /// CollectionsPageGridViewWidget presents a grid view showcasing a collection of
 /// items, each item represented within a container that includes an image and a

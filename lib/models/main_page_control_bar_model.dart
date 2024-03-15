@@ -1,7 +1,8 @@
-import '../utils/flutter_flow_util.dart';
-import '../controllers/form_field_controller.dart';
-import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart' show MainPageControlBarWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/main_page_control_bar_widget.dart'
+    show MainPageControlBarWidget;
+import 'package:tmz_damz/controllers/form_field_controller.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class MainPageControlBarModel
     extends FlutterFlowModel<MainPageControlBarWidget> {

@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:tmz_mam_flutter/features/authentication/bloc/bloc.dart';
+import 'package:tmz_damz/features/authentication/bloc/bloc.dart';
 
 class ServiceLocator {
   static bool _initialized = false;

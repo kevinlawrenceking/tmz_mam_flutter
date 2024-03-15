@@ -1,10 +1,11 @@
-import 'package:tmz_mam_flutter/data/models/inventory_metadata.dart';
+import 'package:tmz_damz/data/models/inventory_metadata.dart';
 
 class InventoryModel {
   final int id;
   final String name;
   final String mediaPath;
-  final String thumbnail;
+  final String downloadUrl;
+  final String thumbnailUrl;
   final String? createdBy;
   final DateTime dateCreated;
   final DateTime dateUpdated;
@@ -14,19 +15,26 @@ class InventoryModel {
     required this.id,
     required this.name,
     required this.mediaPath,
-    required this.thumbnail,
+    required this.downloadUrl,
+    required this.thumbnailUrl,
     required this.createdBy,
     required this.dateCreated,
     required this.dateUpdated,
     required this.metadata,
   });
 
-  static InventoryModel fromJson(Map<String, dynamic> json) {
+  static InventoryModel fromJson({
+    required String apiBaseUrl,
+    required Map<String, dynamic> json,
+  }) {
+    final id = json['id'] as int;
+
     return InventoryModel(
-      id: json['id'] as int,
+      id: id,
       name: json['name'] ?? '-',
       mediaPath: json['mediaPath'] ?? '',
-      thumbnail: json['thumbnail'] ?? '',
+      downloadUrl: '$apiBaseUrl/inventory/$id/download',
+      thumbnailUrl: '$apiBaseUrl/inventory/$id/thumbnail',
       createdBy: json['createdBy'],
       dateCreated: DateTime.parse(json['dateCreated']),
       dateUpdated: DateTime.parse(json['dateUpdated']),

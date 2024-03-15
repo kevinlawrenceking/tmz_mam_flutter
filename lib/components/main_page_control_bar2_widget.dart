@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'actions_drop_down_menu_assets_widget.dart';
+import 'package:tmz_damz/components/actions_drop_down_menu_assets_widget.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
 class MainPageControlBar2Widget extends StatefulWidget {
   final Function(int)? updateLimitCallback;

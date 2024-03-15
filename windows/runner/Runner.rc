@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "tmz_mam_flutter" "\0"
+            VALUE "CompanyName", "TMZ" "\0"
+            VALUE "FileDescription", "tmz_damz" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "tmz_mam_flutter" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "tmz_mam_flutter.exe" "\0"
-            VALUE "ProductName", "tmz_mam_flutter" "\0"
+            VALUE "InternalName", "tmz_damz" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 TMZ. All rights reserved." "\0"
+            VALUE "OriginalFilename", "tmz_damz.exe" "\0"
+            VALUE "ProductName", "TMZ DAMZ" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

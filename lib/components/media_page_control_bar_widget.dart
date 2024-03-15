@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/components/flutter_flow_icon_button.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/components/flutter_flow_icon_button.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 import 'package:url_launcher/url_launcher.dart'; // Make sure to add url_launcher to your pubspec.yaml
 
 class MediaPageControlBarWidget extends StatefulWidget {

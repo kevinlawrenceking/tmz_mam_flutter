@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tmz_mam_flutter/features/assets/views/search_view.dart';
-import '../themes/flutter_flow_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'profile_menu_widget.dart'; // Make sure to import the ProfileMenuWidget
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
+import 'package:tmz_damz/components/profile_menu_widget.dart';
+import 'package:tmz_damz/features/assets/views/search_view.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -37,14 +37,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: Text(
-        'TMZ MAM',
+        'TMZ DAMZ',
         style: FlutterFlowTheme.of(context).headlineMedium.override(
               fontFamily: FlutterFlowTheme.of(context).headlineMediumFamily,
               color: FlutterFlowTheme.of(context).primaryBackground,
               fontSize: 22,
               fontWeight: FontWeight.w600,
               useGoogleFonts: GoogleFonts.asMap().containsKey(
-                  FlutterFlowTheme.of(context).headlineMediumFamily),
+                FlutterFlowTheme.of(context).headlineMediumFamily,
+              ),
             ),
       ),
       actions: [
@@ -78,7 +79,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       useGoogleFonts: GoogleFonts.asMap().containsKey(
-                          FlutterFlowTheme.of(context).bodyLargeFamily),
+                        FlutterFlowTheme.of(context).bodyLargeFamily,
+                      ),
                     ),
               ),
             ),

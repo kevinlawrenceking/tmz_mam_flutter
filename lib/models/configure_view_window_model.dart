@@ -1,6 +1,7 @@
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-import '../components/configure_view_window_widget.dart' show ConfigureViewWindowWidget;
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/components/configure_view_window_widget.dart'
+    show ConfigureViewWindowWidget;
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
 class ConfigureViewWindowModel
     extends FlutterFlowModel<ConfigureViewWindowWidget> {

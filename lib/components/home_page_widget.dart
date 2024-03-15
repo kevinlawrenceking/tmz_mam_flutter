@@ -1,16 +1,15 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
-import 'package:tmz_mam_flutter/components/main_page_control_bar_widget.dart';
-import 'package:tmz_mam_flutter/components/search_bar_old_widget.dart';
-import 'package:tmz_mam_flutter/themes/flutter_flow_theme.dart';
-import 'package:tmz_mam_flutter/utils/flutter_flow_util.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tmz_damz/components/main_page_control_bar_widget.dart';
+import 'package:tmz_damz/components/search_bar_old_widget.dart';
+import 'package:tmz_damz/models/home_page_model.dart';
+import 'package:tmz_damz/themes/flutter_flow_theme.dart';
+import 'package:tmz_damz/utils/flutter_flow_util.dart';
 
-import 'package:tmz_mam_flutter/models/home_page_model.dart';
-export 'package:tmz_mam_flutter/models/home_page_model.dart';
+export 'package:tmz_damz/models/home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({super.key});
@@ -67,7 +66,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
             ),
           ),
           title: Text(
-            'TMZ MAM',
+            'TMZ DAMZ',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: FlutterFlowTheme.of(context).headlineMediumFamily,
                   color: FlutterFlowTheme.of(context).primaryBackground,

@@ -1,9 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tmz_mam_flutter/app_router.dart';
-import 'package:tmz_mam_flutter/themes/app_theme.dart';
-import 'package:tmz_mam_flutter/themes/theme_provider.dart';
+import 'package:tmz_damz/app_router.dart';
+import 'package:tmz_damz/themes/app_theme.dart';
+import 'package:tmz_damz/themes/theme_provider.dart';
 
 class App extends StatelessWidget {
   final _appRouter = AppRouter();
@@ -18,7 +18,7 @@ class App extends StatelessWidget {
         builder: (context, themeProvider, child) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            title: 'TMZ Photo MAM',
+            title: 'TMZ DAMZ',
             theme: AppTheme.light(context),
             darkTheme: AppTheme.dark(context),
             themeMode: ThemeMode.dark, // themeProvider.themeMode
