@@ -12,7 +12,7 @@ part 'event.dart';
 part 'state.dart';
 
 class AssetsBloc extends Bloc<BlocEvent, BlocState> {
-  final IAssetDataSource inventoryDataSource;
+  final IAssetDataSource assetDataSource;
 
   var _limit = 10;
   String? _searchTerm;
@@ -22,7 +22,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   var _totalRecords = 0;
 
   AssetsBloc({
-    required this.inventoryDataSource,
+    required this.assetDataSource,
   }) : super(InitialState()) {
     on<LoadAssetDetailsEvent>(_loadAssetDetailsEvent);
     on<PaginationChangedEvent>(_paginationChangedEvent);
@@ -39,7 +39,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       const Duration(milliseconds: 250),
     );
 
-    final result = await inventoryDataSource.getAssetDetails(
+    final result = await assetDataSource.getAssetDetails(
       assetID: event.assetID,
     );
 
@@ -110,7 +110,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       const Duration(milliseconds: 250),
     );
 
-    final result = await inventoryDataSource.getAssetList(
+    final result = await assetDataSource.getAssetList(
       offset: offset,
       limit: limit,
       searchTerm: searchTerm,

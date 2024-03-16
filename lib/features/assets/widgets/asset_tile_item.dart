@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
-import 'package:tmz_damz/features/assets/widgets/asset_item_thumbnail.dart';
+import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/scroll_aware_builder.dart';
 
 class AssetTileItem extends StatefulWidget {
@@ -45,7 +45,7 @@ class _AssetTileItemState extends State<AssetTileItem> {
                 color: Colors.black,
                 child: ScrollAwareBuilder(
                   controller: widget.scrollController,
-                  builder: (context) => AssetItemThumbnail(
+                  builder: (context) => FileThumbnail(
                     url:
                         '${widget.apiBaseUrl}/asset/${widget.model.id}/thumbnail',
                   ),

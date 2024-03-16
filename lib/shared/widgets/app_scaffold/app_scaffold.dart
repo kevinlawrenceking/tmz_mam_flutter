@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/app_router.gr.dart';
+import 'package:tmz_damz/data/sources/auth.dart';
 
 part 'menu_drawer.dart';
 part 'menu_drawer_header.dart';
@@ -116,9 +118,9 @@ class _AppScaffoldState extends State<AppScaffold>
       _MenuItem(
         icon: MdiIcons.progressUpload,
         title: 'Upload',
-        isActive: false /* router.current.name == UploadRoute.name */,
+        isActive: router.current.name == AssetImportRoute.name,
         onTap: () {
-          // AutoRouter.of(context).navigate(const UploadRoute());
+          AutoRouter.of(context).navigate(AssetImportRoute());
         },
       ),
     ];
@@ -144,11 +146,19 @@ class _AppScaffoldState extends State<AppScaffold>
         icon: MdiIcons.logout,
         title: 'Logout',
         isActive: false,
-        onTap: () {
+        onTap: () async {
           // TODO: prompt user to confirm they really want to logout...
-          // TODO: clear session auth token from secure storage
 
-          AutoRouter.of(context).replace(const AuthenticationLoginRoute());
+          final authDataSource = GetIt.instance<IAuthDataSource>();
+          await authDataSource.logout();
+
+          if (!context.mounted) {
+            return;
+          }
+
+          await AutoRouter.of(context).replace(
+            const AuthenticationLoginRoute(),
+          );
         },
       ),
     ];

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
@@ -48,7 +49,7 @@ class AssetDataSource implements IAssetDataSource {
               endPoint: '/api/v1/asset/$assetID',
             );
 
-            if (response.statusCode == 200) {
+            if (response.statusCode == HttpStatus.ok) {
               final data = json.decode(response.body);
               final asset = AssetDetailsModel.fromJsonDto(data);
               return Right(asset);
@@ -121,7 +122,7 @@ class AssetDataSource implements IAssetDataSource {
               queryParams: queryParams,
             );
 
-            if (response.statusCode == 200) {
+            if (response.statusCode == HttpStatus.ok) {
               final data = json.decode(response.body);
               final results = AssetSearchResults.fromJsonDto(data);
               return Right(results);

@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
+import 'package:tmz_damz/shared/empty.dart';
 import 'package:tmz_damz/shared/errors/exception_handler.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 
@@ -14,6 +16,8 @@ abstract class IAuthDataSource {
   });
 
   Future<Either<Failure, String>> getAuthToken();
+
+  Future<Either<Failure, Empty>> logout();
 }
 
 class AuthDataSource implements IAuthDataSource {
@@ -43,7 +47,7 @@ class AuthDataSource implements IAuthDataSource {
           body: body,
         );
 
-        if (response.statusCode != 200) {
+        if (response.statusCode != HttpStatus.ok) {
           return Left(
             HttpFailure(
               statusCode: response.statusCode,
@@ -80,6 +84,17 @@ class AuthDataSource implements IAuthDataSource {
         }
 
         return Right(authToken);
+      })();
+
+  @override
+  Future<Either<Failure, Empty>> logout() async =>
+      ExceptionHandler<Empty>(() async {
+        await _storage.write(
+          key: kAuthTokenKey,
+          value: null,
+        );
+
+        return const Right(Empty());
       })();
 }
 

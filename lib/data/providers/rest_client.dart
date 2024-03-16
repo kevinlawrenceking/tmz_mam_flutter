@@ -7,6 +7,13 @@ const String kUserAgent = 'TMZDAMZ';
 const String appVersion = '1.0';
 
 abstract class IRestClient {
+  /// Sends an HTTP DELETE request with the given headers to the given URL.
+  Future<http.Response> delete({
+    required String endPoint,
+    String? authToken,
+    Map<String, String>? headers,
+  });
+
   /// Sends an HTTP GET request with the given headers to the given URL.
   Future<http.Response> get({
     required String endPoint,
@@ -35,6 +42,15 @@ abstract class IRestClient {
     Map<String, String>? headers,
     Object? body,
   });
+
+  Future<http.StreamedResponse> sendFile({
+    required String endPoint,
+    required String fileName,
+    required Stream<List<int>> fileStream,
+    required int fileSize,
+    String? authToken,
+    Map<String, String>? headers,
+  });
 }
 
 class RestClient implements IRestClient {
@@ -49,6 +65,38 @@ class RestClient implements IRestClient {
   void dispose() {
     _client?.close();
     _client = null;
+  }
+
+  @override
+  Future<http.Response> delete({
+    required String endPoint,
+    String? authToken,
+    Map<String, String>? headers,
+  }) async {
+    final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
+
+    final mergedHeaders = {
+      'Cache-Control': 'no-cache',
+    };
+
+    if (!kIsWeb) {
+      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
+    }
+
+    if (headers?.isNotEmpty ?? false) {
+      mergedHeaders.addAll(headers!);
+    }
+
+    if (authToken?.isNotEmpty ?? false) {
+      mergedHeaders['Authorization'] = 'Bearer $authToken';
+    }
+
+    final response = await http.delete(
+      url,
+      headers: mergedHeaders,
+    );
+
+    return response;
   }
 
   @override
@@ -116,6 +164,48 @@ class RestClient implements IRestClient {
       headers: mergedHeaders,
       body: body,
     );
+
+    return response;
+  }
+
+  @override
+  Future<http.StreamedResponse> sendFile({
+    required String endPoint,
+    required String fileName,
+    required Stream<List<int>> fileStream,
+    required int fileSize,
+    String? authToken,
+    Map<String, String>? headers,
+  }) async {
+    final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
+
+    final mergedHeaders = <String, String>{};
+
+    if (!kIsWeb) {
+      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
+    }
+
+    if (headers?.isNotEmpty ?? false) {
+      mergedHeaders.addAll(headers!);
+    }
+
+    if (authToken?.isNotEmpty ?? false) {
+      mergedHeaders['Authorization'] = 'Bearer $authToken';
+    }
+
+    final request = http.MultipartRequest('POST', url)
+      ..headers.addAll(mergedHeaders);
+
+    request.files.add(
+      http.MultipartFile(
+        'file',
+        fileStream,
+        fileSize,
+        filename: fileName,
+      ),
+    );
+
+    final response = await request.send();
 
     return response;
   }

@@ -4,19 +4,19 @@ import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 
-class AssetItemThumbnail extends StatefulWidget {
+class FileThumbnail extends StatefulWidget {
   final String url;
 
-  const AssetItemThumbnail({
+  const FileThumbnail({
     super.key,
     required this.url,
   });
 
   @override
-  State<AssetItemThumbnail> createState() => _AssetItemThumbnailState();
+  State<FileThumbnail> createState() => _FileThumbnailState();
 }
 
-class _AssetItemThumbnailState extends State<AssetItemThumbnail> {
+class _FileThumbnailState extends State<FileThumbnail> {
   final _authDataSource = GetIt.instance<IAuthDataSource>();
 
   CancellationToken? _cancelToken;

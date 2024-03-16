@@ -15,13 +15,25 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  TextEditingController? _usernameController;
+  TextEditingController? _passwordController;
+
   @override
   void initState() {
     super.initState();
+
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
+    _usernameController?.dispose();
+    _usernameController = null;
+
+    _passwordController?.dispose();
+    _passwordController = null;
+
     super.dispose();
   }
 
@@ -111,17 +123,27 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                         const SizedBox(height: 48.0),
-                        _buildUsernameInput(
-                          enabled: enabled,
-                        ),
-                        const SizedBox(height: 32.0),
-                        _buildPasswordInput(
-                          enabled: enabled,
-                        ),
-                        const SizedBox(height: 32.0),
-                        _buildLoginButton(
-                          context: context,
-                          enabled: enabled,
+                        Form(
+                          child: AutofillGroup(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _buildUsernameInput(
+                                  enabled: enabled,
+                                ),
+                                const SizedBox(height: 32.0),
+                                _buildPasswordInput(
+                                  enabled: enabled,
+                                ),
+                                const SizedBox(height: 32.0),
+                                _buildLoginButton(
+                                  context: context,
+                                  enabled: enabled,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -174,12 +196,15 @@ class _LoginViewState extends State<LoginView> {
       child: TextButton(
         onPressed: enabled
             ? () {
-                BlocProvider.of<AuthenticationBloc>(context).add(
-                  LoginEvent(
-                    username: '',
-                    password: '',
-                  ),
-                );
+                if (((_usernameController?.text.length ?? 0) > 1) &&
+                    ((_passwordController?.text.length ?? 0) > 1)) {
+                  BlocProvider.of<AuthenticationBloc>(context).add(
+                    LoginEvent(
+                      username: _usernameController!.text,
+                      password: _passwordController!.text,
+                    ),
+                  );
+                }
               }
             : null,
         style: ButtonStyle(
@@ -237,12 +262,17 @@ class _LoginViewState extends State<LoginView> {
         const SizedBox(height: 4.0),
         TextFormField(
           autocorrect: false,
+          autofillHints: const [
+            AutofillHints.password,
+          ],
+          controller: _passwordController,
           decoration: const InputDecoration(
             hintText: 'Password',
           ),
           enabled: enabled,
           enableSuggestions: false,
           obscureText: true,
+          textInputAction: TextInputAction.done,
         ),
       ],
     );
@@ -266,10 +296,16 @@ class _LoginViewState extends State<LoginView> {
         const SizedBox(height: 4.0),
         TextFormField(
           autocorrect: false,
+          autofillHints: const [
+            AutofillHints.email,
+            AutofillHints.username,
+          ],
+          controller: _usernameController,
           decoration: const InputDecoration(
             hintText: 'Username',
           ),
           enabled: enabled,
+          textInputAction: TextInputAction.next,
         ),
       ],
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tmz_damz/components/flutter_flow_icon_button.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/inventory_metadata.dart';
-import 'package:tmz_damz/features/assets/widgets/asset_item_thumbnail.dart';
+import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
 class AssetDetailsView extends StatelessWidget {
@@ -48,7 +48,7 @@ class AssetDetailsView extends StatelessWidget {
                     aspectRatio: 16 / 9,
                     child: Container(
                       color: Colors.black,
-                      child: AssetItemThumbnail(
+                      child: FileThumbnail(
                         url: '$apiBaseUrl/asset/${model.id}/thumbnail',
                       ),
                     ),
