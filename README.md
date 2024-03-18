@@ -18,3 +18,34 @@ The **TMZ DAMZ** project includes the following features:
 Special thanks to the Flutter community and the developers behind the numerous packages and tools that make this project possible.
 
 Kudos to the TMZ team for their continuous support and feedback throughout the development process.
+
+## Dev Notes
+
+Run the following command if you add, remove, or modify any app/feature routes:
+
+```
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Clean and build the web deployment *(outputs to `.\build\web`)*:
+
+```
+flutter clean
+flutter build web
+```
+
+---
+
+### Running a basic web server to host the web app
+
+Install the `dhttpd` basic web server:
+
+```
+dart pub global activate dhttpd
+```
+
+Run the web server *(modify `-p` to whatever port you want to use and `--path` to point to wherever the web build is located)*:
+
+```
+dart pub global run dhttpd -p 80 --path .\build\web\
+```

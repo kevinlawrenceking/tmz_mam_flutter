@@ -34,18 +34,18 @@ class _SearchViewState extends State<SearchView> {
   ThumbnailSizeEnum _thumbnailSize = ThumbnailSizeEnum.medium;
 
   @override
-  void initState() {
-    super.initState();
-
-    _scrollController = ScrollController();
-  }
-
-  @override
   void dispose() {
     _scrollController?.dispose();
     _scrollController = null;
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController = ScrollController();
   }
 
   @override

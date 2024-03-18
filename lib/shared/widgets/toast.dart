@@ -114,7 +114,9 @@ class Toast {
                   color: backgroundColor,
                 ),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: (title == null) || (message == null)
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(

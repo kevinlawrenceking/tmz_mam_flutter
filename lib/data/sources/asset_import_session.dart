@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/asset_import_session.dart';
@@ -21,6 +22,8 @@ abstract class IAssetImportSessionDataSource {
     required String sessionID,
   });
 
+  Future<Either<Failure, List<AssetImportSessionModel>>> getSessionList();
+
   Future<Either<Failure, Empty>> removeSessionFile({
     required String sessionID,
     required String fileID,
@@ -29,8 +32,9 @@ abstract class IAssetImportSessionDataSource {
   Future<Either<Failure, AssetImportSessionFileModel>> uploadSessionFile({
     required String sessionID,
     required String fileName,
-    required Stream<List<int>> fileStream,
     required int fileSize,
+    required Uint8List fileData,
+    required String mimeType,
   });
 }
 
@@ -57,17 +61,16 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
               endPoint: '/api/v1/asset/import/session',
             );
 
-            if (response.statusCode == HttpStatus.ok) {
-              final data = json.decode(response.body);
-              final session = AssetImportSessionModel.fromJsonDto(data);
-              return Right(session);
-            } else {
+            if (response.statusCode != HttpStatus.ok) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                HttpFailure.fromResponse(response),
               );
             }
+
+            final data = json.decode(response.body);
+            final session = AssetImportSessionModel.fromJsonDto(data);
+
+            return Right(session);
           },
         );
       })();
@@ -84,18 +87,16 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
           (authToken) async {
             final response = await _client.post(
               authToken: authToken,
-              endPoint: '/api/v1/asset/import/session/$sessionID',
+              endPoint: '/api/v1/asset/import/session/$sessionID/finalize',
             );
 
-            if (response.statusCode == HttpStatus.accepted) {
-              return const Right(Empty());
-            } else {
+            if (response.statusCode != HttpStatus.accepted) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                HttpFailure.fromResponse(response),
               );
             }
+
+            return const Right(Empty());
           },
         );
       })();
@@ -115,20 +116,54 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
               endPoint: '/api/v1/asset/import/session/$sessionID/details',
             );
 
-            if (response.statusCode == HttpStatus.ok) {
-              final data = json.decode(response.body);
-              final session = AssetImportSessionDetailsModel.fromJsonDto(data);
-              return Right(session);
-            } else {
+            if (response.statusCode != HttpStatus.ok) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                HttpFailure.fromResponse(response),
               );
             }
+
+            final data = json.decode(response.body);
+            final session = AssetImportSessionDetailsModel.fromJsonDto(data);
+
+            return Right(session);
           },
         );
       })();
+
+  @override
+  Future<Either<Failure, List<AssetImportSessionModel>>>
+      getSessionList() async =>
+          ExceptionHandler<List<AssetImportSessionModel>>(() async {
+            final response = await _auth.getAuthToken();
+
+            return response.fold(
+              (failure) => Left(failure),
+              (authToken) async {
+                final response = await _client.get(
+                  authToken: authToken,
+                  endPoint: '/api/v1/asset/import/session/list',
+                );
+
+                if (response.statusCode != HttpStatus.ok) {
+                  return Left(
+                    HttpFailure.fromResponse(response),
+                  );
+                }
+
+                final data = json.decode(response.body);
+                final sessions = (data as List?)
+                        ?.map(
+                          (_) => AssetImportSessionModel.fromJsonDto(
+                            _,
+                          ),
+                        )
+                        .toList() ??
+                    [];
+
+                return Right(sessions);
+              },
+            );
+          })();
 
   @override
   Future<Either<Failure, Empty>> removeSessionFile({
@@ -146,15 +181,13 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
               endPoint: '/api/v1/asset/import/session/$sessionID/file/$fileID',
             );
 
-            if (response.statusCode == HttpStatus.ok) {
-              return const Right(Empty());
-            } else {
+            if (response.statusCode != HttpStatus.ok) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                HttpFailure.fromResponse(response),
               );
             }
+
+            return const Right(Empty());
           },
         );
       })();
@@ -163,8 +196,9 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
   Future<Either<Failure, AssetImportSessionFileModel>> uploadSessionFile({
     required String sessionID,
     required String fileName,
-    required Stream<List<int>> fileStream,
     required int fileSize,
+    required Uint8List fileData,
+    required String mimeType,
   }) async =>
       ExceptionHandler<AssetImportSessionFileModel>(() async {
         final response = await _auth.getAuthToken();
@@ -176,22 +210,22 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
               authToken: authToken,
               endPoint: '/api/v1/asset/import/session/$sessionID/upload',
               fileName: fileName,
-              fileStream: fileStream,
               fileSize: fileSize,
+              fileData: fileData,
+              mimeType: mimeType,
             );
 
-            if (response.statusCode == HttpStatus.ok) {
-              final body = await response.stream.bytesToString();
-              final data = json.decode(body);
-              final asset = AssetImportSessionFileModel.fromJsonDto(data);
-              return Right(asset);
-            } else {
+            if (response.statusCode != HttpStatus.ok) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                await HttpFailure.fromStreamedResponse(response),
               );
             }
+
+            final body = await response.stream.bytesToString();
+            final data = json.decode(body);
+            final asset = AssetImportSessionFileModel.fromJsonDto(data);
+
+            return Right(asset);
           },
         );
       })();

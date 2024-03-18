@@ -49,10 +49,7 @@ class AuthDataSource implements IAuthDataSource {
 
         if (response.statusCode != HttpStatus.ok) {
           return Left(
-            HttpFailure(
-              statusCode: response.statusCode,
-              message: response.reasonPhrase,
-            ),
+            HttpFailure.fromResponse(response),
           );
         }
 
@@ -60,7 +57,7 @@ class AuthDataSource implements IAuthDataSource {
 
         final authToken = data['token'];
 
-        if ((data['success'] != true) || (authToken == null)) {
+        if (authToken == null) {
           return const Left(AuthFailure());
         }
 
@@ -96,12 +93,4 @@ class AuthDataSource implements IAuthDataSource {
 
         return const Right(Empty());
       })();
-}
-
-class AuthFailure extends Failure {
-  const AuthFailure() : super('');
-}
-
-class SessionExpiredFailure extends Failure {
-  const SessionExpiredFailure() : super('');
 }

@@ -62,16 +62,20 @@ class _FileThumbnailState extends State<FileThumbnail> {
             duration: const Duration(milliseconds: 300),
             opacity: _opacity,
             child: FutureBuilder(
-              future: _authDataSource.getAuthToken(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData || snapshot.data!.isLeft()) {
-                  return const SizedBox();
-                }
-
-                final authToken = snapshot.data!.fold(
+              future: () async {
+                final result = await _authDataSource.getAuthToken();
+                final authToken = result.fold(
                   (failure) => null,
                   (authToken) => authToken,
                 );
+                return authToken;
+              }(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox();
+                }
+
+                final authToken = snapshot.data;
 
                 return ExtendedImage.network(
                   widget.url,

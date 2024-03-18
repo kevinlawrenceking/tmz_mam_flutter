@@ -1,8 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tmz_damz/components/flutter_flow_icon_button.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
-import 'package:tmz_damz/data/models/inventory_metadata.dart';
+import 'package:tmz_damz/data/models/asset_image.dart';
+import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
+import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 
 class AssetDetailsView extends StatelessWidget {
@@ -19,27 +22,46 @@ class AssetDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    String? imageUrl;
+
+    final image = model.images.firstWhereOrNull(
+          (_) => _.type == AssetImageTypeEnum.hd1080,
+        ) ??
+        model.images.firstWhereOrNull(
+          (_) =>
+              (_.type == AssetImageTypeEnum.source) &&
+              (_.width <= 1920) &&
+              (_.height <= 1080),
+        );
+
+    if (image != null) {
+      imageUrl = '$apiBaseUrl/asset/${model.id}/image/${image.id}';
+    }
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _Toolbar(
-            model: model,
-          ),
-          Divider(
-            indent: 8.0,
-            endIndent: 8.0,
-            thickness: 1.0,
-            color: FlutterFlowTheme.of(context).secondaryText,
-          ),
+          // _Toolbar(
+          //   model: model,
+          // ),
+          // Divider(
+          //   indent: 8.0,
+          //   endIndent: 8.0,
+          //   thickness: 1.0,
+          //   color: FlutterFlowTheme.of(context).secondaryText,
+          // ),
           Text(
             model.headline,
             style: FlutterFlowTheme.of(context).headlineLarge,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10.0),
           Expanded(
-            child: SingleChildScrollView(
+            child: MaskedScrollView(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -49,7 +71,8 @@ class AssetDetailsView extends StatelessWidget {
                     child: Container(
                       color: Colors.black,
                       child: FileThumbnail(
-                        url: '$apiBaseUrl/asset/${model.id}/thumbnail',
+                        url: imageUrl ??
+                            '$apiBaseUrl/asset/${model.id}/thumbnail',
                       ),
                     ),
                   ),
@@ -83,7 +106,7 @@ class AssetDetailsView extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   _MetadataContainer(
-                    metadata: [], //model.metadata,
+                    metadata: model.metadata,
                   ),
                   const SizedBox(height: 20),
                   _PhotoInfoContainer(
@@ -100,7 +123,7 @@ class AssetDetailsView extends StatelessWidget {
 }
 
 class _MetadataContainer extends StatelessWidget {
-  final List<InventoryMetadataModel> metadata;
+  final AssetMetadataModel metadata;
 
   const _MetadataContainer({
     required this.metadata,
@@ -110,46 +133,109 @@ class _MetadataContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DecoratedBox(
+    return Container(
       decoration: BoxDecoration(
         border: Border.all(width: 0.5),
         borderRadius: BorderRadius.circular(6.0),
         color: const Color(0x20000000),
       ),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
+          Text(
+            'Metadata',
+            style: theme.textTheme.titleLarge,
+          ),
+          const SizedBox(height: 20.0),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Celebrity',
+            value: metadata.celebrityInPhoto.isNotEmpty
+                ? metadata.celebrityInPhoto.join(', ')
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Associated Celebrity',
+            value: metadata.celebrityAssociated.isNotEmpty
+                ? metadata.celebrityAssociated.join(', ')
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Shot Description',
+            value: metadata.shotDescription.isNotEmpty
+                ? metadata.shotDescription
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Rights Summary',
+            value: () {
+              switch (metadata.rights) {
+                case AssetMetadataRightsEnum.costNonTMZ:
+                  return 'Cost (Non-TMZ)';
+                case AssetMetadataRightsEnum.freeNonTMZ:
+                  return 'Free (Non-TMZ)';
+                case AssetMetadataRightsEnum.freeTMZ:
+                  return 'Free (TMZ)';
+                default:
+                  return '-';
+              }
+            }(),
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Agency',
+            value:
+                metadata.agency.isNotEmpty ? metadata.agency.join(', ') : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Credit',
+            value:
+                metadata.credit?.isNotEmpty ?? false ? metadata.credit! : '-',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetadata({
+    required BuildContext context,
+    required ThemeData theme,
+    required String label,
+    required String value,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Opacity(
+            opacity: 0.4,
             child: Text(
-              'Metadata',
-              style: theme.textTheme.titleLarge,
+              label.toUpperCase(),
+              softWrap: false,
+              style: theme.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-          ...metadata.map(
-            (meta) => Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Opacity(
-                    opacity: 0.4,
-                    child: Text(
-                      meta.label?.toUpperCase() ?? '',
-                      softWrap: false,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    meta.value ?? '-',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],

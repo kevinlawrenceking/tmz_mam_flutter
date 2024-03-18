@@ -62,7 +62,7 @@ class AssetDataView extends StatelessWidget {
         maxItemWidth = 230.0;
         break;
       case ThumbnailSizeEnum.medium:
-        maxItemWidth = 300.0;
+        maxItemWidth = 350.0;
         break;
       case ThumbnailSizeEnum.large:
         maxItemWidth = 650.0;

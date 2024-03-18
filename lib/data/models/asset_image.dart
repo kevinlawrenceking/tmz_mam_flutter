@@ -45,6 +45,7 @@ class AssetImageModel {
   final AssetImageTypeEnum type;
   final String mount;
   final String path;
+  final DateTime importedAt;
   final DateTime createdAt;
   final DateTime modifiedAt;
   final Int64 sizeOnDisk;
@@ -60,6 +61,7 @@ class AssetImageModel {
     required this.type,
     required this.mount,
     required this.path,
+    required this.importedAt,
     required this.createdAt,
     required this.modifiedAt,
     required this.sizeOnDisk,
@@ -79,6 +81,9 @@ class AssetImageModel {
       type: AssetImageTypeEnum.fromJsonDtoValue(dto?['type']),
       mount: dto?['mount'] ?? '',
       path: dto?['path'] ?? '',
+      importedAt: DateTime.parse(
+        dto?['imported_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+      ),
       createdAt: DateTime.parse(
         dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
       ),

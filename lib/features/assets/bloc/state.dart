@@ -64,7 +64,7 @@ class SearchResultsLoadedState extends BlocState {
 
   SearchResultsLoadedState({
     required this.assets,
-  }) : _stateID = const Uuid().v1();
+  }) : _stateID = const Uuid().v4();
 
   @override
   List<Object?> get props => [_stateID];

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:tmz_damz/features/asset_import/bloc/bloc.dart';
+import 'package:tmz_damz/features/asset_import/bloc/file_bloc.dart';
+import 'package:tmz_damz/features/asset_import/bloc/session_bloc.dart';
 
 class ServiceLocator {
   static bool _initialized = false;
@@ -12,7 +13,13 @@ class ServiceLocator {
     final sl = GetIt.instance;
 
     sl.registerFactory(
-      () => AssetImportBloc(
+      () => SessionBloc(
+        assetImportSessionDataSource: sl(),
+      ),
+    );
+
+    sl.registerFactory(
+      () => FileBloc(
         assetImportSessionDataSource: sl(),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 const String kUserAgent = 'TMZDAMZ';
 
@@ -46,8 +47,9 @@ abstract class IRestClient {
   Future<http.StreamedResponse> sendFile({
     required String endPoint,
     required String fileName,
-    required Stream<List<int>> fileStream,
     required int fileSize,
+    required Uint8List fileData,
+    required String mimeType,
     String? authToken,
     Map<String, String>? headers,
   });
@@ -172,8 +174,9 @@ class RestClient implements IRestClient {
   Future<http.StreamedResponse> sendFile({
     required String endPoint,
     required String fileName,
-    required Stream<List<int>> fileStream,
     required int fileSize,
+    required Uint8List fileData,
+    required String mimeType,
     String? authToken,
     Map<String, String>? headers,
   }) async {
@@ -199,9 +202,10 @@ class RestClient implements IRestClient {
     request.files.add(
       http.MultipartFile(
         'file',
-        fileStream,
+        Stream.value(fileData),
         fileSize,
         filename: fileName,
+        contentType: MediaType.parse(mimeType),
       ),
     );
 

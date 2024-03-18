@@ -57,6 +57,7 @@ enum AssetImportSessionFileThumbnailStatusEnum {
 class AssetImportSessionFileModel {
   final String id;
   final String sessionID;
+  final DateTime uploadedAt;
   final AssetImportSessionFileStatusEnum status;
   final String originalFileName;
   final String sourcePath;
@@ -69,6 +70,7 @@ class AssetImportSessionFileModel {
   AssetImportSessionFileModel({
     required this.id,
     required this.sessionID,
+    required this.uploadedAt,
     required this.status,
     required this.originalFileName,
     required this.sourcePath,
@@ -85,6 +87,9 @@ class AssetImportSessionFileModel {
     return AssetImportSessionFileModel(
       id: dto?['id'] ?? '',
       sessionID: dto?['session_id'] ?? '',
+      uploadedAt: DateTime.parse(
+        dto?['uploaded_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+      ),
       status: AssetImportSessionFileStatusEnum.fromJsonDtoValue(dto?['status']),
       originalFileName: dto?['original_file_name'] ?? '',
       sourcePath: dto?['source_path'] ?? '',

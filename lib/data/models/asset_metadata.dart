@@ -3,7 +3,7 @@ enum AssetMetadataCreditLocationEnum {
   end,
   onScreen;
 
-  factory AssetMetadataCreditLocationEnum.fromJsonDtoValue(
+  static AssetMetadataCreditLocationEnum? fromJsonDtoValue(
     String? value,
   ) {
     switch (value?.toUpperCase()) {
@@ -22,15 +22,31 @@ enum AssetMetadataEmotionEnum {
   negative,
   neutral,
   positive,
-  surprised,
+  surprised;
+
+  factory AssetMetadataEmotionEnum.fromJsonDtoValue(
+    String? value,
+  ) {
+    switch (value?.toUpperCase()) {
+      case 'NEGATIVE':
+        return negative;
+      case 'NEUTRAL':
+        return neutral;
+      case 'POSITIVE':
+        return positive;
+      case 'SURPRISED':
+        return surprised;
+      default:
+        return unknown;
+    }
+  }
 }
 
 enum AssetMetadataExclusivityEnum {
-  unknown,
   exclusive,
   premiumExclusive;
 
-  factory AssetMetadataExclusivityEnum.fromJsonDtoValue(
+  static AssetMetadataExclusivityEnum? fromJsonDtoValue(
     String? value,
   ) {
     switch (value?.toUpperCase()) {
@@ -39,7 +55,7 @@ enum AssetMetadataExclusivityEnum {
       case 'PREMIUM_EXCLUSIVE':
         return premiumExclusive;
       default:
-        return unknown;
+        return null;
     }
   }
 }
@@ -48,7 +64,22 @@ enum AssetMetadataOverlayEnum {
   unknown,
   blackBarCensor,
   blurCensor,
-  watermark,
+  watermark;
+
+  factory AssetMetadataOverlayEnum.fromJsonDtoValue(
+    String? value,
+  ) {
+    switch (value?.toUpperCase()) {
+      case 'BLACK_BAR_CENSOR':
+        return blackBarCensor;
+      case 'BLUR_CENSOR':
+        return blurCensor;
+      case 'WATERMARK':
+        return watermark;
+      default:
+        return unknown;
+    }
+  }
 }
 
 enum AssetMetadataRightsEnum {
@@ -78,15 +109,15 @@ class AssetMetadataModel {
   final String shotDescription;
   final AssetMetadataLocationModel location;
   final List<String> agency;
-  final List<String> emotion;
-  final List<String> overlay;
+  final List<AssetMetadataEmotionEnum> emotion;
+  final List<AssetMetadataOverlayEnum> overlay;
   final bool celebrity;
   final List<String> celebrityInPhoto;
   final List<String> celebrityAssociated;
   final AssetMetadataRightsEnum rights;
   final String? credit;
-  final AssetMetadataCreditLocationEnum creditLocation;
-  final AssetMetadataExclusivityEnum exclusivity;
+  final AssetMetadataCreditLocationEnum? creditLocation;
+  final AssetMetadataExclusivityEnum? exclusivity;
 
   AssetMetadataModel({
     required this.keywords,
@@ -114,18 +145,22 @@ class AssetMetadataModel {
           [],
       shotDescription: dto?['shot_description'] ?? '',
       location: AssetMetadataLocationModel.fromJsonDto(
-        dto?['status'],
+        dto?['location'],
       ),
       agency: (dto?['agency'] as List<dynamic>?)
               ?.map((_) => _ as String)
               .toList() ??
           [],
       emotion: (dto?['emotion'] as List<dynamic>?)
-              ?.map((_) => _ as String)
+              ?.map(
+                (_) => AssetMetadataEmotionEnum.fromJsonDtoValue(_ as String),
+              )
               .toList() ??
           [],
       overlay: (dto?['overlay'] as List<dynamic>?)
-              ?.map((_) => _ as String)
+              ?.map(
+                (_) => AssetMetadataOverlayEnum.fromJsonDtoValue(_ as String),
+              )
               .toList() ??
           [],
       celebrity: dto?['celebrity'] ?? false,
@@ -140,7 +175,7 @@ class AssetMetadataModel {
       rights: AssetMetadataRightsEnum.fromJsonDtoValue(
         dto?['rights'],
       ),
-      credit: dto?['credit'] ?? '',
+      credit: dto?['credit'],
       creditLocation: AssetMetadataCreditLocationEnum.fromJsonDtoValue(
         dto?['credit_location'],
       ),

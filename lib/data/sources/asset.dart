@@ -46,20 +46,19 @@ class AssetDataSource implements IAssetDataSource {
           (authToken) async {
             final response = await _client.get(
               authToken: authToken,
-              endPoint: '/api/v1/asset/$assetID',
+              endPoint: '/api/v1/asset/$assetID/details',
             );
 
-            if (response.statusCode == HttpStatus.ok) {
-              final data = json.decode(response.body);
-              final asset = AssetDetailsModel.fromJsonDto(data);
-              return Right(asset);
-            } else {
+            if (response.statusCode != HttpStatus.ok) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                HttpFailure.fromResponse(response),
               );
             }
+
+            final data = json.decode(response.body);
+            final asset = AssetDetailsModel.fromJsonDto(data);
+
+            return Right(asset);
           },
         );
       })();
@@ -122,17 +121,16 @@ class AssetDataSource implements IAssetDataSource {
               queryParams: queryParams,
             );
 
-            if (response.statusCode == HttpStatus.ok) {
-              final data = json.decode(response.body);
-              final results = AssetSearchResults.fromJsonDto(data);
-              return Right(results);
-            } else {
+            if (response.statusCode != HttpStatus.ok) {
               return Left(
-                GeneralFailure(
-                  message: response.reasonPhrase,
-                ),
+                HttpFailure.fromResponse(response),
               );
             }
+
+            final data = json.decode(response.body);
+            final results = AssetSearchResults.fromJsonDto(data);
+
+            return Right(results);
           },
         );
       })();
