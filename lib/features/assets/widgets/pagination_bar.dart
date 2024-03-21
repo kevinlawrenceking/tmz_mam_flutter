@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/features/assets/bloc/bloc.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 class PaginationBar extends StatelessWidget {
   static final kResultsPerPage = [10, 25, 50, 100, 250];
+  static const kDefaultResultsPerPage = 100;
 
   const PaginationBar({super.key});
 
@@ -17,8 +19,6 @@ class PaginationBar extends StatelessWidget {
       buildWhen: (_, state) => state is PaginationChangedState,
       builder: (context, state) {
         PaginationInfo paginationInfo;
-        var firstRecordIndex = 0;
-        var lastRecordIndex = 0;
 
         if (state is PaginationChangedState) {
           paginationInfo = PaginationInfo.fromOffsetLimit(
@@ -26,13 +26,10 @@ class PaginationBar extends StatelessWidget {
             limit: state.limit,
             totalRecords: state.totalRecords,
           );
-
-          firstRecordIndex = state.offset + 1;
-          lastRecordIndex = min(state.offset + state.limit, state.totalRecords);
         } else {
           paginationInfo = PaginationInfo.fromOffsetLimit(
             offset: 0,
-            limit: 10,
+            limit: kDefaultResultsPerPage,
             totalRecords: 0,
           );
         }
@@ -48,13 +45,35 @@ class PaginationBar extends StatelessWidget {
             ),
             color: Color(0xFF353637),
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: 2.0,
-            horizontal: 20.0,
+          padding: const EdgeInsets.only(
+            left: 20.0,
+            top: 2.0,
+            right: 10.0,
+            bottom: 2.0,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Text(
+                        'Assets',
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      const SizedBox(width: 10.0),
+                      Text(
+                        '( ${NumberFormat('#,##0').format(
+                          paginationInfo.totalRecords,
+                        )} )',
+                        style: theme.textTheme.labelMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               _buildFirstPageButton(
                 context: context,
                 paginationInfo: paginationInfo,
@@ -80,28 +99,23 @@ class PaginationBar extends StatelessWidget {
                 context: context,
                 paginationInfo: paginationInfo,
               ),
-              const SizedBox(width: 20),
-              Text(
-                'Results per page:',
-                style: theme.textTheme.labelMedium,
-              ),
-              const SizedBox(width: 10),
-              _buildResultsPerPageSelector(
-                context: context,
-                paginationInfo: paginationInfo,
-              ),
-              const SizedBox(width: 20),
-              Text(
-                (paginationInfo.totalRecords > 0)
-                    ? '$firstRecordIndex-$lastRecordIndex of '
-                        '${paginationInfo.totalRecords}'
-                    : ((paginationInfo.totalRecords != -1)
-                        ? '(No Results)'
-                        : '(Loading...)'),
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: (paginationInfo.totalRecords == 0)
-                      ? const Color(0xFF857B7B)
-                      : null,
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Results per page:',
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      const SizedBox(width: 10),
+                      _buildResultsPerPageSelector(
+                        context: context,
+                        paginationInfo: paginationInfo,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

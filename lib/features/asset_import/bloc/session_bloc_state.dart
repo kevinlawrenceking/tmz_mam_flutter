@@ -107,3 +107,28 @@ class SessionInitializedState extends SessionBlocState {
         sessionID,
       ];
 }
+
+class SetFileMetaFailureState extends SessionBlocState {
+  final String _stateID;
+  final Failure failure;
+
+  SetFileMetaFailureState({
+    required this.failure,
+  }) : _stateID = const Uuid().v4();
+
+  @override
+  List<Object?> get props => [_stateID];
+}
+
+class SetFileMetaSuccessState extends SessionBlocState {
+  final AssetImportSessionFileMetaModel meta;
+
+  SetFileMetaSuccessState({
+    required this.meta,
+  });
+
+  @override
+  List<Object?> get props => [
+        meta,
+      ];
+}

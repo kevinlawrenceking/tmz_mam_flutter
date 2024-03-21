@@ -5,13 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/features/asset_import/widgets/tag_field.dart';
+import 'package:tmz_damz/utils/debounce_timer.dart';
 
 class SessionFileForm extends StatefulWidget {
   final SessionFileFormController controller;
+  final void Function(AssetImportSessionFileMetaModel meta)? onChange;
 
   const SessionFileForm({
     super.key,
     required this.controller,
+    required this.onChange,
   });
 
   @override
@@ -19,6 +22,12 @@ class SessionFileForm extends StatefulWidget {
 }
 
 class _SessionFileFormState extends State<SessionFileForm> {
+  final _onChangeDebounce = DebounceTimer(
+    delay: const Duration(
+      milliseconds: 1000,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -28,6 +37,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Headline
           Row(
             children: [
               SizedBox(
@@ -62,11 +72,17 @@ class _SessionFileFormState extends State<SessionFileForm> {
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(250),
                   ],
+                  onChanged: (value) {
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
+                  },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10.0),
+          // Celebrity
           Row(
             children: [
               SizedBox(
@@ -98,15 +114,15 @@ class _SessionFileFormState extends State<SessionFileForm> {
                 second: true,
                 height: 30,
                 borderWidth: 1,
-                indicatorSize: const Size.fromWidth(26),
+                indicatorSize: const Size.fromWidth(28),
                 indicatorTransition:
                     const ForegroundIndicatorTransition.fading(),
                 animationDuration: const Duration(milliseconds: 250),
                 styleBuilder: (value) {
                   if (value) {
                     return ToggleStyle(
-                      backgroundColor: const Color(0xFF22252A),
-                      borderColor: const Color(0xFF101215),
+                      backgroundColor: const Color(0xFF1D1E1F),
+                      borderColor: const Color(0xFF101010),
                       indicatorColor: const Color(0xFFD5D7DD),
                       indicatorBorder: Border.all(
                         color: Colors.black.withAlpha(180),
@@ -114,8 +130,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
                     );
                   } else {
                     return ToggleStyle(
-                      backgroundColor: const Color(0xFF22252A),
-                      borderColor: const Color(0xFF101215),
+                      backgroundColor: const Color(0xFF1D1E1F),
+                      borderColor: const Color(0xFF101010),
                       indicatorColor: const Color(0xFF40434C),
                       indicatorBorder: Border.all(
                         color: Colors.black.withAlpha(180),
@@ -144,8 +160,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
                   }
                 },
                 onChanged: (value) {
-                  widget.controller.celebrity = value;
-                  setState(() {});
+                  setState(() {
+                    widget.controller.celebrity = value;
+                  });
+
+                  _onChangeDebounce.wrap(() {
+                    widget.onChange?.call(widget.controller.getModel());
+                  });
                 },
               ),
               const Spacer(),
@@ -153,9 +174,17 @@ class _SessionFileFormState extends State<SessionFileForm> {
           ),
           const SizedBox(height: 10.0),
           AnimatedCrossFade(
+            firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+            secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+            sizeCurve: Curves.fastOutSlowIn,
+            crossFadeState: widget.controller.celebrity
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: kThemeAnimationDuration,
             firstChild: const SizedBox(height: 0.0),
             secondChild: Column(
               children: [
+                // Celebrity (In Photo)
                 Row(
                   children: [
                     SizedBox(
@@ -173,13 +202,20 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         hintText: 'Add celebrity...',
                         initialTags: widget.controller.celebrityInPhoto,
                         onChange: (tags) {
-                          widget.controller.celebrityInPhoto = tags;
+                          setState(() {
+                            widget.controller.celebrityInPhoto = tags;
+                          });
+
+                          _onChangeDebounce.wrap(() {
+                            widget.onChange?.call(widget.controller.getModel());
+                          });
                         },
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10.0),
+                // Celebrity (Associated)
                 Row(
                   children: [
                     SizedBox(
@@ -197,7 +233,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         hintText: 'Add celebrity...',
                         initialTags: widget.controller.celebrityAssociated,
                         onChange: (tags) {
-                          widget.controller.celebrityAssociated = tags;
+                          setState(() {
+                            widget.controller.celebrityAssociated = tags;
+                          });
+
+                          _onChangeDebounce.wrap(() {
+                            widget.onChange?.call(widget.controller.getModel());
+                          });
                         },
                       ),
                     ),
@@ -206,14 +248,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
                 const SizedBox(height: 10.0),
               ],
             ),
-            firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-            secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-            sizeCurve: Curves.fastOutSlowIn,
-            crossFadeState: widget.controller.celebrity
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: kThemeAnimationDuration,
           ),
+          // Shot Description
           Row(
             children: [
               SizedBox(
@@ -227,7 +263,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               ),
               const SizedBox(width: 20.0),
               Expanded(
-                child: TextField(
+                child: TextFormField(
                   controller: widget.controller._shotDescriptionController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -237,11 +273,17 @@ class _SessionFileFormState extends State<SessionFileForm> {
                   ],
                   minLines: 2,
                   maxLines: 5,
+                  onChanged: (value) {
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
+                  },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10.0),
+          // Keywords
           Row(
             children: [
               SizedBox(
@@ -257,16 +299,22 @@ class _SessionFileFormState extends State<SessionFileForm> {
               Expanded(
                 child: TagField(
                   hintText: 'Add keyword...',
-                  splitWords: true,
                   initialTags: widget.controller.keywords,
                   onChange: (tags) {
-                    widget.controller.keywords = tags;
+                    setState(() {
+                      widget.controller.keywords = tags;
+                    });
+
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
                   },
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10.0),
+          // Agency
           Row(
             children: [
               SizedBox(
@@ -284,13 +332,20 @@ class _SessionFileFormState extends State<SessionFileForm> {
                   hintText: 'Add agency...',
                   initialTags: widget.controller.agency,
                   onChange: (tags) {
-                    widget.controller.agency = tags;
+                    setState(() {
+                      widget.controller.agency = tags;
+                    });
+
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
                   },
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 30.0),
+          const SizedBox(height: 20.0),
+          // Emotions
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -341,13 +396,20 @@ class _SessionFileFormState extends State<SessionFileForm> {
                     );
                   },
                   onChanged: (value) {
-                    widget.controller.emotion = value;
+                    setState(() {
+                      widget.controller.emotion = value;
+                    });
+
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
                   },
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 30.0),
+          const SizedBox(height: 20.0),
+          // Overlays
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -398,13 +460,20 @@ class _SessionFileFormState extends State<SessionFileForm> {
                     );
                   },
                   onChanged: (value) {
-                    widget.controller.overlay = value;
+                    setState(() {
+                      widget.controller.overlay = value;
+                    });
+
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
                   },
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 30.0),
+          const SizedBox(height: 20.0),
+          // Rights Summary
           Row(
             children: [
               SizedBox(
@@ -460,20 +529,33 @@ class _SessionFileFormState extends State<SessionFileForm> {
                     );
                   },
                   onChanged: (value) {
-                    widget.controller.rights =
-                        value.firstOrNull ?? AssetMetadataRightsEnum.unknown;
-                    setState(() {});
+                    setState(() {
+                      widget.controller.rights =
+                          value.firstOrNull ?? AssetMetadataRightsEnum.unknown;
+                    });
+
+                    _onChangeDebounce.wrap(() {
+                      widget.onChange?.call(widget.controller.getModel());
+                    });
                   },
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10.0),
           AnimatedCrossFade(
+            firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+            secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+            sizeCurve: Curves.fastOutSlowIn,
+            crossFadeState:
+                widget.controller.rights == AssetMetadataRightsEnum.freeTMZ
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+            duration: kThemeAnimationDuration,
             firstChild: const SizedBox(height: 0.0),
             secondChild: Column(
               children: [
                 const SizedBox(height: 20.0),
+                // Credit Location
                 Row(
                   children: [
                     SizedBox(
@@ -514,15 +596,22 @@ class _SessionFileFormState extends State<SessionFileForm> {
                           );
                         },
                         onChanged: (value) {
-                          widget.controller.creditLocation =
-                              value.firstOrNull ??
-                                  AssetMetadataCreditLocationEnum.end;
+                          setState(() {
+                            widget.controller.creditLocation =
+                                value.firstOrNull ??
+                                    AssetMetadataCreditLocationEnum.end;
+                          });
+
+                          _onChangeDebounce.wrap(() {
+                            widget.onChange?.call(widget.controller.getModel());
+                          });
                         },
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 20.0),
+                // Credit
                 Row(
                   children: [
                     SizedBox(
@@ -555,23 +644,84 @@ class _SessionFileFormState extends State<SessionFileForm> {
                           border: OutlineInputBorder(),
                         ),
                         inputFormatters: [
-                          LengthLimitingTextInputFormatter(250),
+                          LengthLimitingTextInputFormatter(50),
                         ],
+                        onChanged: (value) {
+                          _onChangeDebounce.wrap(() {
+                            widget.onChange?.call(widget.controller.getModel());
+                          });
+                        },
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10.0),
+                // Rights Instructions
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 150.0,
+                      child: Text(
+                        'Rights Instructions',
+                        style: TextStyle(
+                          color: theme.textTheme.labelMedium?.color,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: TextFormField(
+                        controller:
+                            widget.controller._rightsInstructionsController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(250),
+                        ],
+                        onChanged: (value) {
+                          _onChangeDebounce.wrap(() {
+                            widget.onChange?.call(widget.controller.getModel());
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                // Rights Details
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 150.0,
+                      child: Text(
+                        'Rights Details',
+                        style: TextStyle(
+                          color: theme.textTheme.labelMedium?.color,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20.0),
+                    Expanded(
+                      child: TextFormField(
+                        controller: widget.controller._rightsDetailsController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(250),
+                        ],
+                        onChanged: (value) {
+                          _onChangeDebounce.wrap(() {
+                            widget.onChange?.call(widget.controller.getModel());
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-            firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-            secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-            sizeCurve: Curves.fastOutSlowIn,
-            crossFadeState:
-                widget.controller.rights == AssetMetadataRightsEnum.freeTMZ
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-            duration: kThemeAnimationDuration,
           ),
         ],
       ),
@@ -601,7 +751,7 @@ class SessionFileFormController extends ChangeNotifier {
       _celebrityInPhotoController.value = value;
 
   final _creditController = TextEditingController();
-  String get credit => _creditController.text;
+  String get credit => _creditController.text.trim();
 
   final _creditLocationController =
       ValueNotifier<AssetMetadataCreditLocationEnum>(
@@ -618,7 +768,7 @@ class SessionFileFormController extends ChangeNotifier {
       _emotionController.value = value;
 
   final _headlineController = TextEditingController();
-  String get headline => _headlineController.text;
+  String get headline => _headlineController.text.trim();
 
   final _keywordsController = ValueNotifier<List<String>>([]);
   List<String> get keywords => _keywordsController.value;
@@ -635,8 +785,14 @@ class SessionFileFormController extends ChangeNotifier {
   AssetMetadataRightsEnum get rights => _rightsController.value;
   set rights(AssetMetadataRightsEnum value) => _rightsController.value = value;
 
+  final _rightsDetailsController = TextEditingController();
+  String get rightsDetails => _rightsDetailsController.text.trim();
+
+  final _rightsInstructionsController = TextEditingController();
+  String get rightsInstructions => _rightsInstructionsController.text.trim();
+
   final _shotDescriptionController = TextEditingController();
-  String get shotDescription => _shotDescriptionController.text;
+  String get shotDescription => _shotDescriptionController.text.trim();
 
   @override
   void dispose() {
@@ -650,6 +806,8 @@ class SessionFileFormController extends ChangeNotifier {
     _keywordsController.dispose();
     _overlayController.dispose();
     _rightsController.dispose();
+    _rightsDetailsController.dispose();
+    _rightsInstructionsController.dispose();
     _shotDescriptionController.dispose();
 
     super.dispose();
@@ -661,7 +819,7 @@ class SessionFileFormController extends ChangeNotifier {
       metadata: AssetMetadataModel(
         keywords: keywords,
         shotDescription: shotDescription,
-        location: AssetMetadataLocationModel(
+        location: const AssetMetadataLocationModel(
           description: null,
           country: null,
           state: null,
@@ -678,6 +836,11 @@ class SessionFileFormController extends ChangeNotifier {
         creditLocation:
             rights != AssetMetadataRightsEnum.freeTMZ ? creditLocation : null,
         exclusivity: null,
+        rightsInstructions: rights != AssetMetadataRightsEnum.freeTMZ
+            ? rightsInstructions
+            : null,
+        rightsDetails:
+            rights != AssetMetadataRightsEnum.freeTMZ ? rightsDetails : null,
       ),
     );
   }
@@ -685,7 +848,7 @@ class SessionFileFormController extends ChangeNotifier {
   void reset() {
     _agencyController.value = _model?.metadata.agency ?? [];
 
-    _celebrityController.value = _model?.metadata.celebrity ?? false;
+    _celebrityController.value = true;
 
     _celebrityAssociatedController.value =
         _model?.metadata.celebrityAssociated ?? [];
@@ -694,8 +857,13 @@ class SessionFileFormController extends ChangeNotifier {
 
     _creditController.text = _model?.metadata.credit ?? '';
 
-    _creditLocationController.value = _model?.metadata.creditLocation ??
-        AssetMetadataCreditLocationEnum.unknown;
+    if ((_model?.metadata.creditLocation != null) &&
+        (_model?.metadata.creditLocation !=
+            AssetMetadataCreditLocationEnum.unknown)) {
+      _creditLocationController.value = _model!.metadata.creditLocation!;
+    } else {
+      _creditLocationController.value = AssetMetadataCreditLocationEnum.end;
+    }
 
     _emotionController.value = _model?.metadata.emotion ?? [];
 
@@ -707,6 +875,11 @@ class SessionFileFormController extends ChangeNotifier {
 
     _rightsController.value =
         _model?.metadata.rights ?? AssetMetadataRightsEnum.unknown;
+
+    _rightsDetailsController.text = _model?.metadata.rightsDetails ?? '';
+
+    _rightsInstructionsController.text =
+        _model?.metadata.rightsInstructions ?? '';
 
     _shotDescriptionController.text = _model?.metadata.shotDescription ?? '';
 

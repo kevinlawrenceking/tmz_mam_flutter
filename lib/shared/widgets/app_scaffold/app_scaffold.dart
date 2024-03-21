@@ -104,7 +104,7 @@ class _AppScaffoldState extends State<AppScaffold>
         title: 'Assets',
         isActive: router.current.name == AssetsSearchRoute.name,
         onTap: () {
-          AutoRouter.of(context).navigate(const AssetsSearchRoute());
+          AutoRouter.of(context).navigate(AssetsSearchRoute());
         },
       ),
       _MenuItem(
@@ -117,10 +117,11 @@ class _AppScaffoldState extends State<AppScaffold>
       ),
       _MenuItem(
         icon: MdiIcons.progressUpload,
-        title: 'Upload',
-        isActive: router.current.name == AssetImportRoute.name,
+        title: 'Import Images',
+        isActive: (router.current.name == AssetImportRoute.name) ||
+            router.current.name == AssetImportSessionRoute.name,
         onTap: () {
-          AutoRouter.of(context).navigate(AssetImportRoute());
+          AutoRouter.of(context).navigate(const AssetImportRoute());
         },
       ),
     ];
@@ -185,7 +186,7 @@ class _AppScaffoldState extends State<AppScaffold>
             labelTextStyle: TextStyle(
               color: Color(0xFF202020),
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
           activeStyle: MenuDrawerItemStyle(
@@ -193,7 +194,7 @@ class _AppScaffoldState extends State<AppScaffold>
             labelTextStyle: TextStyle(
               color: Color(0xFFDEFFFF),
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
           disabledStyle: MenuDrawerItemStyle(
@@ -201,7 +202,7 @@ class _AppScaffoldState extends State<AppScaffold>
             labelTextStyle: TextStyle(
               color: Color(0xFF505050),
               fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),

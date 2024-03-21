@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tmz_damz/data/models/asset_import_session.dart';
+import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/sources/asset_import_session.dart';
 import 'package:tmz_damz/features/asset_import/view_models/file_upload_view_model.dart';
 import 'package:tmz_damz/features/asset_import/view_models/file_view_model.dart';
@@ -31,6 +32,7 @@ class SessionBloc extends Bloc<SessionBlocEvent, SessionBlocState> {
     on<InitializeSession>(_initializeSession);
     on<RemoveSessionFileEvent>(_removeSessionFileEvent);
     on<SessionFileUploadedEvent>(_sessionFileUploadedEvent);
+    on<SetFileMetaEvent>(_setFileMetaEvent);
     on<UploadSessionFileEvent>(_uploadSessionFileEvent);
   }
 
@@ -243,6 +245,30 @@ class SessionBloc extends Bloc<SessionBlocEvent, SessionBlocState> {
         sessionStatus: _sessionStatus,
         files: _files,
         uploading: _uploading,
+      ),
+    );
+  }
+
+  Future<void> _setFileMetaEvent(
+    SetFileMetaEvent event,
+    Emitter<SessionBlocState> emit,
+  ) async {
+    final result = await assetImportSessionDataSource.setSessionFileMeta(
+      sessionID: event.sessionID,
+      fileID: event.fileID,
+      meta: event.meta,
+    );
+
+    result.fold(
+      (failure) => emit(
+        SetFileMetaFailureState(
+          failure: failure,
+        ),
+      ),
+      (meta) => emit(
+        SetFileMetaSuccessState(
+          meta: meta,
+        ),
       ),
     );
   }

@@ -20,18 +20,26 @@ import 'package:tmz_damz/utils/config.dart';
 
 @RoutePage(name: 'AssetsSearchRoute')
 class SearchView extends StatefulWidget {
-  const SearchView({super.key});
+  final bool? refresh;
+
+  const SearchView({
+    super.key,
+    @PathParam('refresh') this.refresh,
+  });
 
   @override
   State<SearchView> createState() => _SearchViewState();
 }
 
 class _SearchViewState extends State<SearchView> {
+  static const kDefaultResultsPerPage = 100;
+
   ScrollController? _scrollController;
   AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
   LayoutModeEnum _layoutMode = LayoutModeEnum.tile;
   ThumbnailSizeEnum _thumbnailSize = ThumbnailSizeEnum.medium;
+  int _lastStateHash = 0;
 
   @override
   void dispose() {
@@ -57,7 +65,7 @@ class _SearchViewState extends State<SearchView> {
 
           bloc.add(
             PaginationChangedEvent(
-              limit: 10,
+              limit: kDefaultResultsPerPage,
               offset: 0,
             ),
           );
@@ -72,11 +80,29 @@ class _SearchViewState extends State<SearchView> {
                 children: [
                   BlocBuilder<AssetsBloc, BlocState>(
                     builder: (context, state) {
+                      if (widget.refresh ?? false) {
+                        if ((state is SearchResultsLoadedState) &&
+                            (_lastStateHash == state.hashCode)) {
+                          BlocProvider.of<AssetsBloc>(context).add(
+                            RefreshEvent(),
+                          );
+                        }
+                      }
+
+                      if (state is SearchResultsLoadedState) {
+                        _lastStateHash = state.hashCode;
+                      }
+
                       return Toolbar(
                         sortField: _sortField,
                         sortDirection: _sortDirection,
                         layoutMode: _layoutMode,
                         thumbnailSize: _thumbnailSize,
+                        onReload: () {
+                          BlocProvider.of<AssetsBloc>(context).add(
+                            ReloadCurrentPageEvent(),
+                          );
+                        },
                         onSearch: (searchTerm) {
                           BlocProvider.of<AssetsBloc>(context).add(
                             SearchEvent(
@@ -91,6 +117,13 @@ class _SearchViewState extends State<SearchView> {
                             _sortField = field;
                             _sortDirection = direction;
                           });
+
+                          BlocProvider.of<AssetsBloc>(context).add(
+                            SearchEvent(
+                              sortField: _sortField,
+                              sortDirection: _sortDirection,
+                            ),
+                          );
                         },
                         onLayoutChange: (mode) {
                           setState(() => _layoutMode = mode);

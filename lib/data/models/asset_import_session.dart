@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 
 enum AssetImportSessionStatusEnum {
@@ -28,14 +29,14 @@ enum AssetImportSessionStatusEnum {
   }
 }
 
-class AssetImportSessionModel {
+class AssetImportSessionModel extends Equatable {
   final String id;
   final String userID;
   final DateTime createdAt;
   final DateTime updatedAt;
   final AssetImportSessionStatusEnum status;
 
-  AssetImportSessionModel({
+  const AssetImportSessionModel({
     required this.id,
     required this.userID,
     required this.createdAt,
@@ -58,9 +59,18 @@ class AssetImportSessionModel {
       status: AssetImportSessionStatusEnum.fromJsonDtoValue(dto?['status']),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        userID,
+        createdAt,
+        updatedAt,
+        status,
+      ];
 }
 
-class AssetImportSessionDetailsModel {
+class AssetImportSessionDetailsModel extends Equatable {
   final String id;
   final String userID;
   final DateTime createdAt;
@@ -68,7 +78,7 @@ class AssetImportSessionDetailsModel {
   final AssetImportSessionStatusEnum status;
   final List<AssetImportSessionFileModel> files;
 
-  AssetImportSessionDetailsModel({
+  const AssetImportSessionDetailsModel({
     required this.id,
     required this.userID,
     required this.createdAt,
@@ -96,4 +106,14 @@ class AssetImportSessionDetailsModel {
           [],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        userID,
+        createdAt,
+        updatedAt,
+        status,
+        files,
+      ];
 }

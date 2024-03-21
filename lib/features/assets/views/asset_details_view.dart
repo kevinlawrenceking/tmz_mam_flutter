@@ -1,9 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tmz_damz/components/flutter_flow_icon_button.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
+import 'package:tmz_damz/shared/widgets/copy_text.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/themes/flutter_flow_theme.dart';
@@ -106,7 +108,7 @@ class AssetDetailsView extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   _MetadataContainer(
-                    metadata: model.metadata,
+                    model: model,
                   ),
                   const SizedBox(height: 20),
                   _PhotoInfoContainer(
@@ -123,10 +125,10 @@ class AssetDetailsView extends StatelessWidget {
 }
 
 class _MetadataContainer extends StatelessWidget {
-  final AssetMetadataModel metadata;
+  final AssetDetailsModel model;
 
   const _MetadataContainer({
-    required this.metadata,
+    required this.model,
   });
 
   @override
@@ -152,32 +154,119 @@ class _MetadataContainer extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Celebrity',
-            value: metadata.celebrityInPhoto.isNotEmpty
-                ? metadata.celebrityInPhoto.join(', ')
+            canCopy: model.metadata.celebrityInPhoto.isNotEmpty,
+            value: model.metadata.celebrityInPhoto.isNotEmpty
+                ? model.metadata.celebrityInPhoto.join(', ')
                 : '-',
           ),
           _buildMetadata(
             context: context,
             theme: theme,
             label: 'Associated Celebrity',
-            value: metadata.celebrityAssociated.isNotEmpty
-                ? metadata.celebrityAssociated.join(', ')
+            canCopy: model.metadata.celebrityAssociated.isNotEmpty,
+            value: model.metadata.celebrityAssociated.isNotEmpty
+                ? model.metadata.celebrityAssociated.join(', ')
                 : '-',
           ),
           _buildMetadata(
             context: context,
             theme: theme,
             label: 'Shot Description',
-            value: metadata.shotDescription.isNotEmpty
-                ? metadata.shotDescription
+            canCopy: model.metadata.shotDescription.isNotEmpty,
+            value: model.metadata.shotDescription.isNotEmpty
+                ? model.metadata.shotDescription
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Keywords',
+            value: model.metadata.keywords.isNotEmpty
+                ? model.metadata.keywords.join(', ')
+                : '-',
+            canCopy: model.metadata.keywords.isNotEmpty,
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Shoot Location',
+            canCopy: model.metadata.location.description?.isNotEmpty ?? false,
+            value: (model.metadata.location.description?.isNotEmpty ?? false)
+                ? model.metadata.location.description!
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'City, State, Country',
+            canCopy: model.metadata.keywords.isNotEmpty,
+            value: (() {
+              final parts = <String>[];
+
+              if (model.metadata.location.city?.isNotEmpty ?? false) {
+                parts.add(model.metadata.location.city!);
+              }
+              if (model.metadata.location.state?.isNotEmpty ?? false) {
+                parts.add(model.metadata.location.state!);
+              }
+              if (model.metadata.location.country?.isNotEmpty ?? false) {
+                parts.add(model.metadata.location.country!);
+              }
+
+              if (parts.isNotEmpty) {
+                return parts.join(', ');
+              } else {
+                return '-';
+              }
+            })(),
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Shoot Date',
+            canCopy: model.images.any(
+              (_) => _.type == AssetImageTypeEnum.source,
+            ),
+            value: (() {
+              final dt = model.images
+                  .firstWhereOrNull(
+                    (_) => _.type == AssetImageTypeEnum.source,
+                  )
+                  ?.createdAt
+                  .toLocal();
+
+              if (dt != null) {
+                return DateFormat.yMMMMd().add_jms().format(dt);
+              } else {
+                return '-';
+              }
+            })(),
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Source',
+            canCopy: model.metadata.agency.isNotEmpty,
+            value: model.metadata.agency.isNotEmpty
+                ? model.metadata.agency.join(', ')
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Credit',
+            canCopy: model.metadata.credit?.isNotEmpty ?? false,
+            value: model.metadata.credit?.isNotEmpty ?? false
+                ? model.metadata.credit!
                 : '-',
           ),
           _buildMetadata(
             context: context,
             theme: theme,
             label: 'Rights Summary',
+            canCopy: false,
             value: () {
-              switch (metadata.rights) {
+              switch (model.metadata.rights) {
                 case AssetMetadataRightsEnum.costNonTMZ:
                   return 'Cost (Non-TMZ)';
                 case AssetMetadataRightsEnum.freeNonTMZ:
@@ -192,16 +281,123 @@ class _MetadataContainer extends StatelessWidget {
           _buildMetadata(
             context: context,
             theme: theme,
-            label: 'Agency',
-            value:
-                metadata.agency.isNotEmpty ? metadata.agency.join(', ') : '-',
+            label: 'Rights Details',
+            canCopy: model.metadata.rightsDetails?.isNotEmpty ?? false,
+            value: model.metadata.rightsDetails?.isNotEmpty ?? false
+                ? model.metadata.rightsDetails!
+                : '-',
           ),
           _buildMetadata(
             context: context,
             theme: theme,
-            label: 'Credit',
-            value:
-                metadata.credit?.isNotEmpty ?? false ? metadata.credit! : '-',
+            label: 'Rights Instructions',
+            canCopy: model.metadata.rightsInstructions?.isNotEmpty ?? false,
+            value: model.metadata.rightsInstructions?.isNotEmpty ?? false
+                ? model.metadata.rightsInstructions!
+                : '-',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Credit Location',
+            canCopy: false,
+            value: () {
+              switch (model.metadata.creditLocation) {
+                case AssetMetadataCreditLocationEnum.end:
+                  return 'End';
+                case AssetMetadataCreditLocationEnum.onScreen:
+                  return 'On-Screen';
+                default:
+                  return '-';
+              }
+            }(),
+          ),
+          // TODO: 'On Screen Credit'
+          // TODO: 'Censor Required'
+          // TODO: 'Watermark Required'
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Censor Required',
+            canCopy: false,
+            value: () {
+              final parts = <String>[];
+
+              for (var i = 0; i < model.metadata.overlay.length; i++) {
+                switch (model.metadata.overlay[i]) {
+                  case AssetMetadataOverlayEnum.blackBarCensor:
+                    parts.add('Black Bar');
+                  case AssetMetadataOverlayEnum.blurCensor:
+                    parts.add('Blur');
+                  default:
+                    break;
+                }
+              }
+
+              parts.sort();
+
+              if (parts.isNotEmpty) {
+                return parts.join(', ');
+              } else {
+                return 'No';
+              }
+            }(),
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Watermark Required',
+            canCopy: false,
+            value: model.metadata.overlay
+                    .any((_) => _ == AssetMetadataOverlayEnum.watermark)
+                ? 'Yes'
+                : 'No',
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Exclusivity',
+            canCopy: false,
+            value: () {
+              switch (model.metadata.exclusivity) {
+                case AssetMetadataExclusivityEnum.exclusive:
+                  return 'Exclusive';
+                case AssetMetadataExclusivityEnum.premiumExclusive:
+                  return 'Premium Exclusive';
+                default:
+                  return '-';
+              }
+            }(),
+          ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'Emotion',
+            canCopy: false,
+            value: () {
+              final parts = <String>[];
+
+              for (var i = 0; i < model.metadata.emotion.length; i++) {
+                switch (model.metadata.emotion[i]) {
+                  case AssetMetadataEmotionEnum.negative:
+                    parts.add('Negative');
+                  case AssetMetadataEmotionEnum.neutral:
+                    parts.add('Neutral');
+                  case AssetMetadataEmotionEnum.positive:
+                    parts.add('Positive');
+                  case AssetMetadataEmotionEnum.surprised:
+                    parts.add('Surprised');
+                  default:
+                    break;
+                }
+              }
+
+              if (parts.isNotEmpty) {
+                return parts.join(', ');
+              } else {
+                return '-';
+              }
+            }(),
           ),
         ],
       ),
@@ -212,10 +408,11 @@ class _MetadataContainer extends StatelessWidget {
     required BuildContext context,
     required ThemeData theme,
     required String label,
+    required bool canCopy,
     required String value,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
+      padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -223,19 +420,19 @@ class _MetadataContainer extends StatelessWidget {
             opacity: 0.4,
             child: Text(
               label.toUpperCase(),
-              softWrap: false,
+              softWrap: true,
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w700,
+                letterSpacing: 1,
               ),
             ),
           ),
-          Text(
+          CopyText(
             value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            softWrap: false,
+            canCopy: canCopy,
             style: theme.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w600,
+              letterSpacing: 1,
             ),
           ),
         ],
@@ -253,7 +450,7 @@ class _PhotoInfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const columnWidths = [160.0, 200.0, 340.0];
+    const columnWidths = [280.0, 160.0, 200.0];
 
     final theme = Theme.of(context);
 
@@ -275,15 +472,18 @@ class _PhotoInfoContainer extends StatelessWidget {
               child: _buildColumn(
                 context: context,
                 theme: theme,
+                canCopy: true,
                 label: 'ID',
                 value: model?.id ?? '',
               ),
             ),
+            const SizedBox(width: 20.0),
             SizedBox(
               width: columnWidths[1],
               child: _buildColumn(
                 context: context,
                 theme: theme,
+                canCopy: false,
                 label: 'STATUS',
                 value: () {
                   switch (model?.status) {
@@ -297,20 +497,13 @@ class _PhotoInfoContainer extends StatelessWidget {
                 }(),
               ),
             ),
+            const SizedBox(width: 20.0),
             SizedBox(
               width: columnWidths[2],
               child: _buildColumn(
                 context: context,
                 theme: theme,
-                label: 'ORIGINAL FILE NAME',
-                value: model?.originalFileName ?? '',
-              ),
-            ),
-            SizedBox(
-              width: columnWidths[0],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
+                canCopy: true,
                 label: 'CREATED BY',
                 value: () {
                   if (model?.createdBy != null) {
@@ -324,21 +517,51 @@ class _PhotoInfoContainer extends StatelessWidget {
               ),
             ),
             SizedBox(
+              width: columnWidths[0],
+              child: _buildColumn(
+                context: context,
+                theme: theme,
+                canCopy: true,
+                label: 'ORIGINAL FILE NAME',
+                value: model?.originalFileName ?? '',
+              ),
+            ),
+            const SizedBox(width: 20.0),
+            SizedBox(
               width: columnWidths[1],
               child: _buildColumn(
                 context: context,
                 theme: theme,
+                canCopy: true,
                 label: 'CREATED',
-                value: model?.createdAt.toLocal().toString() ?? '',
+                value: (() {
+                  if (model?.createdAt != null) {
+                    return DateFormat.yMd()
+                        .add_jms()
+                        .format(model!.createdAt.toLocal());
+                  } else {
+                    return '-';
+                  }
+                })(),
               ),
             ),
+            const SizedBox(width: 20.0),
             SizedBox(
               width: columnWidths[2],
               child: _buildColumn(
                 context: context,
                 theme: theme,
+                canCopy: true,
                 label: 'UPDATED',
-                value: model?.updatedAt.toLocal().toString() ?? '',
+                value: (() {
+                  if (model?.updatedAt != null) {
+                    return DateFormat.yMd()
+                        .add_jms()
+                        .format(model!.updatedAt.toLocal());
+                  } else {
+                    return '-';
+                  }
+                })(),
               ),
             ),
           ],
@@ -350,6 +573,7 @@ class _PhotoInfoContainer extends StatelessWidget {
   Widget _buildColumn({
     required BuildContext context,
     required ThemeData theme,
+    required bool canCopy,
     required String label,
     required String value,
   }) {
@@ -365,16 +589,19 @@ class _PhotoInfoContainer extends StatelessWidget {
             softWrap: false,
             style: theme.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w700,
+              letterSpacing: 1,
             ),
           ),
         ),
-        Text(
+        CopyText(
           value,
+          canCopy: canCopy,
           maxLines: 1,
           softWrap: false,
           style: theme.textTheme.bodySmall?.copyWith(
             fontSize: 12.0,
             fontWeight: FontWeight.w600,
+            letterSpacing: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),

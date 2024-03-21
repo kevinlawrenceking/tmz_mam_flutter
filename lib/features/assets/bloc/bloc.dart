@@ -14,6 +14,7 @@ part 'state.dart';
 class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   final IAssetDataSource assetDataSource;
 
+  var _offset = 0;
   var _limit = 10;
   String? _searchTerm;
   AssetSortFieldEnum? _sortField;
@@ -26,6 +27,8 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   }) : super(InitialState()) {
     on<LoadAssetDetailsEvent>(_loadAssetDetailsEvent);
     on<PaginationChangedEvent>(_paginationChangedEvent);
+    on<RefreshEvent>(_refreshEvent);
+    on<ReloadCurrentPageEvent>(_reloadCurrentPageEvent);
     on<SearchEvent>(_searchEvent);
   }
 
@@ -57,12 +60,43 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     PaginationChangedEvent event,
     Emitter<BlocState> emit,
   ) async {
+    _offset = event.offset;
     _limit = event.limit;
 
     await _getAssetList(
       emit: emit,
-      offset: event.offset,
-      limit: event.limit,
+      offset: _offset,
+      limit: _limit,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
+  }
+
+  Future<void> _refreshEvent(
+    RefreshEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    _offset = 0;
+
+    await _getAssetList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
+  }
+
+  Future<void> _reloadCurrentPageEvent(
+    ReloadCurrentPageEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    await _getAssetList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
       searchTerm: _searchTerm,
       sortField: _sortField,
       sortDirection: _sortDirection,
@@ -73,18 +107,22 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     SearchEvent event,
     Emitter<BlocState> emit,
   ) async {
-    _searchTerm = event.searchTerm;
+    if (event.searchTerm != null) {
+      _searchTerm = event.searchTerm;
+    }
+
+    _offset = 0;
     _sortField = event.sortField;
     _sortDirection = event.sortDirection;
     _totalRecords = 0;
 
     await _getAssetList(
       emit: emit,
-      offset: 0,
+      offset: _offset,
       limit: _limit,
-      searchTerm: event.searchTerm,
-      sortField: event.sortField,
-      sortDirection: event.sortDirection,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
     );
   }
 

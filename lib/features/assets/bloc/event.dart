@@ -33,13 +33,17 @@ class PaginationChangedEvent extends BlocEvent {
       ];
 }
 
+class RefreshEvent extends BlocEvent {}
+
+class ReloadCurrentPageEvent extends BlocEvent {}
+
 class SearchEvent extends BlocEvent {
   final String? searchTerm;
   final AssetSortFieldEnum? sortField;
   final SortDirectionEnum? sortDirection;
 
   SearchEvent({
-    required this.searchTerm,
+    this.searchTerm,
     required this.sortField,
     required this.sortDirection,
   });

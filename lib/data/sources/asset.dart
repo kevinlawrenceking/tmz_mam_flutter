@@ -56,9 +56,9 @@ class AssetDataSource implements IAssetDataSource {
             }
 
             final data = json.decode(response.body);
-            final asset = AssetDetailsModel.fromJsonDto(data);
+            final model = AssetDetailsModel.fromJsonDto(data);
 
-            return Right(asset);
+            return Right(model);
           },
         );
       })();
@@ -98,6 +98,36 @@ class AssetDataSource implements IAssetDataSource {
                   break;
                 case AssetSortFieldEnum.updatedAt:
                   queryParams[paramKey] = 'updated_at';
+                  break;
+                case AssetSortFieldEnum.agency:
+                  queryParams[paramKey] = 'agency';
+                  break;
+                case AssetSortFieldEnum.celebrityAssociated:
+                  queryParams[paramKey] = 'celebrity_associated';
+                  break;
+                case AssetSortFieldEnum.celebrityInPhoto:
+                  queryParams[paramKey] = 'celebrity_in_photo';
+                  break;
+                case AssetSortFieldEnum.credit:
+                  queryParams[paramKey] = 'credit';
+                  break;
+                case AssetSortFieldEnum.creditLocation:
+                  queryParams[paramKey] = 'credit_location';
+                  break;
+                case AssetSortFieldEnum.keywords:
+                  queryParams[paramKey] = 'keywords';
+                  break;
+                case AssetSortFieldEnum.originalFileName:
+                  queryParams[paramKey] = 'original_file_name';
+                  break;
+                case AssetSortFieldEnum.rights:
+                  queryParams[paramKey] = 'rights';
+                  break;
+                case AssetSortFieldEnum.rightsDetails:
+                  queryParams[paramKey] = 'rights_details';
+                  break;
+                case AssetSortFieldEnum.shotDescription:
+                  queryParams[paramKey] = 'shot_description';
                   break;
               }
             }

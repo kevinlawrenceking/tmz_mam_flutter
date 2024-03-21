@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/features/assets/widgets/toolbar_button.dart';
 
 enum ThumbnailSizeEnum {
   small,
@@ -51,62 +52,48 @@ class ThumbnailSizeSelector extends StatelessWidget {
     required double iconSize,
     required ThumbnailSizeEnum value,
   }) {
+    BorderRadiusGeometry borderRadius;
+
+    switch (value) {
+      case ThumbnailSizeEnum.small:
+        borderRadius = const BorderRadius.only(
+          bottomLeft: Radius.circular(6.0),
+          topLeft: Radius.circular(6.0),
+        );
+        break;
+      case ThumbnailSizeEnum.large:
+        borderRadius = const BorderRadius.only(
+          bottomRight: Radius.circular(6.0),
+          topRight: Radius.circular(6.0),
+        );
+        break;
+      default:
+        borderRadius = BorderRadius.zero;
+        break;
+    }
+
     return SizedBox(
       width: 54,
-      height: 40,
-      child: IconButton(
+      height: 42,
+      child: ToolbarButton(
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          Color? backgroundColor;
+
+          if (initialSize == value) {
+            backgroundColor = const Color(0xFF8E0000);
+          } else {
+            backgroundColor = const Color(0x30FFFFFF);
+          }
+
+          return backgroundColor;
+        }),
+        borderRadius: borderRadius,
+        icon: MdiIcons.imageOutline,
+        iconColor: initialSize == value
+            ? const Color(0xDEFFFFFF)
+            : const Color(0xAEFFFFFF),
+        iconSize: iconSize,
         onPressed: initialSize != value ? () => onChanged(value) : null,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
-            Color? backgroundColor;
-
-            if (initialSize == value) {
-              backgroundColor = const Color(0xFF8E0000);
-            } else {
-              backgroundColor = const Color(0x30FFFFFF);
-            }
-
-            return backgroundColor;
-          }),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
-            (states) {
-              BorderRadiusGeometry borderRadius;
-
-              switch (value) {
-                case ThumbnailSizeEnum.small:
-                  borderRadius = const BorderRadius.only(
-                    bottomLeft: Radius.circular(6.0),
-                    topLeft: Radius.circular(6.0),
-                  );
-                  break;
-                case ThumbnailSizeEnum.large:
-                  borderRadius = const BorderRadius.only(
-                    bottomRight: Radius.circular(6.0),
-                    topRight: Radius.circular(6.0),
-                  );
-                  break;
-                default:
-                  borderRadius = BorderRadius.zero;
-                  break;
-              }
-
-              return RoundedRectangleBorder(
-                side: const BorderSide(
-                  color: Color(0x80000000),
-                ),
-                borderRadius: borderRadius,
-              );
-            },
-          ),
-        ),
-        icon: Icon(
-          MdiIcons.imageOutline,
-          color: initialSize == value
-              ? const Color(0xDEFFFFFF)
-              : const Color(0xAEFFFFFF),
-          size: iconSize,
-        ),
       ),
     );
   }

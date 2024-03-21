@@ -54,7 +54,7 @@ class _LoginViewState extends State<LoginView> {
                   message: state.failure.message,
                 );
               } else if (state is AuthenticationSuccessfulState) {
-                AutoRouter.of(context).replace(const AssetsSearchRoute());
+                AutoRouter.of(context).replace(AssetsSearchRoute());
               }
             },
             child: BlocBuilder<AuthenticationBloc, BlocState>(
@@ -130,10 +130,12 @@ class _LoginViewState extends State<LoginView> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _buildUsernameInput(
+                                  context: context,
                                   enabled: enabled,
                                 ),
                                 const SizedBox(height: 32.0),
                                 _buildPasswordInput(
+                                  context: context,
                                   enabled: enabled,
                                 ),
                                 const SizedBox(height: 32.0),
@@ -194,19 +196,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
       child: TextButton(
-        onPressed: enabled
-            ? () {
-                if (((_usernameController?.text.length ?? 0) > 1) &&
-                    ((_passwordController?.text.length ?? 0) > 1)) {
-                  BlocProvider.of<AuthenticationBloc>(context).add(
-                    LoginEvent(
-                      username: _usernameController!.text,
-                      password: _passwordController!.text,
-                    ),
-                  );
-                }
-              }
-            : null,
+        onPressed: enabled ? () => _login(context) : null,
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
@@ -245,6 +235,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Widget _buildPasswordInput({
+    required BuildContext context,
     required bool enabled,
   }) {
     return Column(
@@ -273,12 +264,14 @@ class _LoginViewState extends State<LoginView> {
           enableSuggestions: false,
           obscureText: true,
           textInputAction: TextInputAction.done,
+          onFieldSubmitted: enabled ? (value) => _login(context) : null,
         ),
       ],
     );
   }
 
   Widget _buildUsernameInput({
+    required BuildContext context,
     required bool enabled,
   }) {
     return Column(
@@ -306,8 +299,23 @@ class _LoginViewState extends State<LoginView> {
           ),
           enabled: enabled,
           textInputAction: TextInputAction.next,
+          onFieldSubmitted: enabled ? (value) => _login(context) : null,
         ),
       ],
     );
+  }
+
+  void _login(BuildContext context) {
+    final username = _usernameController?.text.trim();
+    final password = _passwordController?.text.trim();
+
+    if ((username?.isNotEmpty ?? false) && (password?.isNotEmpty ?? false)) {
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        LoginEvent(
+          username: _usernameController!.text,
+          password: _passwordController!.text,
+        ),
+      );
+    }
   }
 }

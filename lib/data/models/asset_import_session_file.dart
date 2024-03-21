@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 
@@ -54,7 +55,7 @@ enum AssetImportSessionFileThumbnailStatusEnum {
   }
 }
 
-class AssetImportSessionFileModel {
+class AssetImportSessionFileModel extends Equatable {
   final String id;
   final String sessionID;
   final DateTime uploadedAt;
@@ -67,7 +68,7 @@ class AssetImportSessionFileModel {
   final AssetImportSessionImageInfoModel imageInfo;
   final AssetImportSessionFileMetaModel meta;
 
-  AssetImportSessionFileModel({
+  const AssetImportSessionFileModel({
     required this.id,
     required this.sessionID,
     required this.uploadedAt,
@@ -104,16 +105,31 @@ class AssetImportSessionFileModel {
       meta: AssetImportSessionFileMetaModel.fromJsonDto(dto?['meta']),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        sessionID,
+        uploadedAt,
+        status,
+        originalFileName,
+        sourcePath,
+        thumbnailPath,
+        thumbnailStatus,
+        fileInfo,
+        imageInfo,
+        meta,
+      ];
 }
 
-class AssetImportSessionFileInfoModel {
+class AssetImportSessionFileInfoModel extends Equatable {
   final String md5Hash;
   final String mimeType;
   final Int64 sizeOnDisk;
   final DateTime createdAt;
   final DateTime modifiedAt;
 
-  AssetImportSessionFileInfoModel({
+  const AssetImportSessionFileInfoModel({
     required this.md5Hash,
     required this.mimeType,
     required this.sizeOnDisk,
@@ -136,13 +152,22 @@ class AssetImportSessionFileInfoModel {
       ),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        md5Hash,
+        mimeType,
+        sizeOnDisk,
+        createdAt,
+        modifiedAt,
+      ];
 }
 
-class AssetImportSessionImageInfoModel {
+class AssetImportSessionImageInfoModel extends Equatable {
   final Int32 height;
   final Int32 width;
 
-  AssetImportSessionImageInfoModel({
+  const AssetImportSessionImageInfoModel({
     required this.height,
     required this.width,
   });
@@ -155,13 +180,19 @@ class AssetImportSessionImageInfoModel {
       width: Int32(dto?['width'] ?? 0),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        height,
+        width,
+      ];
 }
 
-class AssetImportSessionFileMetaModel {
+class AssetImportSessionFileMetaModel extends Equatable {
   final String headline;
   final AssetMetadataModel metadata;
 
-  AssetImportSessionFileMetaModel({
+  const AssetImportSessionFileMetaModel({
     required this.headline,
     required this.metadata,
   });
@@ -173,5 +204,18 @@ class AssetImportSessionFileMetaModel {
       headline: dto?['headline'] ?? '',
       metadata: AssetMetadataModel.fromJsonDto(dto?['metadata']),
     );
+  }
+
+  @override
+  List<Object?> get props => [
+        headline,
+        metadata,
+      ];
+
+  Map<String, dynamic> toJsonDto() {
+    return {
+      'headline': headline,
+      'metadata': metadata.toJsonDto(),
+    };
   }
 }

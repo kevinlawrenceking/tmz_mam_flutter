@@ -29,6 +29,12 @@ abstract class IAssetImportSessionDataSource {
     required String fileID,
   });
 
+  Future<Either<Failure, AssetImportSessionFileMetaModel>> setSessionFileMeta({
+    required String sessionID,
+    required String fileID,
+    required AssetImportSessionFileMetaModel meta,
+  });
+
   Future<Either<Failure, AssetImportSessionFileModel>> uploadSessionFile({
     required String sessionID,
     required String fileName,
@@ -68,9 +74,9 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
             }
 
             final data = json.decode(response.body);
-            final session = AssetImportSessionModel.fromJsonDto(data);
+            final model = AssetImportSessionModel.fromJsonDto(data);
 
-            return Right(session);
+            return Right(model);
           },
         );
       })();
@@ -123,9 +129,9 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
             }
 
             final data = json.decode(response.body);
-            final session = AssetImportSessionDetailsModel.fromJsonDto(data);
+            final model = AssetImportSessionDetailsModel.fromJsonDto(data);
 
-            return Right(session);
+            return Right(model);
           },
         );
       })();
@@ -193,6 +199,38 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
       })();
 
   @override
+  Future<Either<Failure, AssetImportSessionFileMetaModel>> setSessionFileMeta({
+    required String sessionID,
+    required String fileID,
+    required AssetImportSessionFileMetaModel meta,
+  }) async =>
+      ExceptionHandler<AssetImportSessionFileMetaModel>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.put(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/import/session/$sessionID/file/$fileID',
+              body: json.encode(meta.toJsonDto()),
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            final data = json.decode(response.body);
+            final model = AssetImportSessionFileMetaModel.fromJsonDto(data);
+
+            return Right(model);
+          },
+        );
+      })();
+
+  @override
   Future<Either<Failure, AssetImportSessionFileModel>> uploadSessionFile({
     required String sessionID,
     required String fileName,
@@ -223,9 +261,9 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
 
             final body = await response.stream.bytesToString();
             final data = json.decode(body);
-            final asset = AssetImportSessionFileModel.fromJsonDto(data);
+            final model = AssetImportSessionFileModel.fromJsonDto(data);
 
-            return Right(asset);
+            return Right(model);
           },
         );
       })();

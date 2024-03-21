@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cross_local_storage/cross_local_storage.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -18,6 +19,8 @@ abstract class IAuthDataSource {
   Future<Either<Failure, String>> getAuthToken();
 
   Future<Either<Failure, Empty>> logout();
+
+  Future<Either<Failure, String>> refreshToken();
 }
 
 class AuthDataSource implements IAuthDataSource {
@@ -25,7 +28,7 @@ class AuthDataSource implements IAuthDataSource {
 
   final IRestClient _client;
 
-  final _storage = const FlutterSecureStorage();
+  // final _storage = const FlutterSecureStorage();
 
   AuthDataSource({
     required IRestClient client,
@@ -37,14 +40,12 @@ class AuthDataSource implements IAuthDataSource {
     required String password,
   }) =>
       ExceptionHandler<String>(() async {
-        final body = json.encode({
-          'username': username,
-          'password': password,
-        });
-
         final response = await _client.post(
           endPoint: '/login',
-          body: body,
+          body: json.encode({
+            'username': username,
+            'password': password,
+          }),
         );
 
         if (response.statusCode != HttpStatus.ok) {
@@ -61,10 +62,13 @@ class AuthDataSource implements IAuthDataSource {
           return const Left(AuthFailure());
         }
 
-        await _storage.write(
-          key: kAuthTokenKey,
-          value: authToken,
-        );
+        final storage = await LocalStorage.getInstance();
+        await storage.setString(kAuthTokenKey, authToken);
+
+        // await _storage.write(
+        //   key: kAuthTokenKey,
+        //   value: authToken,
+        // );
 
         return Right(authToken);
       })();
@@ -72,9 +76,12 @@ class AuthDataSource implements IAuthDataSource {
   @override
   Future<Either<Failure, String>> getAuthToken() async =>
       ExceptionHandler<String>(() async {
-        final authToken = await _storage.read(
-          key: kAuthTokenKey,
-        );
+        final storage = await LocalStorage.getInstance();
+        final authToken = storage.getString(kAuthTokenKey);
+
+        // final authToken = await _storage.read(
+        //   key: kAuthTokenKey,
+        // );
 
         if ((authToken == null) || JwtDecoder.isExpired(authToken)) {
           return const Left(SessionExpiredFailure());
@@ -86,11 +93,57 @@ class AuthDataSource implements IAuthDataSource {
   @override
   Future<Either<Failure, Empty>> logout() async =>
       ExceptionHandler<Empty>(() async {
-        await _storage.write(
-          key: kAuthTokenKey,
-          value: null,
-        );
+        final storage = await LocalStorage.getInstance();
+        await storage.remove(kAuthTokenKey);
+
+        // await _storage.write(
+        //   key: kAuthTokenKey,
+        //   value: null,
+        // );
 
         return const Right(Empty());
+      })();
+
+  @override
+  Future<Either<Failure, String>> refreshToken() =>
+      ExceptionHandler<String>(() async {
+        final storage = await LocalStorage.getInstance();
+        final authToken = storage.getString(kAuthTokenKey);
+
+        // final authToken = await _storage.read(
+        //   key: kAuthTokenKey,
+        // );
+
+        if ((authToken == null) || JwtDecoder.isExpired(authToken)) {
+          return const Left(SessionExpiredFailure());
+        }
+
+        final response = await _client.get(
+          authToken: authToken,
+          endPoint: '/token',
+        );
+
+        if (response.statusCode != HttpStatus.ok) {
+          return Left(
+            HttpFailure.fromResponse(response),
+          );
+        }
+
+        final data = json.decode(response.body) as Map<String, dynamic>;
+
+        final newAuthToken = data['token'];
+
+        if (newAuthToken == null) {
+          return const Left(AuthFailure());
+        }
+
+        await storage.setString(kAuthTokenKey, authToken);
+
+        // await _storage.write(
+        //   key: kAuthTokenKey,
+        //   value: newAuthToken,
+        // );
+
+        return Right(newAuthToken);
       })();
 }

@@ -31,7 +31,7 @@ Clean and build the web deployment *(outputs to `.\build\web`)*:
 
 ```
 flutter clean
-flutter build web
+flutter build web --no-tree-shake-icons --web-renderer canvaskit
 ```
 
 ---

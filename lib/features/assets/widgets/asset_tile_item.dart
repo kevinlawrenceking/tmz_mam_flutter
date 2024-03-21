@@ -77,32 +77,28 @@ class _AssetTileItemState extends State<AssetTileItem> {
                   ),
                   const Divider(),
                   const SizedBox(height: 4),
-                  _buildMetadata(
-                    context: context,
+                  _MetadataValue(
                     theme: theme,
                     label: 'Celebrity',
                     value: widget.model.metadata.celebrityInPhoto.isNotEmpty
                         ? widget.model.metadata.celebrityInPhoto.join(', ')
                         : '-',
                   ),
-                  _buildMetadata(
-                    context: context,
+                  _MetadataValue(
                     theme: theme,
                     label: 'Associated Celebrity',
                     value: widget.model.metadata.celebrityAssociated.isNotEmpty
                         ? widget.model.metadata.celebrityAssociated.join(', ')
                         : '-',
                   ),
-                  _buildMetadata(
-                    context: context,
+                  _MetadataValue(
                     theme: theme,
                     label: 'Shot Description',
                     value: widget.model.metadata.shotDescription.isNotEmpty
                         ? widget.model.metadata.shotDescription
                         : '-',
                   ),
-                  _buildMetadata(
-                    context: context,
+                  _MetadataValue(
                     theme: theme,
                     label: 'Rights Summary',
                     value: () {
@@ -118,24 +114,21 @@ class _AssetTileItemState extends State<AssetTileItem> {
                       }
                     }(),
                   ),
-                  _buildMetadata(
-                    context: context,
+                  _MetadataValue(
                     theme: theme,
                     label: 'Agency',
                     value: widget.model.metadata.agency.isNotEmpty
                         ? widget.model.metadata.agency.join(', ')
                         : '-',
                   ),
-                  _buildMetadata(
-                    context: context,
+                  _MetadataValue(
                     theme: theme,
                     label: 'Credit',
                     value: widget.model.metadata.credit?.isNotEmpty ?? false
                         ? widget.model.metadata.credit!
                         : '-',
                   ),
-                  // _buildMetadata(
-                  //   context: context,
+                  // _MetadataValue(
                   //   theme: theme,
                   //   label: 'Rights Details',
                   //   value: widget.model.metadata.rightsDetails?.isNotEmpty ?? false
@@ -150,13 +143,26 @@ class _AssetTileItemState extends State<AssetTileItem> {
       ),
     );
   }
+}
 
-  Widget _buildMetadata({
-    required BuildContext context,
-    required ThemeData theme,
-    required String label,
-    required String value,
-  }) {
+class _MetadataValue extends StatefulWidget {
+  final ThemeData theme;
+  final String label;
+  final String value;
+
+  const _MetadataValue({
+    required this.theme,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  State<_MetadataValue> createState() => _MetadataValueState();
+}
+
+class _MetadataValueState extends State<_MetadataValue> {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6.0),
       child: Column(
@@ -165,20 +171,22 @@ class _AssetTileItemState extends State<AssetTileItem> {
           Opacity(
             opacity: 0.4,
             child: Text(
-              label.toUpperCase(),
+              widget.label.toUpperCase(),
               softWrap: false,
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: widget.theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w700,
+                letterSpacing: 1,
               ),
             ),
           ),
           Text(
-            value,
+            widget.value,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             softWrap: false,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: widget.theme.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w600,
+              letterSpacing: 1,
             ),
           ),
         ],

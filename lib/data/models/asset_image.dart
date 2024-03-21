@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:fixnum/fixnum.dart';
 
 enum AssetImageStatusEnum {
@@ -38,7 +39,7 @@ enum AssetImageTypeEnum {
   }
 }
 
-class AssetImageModel {
+class AssetImageModel extends Equatable {
   final String id;
   final String assetID;
   final AssetImageStatusEnum status;
@@ -54,7 +55,7 @@ class AssetImageModel {
   final Int32 width;
   final Int32 height;
 
-  AssetImageModel({
+  const AssetImageModel({
     required this.id,
     required this.assetID,
     required this.status,
@@ -97,4 +98,22 @@ class AssetImageModel {
       height: Int32(dto?['height'] ?? 0),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        assetID,
+        status,
+        type,
+        mount,
+        path,
+        importedAt,
+        createdAt,
+        modifiedAt,
+        sizeOnDisk,
+        md5Hash,
+        mimeType,
+        width,
+        height,
+      ];
 }

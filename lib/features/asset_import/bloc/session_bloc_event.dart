@@ -21,14 +21,17 @@ class AddSessionFileEvent extends SessionBlocEvent {
 
 class FinalizeSessionEvent extends SessionBlocEvent {
   final String sessionID;
+  final Map<String, AssetImportSessionFileMetaModel> fileMeta;
 
   FinalizeSessionEvent({
     required this.sessionID,
+    required this.fileMeta,
   });
 
   @override
   List<Object?> get props => [
         sessionID,
+        fileMeta,
       ];
 }
 
@@ -76,6 +79,25 @@ class SessionFileUploadedEvent extends SessionBlocEvent {
   List<Object?> get props => [
         uploadID,
         file,
+      ];
+}
+
+class SetFileMetaEvent extends SessionBlocEvent {
+  final String sessionID;
+  final String fileID;
+  final AssetImportSessionFileMetaModel meta;
+
+  SetFileMetaEvent({
+    required this.sessionID,
+    required this.fileID,
+    required this.meta,
+  });
+
+  @override
+  List<Object?> get props => [
+        sessionID,
+        fileID,
+        meta,
       ];
 }
 

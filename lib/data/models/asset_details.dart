@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 
@@ -20,7 +21,7 @@ enum AssetStatusEnum {
   }
 }
 
-class AssetDetailsModel {
+class AssetDetailsModel extends Equatable {
   final String id;
   final AssetStatusEnum status;
   final AssetCreatedByModel createdBy;
@@ -31,7 +32,7 @@ class AssetDetailsModel {
   final AssetMetadataModel metadata;
   final List<AssetImageModel> images;
 
-  AssetDetailsModel({
+  const AssetDetailsModel({
     required this.id,
     required this.status,
     required this.createdBy,
@@ -65,14 +66,27 @@ class AssetDetailsModel {
           [],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        status,
+        createdBy,
+        createdAt,
+        updatedAt,
+        originalFileName,
+        headline,
+        metadata,
+        images,
+      ];
 }
 
-class AssetCreatedByModel {
+class AssetCreatedByModel extends Equatable {
   final String userID;
   final String firstName;
   final String lastName;
 
-  AssetCreatedByModel({
+  const AssetCreatedByModel({
     required this.userID,
     required this.firstName,
     required this.lastName,
@@ -87,4 +101,11 @@ class AssetCreatedByModel {
       lastName: dto?['last_name'] ?? '',
     );
   }
+
+  @override
+  List<Object?> get props => [
+        userID,
+        firstName,
+        lastName,
+      ];
 }

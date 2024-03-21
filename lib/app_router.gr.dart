@@ -34,9 +34,16 @@ abstract class $AppRouter extends _i5.RootStackRouter {
       );
     },
     AssetsSearchRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<AssetsSearchRouteArgs>(
+          orElse: () =>
+              AssetsSearchRouteArgs(refresh: pathParams.optBool('refresh')));
       return _i5.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.SearchView(),
+        child: _i3.SearchView(
+          key: args.key,
+          refresh: args.refresh,
+        ),
       );
     },
     AssetImportSessionRoute.name: (routeData) {
@@ -85,16 +92,41 @@ class AuthenticationLoginRoute extends _i5.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.SearchView]
-class AssetsSearchRoute extends _i5.PageRouteInfo<void> {
-  const AssetsSearchRoute({List<_i5.PageRouteInfo>? children})
-      : super(
+class AssetsSearchRoute extends _i5.PageRouteInfo<AssetsSearchRouteArgs> {
+  AssetsSearchRoute({
+    _i6.Key? key,
+    bool? refresh,
+    List<_i5.PageRouteInfo>? children,
+  }) : super(
           AssetsSearchRoute.name,
+          args: AssetsSearchRouteArgs(
+            key: key,
+            refresh: refresh,
+          ),
+          rawPathParams: {'refresh': refresh},
           initialChildren: children,
         );
 
   static const String name = 'AssetsSearchRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i5.PageInfo<AssetsSearchRouteArgs> page =
+      _i5.PageInfo<AssetsSearchRouteArgs>(name);
+}
+
+class AssetsSearchRouteArgs {
+  const AssetsSearchRouteArgs({
+    this.key,
+    this.refresh,
+  });
+
+  final _i6.Key? key;
+
+  final bool? refresh;
+
+  @override
+  String toString() {
+    return 'AssetsSearchRouteArgs{key: $key, refresh: $refresh}';
+  }
 }
 
 /// generated route for

@@ -11,6 +11,7 @@ import 'package:tmz_damz/features/asset_import/bloc/session_bloc.dart';
 import 'package:tmz_damz/features/asset_import/view_models/file_upload_view_model.dart';
 import 'package:tmz_damz/features/asset_import/view_models/file_view_model.dart';
 import 'package:tmz_damz/features/asset_import/widgets/session_file.dart';
+import 'package:tmz_damz/features/asset_import/widgets/session_file_form.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:tmz_damz/shared/widgets/app_scaffold/app_scaffold.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
@@ -32,6 +33,18 @@ class SessionView extends StatefulWidget {
 
 class _SessionViewState extends State<SessionView> {
   late DropzoneViewController _dropController;
+  final _fileFormControllers = <String, SessionFileFormController>{};
+
+  @override
+  void dispose() {
+    for (var i = 0; i < _fileFormControllers.length; i++) {
+      _fileFormControllers.entries.elementAt(i).value.dispose();
+    }
+
+    _fileFormControllers.clear();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +66,8 @@ class _SessionViewState extends State<SessionView> {
               state is GetSessionDetailsFailureState ||
               state is RemoveSessionFileFailureState ||
               state is SessionFinalizationSuccessState ||
-              state is SessionFinalizationFailureState,
+              state is SessionFinalizationFailureState ||
+              state is SetFileMetaFailureState,
           listener: (context, state) async {
             if (state is GetSessionDetailsFailureState) {
               Toast.showNotification(
@@ -81,13 +95,22 @@ class _SessionViewState extends State<SessionView> {
               );
 
               await AutoRouter.of(context).navigate(
-                const AssetsSearchRoute(),
+                AssetsSearchRoute(
+                  refresh: true,
+                ),
               );
             } else if (state is SessionFinalizationFailureState) {
               Toast.showNotification(
                 showDuration: const Duration(seconds: 5),
                 type: ToastTypeEnum.error,
                 title: 'Failed to Finalize Import',
+                message: state.failure.message,
+              );
+            } else if (state is SetFileMetaFailureState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 5),
+                type: ToastTypeEnum.error,
+                title: 'Failed to Update Metadata',
                 message: state.failure.message,
               );
             }
@@ -234,8 +257,23 @@ class _SessionViewState extends State<SessionView> {
         final file = files[index];
 
         return SessionFile(
-          key: ValueKey(file.fileID),
           file: file,
+          onControllerCreated: (controller) {
+            if (file.meta != null) {
+              controller.setFrom(file.meta!);
+            }
+
+            _fileFormControllers[file.fileID] = controller;
+          },
+          onChange: (meta) {
+            BlocProvider.of<SessionBloc>(context).add(
+              SetFileMetaEvent(
+                sessionID: file.sessionID,
+                fileID: file.fileID,
+                meta: meta,
+              ),
+            );
+          },
           onRemove: () {
             BlocProvider.of<SessionBloc>(context).add(
               RemoveSessionFileEvent(
@@ -305,9 +343,20 @@ class _SessionViewState extends State<SessionView> {
                       ),
                     ),
                     onPressed: () {
+                      final fileMeta =
+                          _fileFormControllers.map((fileID, controller) {
+                        final model = controller.getModel();
+                        return MapEntry(fileID, model);
+                      });
+
+                      if (fileMeta.isEmpty) {
+                        return;
+                      }
+
                       BlocProvider.of<SessionBloc>(context).add(
                         FinalizeSessionEvent(
                           sessionID: widget.sessionID,
+                          fileMeta: fileMeta,
                         ),
                       );
                     },

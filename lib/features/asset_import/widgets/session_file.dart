@@ -22,6 +22,9 @@ class SessionFile extends StatefulWidget {
   final FileViewModel? file;
   final FileUploadViewModel? uploadFile;
   final SessionFileUploadState uploadState;
+  final void Function(SessionFileFormController controller)?
+      onControllerCreated;
+  final void Function(AssetImportSessionFileMetaModel meta)? onChange;
   final void Function() onRemove;
 
   const SessionFile({
@@ -29,6 +32,8 @@ class SessionFile extends StatefulWidget {
     this.file,
     this.uploadFile,
     this.uploadState = SessionFileUploadState.uploading,
+    this.onControllerCreated,
+    this.onChange,
     required this.onRemove,
   });
 
@@ -37,11 +42,11 @@ class SessionFile extends StatefulWidget {
 }
 
 class _SessionFileState extends State<SessionFile> {
-  late SessionFileFormController _sessionFileFormController;
+  late SessionFileFormController _controller;
 
   @override
   void dispose() {
-    _sessionFileFormController.dispose();
+    _controller.dispose();
 
     super.dispose();
   }
@@ -50,11 +55,9 @@ class _SessionFileState extends State<SessionFile> {
   void initState() {
     super.initState();
 
-    _sessionFileFormController = SessionFileFormController();
+    _controller = SessionFileFormController();
 
-    if (widget.file?.meta != null) {
-      _sessionFileFormController.setFrom(widget.file!.meta!);
-    }
+    widget.onControllerCreated?.call(_controller);
   }
 
   @override
@@ -87,7 +90,8 @@ class _SessionFileState extends State<SessionFile> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SessionFileForm(
-                      controller: _sessionFileFormController,
+                      controller: _controller,
+                      onChange: widget.onChange,
                     ),
                   ),
                 ],

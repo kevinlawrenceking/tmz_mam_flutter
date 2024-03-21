@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/features/assets/widgets/toolbar_button.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 typedef SortOptionsChangedCallback = void Function(
@@ -26,7 +27,7 @@ class SortOptions extends StatelessWidget {
     return Row(
       children: [
         _buildFieldSelector(),
-        const SizedBox(width: 4),
+        const SizedBox(width: 4.0),
         _buildSortDirectionButton(),
       ],
     );
@@ -34,19 +35,40 @@ class SortOptions extends StatelessWidget {
 
   Widget _buildFieldSelector() {
     return SizedBox(
-      width: 170,
+      width: 240,
       child: DropdownSelector<AssetSortFieldEnum>(
         initialValue: initialField,
         items: const [
           AssetSortFieldEnum.headline,
           AssetSortFieldEnum.createdAt,
           AssetSortFieldEnum.updatedAt,
+          AssetSortFieldEnum.agency,
+          AssetSortFieldEnum.celebrityAssociated,
+          AssetSortFieldEnum.celebrityInPhoto,
+          AssetSortFieldEnum.credit,
+          AssetSortFieldEnum.creditLocation,
+          AssetSortFieldEnum.keywords,
+          AssetSortFieldEnum.originalFileName,
+          AssetSortFieldEnum.rights,
+          AssetSortFieldEnum.rightsDetails,
+          AssetSortFieldEnum.shotDescription,
         ],
         itemBuilder: (value) {
           final label = {
                 AssetSortFieldEnum.headline: 'Headline',
                 AssetSortFieldEnum.createdAt: 'Date Created',
                 AssetSortFieldEnum.updatedAt: 'Date Updated',
+                AssetSortFieldEnum.agency: 'Agency',
+                AssetSortFieldEnum.celebrityAssociated:
+                    'Celebrity (Associated)',
+                AssetSortFieldEnum.celebrityInPhoto: 'Celebrity (In Photo)',
+                AssetSortFieldEnum.credit: 'Credit',
+                AssetSortFieldEnum.creditLocation: 'Credit Location',
+                AssetSortFieldEnum.keywords: 'Keywords',
+                AssetSortFieldEnum.originalFileName: 'Original File Name',
+                AssetSortFieldEnum.rights: 'Rights',
+                AssetSortFieldEnum.rightsDetails: 'Rights Details',
+                AssetSortFieldEnum.shotDescription: 'Shot Description',
               }[value] ??
               '';
 
@@ -76,8 +98,9 @@ class SortOptions extends StatelessWidget {
 
     return SizedBox(
       width: 46,
-      height: 40,
-      child: IconButton(
+      height: 42,
+      child: ToolbarButton(
+        icon: icon,
         onPressed: () {
           onChanged(
             initialField,
@@ -86,25 +109,6 @@ class SortOptions extends StatelessWidget {
                 : SortDirectionEnum.ascending,
           );
         },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(const Color(0x30FFFFFF)),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
-            (states) {
-              return RoundedRectangleBorder(
-                side: const BorderSide(
-                  color: Color(0x80000000),
-                ),
-                borderRadius: BorderRadius.circular(6.0),
-              );
-            },
-          ),
-        ),
-        icon: Icon(
-          icon,
-          color: const Color(0xAEFFFFFF),
-          size: 24,
-        ),
       ),
     );
   }

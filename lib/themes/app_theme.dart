@@ -180,6 +180,24 @@ class AppTheme {
             bodyColor: const Color(0xDEFFFFFF),
             displayColor: const Color(0xDEFFFFFF),
           ),
+      tooltipTheme: Theme.of(context).tooltipTheme.copyWith(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 10,
+            ),
+            margin: const EdgeInsets.all(20),
+            verticalOffset: 0,
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              boxShadow: kElevationToShadow[3],
+              color: const Color(0xFF40434C),
+            ),
+            textStyle: const TextStyle(
+              color: Color(0xFFAFB1B4),
+            ),
+            waitDuration: const Duration(milliseconds: 500),
+          ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }
