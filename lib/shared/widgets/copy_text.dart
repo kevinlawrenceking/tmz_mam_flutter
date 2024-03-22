@@ -6,7 +6,6 @@ import 'package:tmz_damz/shared/widgets/toast.dart';
 class CopyText extends StatefulWidget {
   final String text;
   final TextStyle? style;
-  final bool canCopy;
   final int? maxLines;
   final TextOverflow? overflow;
   final bool? softWrap;
@@ -15,7 +14,6 @@ class CopyText extends StatefulWidget {
     this.text, {
     super.key,
     this.style,
-    this.canCopy = false,
     this.maxLines,
     this.overflow,
     this.softWrap,
@@ -26,34 +24,64 @@ class CopyText extends StatefulWidget {
 }
 
 class _CopyTextState extends State<CopyText> {
+  late FocusNode _focusNode;
+
   bool _copyButtonHover = false;
 
   @override
+  void dispose() {
+    FocusManager.instance.removeListener(_onFocusChanged);
+
+    _focusNode.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _focusNode = FocusNode();
+
+    FocusManager.instance.addListener(_onFocusChanged);
+  }
+
+  void _onFocusChanged() {
+    if (!_focusNode.hasFocus) {
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Row(
       children: [
-        Padding(
-          padding: widget.canCopy
-              ? const EdgeInsets.only(left: 18.0)
-              : EdgeInsets.zero,
-          child: Text(
-            widget.text,
-            style: widget.style,
-            maxLines: widget.maxLines,
-            overflow: widget.overflow,
-            softWrap: widget.softWrap,
+        _buildCopyButton(),
+        const SizedBox(width: 4.0),
+        Expanded(
+          child: Focus(
+            focusNode: _focusNode,
+            child: SelectableText(
+              widget.text,
+              key: UniqueKey(),
+              style: widget.style?.copyWith(
+                overflow: widget.overflow,
+              ),
+              maxLines: widget.maxLines,
+            ),
           ),
         ),
-        if (widget.canCopy) _buildCopyButton(),
       ],
     );
   }
 
   Widget _buildCopyButton() {
-    return Positioned.fill(
-      child: StatefulBuilder(
-        builder: (context, setState) {
-          return MouseRegion(
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return SizedBox(
+          height: 20.0,
+          width: 20.0,
+          child: MouseRegion(
             onEnter: (event) {
               setState(() => _copyButtonHover = true);
             },
@@ -83,14 +111,14 @@ class _CopyTextState extends State<CopyText> {
                   child: Icon(
                     MdiIcons.contentCopy,
                     color: Theme.of(context).textTheme.labelMedium?.color,
-                    size: 12.0,
+                    size: 14.0,
                   ),
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

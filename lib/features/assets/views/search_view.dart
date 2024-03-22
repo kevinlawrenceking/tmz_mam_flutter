@@ -1,5 +1,4 @@
 import 'package:auto_route/annotations.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -206,14 +205,21 @@ class _SearchViewState extends State<SearchView> {
             ),
           );
 
-          BotToast.showAnimationWidget(
-            crossPage: false,
-            onlyOne: true,
-            animationDuration: const Duration(milliseconds: 150),
-            wrapToastAnimation: (controller, cancelFunc, child) {
+          showGeneralDialog(
+            context: context,
+            barrierColor: Colors.transparent,
+            barrierDismissible: true,
+            barrierLabel: '',
+            pageBuilder: (_, animation, secondaryAnimation) {
+              return _buildAssetDetailsDrawer(
+                context: context,
+                cancelFunc: () {},
+              );
+            },
+            transitionBuilder: (context, animation, secondaryAnimation, child) {
               return child
                   .animate(
-                    controller: controller,
+                    value: animation.value,
                   )
                   .move(
                     curve: Curves.decelerate,
@@ -225,12 +231,6 @@ class _SearchViewState extends State<SearchView> {
                     begin: 0.0,
                   );
             },
-            toastBuilder: (cancelFunc) {
-              return _buildAssetDetailsDrawer(
-                context: context,
-                cancelFunc: cancelFunc,
-              );
-            },
           );
         },
       ),
@@ -241,41 +241,34 @@ class _SearchViewState extends State<SearchView> {
     required BuildContext context,
     required void Function() cancelFunc,
   }) {
-    return Stack(
-      children: [
-        GestureDetector(
-          onTap: cancelFunc,
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  width: 800,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 16,
-                        offset: const Offset(-4, 0),
-                      ),
-                    ],
-                    color: const Color(0xFF232323),
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              width: 800,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 16,
+                    offset: const Offset(-4, 0),
                   ),
-                  child: MouseRegion(
-                    child: _buildAssetDetailsPanel(
-                      context: context,
-                      cancelFunc: cancelFunc,
-                    ),
-                  ),
+                ],
+                color: const Color(0xFF232323),
+              ),
+              child: MouseRegion(
+                child: _buildAssetDetailsPanel(
+                  context: context,
+                  cancelFunc: cancelFunc,
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

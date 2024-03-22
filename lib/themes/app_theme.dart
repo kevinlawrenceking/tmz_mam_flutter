@@ -154,7 +154,7 @@ class AppTheme {
             ),
       ),
       textSelectionTheme: Theme.of(context).textSelectionTheme.copyWith(
-            selectionColor: const Color(0xFF0030A0),
+            selectionColor: Colors.blue.withOpacity(0.4),
           ),
       textTheme: Theme.of(context)
           .textTheme

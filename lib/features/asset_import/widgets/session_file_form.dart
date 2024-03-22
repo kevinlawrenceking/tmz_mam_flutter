@@ -819,12 +819,13 @@ class SessionFileFormController extends ChangeNotifier {
       metadata: AssetMetadataModel(
         keywords: keywords,
         shotDescription: shotDescription,
-        location: const AssetMetadataLocationModel(
-          description: null,
-          country: null,
-          state: null,
-          city: null,
-        ),
+        location: _model?.metadata.location ??
+            const AssetMetadataLocationModel(
+              description: null,
+              country: null,
+              state: null,
+              city: null,
+            ),
         agency: agency,
         emotion: emotion,
         overlay: overlay,

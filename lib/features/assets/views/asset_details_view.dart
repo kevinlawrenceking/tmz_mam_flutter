@@ -150,24 +150,37 @@ class _MetadataContainer extends StatelessWidget {
             style: theme.textTheme.titleLarge,
           ),
           const SizedBox(height: 20.0),
-          _buildMetadata(
-            context: context,
-            theme: theme,
-            label: 'Celebrity',
-            canCopy: model.metadata.celebrityInPhoto.isNotEmpty,
-            value: model.metadata.celebrityInPhoto.isNotEmpty
-                ? model.metadata.celebrityInPhoto.join(', ')
-                : '-',
-          ),
-          _buildMetadata(
-            context: context,
-            theme: theme,
-            label: 'Associated Celebrity',
-            canCopy: model.metadata.celebrityAssociated.isNotEmpty,
-            value: model.metadata.celebrityAssociated.isNotEmpty
-                ? model.metadata.celebrityAssociated.join(', ')
-                : '-',
-          ),
+          if (!model.metadata.celebrity) ...[
+            _buildMetadata(
+              context: context,
+              theme: theme,
+              label: 'Celebrity',
+              value: 'Not Applicable',
+              valueStyle: theme.textTheme.bodySmall?.copyWith(
+                fontStyle: FontStyle.italic,
+                letterSpacing: 1,
+              ),
+            ),
+          ] else ...[
+            _buildMetadata(
+              context: context,
+              theme: theme,
+              label: 'Celebrity',
+              canCopy: model.metadata.celebrityInPhoto.isNotEmpty,
+              value: model.metadata.celebrityInPhoto.isNotEmpty
+                  ? model.metadata.celebrityInPhoto.join(', ')
+                  : '-',
+            ),
+            _buildMetadata(
+              context: context,
+              theme: theme,
+              label: 'Associated Celebrity',
+              canCopy: model.metadata.celebrityAssociated.isNotEmpty,
+              value: model.metadata.celebrityAssociated.isNotEmpty
+                  ? model.metadata.celebrityAssociated.join(', ')
+                  : '-',
+            ),
+          ],
           _buildMetadata(
             context: context,
             theme: theme,
@@ -264,7 +277,6 @@ class _MetadataContainer extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Rights Summary',
-            canCopy: false,
             value: () {
               switch (model.metadata.rights) {
                 case AssetMetadataRightsEnum.costNonTMZ:
@@ -300,7 +312,6 @@ class _MetadataContainer extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Credit Location',
-            canCopy: false,
             value: () {
               switch (model.metadata.creditLocation) {
                 case AssetMetadataCreditLocationEnum.end:
@@ -313,13 +324,10 @@ class _MetadataContainer extends StatelessWidget {
             }(),
           ),
           // TODO: 'On Screen Credit'
-          // TODO: 'Censor Required'
-          // TODO: 'Watermark Required'
           _buildMetadata(
             context: context,
             theme: theme,
             label: 'Censor Required',
-            canCopy: false,
             value: () {
               final parts = <String>[];
 
@@ -347,7 +355,6 @@ class _MetadataContainer extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Watermark Required',
-            canCopy: false,
             value: model.metadata.overlay
                     .any((_) => _ == AssetMetadataOverlayEnum.watermark)
                 ? 'Yes'
@@ -357,7 +364,6 @@ class _MetadataContainer extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Exclusivity',
-            canCopy: false,
             value: () {
               switch (model.metadata.exclusivity) {
                 case AssetMetadataExclusivityEnum.exclusive:
@@ -373,7 +379,6 @@ class _MetadataContainer extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Emotion',
-            canCopy: false,
             value: () {
               final parts = <String>[];
 
@@ -408,8 +413,9 @@ class _MetadataContainer extends StatelessWidget {
     required BuildContext context,
     required ThemeData theme,
     required String label,
-    required bool canCopy,
+    bool canCopy = false,
     required String value,
+    TextStyle? valueStyle,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -427,14 +433,23 @@ class _MetadataContainer extends StatelessWidget {
               ),
             ),
           ),
-          CopyText(
-            value,
-            canCopy: canCopy,
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1,
-            ),
-          ),
+          canCopy
+              ? CopyText(
+                  value,
+                  style: valueStyle ??
+                      theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1,
+                      ),
+                )
+              : Text(
+                  value,
+                  style: valueStyle ??
+                      theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1,
+                      ),
+                ),
         ],
       ),
     );
@@ -593,18 +608,27 @@ class _PhotoInfoContainer extends StatelessWidget {
             ),
           ),
         ),
-        CopyText(
-          value,
-          canCopy: canCopy,
-          maxLines: 1,
-          softWrap: false,
-          style: theme.textTheme.bodySmall?.copyWith(
-            fontSize: 12.0,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+        canCopy
+            ? CopyText(
+                value,
+                maxLines: 1,
+                softWrap: false,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+            : Text(
+                value,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
       ],
     );
   }

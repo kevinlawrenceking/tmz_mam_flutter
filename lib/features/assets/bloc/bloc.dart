@@ -144,10 +144,6 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
     emit(SearchResultsLoadingState());
 
-    await Future<void>.delayed(
-      const Duration(milliseconds: 250),
-    );
-
     final result = await assetDataSource.getAssetList(
       offset: offset,
       limit: limit,
