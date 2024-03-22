@@ -6,7 +6,8 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "program": "${workspaceFolder}/lib/main.dart"
+      "program": "${workspaceFolder}/lib/main.dart",
+      "args": ["--dart-define", "ENV=development"]
     },
     {
       "name": "Debug (Chrome)",
@@ -14,7 +15,14 @@
       "type": "dart",
       "flutterMode": "debug",
       "program": "${workspaceFolder}/lib/main.dart",
-      "args": ["-d", "chrome", "--web-renderer", "canvaskit"]
+      "args": [
+        "--dart-define",
+        "ENV=development",
+        "-d",
+        "chrome",
+        "--web-renderer",
+        "canvaskit"
+      ]
     },
     {
       "name": "Debug (Edge)",
@@ -22,7 +30,14 @@
       "type": "dart",
       "flutterMode": "debug",
       "program": "${workspaceFolder}/lib/main.dart",
-      "args": ["-d", "edge", "--web-renderer", "canvaskit"]
+      "args": [
+        "--dart-define",
+        "ENV=staging",
+        "-d",
+        "edge",
+        "--web-renderer",
+        "canvaskit"
+      ]
     }
   ]
 }

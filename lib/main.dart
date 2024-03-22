@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tmz_damz/app.dart';
 import 'package:tmz_damz/utils/service_locator.dart';
 import 'package:window_manager/window_manager.dart';
@@ -9,6 +10,20 @@ import 'package:window_manager/window_manager.dart';
 Future<void> main() async {
   HttpOverrides.global = CustomHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+
+  const env = String.fromEnvironment('ENV');
+  if (env.isEmpty) {
+    return;
+  }
+
+  try {
+    await dotenv.load(
+      fileName: '.env.$env',
+    );
+    // ignore: avoid_catching_errors
+  } on Error {
+    return;
+  }
 
   initServiceLocator();
 

@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
@@ -15,8 +16,13 @@ void initServiceLocator() {
 
   sl.registerLazySingleton<Config>(
     () {
-      // TODO: get this from ENV variable...
-      const apiBaseAddress = 'http://localhost:3000';
+      final serverHost = dotenv.env['SERVER_HOST'] ?? 'localhost';
+      final serverPort = dotenv.env['SERVER_PORT'] ?? '3000';
+      final serverSecure =
+          dotenv.env['SERVER_SECURE']?.toLowerCase() ?? 'false';
+
+      final apiBaseAddress =
+          'http${serverSecure == 'true' ? 's' : ''}://$serverHost:$serverPort';
 
       return Config(
         apiBaseAddress: apiBaseAddress,
