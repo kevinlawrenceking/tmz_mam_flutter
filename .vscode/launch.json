@@ -32,7 +32,7 @@
       "program": "${workspaceFolder}/lib/main.dart",
       "args": [
         "--dart-define",
-        "ENV=staging",
+        "ENV=development",
         "-d",
         "edge",
         "--web-renderer",
