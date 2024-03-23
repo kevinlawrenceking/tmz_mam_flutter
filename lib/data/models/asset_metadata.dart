@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fixnum/fixnum.dart';
 
 enum AssetMetadataCreditLocationEnum {
   unknown,
@@ -170,6 +171,7 @@ enum AssetMetadataRightsEnum {
 }
 
 class AssetMetadataModel extends Equatable {
+  final Int32? daletID;
   final List<String> keywords;
   final String shotDescription;
   final AssetMetadataLocationModel location;
@@ -185,8 +187,10 @@ class AssetMetadataModel extends Equatable {
   final AssetMetadataExclusivityEnum? exclusivity;
   final String? rightsInstructions;
   final String? rightsDetails;
+  final String? qcNotes;
 
   const AssetMetadataModel({
+    required this.daletID,
     required this.keywords,
     required this.shotDescription,
     required this.location,
@@ -202,12 +206,14 @@ class AssetMetadataModel extends Equatable {
     required this.exclusivity,
     required this.rightsInstructions,
     required this.rightsDetails,
+    required this.qcNotes,
   });
 
   static AssetMetadataModel fromJsonDto(
     Map<String, dynamic>? dto,
   ) {
     return AssetMetadataModel(
+      daletID: Int32.tryParseInt(dto?['dalet_id'] ?? ''),
       keywords: (dto?['keywords'] as List<dynamic>?)
               ?.map((_) => _ as String)
               .toList() ??
@@ -253,11 +259,13 @@ class AssetMetadataModel extends Equatable {
       ),
       rightsInstructions: dto?['rights_instructions'],
       rightsDetails: dto?['rights_details'],
+      qcNotes: dto?['qc_notes'],
     );
   }
 
   @override
   List<Object?> get props => [
+        daletID,
         keywords,
         shotDescription,
         location,
@@ -273,10 +281,12 @@ class AssetMetadataModel extends Equatable {
         exclusivity,
         rightsInstructions,
         rightsDetails,
+        qcNotes,
       ];
 
   Map<String, dynamic> toJsonDto() {
     return {
+      'dalet_id': daletID?.toInt(),
       'keywords': keywords,
       'shot_description': shotDescription,
       'location': location.toJsonDto(),
@@ -298,6 +308,7 @@ class AssetMetadataModel extends Equatable {
       'exclusivity': exclusivity?.toJsonDtoValue(),
       'rights_instructions': rightsInstructions,
       'rights_details': rightsDetails,
+      'qc_notes': qcNotes,
     };
   }
 }

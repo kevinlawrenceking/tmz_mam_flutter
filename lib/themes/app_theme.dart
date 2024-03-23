@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData dark(BuildContext context) {
@@ -58,8 +59,9 @@ class AppTheme {
               ),
               borderRadius: BorderRadius.circular(6.0),
             ),
-            errorStyle: const TextStyle(
-              color: Color(0xFFE54A4A),
+            errorStyle: GoogleFonts.getFont(
+              'Roboto',
+              color: const Color(0xFFE54A4A),
               fontStyle: FontStyle.italic,
             ),
             fillColor: const Color(0xFF1D1E1F),
@@ -71,15 +73,17 @@ class AppTheme {
               ),
               borderRadius: BorderRadius.circular(6.0),
             ),
-            hintStyle: const TextStyle(
-              color: Color(0x99FFFFFF),
+            hintStyle: GoogleFonts.getFont(
+              'Roboto',
+              color: const Color(0x99FFFFFF),
               fontSize: 16.0,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.0,
             ),
             hoverColor: const Color(0x08000000),
             isDense: true,
-            labelStyle: const TextStyle(
+            labelStyle: GoogleFonts.getFont(
+              'Roboto',
               fontSize: 12.0,
               fontWeight: FontWeight.w600,
               letterSpacing: 2.0,
@@ -159,19 +163,23 @@ class AppTheme {
       textTheme: Theme.of(context)
           .textTheme
           .copyWith(
-            bodySmall: const TextStyle(
+            bodySmall: GoogleFonts.getFont(
+              'Roboto',
               fontSize: 14.0,
               letterSpacing: 0.5,
             ),
-            labelSmall: const TextStyle(
+            labelSmall: GoogleFonts.getFont(
+              'Roboto',
               fontSize: 11.0,
               letterSpacing: 0.5,
             ),
-            labelMedium: const TextStyle(
+            labelMedium: GoogleFonts.getFont(
+              'Roboto',
               fontSize: 17.0,
               fontWeight: FontWeight.w400,
             ),
-            titleSmall: const TextStyle(
+            titleSmall: GoogleFonts.getFont(
+              'Roboto',
               fontSize: 16.0,
               fontWeight: FontWeight.w500,
             ),
@@ -193,8 +201,9 @@ class AppTheme {
               boxShadow: kElevationToShadow[3],
               color: const Color(0xFF40434C),
             ),
-            textStyle: const TextStyle(
-              color: Color(0xFFAFB1B4),
+            textStyle: GoogleFonts.getFont(
+              'Roboto',
+              color: const Color(0xFFAFB1B4),
             ),
             waitDuration: const Duration(milliseconds: 500),
           ),

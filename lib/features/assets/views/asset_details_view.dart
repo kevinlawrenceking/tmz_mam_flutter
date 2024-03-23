@@ -54,7 +54,7 @@ class AssetDetailsView extends StatelessWidget {
           //   thickness: 1.0,
           //   color: FlutterFlowTheme.of(context).secondaryText,
           // ),
-          Text(
+          CopyText(
             model.headline,
             style: FlutterFlowTheme.of(context).headlineLarge,
           ),
@@ -78,35 +78,49 @@ class AssetDetailsView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    'CATEGORIES:',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color:
-                          theme.textTheme.labelSmall?.color?.withOpacity(0.4),
-                      fontWeight: FontWeight.w700,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 20.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'CATEGORIES:',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.textTheme.labelSmall?.color
+                                ?.withOpacity(0.4),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        Text(
+                          model.categories.isNotEmpty
+                              ? model.categories.join(', ')
+                              : '-',
+                          style: theme.textTheme.labelSmall,
+                        ),
+                        const SizedBox(height: 20.0),
+                        Text(
+                          'APPEARS IN:',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.textTheme.labelSmall?.color
+                                ?.withOpacity(0.4),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        Text(
+                          model.collections.isNotEmpty
+                              ? model.collections.join(', ')
+                              : '-',
+                          style: theme.textTheme.labelSmall,
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    '-', // model.categories,
-                    style: theme.textTheme.labelSmall,
-                  ),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    'APPEARS IN:',
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color:
-                          theme.textTheme.labelSmall?.color?.withOpacity(0.4),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    '-', // model.collections,
-                    style: theme.textTheme.labelSmall,
-                  ),
-                  const SizedBox(height: 20),
                   _MetadataContainer(
                     model: model,
                   ),
@@ -404,6 +418,15 @@ class _MetadataContainer extends StatelessWidget {
               }
             }(),
           ),
+          _buildMetadata(
+            context: context,
+            theme: theme,
+            label: 'QC Notes',
+            canCopy: model.metadata.qcNotes?.isNotEmpty ?? false,
+            value: model.metadata.qcNotes?.isNotEmpty ?? false
+                ? model.metadata.qcNotes!
+                : '-',
+          ),
         ],
       ),
     );
@@ -465,119 +488,122 @@ class _PhotoInfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const columnWidths = [280.0, 160.0, 200.0];
-
     final theme = Theme.of(context);
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         border: Border.all(width: 0.5),
         borderRadius: BorderRadius.circular(6.0),
         color: const Color(0x20000000),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Wrap(
-          runSpacing: 10,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 5.0,
+        ),
+        child: Table(
+          columnWidths: const {
+            0: FlexColumnWidth(1.6),
+            1: FlexColumnWidth(),
+            2: FlexColumnWidth(),
+          },
           children: [
-            SizedBox(
-              width: columnWidths[0],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
-                canCopy: true,
-                label: 'ID',
-                value: model?.id ?? '',
-              ),
+            TableRow(
+              children: [
+                TableCell(
+                  child: _buildCell(
+                    context: context,
+                    theme: theme,
+                    canCopy: true,
+                    label: 'TECHNICAL ID',
+                    value: model?.id ?? '',
+                  ),
+                ),
+                TableCell(
+                  child: _buildCell(
+                    context: context,
+                    theme: theme,
+                    canCopy: false,
+                    label: 'STATUS',
+                    value: () {
+                      switch (model?.status) {
+                        case AssetStatusEnum.available:
+                          return 'Available';
+                        case AssetStatusEnum.processing:
+                          return 'Processing';
+                        default:
+                          return '-';
+                      }
+                    }(),
+                  ),
+                ),
+                TableCell(
+                  child: _buildCell(
+                    context: context,
+                    theme: theme,
+                    canCopy: true,
+                    label: 'CREATED BY',
+                    value: () {
+                      if (model?.createdBy != null) {
+                        final firstName = model!.createdBy.firstName;
+                        final lastName = model!.createdBy.lastName;
+                        return '$firstName $lastName';
+                      } else {
+                        return '';
+                      }
+                    }(),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 20.0),
-            SizedBox(
-              width: columnWidths[1],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
-                canCopy: false,
-                label: 'STATUS',
-                value: () {
-                  switch (model?.status) {
-                    case AssetStatusEnum.available:
-                      return 'Available';
-                    case AssetStatusEnum.processing:
-                      return 'Processing';
-                    default:
-                      return '-';
-                  }
-                }(),
-              ),
-            ),
-            const SizedBox(width: 20.0),
-            SizedBox(
-              width: columnWidths[2],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
-                canCopy: true,
-                label: 'CREATED BY',
-                value: () {
-                  if (model?.createdBy != null) {
-                    final firstName = model!.createdBy.firstName;
-                    final lastName = model!.createdBy.lastName;
-                    return '$firstName $lastName';
-                  } else {
-                    return '';
-                  }
-                }(),
-              ),
-            ),
-            SizedBox(
-              width: columnWidths[0],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
-                canCopy: true,
-                label: 'ORIGINAL FILE NAME',
-                value: model?.originalFileName ?? '',
-              ),
-            ),
-            const SizedBox(width: 20.0),
-            SizedBox(
-              width: columnWidths[1],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
-                canCopy: true,
-                label: 'CREATED',
-                value: (() {
-                  if (model?.createdAt != null) {
-                    return DateFormat.yMd()
-                        .add_jms()
-                        .format(model!.createdAt.toLocal());
-                  } else {
-                    return '-';
-                  }
-                })(),
-              ),
-            ),
-            const SizedBox(width: 20.0),
-            SizedBox(
-              width: columnWidths[2],
-              child: _buildColumn(
-                context: context,
-                theme: theme,
-                canCopy: true,
-                label: 'UPDATED',
-                value: (() {
-                  if (model?.updatedAt != null) {
-                    return DateFormat.yMd()
-                        .add_jms()
-                        .format(model!.updatedAt.toLocal());
-                  } else {
-                    return '-';
-                  }
-                })(),
-              ),
+            TableRow(
+              children: [
+                TableCell(
+                  child: _buildCell(
+                    context: context,
+                    theme: theme,
+                    canCopy: true,
+                    label: 'ORIGINAL FILE NAME',
+                    value: model?.originalFileName ?? '',
+                  ),
+                ),
+                TableCell(
+                  child: _buildCell(
+                    context: context,
+                    theme: theme,
+                    canCopy: true,
+                    label: 'CREATED',
+                    value: (() {
+                      if (model?.createdAt != null) {
+                        return DateFormat.yMd()
+                            .add_jms()
+                            .format(model!.createdAt.toLocal());
+                      } else {
+                        return '-';
+                      }
+                    })(),
+                  ),
+                ),
+                TableCell(
+                  child: _buildCell(
+                    context: context,
+                    theme: theme,
+                    canCopy: true,
+                    label: 'UPDATED',
+                    value: (() {
+                      if (model?.updatedAt != null) {
+                        return DateFormat.yMd()
+                            .add_jms()
+                            .format(model!.updatedAt.toLocal());
+                      } else {
+                        return '-';
+                      }
+                    })(),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -585,51 +611,58 @@ class _PhotoInfoContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildColumn({
+  Widget _buildCell({
     required BuildContext context,
     required ThemeData theme,
     required bool canCopy,
     required String label,
     required String value,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Opacity(
-          opacity: 0.4,
-          child: Text(
-            label,
-            maxLines: 1,
-            softWrap: false,
-            style: theme.textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1,
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 5.0,
+        right: 10.0,
+        bottom: 5.0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Opacity(
+            opacity: 0.4,
+            child: Text(
+              label,
+              maxLines: 1,
+              softWrap: false,
+              style: theme.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1,
+              ),
             ),
           ),
-        ),
-        canCopy
-            ? CopyText(
-                value,
-                maxLines: 1,
-                softWrap: false,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1,
-                  overflow: TextOverflow.ellipsis,
+          canCopy
+              ? CopyText(
+                  value,
+                  maxLines: 1,
+                  softWrap: false,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              : Text(
+                  value,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              )
-            : Text(
-                value,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 }

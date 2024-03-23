@@ -29,6 +29,8 @@ class AssetDetailsModel extends Equatable {
   final DateTime updatedAt;
   final String originalFileName;
   final String headline;
+  final List<String> categories;
+  final List<String> collections;
   final AssetMetadataModel metadata;
   final List<AssetImageModel> images;
 
@@ -40,6 +42,8 @@ class AssetDetailsModel extends Equatable {
     required this.updatedAt,
     required this.originalFileName,
     required this.headline,
+    required this.categories,
+    required this.collections,
     required this.metadata,
     required this.images,
   });
@@ -59,6 +63,14 @@ class AssetDetailsModel extends Equatable {
       ),
       originalFileName: dto?['original_file_name'] ?? '',
       headline: dto?['headline'] ?? '',
+      categories: (dto?['categories'] as List<dynamic>?)
+              ?.map((_) => _ as String)
+              .toList() ??
+          [],
+      collections: (dto?['collections'] as List<dynamic>?)
+              ?.map((_) => _ as String)
+              .toList() ??
+          [],
       metadata: AssetMetadataModel.fromJsonDto(dto?['metadata']),
       images: (dto?['images'] as List<dynamic>?)
               ?.map((_) => AssetImageModel.fromJsonDto(_))
@@ -76,6 +88,8 @@ class AssetDetailsModel extends Equatable {
         updatedAt,
         originalFileName,
         headline,
+        categories,
+        collections,
         metadata,
         images,
       ];

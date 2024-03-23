@@ -57,7 +57,7 @@ class _CopyTextState extends State<CopyText> {
     return Row(
       children: [
         _buildCopyButton(),
-        const SizedBox(width: 4.0),
+        const SizedBox(width: 2.0),
         Expanded(
           child: Focus(
             focusNode: _focusNode,
@@ -78,36 +78,35 @@ class _CopyTextState extends State<CopyText> {
   Widget _buildCopyButton() {
     return StatefulBuilder(
       builder: (context, setState) {
-        return SizedBox(
-          height: 20.0,
-          width: 20.0,
-          child: MouseRegion(
-            onEnter: (event) {
-              setState(() => _copyButtonHover = true);
-            },
-            onExit: (event) {
-              setState(() => _copyButtonHover = false);
-            },
-            cursor: SystemMouseCursors.click,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () async {
-                await Clipboard.setData(
-                  ClipboardData(
-                    text: widget.text,
-                  ),
-                );
+        return MouseRegion(
+          onEnter: (event) {
+            setState(() => _copyButtonHover = true);
+          },
+          onExit: (event) {
+            setState(() => _copyButtonHover = false);
+          },
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            behavior: HitTestBehavior.deferToChild,
+            onTap: () async {
+              await Clipboard.setData(
+                ClipboardData(
+                  text: widget.text,
+                ),
+              );
 
-                // Toast.showNotification(
-                //   type: ToastTypeEnum.success,
-                //   message: 'Value copied to clipboard!',
-                // );
-              },
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 200),
-                  opacity: _copyButtonHover ? 1 : 0.2,
+              // Toast.showNotification(
+              //   type: ToastTypeEnum.success,
+              //   message: 'Value copied to clipboard!',
+              // );
+            },
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: _copyButtonHover ? 1 : 0.2,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
                   child: Icon(
                     MdiIcons.contentCopy,
                     color: Theme.of(context).textTheme.labelMedium?.color,

@@ -817,6 +817,7 @@ class SessionFileFormController extends ChangeNotifier {
     return AssetImportSessionFileMetaModel(
       headline: headline,
       metadata: AssetMetadataModel(
+        daletID: null,
         keywords: keywords,
         shotDescription: shotDescription,
         location: _model?.metadata.location ??
@@ -842,6 +843,7 @@ class SessionFileFormController extends ChangeNotifier {
             : null,
         rightsDetails:
             rights != AssetMetadataRightsEnum.freeTMZ ? rightsDetails : null,
+        qcNotes: null,
       ),
     );
   }
