@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
+import 'package:tmz_damz/data/models/user.dart';
 
 enum AssetStatusEnum {
   unknown,
@@ -24,15 +25,15 @@ enum AssetStatusEnum {
 class AssetDetailsModel extends Equatable {
   final String id;
   final AssetStatusEnum status;
-  final AssetCreatedByModel createdBy;
+  final UserMetaModel createdBy;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String originalFileName;
   final String headline;
   final List<String> categories;
-  final List<String> collections;
   final AssetMetadataModel metadata;
   final List<AssetImageModel> images;
+  final List<AssetDetailsAppearsInModel> appearsIn;
 
   const AssetDetailsModel({
     required this.id,
@@ -43,9 +44,9 @@ class AssetDetailsModel extends Equatable {
     required this.originalFileName,
     required this.headline,
     required this.categories,
-    required this.collections,
     required this.metadata,
     required this.images,
+    required this.appearsIn,
   });
 
   static AssetDetailsModel fromJsonDto(
@@ -54,7 +55,7 @@ class AssetDetailsModel extends Equatable {
     return AssetDetailsModel(
       id: dto?['id'] ?? '',
       status: AssetStatusEnum.fromJsonDtoValue(dto?['status']),
-      createdBy: AssetCreatedByModel.fromJsonDto(dto?['created_by']),
+      createdBy: UserMetaModel.fromJsonDto(dto?['created_by']),
       createdAt: DateTime.parse(
         dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
       ),
@@ -67,13 +68,13 @@ class AssetDetailsModel extends Equatable {
               ?.map((_) => _ as String)
               .toList() ??
           [],
-      collections: (dto?['collections'] as List<dynamic>?)
-              ?.map((_) => _ as String)
-              .toList() ??
-          [],
       metadata: AssetMetadataModel.fromJsonDto(dto?['metadata']),
       images: (dto?['images'] as List<dynamic>?)
               ?.map((_) => AssetImageModel.fromJsonDto(_))
+              .toList() ??
+          [],
+      appearsIn: (dto?['appears_in'] as List<dynamic>?)
+              ?.map((_) => AssetDetailsAppearsInModel.fromJsonDto(_))
               .toList() ??
           [],
     );
@@ -89,37 +90,33 @@ class AssetDetailsModel extends Equatable {
         originalFileName,
         headline,
         categories,
-        collections,
         metadata,
         images,
+        appearsIn,
       ];
 }
 
-class AssetCreatedByModel extends Equatable {
-  final String userID;
-  final String firstName;
-  final String lastName;
+class AssetDetailsAppearsInModel extends Equatable {
+  final String collectionID;
+  final String name;
 
-  const AssetCreatedByModel({
-    required this.userID,
-    required this.firstName,
-    required this.lastName,
+  const AssetDetailsAppearsInModel({
+    required this.collectionID,
+    required this.name,
   });
 
-  static AssetCreatedByModel fromJsonDto(
+  static AssetDetailsAppearsInModel fromJsonDto(
     Map<String, dynamic>? dto,
   ) {
-    return AssetCreatedByModel(
-      userID: dto?['user_id'] ?? '',
-      firstName: dto?['first_name'] ?? '',
-      lastName: dto?['last_name'] ?? '',
+    return AssetDetailsAppearsInModel(
+      collectionID: dto?['collection_id'] ?? '',
+      name: dto?['name'] ?? '',
     );
   }
 
   @override
   List<Object?> get props => [
-        userID,
-        firstName,
-        lastName,
+        collectionID,
+        name,
       ];
 }

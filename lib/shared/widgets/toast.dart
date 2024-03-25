@@ -30,7 +30,7 @@ class Toast {
 
     switch (type) {
       case ToastTypeEnum.success:
-        backgroundColor = const Color(0xC7043823);
+        backgroundColor = const Color(0xE7043823);
         borderColor = const Color(0xFF10B981);
         titleColor = const Color(0xFFFFFFFF);
         messageColor = const Color(0xFFFFFFFF);
@@ -40,7 +40,7 @@ class Toast {
 
         break;
       case ToastTypeEnum.information:
-        backgroundColor = const Color(0xC717325D);
+        backgroundColor = const Color(0xE717325D);
         borderColor = const Color(0xFF3B82F6);
         titleColor = const Color(0xFFFFFFFF);
         messageColor = const Color(0xFFFFFFFF);
@@ -50,7 +50,7 @@ class Toast {
 
         break;
       case ToastTypeEnum.warning:
-        backgroundColor = const Color(0xC7634C07);
+        backgroundColor = const Color(0xE7634C07);
         borderColor = const Color(0xFFEAB308);
         titleColor = const Color(0xFFFFFFFF);
         messageColor = const Color(0xFFFFFFFF);
@@ -60,7 +60,7 @@ class Toast {
 
         break;
       case ToastTypeEnum.error:
-        backgroundColor = const Color(0xC7270303);
+        backgroundColor = const Color(0xE7270303);
         borderColor = const Color(0xFFEF4444);
         titleColor = const Color(0xFFFFFFFF);
         messageColor = const Color(0xFFFFFFFF);

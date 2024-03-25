@@ -187,7 +187,7 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
               endPoint: '/api/v1/asset/import/session/$sessionID/file/$fileID',
             );
 
-            if (response.statusCode != HttpStatus.ok) {
+            if (response.statusCode != HttpStatus.noContent) {
               return Left(
                 HttpFailure.fromResponse(response),
               );

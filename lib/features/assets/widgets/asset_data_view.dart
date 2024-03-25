@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_tile_item.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 import 'package:tmz_damz/utils/config.dart';
 
-class AssetDataView extends StatelessWidget {
+class AssetDataView extends StatefulWidget {
   final ScrollController scrollController;
   final Config config;
   final List<AssetDetailsModel> assets;
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;
   final void Function(AssetDetailsModel model) onItemClicked;
+  final void Function(List<String> selectedIDs) onSelectionChanged;
 
   const AssetDataView({
     super.key,
@@ -21,11 +23,19 @@ class AssetDataView extends StatelessWidget {
     required this.layoutMode,
     required this.thumbnailSize,
     required this.onItemClicked,
+    required this.onSelectionChanged,
   });
 
   @override
+  State<AssetDataView> createState() => _AssetDataViewState();
+}
+
+class _AssetDataViewState extends State<AssetDataView> {
+  final _selectIDs = <String>[];
+
+  @override
   Widget build(BuildContext context) {
-    if (layoutMode == LayoutModeEnum.list) {
+    if (widget.layoutMode == LayoutModeEnum.list) {
       return Container();
     } else {
       return _buildTileView();
@@ -39,14 +49,36 @@ class AssetDataView extends StatelessWidget {
     required AssetDetailsModel model,
   }) {
     return GestureDetector(
-      onTap: () => onItemClicked(model),
+      onTap: () {
+        if (!_selectIDs.any((id) => id == model.id)) {
+          if (!HardwareKeyboard.instance.isControlPressed) {
+            _selectIDs.clear();
+          }
+          _selectIDs.add(model.id);
+        } else {
+          if (!HardwareKeyboard.instance.isControlPressed) {
+            _selectIDs.removeWhere((id) => id != model.id);
+          }
+        }
+
+        if (mounted) {
+          setState(() {});
+        }
+
+        if (!HardwareKeyboard.instance.isControlPressed) {
+          widget.onItemClicked(model);
+        }
+
+        widget.onSelectionChanged(_selectIDs);
+      },
       child: Container(
         padding: EdgeInsets.all(margin),
         width: width,
         child: AssetTileItem(
-          apiBaseUrl: config.apiBaseUrl,
-          scrollController: scrollController,
+          apiBaseUrl: widget.config.apiBaseUrl,
+          scrollController: widget.scrollController,
           model: model,
+          selected: _selectIDs.any((id) => id == model.id),
         ),
       ),
     );
@@ -57,7 +89,7 @@ class AssetDataView extends StatelessWidget {
 
     double maxItemWidth;
 
-    switch (thumbnailSize) {
+    switch (widget.thumbnailSize) {
       case ThumbnailSizeEnum.small:
         maxItemWidth = 230.0;
         break;
@@ -75,7 +107,7 @@ class AssetDataView extends StatelessWidget {
         final columns = (width / maxItemWidth).ceil();
 
         double itemWidth;
-        if (columns <= assets.length) {
+        if (columns <= widget.assets.length) {
           itemWidth = width / columns;
         } else {
           itemWidth = maxItemWidth;
@@ -84,7 +116,7 @@ class AssetDataView extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(itemMargin),
           child: Wrap(
-            children: assets
+            children: widget.assets
                 .map(
                   (model) => _buildTileItem(
                     context: context,

@@ -21,6 +21,7 @@ class ThumbnailSizeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _buildButton(
           borderRadius: const BorderRadius.only(

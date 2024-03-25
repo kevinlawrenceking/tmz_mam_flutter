@@ -1,7 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 
@@ -14,11 +14,11 @@ part 'menu_drawer_style.dart';
 part 'menu_drawer_theme.dart';
 
 class AppScaffold extends StatefulWidget {
-  final Widget content;
+  final AppRouter router;
 
   const AppScaffold({
     super.key,
-    required this.content,
+    required this.router,
   });
 
   @override
@@ -34,15 +34,28 @@ class _AppScaffoldState extends State<AppScaffold>
     vertical: 10,
   );
 
+  static bool isMenuCollapsed = true;
+
   late final AnimationController _animationController;
   late final CurvedAnimation _animation;
   late final ValueNotifier<bool> _isMenuCollapsed;
 
   @override
+  void dispose() {
+    widget.router.removeListener(_onRouteChanged);
+
+    _animationController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
-    _isMenuCollapsed = ValueNotifier<bool>(true);
+    widget.router.addListener(_onRouteChanged);
+
+    _isMenuCollapsed = ValueNotifier<bool>(isMenuCollapsed);
 
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -55,15 +68,18 @@ class _AppScaffoldState extends State<AppScaffold>
     );
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-
-    super.dispose();
+  void _onRouteChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.router.current.name == AuthenticationLoginRoute.name) {
+      return Container();
+    }
+
     if (_animationController.value != (_isMenuCollapsed.value ? 0 : 1)) {
       _animationController.value = _isMenuCollapsed.value ? 0 : 1;
     }
@@ -78,17 +94,9 @@ class _AppScaffoldState extends State<AppScaffold>
           final menuWidth = collapsedWidth +
               ((_menuExpandedWidth - collapsedWidth) * _animation.value);
 
-          return Stack(
-            children: [
-              Positioned.fill(
-                left: menuWidth,
-                child: widget.content,
-              ),
-              SizedBox(
-                width: menuWidth,
-                child: _buildMenuDrawer(context),
-              ),
-            ],
+          return SizedBox(
+            width: menuWidth,
+            child: _buildMenuDrawer(context),
           );
         },
       ),
@@ -96,32 +104,31 @@ class _AppScaffoldState extends State<AppScaffold>
   }
 
   Widget _buildMenuDrawer(BuildContext context) {
-    final router = AutoRouter.of(context);
-
     final topItems = [
       _MenuItem(
         icon: MdiIcons.viewDashboard,
         title: 'Assets',
-        isActive: router.current.name == AssetsSearchRoute.name,
+        isActive: widget.router.current.name == AssetsSearchRoute.name,
         onTap: () {
-          AutoRouter.of(context).navigate(AssetsSearchRoute());
+          widget.router.navigate(AssetsSearchRoute());
         },
       ),
       _MenuItem(
         icon: MdiIcons.folderMultiple,
         title: 'Collections',
-        isActive: false /* router.current.name == CollectionsRoute.name */,
+        isActive:
+            false /* widget.router.current.name == CollectionsRoute.name */,
         onTap: () {
-          // AutoRouter.of(context).navigate(const CollectionsRoute());
+          // widget.router.navigate(const CollectionsRoute());
         },
       ),
       _MenuItem(
         icon: MdiIcons.progressUpload,
         title: 'Import Images',
-        isActive: (router.current.name == AssetImportRoute.name) ||
-            router.current.name == AssetImportSessionRoute.name,
+        isActive: (widget.router.current.name == AssetImportRoute.name) ||
+            widget.router.current.name == AssetImportSessionRoute.name,
         onTap: () {
-          AutoRouter.of(context).navigate(const AssetImportRoute());
+          widget.router.navigate(const AssetImportRoute());
         },
       ),
     ];
@@ -130,17 +137,17 @@ class _AppScaffoldState extends State<AppScaffold>
       _MenuItem(
         icon: MdiIcons.shieldAccountVariant,
         title: 'Admin',
-        isActive: false /* router.current.name == AdminRoute.name */,
+        isActive: false /* widget.router.current.name == AdminRoute.name */,
         onTap: () {
-          // AutoRouter.of(context).navigate(const AdminRoute());
+          // widget.router.navigate(const AdminRoute());
         },
       ),
       _MenuItem(
         icon: MdiIcons.cog,
         title: 'Settings',
-        isActive: false /* router.current.name == SettingsRoute.name */,
+        isActive: false /* widget.router.current.name == SettingsRoute.name */,
         onTap: () {
-          // AutoRouter.of(context).navigate(const SettingsRoute());
+          // widget.router.navigate(const SettingsRoute());
         },
       ),
       _MenuItem(
@@ -157,7 +164,7 @@ class _AppScaffoldState extends State<AppScaffold>
             return;
           }
 
-          await AutoRouter.of(context).replace(
+          await widget.router.replace(
             const AuthenticationLoginRoute(),
           );
         },
@@ -212,15 +219,15 @@ class _AppScaffoldState extends State<AppScaffold>
         header: MenuDrawerHeader(
           isCollapsed: _isMenuCollapsed,
           onTap: () {
-            final isMenuCollapsed = !_isMenuCollapsed.value;
+            final collapsed = !_isMenuCollapsed.value;
 
-            if (isMenuCollapsed) {
+            if (collapsed) {
               _animationController.reverse();
             } else {
               _animationController.forward();
             }
 
-            _isMenuCollapsed.value = isMenuCollapsed;
+            _isMenuCollapsed.value = isMenuCollapsed = collapsed;
           },
         ),
         topItems: topItems.map((e) {

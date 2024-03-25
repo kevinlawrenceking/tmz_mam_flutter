@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:tmz_damz/features/assets/bloc/bloc.dart';
+import 'package:tmz_damz/features/user_collections/bloc/bloc.dart';
 
 class ServiceLocator {
   static bool _initialized = false;
@@ -12,9 +12,8 @@ class ServiceLocator {
     final sl = GetIt.instance;
 
     sl.registerFactory(
-      () => AssetsBloc(
-        assetDataSource: sl(),
-        collectionDataSource: sl(),
+      () => UserCollectionsBloc(
+        userCollectionDataSource: sl(),
       ),
     );
 

@@ -198,6 +198,7 @@ class _LoginViewState extends State<LoginView> {
       child: TextButton(
         onPressed: enabled ? () => _login(context) : null,
         style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
           overlayColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {
               return const Color(0x10FFFFFF);

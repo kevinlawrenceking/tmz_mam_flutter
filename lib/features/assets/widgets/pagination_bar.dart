@@ -54,69 +54,64 @@ class PaginationBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                'Assets',
+                style: theme.textTheme.labelMedium,
+              ),
+              const SizedBox(width: 10.0),
+              Text(
+                '( ${NumberFormat('#,##0').format(
+                  paginationInfo.totalRecords,
+                )} )',
+                style: theme.textTheme.labelMedium,
+              ),
+              const SizedBox(width: 10.0),
               Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      Text(
-                        'Assets',
-                        style: theme.textTheme.labelMedium,
-                      ),
-                      const SizedBox(width: 10.0),
-                      Text(
-                        '( ${NumberFormat('#,##0').format(
-                          paginationInfo.totalRecords,
-                        )} )',
-                        style: theme.textTheme.labelMedium,
-                      ),
-                    ],
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildFirstPageButton(
+                          context: context,
+                          paginationInfo: paginationInfo,
+                        ),
+                        const SizedBox(width: 10),
+                        _buildPreviousPageButton(
+                          context: context,
+                          paginationInfo: paginationInfo,
+                        ),
+                        const SizedBox(width: 10),
+                        ..._buildPageButtons(
+                          context: context,
+                          constraints: constraints,
+                          theme: theme,
+                          paginationInfo: paginationInfo,
+                        ),
+                        const SizedBox(width: 10),
+                        _buildNextPageButton(
+                          context: context,
+                          paginationInfo: paginationInfo,
+                        ),
+                        const SizedBox(width: 10),
+                        _buildLastPageButton(
+                          context: context,
+                          paginationInfo: paginationInfo,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
-              _buildFirstPageButton(
-                context: context,
-                paginationInfo: paginationInfo,
+              const SizedBox(width: 10.0),
+              Text(
+                'Results per page:',
+                style: theme.textTheme.labelMedium,
               ),
               const SizedBox(width: 10),
-              _buildPreviousPageButton(
+              _buildResultsPerPageSelector(
                 context: context,
                 paginationInfo: paginationInfo,
-              ),
-              const SizedBox(width: 10),
-              ..._buildPageButtons(
-                context: context,
-                theme: theme,
-                paginationInfo: paginationInfo,
-              ),
-              const SizedBox(width: 10),
-              _buildNextPageButton(
-                context: context,
-                paginationInfo: paginationInfo,
-              ),
-              const SizedBox(width: 10),
-              _buildLastPageButton(
-                context: context,
-                paginationInfo: paginationInfo,
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Results per page:',
-                        style: theme.textTheme.labelMedium,
-                      ),
-                      const SizedBox(width: 10),
-                      _buildResultsPerPageSelector(
-                        context: context,
-                        paginationInfo: paginationInfo,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),
@@ -192,6 +187,17 @@ class PaginationBar extends StatelessWidget {
               );
             }
           : null,
+      style: Theme.of(context).textButtonTheme.style?.copyWith(
+            backgroundColor: MaterialStateProperty.all(
+              Colors.transparent,
+            ),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(14.0)),
+            shape: MaterialStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+              ),
+            ),
+          ),
       child: Text(
         'NEXT',
         style: TextStyle(
@@ -203,11 +209,30 @@ class PaginationBar extends StatelessWidget {
 
   List<Widget> _buildPageButtons({
     required BuildContext context,
+    required BoxConstraints constraints,
     required ThemeData theme,
     required PaginationInfo paginationInfo,
   }) {
-    final pageButtonCount = min(paginationInfo.totalPages, 7);
-    var firstPage = max(paginationInfo.currentPage - 3, 0);
+    var maxPageButtons = 0;
+
+    if (constraints.maxWidth > 900) {
+      maxPageButtons = 6;
+    } else if (constraints.maxWidth > 800) {
+      maxPageButtons = 5;
+    } else if (constraints.maxWidth > 700) {
+      maxPageButtons = 4;
+    } else if (constraints.maxWidth > 600) {
+      maxPageButtons = 3;
+    } else if (constraints.maxWidth > 500) {
+      maxPageButtons = 2;
+    } else if (constraints.maxWidth > 400) {
+      maxPageButtons = 1;
+    }
+
+    final pageButtonCount =
+        min(paginationInfo.totalPages, (maxPageButtons * 2) + 1);
+
+    var firstPage = max(paginationInfo.currentPage - maxPageButtons, 0);
 
     if (paginationInfo.currentPage > paginationInfo.totalPages - 4) {
       firstPage = max(paginationInfo.totalPages - pageButtonCount, 0);
@@ -238,6 +263,9 @@ class PaginationBar extends StatelessWidget {
                     }
                   : null,
               style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  Colors.transparent,
+                ),
                 minimumSize: MaterialStateProperty.all(const Size(48, 48)),
                 maximumSize: MaterialStateProperty.all(const Size(48, 48)),
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -277,6 +305,17 @@ class PaginationBar extends StatelessWidget {
               );
             }
           : null,
+      style: Theme.of(context).textButtonTheme.style?.copyWith(
+            backgroundColor: MaterialStateProperty.all(
+              Colors.transparent,
+            ),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(14.0)),
+            shape: MaterialStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+              ),
+            ),
+          ),
       child: Text(
         'PREV',
         style: TextStyle(

@@ -8,12 +8,14 @@ class AssetTileItem extends StatefulWidget {
   final ScrollController scrollController;
   final String apiBaseUrl;
   final AssetDetailsModel model;
+  final bool selected;
 
   const AssetTileItem({
     super.key,
     required this.apiBaseUrl,
     required this.scrollController,
     required this.model,
+    required this.selected,
   });
 
   @override
@@ -25,17 +27,23 @@ class _AssetTileItemState extends State<AssetTileItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      clipBehavior: Clip.hardEdge,
+    return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color(0x20000000),
-        ),
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: kElevationToShadow[3],
         color: Colors.black,
       ),
       child: Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+          side: BorderSide(
+            color: widget.selected
+                ? const Color(0xFF8E0000)
+                : const Color(0x20000000),
+            width: widget.selected ? 3.0 : 1.0,
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

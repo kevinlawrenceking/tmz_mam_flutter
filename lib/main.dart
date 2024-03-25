@@ -47,7 +47,7 @@ Future<void> main() async {
     );
   }
 
-  runApp(App());
+  runApp(const App());
 }
 
 class CustomHttpOverrides extends HttpOverrides {

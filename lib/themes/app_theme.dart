@@ -124,38 +124,44 @@ class AppTheme {
         ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: Theme.of(context).textButtonTheme.style?.copyWith(
-              minimumSize: MaterialStateProperty.all(const Size(1.0, 1.0)),
-              overlayColor: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return const Color(0x10FFFFFF);
-                } else {
-                  return Colors.white10;
-                }
-              }),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-              ),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-              ),
-              textStyle: MaterialStateProperty.resolveWith((states) {
-                final style = Theme.of(context).textTheme.labelMedium;
-
-                if (states.contains(MaterialState.hovered)) {
-                  return style;
-                } else {
-                  return style?.copyWith(
-                    color: const Color(0x99FFFFFF),
-                  );
-                }
-              }),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            const Color(0x30FFFFFF),
+          ),
+          minimumSize: MaterialStateProperty.all(const Size(1.0, 1.0)),
+          overlayColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.pressed)) {
+              return const Color(0x10FFFFFF);
+            } else {
+              return Colors.white10;
+            }
+          }),
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
             ),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              side: const BorderSide(
+                color: Color(0x80000000),
+              ),
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+          ),
+          textStyle: MaterialStateProperty.resolveWith((states) {
+            final style = Theme.of(context).textTheme.labelMedium;
+
+            if (states.contains(MaterialState.hovered)) {
+              return style;
+            } else {
+              return style?.copyWith(
+                color: const Color(0x99FFFFFF),
+              );
+            }
+          }),
+        ),
       ),
       textSelectionTheme: Theme.of(context).textSelectionTheme.copyWith(
             selectionColor: Colors.blue.withOpacity(0.4),

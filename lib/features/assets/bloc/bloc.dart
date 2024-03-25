@@ -5,6 +5,7 @@ import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
+import 'package:tmz_damz/data/sources/collection.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,6 +14,7 @@ part 'state.dart';
 
 class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   final IAssetDataSource assetDataSource;
+  final ICollectionDataSource collectionDataSource;
 
   var _offset = 0;
   var _limit = 10;
@@ -24,36 +26,34 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   AssetsBloc({
     required this.assetDataSource,
+    required this.collectionDataSource,
   }) : super(InitialState()) {
-    on<LoadAssetDetailsEvent>(_loadAssetDetailsEvent);
+    on<AddAssetsToCollectionEvent>(_addAssetsToCollectionEvent);
     on<PaginationChangedEvent>(_paginationChangedEvent);
     on<RefreshEvent>(_refreshEvent);
     on<ReloadCurrentPageEvent>(_reloadCurrentPageEvent);
     on<SearchEvent>(_searchEvent);
   }
 
-  Future<void> _loadAssetDetailsEvent(
-    LoadAssetDetailsEvent event,
+  Future<void> _addAssetsToCollectionEvent(
+    AddAssetsToCollectionEvent event,
     Emitter<BlocState> emit,
   ) async {
-    emit(AssetDetailsLoadingState());
+    for (var i = 0; i < event.assetIDs.length; i++) {
+      final result = await collectionDataSource.addAssetToCollection(
+        collectionID: event.collectionID,
+        assetID: event.assetIDs[i],
+      );
 
-    await Future<void>.delayed(
-      const Duration(milliseconds: 250),
-    );
-
-    final result = await assetDataSource.getAssetDetails(
-      assetID: event.assetID,
-    );
-
-    result.fold(
-      (failure) => emit(AssetDetailsFailureState(failure)),
-      (details) => emit(
-        AssetDetailsLoadedState(
-          model: details,
-        ),
-      ),
-    );
+      await result.fold(
+        (failure) {
+          emit(AddAssetsToCollectionFailureState(failure));
+        },
+        (_) async {
+          emit(AddAssetsToCollectionSuccessState());
+        },
+      );
+    }
   }
 
   Future<void> _paginationChangedEvent(

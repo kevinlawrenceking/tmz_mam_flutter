@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/features/asset_import/bloc/session_bloc.dart';
-import 'package:tmz_damz/shared/widgets/app_scaffold/app_scaffold.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
@@ -21,42 +20,40 @@ class AssetImportView extends StatefulWidget {
 class _AssetImportViewState extends State<AssetImportView> {
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      content: BlocProvider<SessionBloc>(
-        create: (context) {
-          final bloc = GetIt.instance<SessionBloc>();
+    return BlocProvider<SessionBloc>(
+      create: (context) {
+        final bloc = GetIt.instance<SessionBloc>();
 
-          bloc.add(InitializeSession());
+        bloc.add(InitializeSession());
 
-          return bloc;
+        return bloc;
+      },
+      child: BlocListener<SessionBloc, SessionBlocState>(
+        listener: (context, state) async {
+          if (state is SessionInitializationFailureState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Failed to Initialize Session',
+              message: state.failure.message,
+            );
+          } else if (state is SessionInitializedState) {
+            await AutoRouter.of(context).navigate(
+              AssetImportSessionRoute(
+                sessionID: state.sessionID,
+              ),
+            );
+          }
         },
-        child: BlocListener<SessionBloc, SessionBlocState>(
-          listener: (context, state) async {
-            if (state is SessionInitializationFailureState) {
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
-                type: ToastTypeEnum.error,
-                title: 'Failed to Initialize Session',
-                message: state.failure.message,
-              );
-            } else if (state is SessionInitializedState) {
-              await AutoRouter.of(context).navigate(
-                AssetImportSessionRoute(
-                  sessionID: state.sessionID,
-                ),
-              );
-            }
-          },
-          child: MaskedScrollView(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              top: 10.0,
-              right: 20.0,
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-            ),
+        child: MaskedScrollView(
+          padding: const EdgeInsets.only(
+            left: 20.0,
+            top: 10.0,
+            right: 20.0,
+          ),
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
           ),
         ),
       ),

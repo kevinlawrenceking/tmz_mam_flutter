@@ -13,7 +13,6 @@ import 'package:tmz_damz/features/asset_import/view_models/file_view_model.dart'
 import 'package:tmz_damz/features/asset_import/widgets/session_file.dart';
 import 'package:tmz_damz/features/asset_import/widgets/session_file_form.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
-import 'package:tmz_damz/shared/widgets/app_scaffold/app_scaffold.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:uuid/uuid.dart';
@@ -48,108 +47,106 @@ class _SessionViewState extends State<SessionView> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      content: BlocProvider<SessionBloc>(
-        create: (context) {
-          final bloc = GetIt.instance<SessionBloc>();
+    return BlocProvider<SessionBloc>(
+      create: (context) {
+        final bloc = GetIt.instance<SessionBloc>();
 
-          bloc.add(
-            GetSessionDetailsEvent(
-              sessionID: widget.sessionID,
-            ),
-          );
+        bloc.add(
+          GetSessionDetailsEvent(
+            sessionID: widget.sessionID,
+          ),
+        );
 
-          return bloc;
+        return bloc;
+      },
+      child: BlocListener<SessionBloc, SessionBlocState>(
+        listenWhen: (_, state) =>
+            state is GetSessionDetailsFailureState ||
+            state is RemoveSessionFileFailureState ||
+            state is SessionFinalizationSuccessState ||
+            state is SessionFinalizationFailureState ||
+            state is SetFileMetaFailureState,
+        listener: (context, state) async {
+          if (state is GetSessionDetailsFailureState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Failed to Retrieve Session Details',
+              message: state.failure.message,
+            );
+
+            await AutoRouter.of(context).navigate(
+              const AssetImportRoute(),
+            );
+          } else if (state is RemoveSessionFileFailureState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Failed to Remove File',
+              message: state.failure.message,
+            );
+          } else if (state is SessionFinalizationSuccessState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.success,
+              message: 'Import Complete',
+            );
+
+            await AutoRouter.of(context).navigate(
+              AssetsSearchRoute(
+                refresh: true,
+              ),
+            );
+          } else if (state is SessionFinalizationFailureState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Failed to Finalize Import',
+              message: state.failure.message,
+            );
+          } else if (state is SetFileMetaFailureState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Failed to Update Metadata',
+              message: state.failure.message,
+            );
+          }
         },
-        child: BlocListener<SessionBloc, SessionBlocState>(
-          listenWhen: (_, state) =>
-              state is GetSessionDetailsFailureState ||
-              state is RemoveSessionFileFailureState ||
-              state is SessionFinalizationSuccessState ||
-              state is SessionFinalizationFailureState ||
-              state is SetFileMetaFailureState,
-          listener: (context, state) async {
-            if (state is GetSessionDetailsFailureState) {
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
-                type: ToastTypeEnum.error,
-                title: 'Failed to Retrieve Session Details',
-                message: state.failure.message,
+        child: BlocBuilder<SessionBloc, SessionBlocState>(
+          buildWhen: (_, state) =>
+              state is SessionDetailsState || state is FinalizingSessionState,
+          builder: (context, state) {
+            if (state is SessionDetailsState) {
+              return _buildSessionDetails(
+                context: context,
+                sessionStatus: state.sessionStatus,
+                files: state.files,
+                uploading: state.uploading,
               );
-
-              await AutoRouter.of(context).navigate(
-                const AssetImportRoute(),
+            } else if (state is FinalizingSessionState) {
+              return Stack(
+                children: [
+                  _buildSessionDetails(
+                    context: context,
+                    sessionStatus: AssetImportSessionStatusEnum.processing,
+                    files: state.files,
+                    uploading: state.uploading,
+                  ),
+                  Container(
+                    color: const Color(0xB0232323),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
               );
-            } else if (state is RemoveSessionFileFailureState) {
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
-                type: ToastTypeEnum.error,
-                title: 'Failed to Remove File',
-                message: state.failure.message,
-              );
-            } else if (state is SessionFinalizationSuccessState) {
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
-                type: ToastTypeEnum.success,
-                message: 'Import Complete',
-              );
-
-              await AutoRouter.of(context).navigate(
-                AssetsSearchRoute(
-                  refresh: true,
-                ),
-              );
-            } else if (state is SessionFinalizationFailureState) {
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
-                type: ToastTypeEnum.error,
-                title: 'Failed to Finalize Import',
-                message: state.failure.message,
-              );
-            } else if (state is SetFileMetaFailureState) {
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
-                type: ToastTypeEnum.error,
-                title: 'Failed to Update Metadata',
-                message: state.failure.message,
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
             }
           },
-          child: BlocBuilder<SessionBloc, SessionBlocState>(
-            buildWhen: (_, state) =>
-                state is SessionDetailsState || state is FinalizingSessionState,
-            builder: (context, state) {
-              if (state is SessionDetailsState) {
-                return _buildSessionDetails(
-                  context: context,
-                  sessionStatus: state.sessionStatus,
-                  files: state.files,
-                  uploading: state.uploading,
-                );
-              } else if (state is FinalizingSessionState) {
-                return Stack(
-                  children: [
-                    _buildSessionDetails(
-                      context: context,
-                      sessionStatus: AssetImportSessionStatusEnum.processing,
-                      files: state.files,
-                      uploading: state.uploading,
-                    ),
-                    Container(
-                      color: const Color(0xB0232323),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
         ),
       ),
     );

@@ -6,15 +6,20 @@ abstract class BlocEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadAssetDetailsEvent extends BlocEvent {
-  final String assetID;
+class AddAssetsToCollectionEvent extends BlocEvent {
+  final String collectionID;
+  final List<String> assetIDs;
 
-  LoadAssetDetailsEvent({
-    required this.assetID,
+  AddAssetsToCollectionEvent({
+    required this.collectionID,
+    required this.assetIDs,
   });
 
   @override
-  List<Object?> get props => [assetID];
+  List<Object?> get props => [
+        collectionID,
+        assetIDs,
+      ];
 }
 
 class PaginationChangedEvent extends BlocEvent {

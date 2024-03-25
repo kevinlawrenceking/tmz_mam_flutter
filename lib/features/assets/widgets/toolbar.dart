@@ -57,40 +57,91 @@ class _ToolbarState extends State<Toolbar> {
   @override
   Widget build(BuildContext context) {
     return _buildContainer(
-      child: Row(
-        children: [
-          SizedBox(
-            width: 46,
-            height: 44,
-            child: ToolbarButton(
-              icon: MdiIcons.rotateRight,
-              onPressed: widget.onReload,
-            ),
-          ),
-          const SizedBox(width: 4.0),
-          Expanded(
-            child: SearchInput(
-              controller: _textController,
-              onFieldSubmitted: widget.onSearch,
-            ),
-          ),
-          const SizedBox(width: 20.0),
-          SortOptions(
-            initialField: widget.sortField,
-            initialDirection: widget.sortDirection,
-            onChanged: widget.onSortChanged,
-          ),
-          const SizedBox(width: 20.0),
-          ThumbnailSizeSelector(
-            initialSize: widget.thumbnailSize,
-            onChanged: widget.onThumbnailSizeChange,
-          ),
-          const SizedBox(width: 20.0),
-          LayoutModeSelector(
-            initialMode: widget.layoutMode,
-            onChanged: widget.onLayoutChange,
-          ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 900) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 46,
+                      height: 44,
+                      child: ToolbarButton(
+                        icon: MdiIcons.rotateRight,
+                        onPressed: widget.onReload,
+                      ),
+                    ),
+                    const SizedBox(width: 4.0),
+                    Expanded(
+                      child: SearchInput(
+                        controller: _textController,
+                        onFieldSubmitted: widget.onSearch,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    SortOptions(
+                      initialField: widget.sortField,
+                      initialDirection: widget.sortDirection,
+                      onChanged: widget.onSortChanged,
+                    ),
+                    const Spacer(),
+                    const SizedBox(width: 20.0),
+                    ThumbnailSizeSelector(
+                      initialSize: widget.thumbnailSize,
+                      onChanged: widget.onThumbnailSizeChange,
+                    ),
+                    const SizedBox(width: 20.0),
+                    LayoutModeSelector(
+                      initialMode: widget.layoutMode,
+                      onChanged: widget.onLayoutChange,
+                    ),
+                  ],
+                ),
+              ],
+            );
+          } else {
+            return Row(
+              children: [
+                SizedBox(
+                  width: 46,
+                  height: 44,
+                  child: ToolbarButton(
+                    icon: MdiIcons.rotateRight,
+                    onPressed: widget.onReload,
+                  ),
+                ),
+                const SizedBox(width: 4.0),
+                Expanded(
+                  child: SearchInput(
+                    controller: _textController,
+                    onFieldSubmitted: widget.onSearch,
+                  ),
+                ),
+                const SizedBox(width: 20.0),
+                SortOptions(
+                  initialField: widget.sortField,
+                  initialDirection: widget.sortDirection,
+                  onChanged: widget.onSortChanged,
+                ),
+                const SizedBox(width: 20.0),
+                ThumbnailSizeSelector(
+                  initialSize: widget.thumbnailSize,
+                  onChanged: widget.onThumbnailSizeChange,
+                ),
+                const SizedBox(width: 20.0),
+                LayoutModeSelector(
+                  initialMode: widget.layoutMode,
+                  onChanged: widget.onLayoutChange,
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

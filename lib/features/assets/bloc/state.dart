@@ -8,27 +8,23 @@ abstract class BlocState extends Equatable {
 
 class InitialState extends BlocState {}
 
-class AssetDetailsFailureState extends BlocState {
+class AddAssetsToCollectionFailureState extends BlocState {
   final Failure failure;
 
-  AssetDetailsFailureState(this.failure);
+  AddAssetsToCollectionFailureState(this.failure);
 
   @override
   List<Object?> get props => [failure];
 }
 
-class AssetDetailsLoadedState extends BlocState {
-  final AssetDetailsModel model;
+class AddAssetsToCollectionSuccessState extends BlocState {
+  final String _stateID;
 
-  AssetDetailsLoadedState({
-    required this.model,
-  });
+  AddAssetsToCollectionSuccessState() : _stateID = const Uuid().v4();
 
   @override
-  List<Object?> get props => [model];
+  List<Object?> get props => [_stateID];
 }
-
-class AssetDetailsLoadingState extends BlocState {}
 
 class PaginationChangedState extends BlocState {
   final int offset;

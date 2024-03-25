@@ -179,7 +179,7 @@ class AssetSearchResults {
     Map<String, dynamic> dto,
   ) {
     return AssetSearchResults(
-      totalRecords: dto['totalRecords'] as int,
+      totalRecords: dto['total_records'] as int,
       assets: (dto['assets'] as List?)
               ?.map(
                 (_) => AssetDetailsModel.fromJsonDto(
