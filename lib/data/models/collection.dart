@@ -34,9 +34,7 @@ class CollectionModel extends Equatable {
   ) {
     return CollectionModel(
       id: dto?['id'] ?? '',
-      ownedBy: UserMetaModel.fromJsonDto(
-        dto?['owned_by'],
-      ),
+      ownedBy: UserMetaModel.fromJsonDto(dto?['owned_by']),
       isPrivate: dto?['private'] ?? false,
       autoClear: dto?['auto_clear'] ?? false,
       name: dto?['name'] ?? '',
@@ -46,13 +44,9 @@ class CollectionModel extends Equatable {
       ),
       deleted: dto?['deleted'] ?? false,
       deletedBy: dto?['deleted_by'] != null
-          ? UserMetaModel.fromJsonDto(
-              dto?['deleted_by'],
-            )
+          ? UserMetaModel.fromJsonDto(dto?['deleted_by'])
           : null,
-      deletedAt: DateTime.tryParse(
-        dto?['deleted_at'] ?? '',
-      ),
+      deletedAt: DateTime.tryParse(dto?['deleted_at'] ?? ''),
       totalAssets: Int32(dto?['total_assets'] ?? 0),
     );
   }

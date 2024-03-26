@@ -45,6 +45,24 @@ class PaginationChangedState extends BlocState {
       ];
 }
 
+class RemoveAssetsFromCollectionFailureState extends BlocState {
+  final Failure failure;
+
+  RemoveAssetsFromCollectionFailureState(this.failure);
+
+  @override
+  List<Object?> get props => [failure];
+}
+
+class RemoveAssetsFromCollectionSuccessState extends BlocState {
+  final String _stateID;
+
+  RemoveAssetsFromCollectionSuccessState() : _stateID = const Uuid().v4();
+
+  @override
+  List<Object?> get props => [_stateID];
+}
+
 class SearchFailureState extends BlocState {
   final Failure failure;
 

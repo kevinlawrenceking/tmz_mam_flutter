@@ -13,6 +13,7 @@ class ServiceLocator {
 
     sl.registerFactory(
       () => UserCollectionsBloc(
+        collectionDataSource: sl(),
         userCollectionDataSource: sl(),
       ),
     );

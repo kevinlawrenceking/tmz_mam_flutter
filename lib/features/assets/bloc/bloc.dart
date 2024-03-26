@@ -18,6 +18,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   var _offset = 0;
   var _limit = 10;
+  String? _collectionID;
   String? _searchTerm;
   AssetSortFieldEnum? _sortField;
   SortDirectionEnum? _sortDirection;
@@ -32,28 +33,36 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     on<PaginationChangedEvent>(_paginationChangedEvent);
     on<RefreshEvent>(_refreshEvent);
     on<ReloadCurrentPageEvent>(_reloadCurrentPageEvent);
+    on<RemoveAssetsFromCollectionEvent>(_removeAssetsFromCollectionEvent);
     on<SearchEvent>(_searchEvent);
+    on<SetCurrentCollectionEvent>(_setCurrentCollectionEvent);
   }
 
   Future<void> _addAssetsToCollectionEvent(
     AddAssetsToCollectionEvent event,
     Emitter<BlocState> emit,
   ) async {
+    if (event.assetIDs.isEmpty) {
+      return;
+    }
+
     for (var i = 0; i < event.assetIDs.length; i++) {
       final result = await collectionDataSource.addAssetToCollection(
         collectionID: event.collectionID,
         assetID: event.assetIDs[i],
       );
 
-      await result.fold(
-        (failure) {
-          emit(AddAssetsToCollectionFailureState(failure));
-        },
-        (_) async {
-          emit(AddAssetsToCollectionSuccessState());
-        },
+      result.fold(
+        (failure) => emit(AddAssetsToCollectionFailureState(failure)),
+        (_) {},
       );
+
+      if (result.isLeft()) {
+        return;
+      }
     }
+
+    emit(AddAssetsToCollectionSuccessState());
   }
 
   Future<void> _paginationChangedEvent(
@@ -67,6 +76,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       emit: emit,
       offset: _offset,
       limit: _limit,
+      collectionID: _collectionID,
       searchTerm: _searchTerm,
       sortField: _sortField,
       sortDirection: _sortDirection,
@@ -83,6 +93,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       emit: emit,
       offset: _offset,
       limit: _limit,
+      collectionID: _collectionID,
       searchTerm: _searchTerm,
       sortField: _sortField,
       sortDirection: _sortDirection,
@@ -97,6 +108,44 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       emit: emit,
       offset: _offset,
       limit: _limit,
+      collectionID: _collectionID,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
+  }
+
+  Future<void> _removeAssetsFromCollectionEvent(
+    RemoveAssetsFromCollectionEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    if (event.assetIDs.isEmpty) {
+      return;
+    }
+
+    for (var i = 0; i < event.assetIDs.length; i++) {
+      final result = await collectionDataSource.removeAssetFromCollection(
+        collectionID: event.collectionID,
+        assetID: event.assetIDs[i],
+      );
+
+      result.fold(
+        (failure) => emit(RemoveAssetsFromCollectionFailureState(failure)),
+        (_) {},
+      );
+
+      if (result.isLeft()) {
+        return;
+      }
+    }
+
+    emit(RemoveAssetsFromCollectionSuccessState());
+
+    await _getAssetList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
+      collectionID: _collectionID,
       searchTerm: _searchTerm,
       sortField: _sortField,
       sortDirection: _sortDirection,
@@ -120,6 +169,26 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
       emit: emit,
       offset: _offset,
       limit: _limit,
+      collectionID: _collectionID,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
+  }
+
+  Future<void> _setCurrentCollectionEvent(
+    SetCurrentCollectionEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    _offset = 0;
+    _totalRecords = 0;
+    _collectionID = event.collectionID;
+
+    await _getAssetList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
+      collectionID: _collectionID,
       searchTerm: _searchTerm,
       sortField: _sortField,
       sortDirection: _sortDirection,
@@ -130,6 +199,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     required Emitter<BlocState> emit,
     required int offset,
     required int limit,
+    required String? collectionID,
     required String? searchTerm,
     required AssetSortFieldEnum? sortField,
     required SortDirectionEnum? sortDirection,
@@ -147,6 +217,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     final result = await assetDataSource.getAssetList(
       offset: offset,
       limit: limit,
+      collectionID: collectionID,
       searchTerm: searchTerm,
       sortField: sortField,
       sortDirection: sortDirection,

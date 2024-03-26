@@ -58,13 +58,13 @@ class _AppScaffoldState extends State<AppScaffold>
     _isMenuCollapsed = ValueNotifier<bool>(isMenuCollapsed);
 
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       value: _isMenuCollapsed.value ? 0 : 1,
       vsync: this,
     );
     _animation = CurvedAnimation(
       parent: _animationController,
-      curve: Curves.easeInOutQuad,
+      curve: Curves.fastOutSlowIn,
     );
   }
 

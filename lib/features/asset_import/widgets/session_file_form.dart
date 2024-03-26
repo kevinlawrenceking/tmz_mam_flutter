@@ -271,7 +271,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(2000),
                   ],
-                  minLines: 2,
+                  minLines: 3,
                   maxLines: 5,
                   onChanged: (value) {
                     _onChangeDebounce.wrap(() {

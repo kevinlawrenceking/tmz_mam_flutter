@@ -1,28 +1,66 @@
+import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/user_collections/widgets/collection_autocomplete_field.dart';
 import 'package:tmz_damz/features/user_collections/widgets/collection_details.dart';
+import 'package:tmz_damz/features/user_collections/widgets/new_collection_form.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
-class AddAssetsToCollection extends StatefulWidget {
+class NewCollectionParams {
+  final String name;
+  final String description;
+  final bool isPrivate;
+  final bool autoClear;
+
+  NewCollectionParams({
+    required this.name,
+    required this.description,
+    required this.isPrivate,
+    required this.autoClear,
+  });
+}
+
+class AddCollectionToFavorites extends StatefulWidget {
   final ThemeData theme;
   final VoidCallback onCancel;
-  final void Function(String collectionID) onConfirm;
+  final void Function(String collectionID) onAdd;
+  final void Function(NewCollectionParams params) onCreate;
 
-  const AddAssetsToCollection({
+  const AddCollectionToFavorites({
     super.key,
     required this.theme,
     required this.onCancel,
-    required this.onConfirm,
+    required this.onAdd,
+    required this.onCreate,
   });
 
   @override
-  State<AddAssetsToCollection> createState() => _AddAssetsToCollectionState();
+  State<AddCollectionToFavorites> createState() =>
+      _AddCollectionToFavoritesState();
 }
 
-class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
+class _AddCollectionToFavoritesState extends State<AddCollectionToFavorites> {
+  final _isNewController = ValueNotifier<bool>(false);
+
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _visibilityController = ValueNotifier<bool>(false);
+  final _autoClearController = ValueNotifier<bool>(false);
+
   CollectionModel? _selectedCollection;
+
+  @override
+  void dispose() {
+    _isNewController.dispose();
+
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _visibilityController.dispose();
+    _autoClearController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +79,7 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildTitle('Add selected assets to collection...'),
+          _buildTitle('Add collection to favorites...'),
           Padding(
             padding: const EdgeInsets.only(
               left: 40.0,
@@ -87,9 +125,8 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: () {
-                            setState(() {
-                              _selectedCollection = null;
-                            });
+                            _selectedCollection = null;
+                            setState(() {});
                           },
                           icon: Icon(
                             MdiIcons.close,
@@ -120,7 +157,43 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildCollectionLookup(),
+        Center(
+          child: Choice.inline(
+            value: [_isNewController.value],
+            itemCount: 2,
+            itemBuilder: (state, index) {
+              final isNew = index == 1;
+
+              return ChoiceChip(
+                label: Text(
+                  isNew ? 'New' : 'Existing',
+                ),
+                selected: _isNewController.value == isNew,
+                selectedColor: const Color(0xFF8E0000),
+                onSelected: (value) {
+                  state.replace([isNew]);
+                },
+              );
+            },
+            listBuilder: ChoiceList.createScrollable(
+              spacing: 10,
+            ),
+            onChanged: (value) {
+              setState(() {
+                _isNewController.value = value.firstOrNull ?? false;
+              });
+            },
+          ),
+        ),
+        const SizedBox(height: 30.0),
+        _isNewController.value
+            ? NewCollectionForm(
+                nameController: _nameController,
+                descriptionController: _descriptionController,
+                visibilityController: _visibilityController,
+                autoClearController: _autoClearController,
+              )
+            : _buildCollectionLookup(),
       ],
     );
   }
@@ -172,14 +245,36 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
             width: 100.0,
             child: TextButton(
               onPressed: () {
-                if (model == null) {
-                  Toast.showNotification(
-                    showDuration: const Duration(seconds: 3),
-                    type: ToastTypeEnum.warning,
-                    message: 'You must select a collection first.',
-                  );
+                if (_isNewController.value) {
+                  final name = _nameController.text.trim();
+
+                  if (name.isEmpty) {
+                    Toast.showNotification(
+                      showDuration: const Duration(seconds: 3),
+                      type: ToastTypeEnum.warning,
+                      message:
+                          'You must enter a Name for the collection first.',
+                    );
+                  } else {
+                    widget.onCreate(
+                      NewCollectionParams(
+                        name: name,
+                        description: _descriptionController.text.trim(),
+                        isPrivate: _visibilityController.value,
+                        autoClear: _autoClearController.value,
+                      ),
+                    );
+                  }
                 } else {
-                  widget.onConfirm(model.id);
+                  if (model == null) {
+                    Toast.showNotification(
+                      showDuration: const Duration(seconds: 3),
+                      type: ToastTypeEnum.warning,
+                      message: 'You must select a collection first.',
+                    );
+                  } else {
+                    widget.onAdd(model.id);
+                  }
                 }
               },
               style: widget.theme.textButtonTheme.style,

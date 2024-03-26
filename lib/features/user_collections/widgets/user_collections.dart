@@ -1,26 +1,49 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/user_collections/bloc/bloc.dart';
+import 'package:tmz_damz/features/user_collections/widgets/add_collection_to_favorites.dart';
+import 'package:tmz_damz/features/user_collections/widgets/user_collection_item.dart';
+import 'package:tmz_damz/shared/widgets/toast.dart';
 
-class UserCollections extends StatelessWidget {
+class UserCollections extends StatefulWidget {
   final VoidCallback? onAddSelectedAssetsToCollection;
-  final void Function(CollectionModel model) onCollectionTap;
+  final void Function(CollectionModel? model) onSelectionChanged;
 
   const UserCollections({
     super.key,
     required this.onAddSelectedAssetsToCollection,
-    required this.onCollectionTap,
+    required this.onSelectionChanged,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  State<UserCollections> createState() => _UserCollectionsState();
+}
 
+class _UserCollectionsState extends State<UserCollections> {
+  late final FocusNode _focusNode;
+
+  CollectionModel? _selectedCollection;
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _focusNode = FocusNode();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Material(
       child: BlocProvider<UserCollectionsBloc>(
         create: (context) {
@@ -30,110 +53,198 @@ class UserCollections extends StatelessWidget {
 
           return bloc;
         },
-        child: BlocBuilder<UserCollectionsBloc, BlocState>(
-          builder: (context, state) {
-            List<CollectionModel> collections;
-
-            if (state is CollectionsLoadedState) {
-              collections = state.collections;
-            } else {
-              collections = [];
+        child: BlocListener<UserCollectionsBloc, BlocState>(
+          listenWhen: (_, state) =>
+              state is AddCollectionToFavoritesFailureState ||
+              state is AddCollectionToFavoritesSuccessState ||
+              state is CreateCollectionFailureState ||
+              state is CreateCollectionSuccessState ||
+              state is LoadCollectionsFailureState ||
+              state is RemoveCollectionFromFavoritesFailureState ||
+              state is RemoveCollectionFromFavoritesSuccessState,
+          listener: (context, state) {
+            if (state is AddCollectionToFavoritesFailureState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.error,
+                title: 'Failed to Add Collection to Favorites',
+                message: state.failure.message,
+              );
+            } else if (state is AddCollectionToFavoritesSuccessState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.success,
+                message: 'Collection added to favorites!',
+              );
+            } else if (state is CreateCollectionFailureState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.error,
+                title: 'Failed to Create Collection',
+                message: state.failure.message,
+              );
+            } else if (state is CreateCollectionSuccessState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.success,
+                message: 'Collection created and added to favorites!',
+              );
+            } else if (state is LoadCollectionsFailureState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.error,
+                title: 'Failed to Load Collection Favorites',
+                message: state.failure.message,
+              );
+            } else if (state is RemoveCollectionFromFavoritesFailureState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.error,
+                title: 'Failed to Remove Collection from Favorites',
+                message: state.failure.message,
+              );
+            } else if (state is RemoveCollectionFromFavoritesSuccessState) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.information,
+                message: 'Collection removed from favorites!',
+              );
             }
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Opacity(
-                          opacity: (onAddSelectedAssetsToCollection != null)
-                              ? 1.0
-                              : 0.4,
-                          child: TextButton(
-                            onPressed: onAddSelectedAssetsToCollection,
-                            style: theme.textButtonTheme.style,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8.0,
-                              ),
-                              child: Text(
-                                'Add selected assets to collection...',
-                                style: theme.textTheme.bodySmall,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: collections.length,
-                    itemBuilder: (context, index) {
-                      return _buildItem(
-                        context: context,
-                        model: collections[index],
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
           },
+          child: BlocBuilder<UserCollectionsBloc, BlocState>(
+            builder: (context, state) {
+              List<CollectionModel> collections;
+
+              if (state is CollectionsLoadedState) {
+                collections = state.collections;
+              } else {
+                collections = [];
+              }
+
+              return Focus(
+                onKeyEvent: (node, event) {
+                  if (event is! KeyDownEvent) {
+                    return KeyEventResult.ignored;
+                  }
+
+                  if ((event.logicalKey == LogicalKeyboardKey.f5) ||
+                      (event.physicalKey == PhysicalKeyboardKey.f5)) {
+                    BlocProvider.of<UserCollectionsBloc>(context).add(
+                      LoadCollectionsEvent(),
+                    );
+
+                    return KeyEventResult.handled;
+                  } else if (HardwareKeyboard.instance.isControlPressed &&
+                      ((event.logicalKey == LogicalKeyboardKey.keyR) ||
+                          (event.physicalKey == PhysicalKeyboardKey.keyR))) {
+                    BlocProvider.of<UserCollectionsBloc>(context).add(
+                      LoadCollectionsEvent(),
+                    );
+
+                    return KeyEventResult.handled;
+                  } else {
+                    return KeyEventResult.ignored;
+                  }
+                },
+                focusNode: _focusNode,
+                child: _buildContent(
+                  context: context,
+                  collections: collections,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildItem({
-    required BuildContext context,
-    required CollectionModel model,
-  }) {
-    return InkWell(
-      onTap: () => onCollectionTap(model),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20.0,
-          top: 10.0,
-          right: 10.0,
-          bottom: 10.0,
+  Widget _buildAddCollectionToFavoritesButton(BuildContext context) {
+    return SizedBox(
+      height: 24.0,
+      width: 24.0,
+      child: IconButton(
+        onPressed: () {
+          _showAddCollectionToFavoritesDialog(context);
+        },
+        padding: EdgeInsets.zero,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            const Color(0xFF11853F),
+          ),
+          padding: MaterialStateProperty.all(EdgeInsets.zero),
+          shape: MaterialStateProperty.resolveWith(
+            (states) {
+              return RoundedRectangleBorder(
+                side: const BorderSide(
+                  color: Color(0x80000000),
+                ),
+                borderRadius: BorderRadius.circular(6.0),
+              );
+            },
+          ),
         ),
-        child: Row(
-          children: [
-            if (model.isPrivate) ...[
-              Icon(
-                MdiIcons.eyeLock,
-                color: const Color(0xFFFFA600),
-                size: 18.0,
-              ),
-              const SizedBox(
-                width: 10.0,
+        icon: Icon(
+          MdiIcons.plus,
+          size: 16.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent({
+    required BuildContext context,
+    required List<CollectionModel> collections,
+  }) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Opacity(
+                  opacity: (widget.onAddSelectedAssetsToCollection != null)
+                      ? 1.0
+                      : 0.4,
+                  child: TextButton(
+                    onPressed: widget.onAddSelectedAssetsToCollection,
+                    style: theme.textButtonTheme.style,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                      ),
+                      child: Text(
+                        'Add selected assets to collection...',
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
-            Expanded(
-              child: Text(
-                model.name,
-              ),
-            ),
-            Center(
-              child: SizedBox(
+          ),
+        ),
+        const Divider(height: 10.0),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 14.0,
+            top: 10.0,
+            right: 10.0,
+            bottom: 10.0,
+          ),
+          child: Row(
+            children: [
+              SizedBox(
                 height: 24.0,
                 width: 24.0,
                 child: IconButton(
                   onPressed: () {
-                    _showRemovalConfirmation(
-                      context: context,
-                      onConfirm: () {
-                        BlocProvider.of<UserCollectionsBloc>(context).add(
-                          RemoveCollectionEvent(
-                            collectionID: model.id,
-                          ),
-                        );
-                      },
+                    BlocProvider.of<UserCollectionsBloc>(context).add(
+                      LoadCollectionsEvent(),
                     );
                   },
                   padding: EdgeInsets.zero,
@@ -154,182 +265,86 @@ class UserCollections extends StatelessWidget {
                     ),
                   ),
                   icon: Icon(
-                    MdiIcons.minus,
+                    MdiIcons.rotateRight,
                     size: 16.0,
                   ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 10.0),
+              Expanded(
+                child: Text(
+                  'Collections',
+                  style: theme.textTheme.labelMedium,
+                ),
+              ),
+              _buildAddCollectionToFavoritesButton(context),
+            ],
+          ),
         ),
-      ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: collections.length,
+            itemBuilder: (context, index) {
+              return BlocProvider.value(
+                value: BlocProvider.of<UserCollectionsBloc>(context),
+                child: UserCollectionItem(
+                  model: collections[index],
+                  selected: _selectedCollection?.id == collections[index].id,
+                  onTap: (model) {
+                    if (_selectedCollection?.id == model.id) {
+                      _selectedCollection = null;
+                    } else {
+                      _selectedCollection = model;
+                    }
+
+                    widget.onSelectionChanged(_selectedCollection);
+
+                    setState(() {});
+
+                    _focusNode.requestFocus();
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
-  void _showRemovalConfirmation({
-    required BuildContext context,
-    required VoidCallback onConfirm,
-  }) {
-    BotToast.showAnimationWidget(
-      animationDuration: const Duration(milliseconds: 250),
-      allowClick: false,
-      clickClose: false,
-      crossPage: false,
-      onlyOne: true,
-      wrapToastAnimation: (controller, cancelFunc, child) {
-        return Stack(
-          children: [
-            GestureDetector(
-              onTap: () => cancelFunc(),
-              child: const DecoratedBox(
-                decoration: BoxDecoration(color: Colors.black26),
-                child: SizedBox.expand(),
-              ),
-            ),
-            child
-                .animate(
-                  controller: controller,
-                )
-                .move(
-                  curve: Curves.decelerate,
-                  begin: const Offset(0, 40),
-                  end: Offset.zero,
-                ),
-          ],
-        )
-            .animate(
-              controller: controller,
-            )
-            .fadeIn(
-              curve: Curves.decelerate,
-              begin: 0.0,
-            );
-      },
-      toastBuilder: (cancelFunc) {
-        final theme = Theme.of(context);
-
+  void _showAddCollectionToFavoritesDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierColor: Colors.black26,
+      barrierDismissible: false,
+      builder: (_) {
         return Center(
-          child: Container(
-            width: 500,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFF1D1E1F),
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-              boxShadow: kElevationToShadow[24],
-              color: const Color(0xFF232323),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 10.0,
-                  ),
-                  color: const Color(0xFF1D1E1F),
-                  child: Text(
-                    'Are you sure you want to remove this collection?',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.blue,
-                      letterSpacing: 1.0,
-                    ),
-                    softWrap: true,
-                  ),
+          child: AddCollectionToFavorites(
+            theme: Theme.of(context),
+            onCancel: () {
+              Navigator.of(context).pop();
+            },
+            onAdd: (collectionID) {
+              BlocProvider.of<UserCollectionsBloc>(context).add(
+                AddCollectionToFavoritesEvent(
+                  collectionID: collectionID,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20.0,
-                    top: 20.0,
-                    right: 20.0,
-                    bottom: 10.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        MdiIcons.helpCircleOutline,
-                        color: Colors.blue,
-                        size: 36.0,
-                      ),
-                      const SizedBox(width: 16.0),
-                      Expanded(
-                        child: Text(
-                          'This will remove the collection from your favorites.',
-                          style: theme.textTheme.bodySmall,
-                          softWrap: true,
-                        ),
-                      ),
-                    ],
-                  ),
+              );
+
+              Navigator.of(context).pop();
+            },
+            onCreate: (params) {
+              BlocProvider.of<UserCollectionsBloc>(context).add(
+                CreateCollectionEvent(
+                  name: params.name,
+                  description: params.description,
+                  isPrivate: params.isPrivate,
+                  autoClear: params.autoClear,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      SizedBox(
-                        width: 100.0,
-                        child: TextButton(
-                          onPressed: cancelFunc,
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              const Color(0x30FFFFFF),
-                            ),
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                                vertical: 6.0,
-                              ),
-                            ),
-                            shape: MaterialStateProperty.resolveWith(
-                              (states) {
-                                return RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                    color: Color(0x80000000),
-                                  ),
-                                  borderRadius: BorderRadius.circular(6.0),
-                                );
-                              },
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                            ),
-                            child: Text(
-                              'Cancel',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10.0),
-                      SizedBox(
-                        width: 100.0,
-                        child: TextButton(
-                          onPressed: () {
-                            cancelFunc();
-                            onConfirm.call();
-                          },
-                          style: theme.textButtonTheme.style,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                            ),
-                            child: Text(
-                              'Confirm',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              );
+
+              Navigator.of(context).pop();
+            },
           ),
         );
       },

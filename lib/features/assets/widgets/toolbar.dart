@@ -9,6 +9,7 @@ import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/toolbar_button.dart';
 
 class Toolbar extends StatefulWidget {
+  final TextEditingController? searchTermController;
   final AssetSortFieldEnum sortField;
   final SortDirectionEnum sortDirection;
   final LayoutModeEnum layoutMode;
@@ -21,6 +22,7 @@ class Toolbar extends StatefulWidget {
 
   const Toolbar({
     super.key,
+    required this.searchTermController,
     required this.sortField,
     required this.sortDirection,
     required this.layoutMode,
@@ -37,23 +39,6 @@ class Toolbar extends StatefulWidget {
 }
 
 class _ToolbarState extends State<Toolbar> {
-  TextEditingController? _textController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _textController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _textController?.dispose();
-    _textController = null;
-
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return _buildContainer(
@@ -75,7 +60,7 @@ class _ToolbarState extends State<Toolbar> {
                     const SizedBox(width: 4.0),
                     Expanded(
                       child: SearchInput(
-                        controller: _textController,
+                        controller: widget.searchTermController,
                         onFieldSubmitted: widget.onSearch,
                       ),
                     ),
@@ -118,7 +103,7 @@ class _ToolbarState extends State<Toolbar> {
                 const SizedBox(width: 4.0),
                 Expanded(
                   child: SearchInput(
-                    controller: _textController,
+                    controller: widget.searchTermController,
                     onFieldSubmitted: widget.onSearch,
                   ),
                 ),

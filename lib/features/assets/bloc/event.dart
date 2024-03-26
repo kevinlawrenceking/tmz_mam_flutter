@@ -42,6 +42,22 @@ class RefreshEvent extends BlocEvent {}
 
 class ReloadCurrentPageEvent extends BlocEvent {}
 
+class RemoveAssetsFromCollectionEvent extends BlocEvent {
+  final String collectionID;
+  final List<String> assetIDs;
+
+  RemoveAssetsFromCollectionEvent({
+    required this.collectionID,
+    required this.assetIDs,
+  });
+
+  @override
+  List<Object?> get props => [
+        collectionID,
+        assetIDs,
+      ];
+}
+
 class SearchEvent extends BlocEvent {
   final String? searchTerm;
   final AssetSortFieldEnum? sortField;
@@ -58,5 +74,18 @@ class SearchEvent extends BlocEvent {
         searchTerm,
         sortField,
         sortDirection,
+      ];
+}
+
+class SetCurrentCollectionEvent extends BlocEvent {
+  final String? collectionID;
+
+  SetCurrentCollectionEvent({
+    required this.collectionID,
+  });
+
+  @override
+  List<Object?> get props => [
+        collectionID,
       ];
 }

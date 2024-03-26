@@ -18,6 +18,7 @@ abstract class IAssetDataSource {
   Future<Either<Failure, AssetSearchResults>> getAssetList({
     required int offset,
     required int limit,
+    String? collectionID,
     String? searchTerm,
     AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
@@ -67,6 +68,7 @@ class AssetDataSource implements IAssetDataSource {
   Future<Either<Failure, AssetSearchResults>> getAssetList({
     required int offset,
     required int limit,
+    String? collectionID,
     String? searchTerm,
     AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
@@ -82,7 +84,11 @@ class AssetDataSource implements IAssetDataSource {
               'limit': limit.toString(),
             };
 
-            if (searchTerm != null && searchTerm.isNotEmpty) {
+            if ((collectionID != null) && collectionID.isNotEmpty) {
+              queryParams['collectionID'] = collectionID;
+            }
+
+            if ((searchTerm != null) && searchTerm.isNotEmpty) {
               queryParams['searchTerm'] = searchTerm;
             }
 

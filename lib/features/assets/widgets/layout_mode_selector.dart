@@ -28,13 +28,15 @@ class LayoutModeSelector extends StatelessWidget {
           icon: MdiIcons.viewGrid,
           value: LayoutModeEnum.tile,
         ),
-        _buildButton(
-          borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(6.0),
-            topRight: Radius.circular(6.0),
+        IgnorePointer(
+          child: _buildButton(
+            borderRadius: const BorderRadius.only(
+              bottomRight: Radius.circular(6.0),
+              topRight: Radius.circular(6.0),
+            ),
+            icon: MdiIcons.viewList,
+            value: LayoutModeEnum.list,
           ),
-          icon: MdiIcons.viewList,
-          value: LayoutModeEnum.list,
         ),
       ],
     );

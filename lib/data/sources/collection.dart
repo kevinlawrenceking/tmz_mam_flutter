@@ -15,7 +15,12 @@ abstract class ICollectionDataSource {
     required String assetID,
   });
 
-  Future<Either<Failure, CollectionModel>> createCollection();
+  Future<Either<Failure, CollectionModel>> createCollection({
+    required bool isPrivate,
+    required bool autoClear,
+    required String name,
+    required String description,
+  });
 
   Future<Either<Failure, Empty>> deleteCollection({
     required String collectionID,
@@ -74,7 +79,12 @@ class CollectionDataSource implements ICollectionDataSource {
       })();
 
   @override
-  Future<Either<Failure, CollectionModel>> createCollection() async =>
+  Future<Either<Failure, CollectionModel>> createCollection({
+    required bool isPrivate,
+    required bool autoClear,
+    required String name,
+    required String description,
+  }) async =>
       ExceptionHandler<CollectionModel>(() async {
         final response = await _auth.getAuthToken();
 
@@ -83,7 +93,13 @@ class CollectionDataSource implements ICollectionDataSource {
           (authToken) async {
             final response = await _client.post(
               authToken: authToken,
-              endPoint: '/api/v1/collection',
+              endPoint: '/api/v1/collection/',
+              body: json.encode({
+                'private': isPrivate,
+                'auto_clear': autoClear,
+                'name': name,
+                'description': description,
+              }),
             );
 
             if (response.statusCode != HttpStatus.ok) {
