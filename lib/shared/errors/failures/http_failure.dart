@@ -19,7 +19,7 @@ class HttpFailure extends Failure {
     } else {
       return HttpFailure(
         statusCode: response.statusCode,
-        message: err?.message ?? response.reasonPhrase,
+        message: response.reasonPhrase,
       );
     }
   }
