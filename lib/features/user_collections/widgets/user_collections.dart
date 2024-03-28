@@ -115,7 +115,15 @@ class _UserCollectionsState extends State<UserCollections> {
             builder: (context, state) {
               List<CollectionModel> collections;
 
-              if (state is CollectionsLoadedState) {
+              if (state is CollectionsLoadingState) {
+                return const Center(
+                  child: SizedBox(
+                    height: 32.0,
+                    width: 32.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else if (state is CollectionsLoadedState) {
                 collections = state.collections;
               } else {
                 collections = [];

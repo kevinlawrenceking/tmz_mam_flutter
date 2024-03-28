@@ -66,7 +66,7 @@ class SortOptions extends StatelessWidget {
                 AssetSortFieldEnum.creditLocation: 'Credit Location',
                 AssetSortFieldEnum.keywords: 'Keywords',
                 AssetSortFieldEnum.originalFileName: 'Original File Name',
-                AssetSortFieldEnum.rights: 'Rights',
+                AssetSortFieldEnum.rights: 'Rights Summary',
                 AssetSortFieldEnum.rightsDetails: 'Rights Details',
                 AssetSortFieldEnum.shotDescription: 'Shot Description',
               }[value] ??

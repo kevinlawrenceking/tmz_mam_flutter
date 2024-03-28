@@ -141,13 +141,6 @@ class _AssetTileItemState extends State<AssetTileItem> {
                         ? widget.model.metadata.credit!
                         : '-',
                   ),
-                  // _MetadataValue(
-                  //   theme: theme,
-                  //   label: 'Rights Details',
-                  //   value: widget.model.metadata.rightsDetails?.isNotEmpty ?? false
-                  //       ? widget.model.metadata.rightsDetails!
-                  //       : '-',
-                  // ),
                 ],
               ),
             ),

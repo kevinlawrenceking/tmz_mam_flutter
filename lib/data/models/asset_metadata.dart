@@ -213,9 +213,9 @@ class AssetMetadataModel extends Equatable {
     Map<String, dynamic>? dto,
   ) {
     return AssetMetadataModel(
-      daletID: Int32.tryParseInt(dto?['dalet_id'] ?? ''),
+      daletID: dto?['dalet_id'] != null ? Int32(dto!['dalet_id']) : null,
       keywords: (dto?['keywords'] as List<dynamic>?)
-              ?.map((_) => _ as String)
+              ?.map((_) => _.toString())
               .toList() ??
           [],
       shotDescription: dto?['shot_description'] ?? '',

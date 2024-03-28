@@ -41,6 +41,12 @@ class UserCollectionsBloc extends Bloc<BlocEvent, BlocState> {
       return;
     }
 
+    emit(CollectionsLoadingState());
+
+    await Future<void>.delayed(
+      const Duration(milliseconds: 250),
+    );
+
     final fetchResult = await userCollectionDataSource.getCollectionList();
 
     fetchResult.fold(
@@ -129,6 +135,12 @@ class UserCollectionsBloc extends Bloc<BlocEvent, BlocState> {
     if (result.isLeft()) {
       return;
     }
+
+    emit(CollectionsLoadingState());
+
+    await Future<void>.delayed(
+      const Duration(milliseconds: 250),
+    );
 
     final fetchResult = await userCollectionDataSource.getCollectionList();
 
