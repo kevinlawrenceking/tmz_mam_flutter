@@ -23,7 +23,7 @@ class UserCollectionItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: selected ? const Color(0xFF1F2937) : null,
+      color: selected ? const Color(0xFF5F2A2A) : null,
       child: InkWell(
         onTap: () => onTap(model),
         child: Padding(
