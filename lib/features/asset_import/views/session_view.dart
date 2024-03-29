@@ -390,7 +390,7 @@ class _SessionViewState extends State<SessionView> {
                             showDuration: const Duration(seconds: 5),
                             type: ToastTypeEnum.error,
                             title: 'Missing Information',
-                            message: 'Headline is required!',
+                            message: 'Rights Summary is required!',
                           );
 
                           return;

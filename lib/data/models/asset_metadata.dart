@@ -223,28 +223,28 @@ class AssetMetadataModel extends Equatable {
         dto?['location'],
       ),
       agency: (dto?['agency'] as List<dynamic>?)
-              ?.map((_) => _ as String)
+              ?.map((_) => _.toString())
               .toList() ??
           [],
       emotion: (dto?['emotion'] as List<dynamic>?)
               ?.map(
-                (_) => AssetMetadataEmotionEnum.fromJsonDtoValue(_ as String),
+                (_) => AssetMetadataEmotionEnum.fromJsonDtoValue(_.toString()),
               )
               .toList() ??
           [],
       overlay: (dto?['overlay'] as List<dynamic>?)
               ?.map(
-                (_) => AssetMetadataOverlayEnum.fromJsonDtoValue(_ as String),
+                (_) => AssetMetadataOverlayEnum.fromJsonDtoValue(_.toString()),
               )
               .toList() ??
           [],
       celebrity: dto?['celebrity'] ?? false,
       celebrityInPhoto: (dto?['celebrity_in_photo'] as List<dynamic>?)
-              ?.map((_) => _ as String)
+              ?.map((_) => _.toString())
               .toList() ??
           [],
       celebrityAssociated: (dto?['celebrity_associated'] as List<dynamic>?)
-              ?.map((_) => _ as String)
+              ?.map((_) => _.toString())
               .toList() ??
           [],
       rights: AssetMetadataRightsEnum.fromJsonDtoValue(

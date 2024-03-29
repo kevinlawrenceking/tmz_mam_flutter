@@ -12,7 +12,6 @@ import 'package:tmz_damz/shared/widgets/copy_text.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
-import 'package:tmz_damz/themes/flutter_flow_theme.dart';
 import 'package:tmz_damz/utils/config.dart';
 
 class AssetDetails extends StatelessWidget {
@@ -127,7 +126,7 @@ class AssetDetails extends StatelessWidget {
               Expanded(
                 child: CopyText(
                   model.headline,
-                  style: FlutterFlowTheme.of(context).headlineLarge,
+                  style: theme.textTheme.headlineMedium,
                 ),
               ),
               const SizedBox(width: 10.0),

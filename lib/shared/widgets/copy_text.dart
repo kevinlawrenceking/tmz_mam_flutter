@@ -95,10 +95,10 @@ class _CopyTextState extends State<CopyText> {
                 ),
               );
 
-              // Toast.showNotification(
-              //   type: ToastTypeEnum.success,
-              //   message: 'Value copied to clipboard!',
-              // );
+              Toast.showNotification(
+                type: ToastTypeEnum.success,
+                message: 'Value copied to clipboard!',
+              );
             },
             child: Align(
               alignment: Alignment.centerLeft,
