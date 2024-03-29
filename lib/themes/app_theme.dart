@@ -47,6 +47,9 @@ class AppTheme {
               borderRadius: BorderRadius.circular(6.0),
             ),
             contentPadding: const EdgeInsets.all(14.0),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(
                 color: Color(0xFF454647),
@@ -172,6 +175,16 @@ class AppTheme {
             bodySmall: GoogleFonts.getFont(
               'Roboto',
               fontSize: 14.0,
+              letterSpacing: 0.5,
+            ),
+            headlineSmall: GoogleFonts.getFont(
+              'Roboto',
+              fontSize: 20.0,
+              letterSpacing: 0.5,
+            ),
+            headlineMedium: GoogleFonts.getFont(
+              'Roboto',
+              fontSize: 28.0,
               letterSpacing: 0.5,
             ),
             labelSmall: GoogleFonts.getFont(

@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class TagField extends StatefulWidget {
+  final bool? enabled;
   final String hintText;
   final List<String> initialTags;
   final void Function(List<String> tags) onChange;
 
   const TagField({
     super.key,
+    this.enabled,
     required this.hintText,
     required this.initialTags,
     required this.onChange,
@@ -48,6 +50,7 @@ class _TagFieldState extends State<TagField> {
               .toList(),
           inputFieldBuilder: (context, inputFieldValues) {
             return Focus(
+              skipTraversal: !(widget.enabled ?? true),
               onFocusChange: (hasFocus) {
                 if (!hasFocus) {
                   final tag = inputFieldValues.textEditingController.text
@@ -72,100 +75,104 @@ class _TagFieldState extends State<TagField> {
                   widget.onChange(tags ?? []);
                 }
               },
-              child: TextField(
-                controller: inputFieldValues.textEditingController,
-                focusNode: inputFieldValues.focusNode,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  errorText: inputFieldValues.error,
-                  hintText:
-                      inputFieldValues.tags.isNotEmpty ? '' : widget.hintText,
-                  isDense: true,
-                  prefixIconConstraints: BoxConstraints(
-                    maxWidth: constraints.maxWidth - 150,
-                  ),
-                  prefixIcon: inputFieldValues.tags.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                            right: 5.0,
-                          ),
-                          child: SingleChildScrollView(
-                            controller: inputFieldValues.tagScrollController,
+              child: Opacity(
+                opacity: (widget.enabled ?? true) ? 1.0 : 0.5,
+                child: TextField(
+                  enabled: widget.enabled,
+                  controller: inputFieldValues.textEditingController,
+                  focusNode: inputFieldValues.focusNode,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    errorText: inputFieldValues.error,
+                    hintText:
+                        inputFieldValues.tags.isNotEmpty ? '' : widget.hintText,
+                    isDense: true,
+                    prefixIconConstraints: BoxConstraints(
+                      maxWidth: constraints.maxWidth - 150,
+                    ),
+                    prefixIcon: inputFieldValues.tags.isNotEmpty
+                        ? Padding(
                             padding: const EdgeInsets.only(
-                              left: 3.0,
-                              top: 6.0,
-                              bottom: 6.0,
+                              right: 5.0,
                             ),
-                            child: Wrap(
-                              runSpacing: 6.0,
-                              children: [
-                                ...inputFieldValues.tags.map((data) {
-                                  return _buildTag(
-                                    theme: theme,
-                                    data: data,
-                                    onRemove: (tag) {
-                                      inputFieldValues.onTagRemoved(tag);
-                                      widget.onChange(
-                                        inputFieldValues.tags
-                                            .map((_) => _.data)
-                                            .toList(),
-                                      );
-                                    },
-                                    onTap: (tag) {
-                                      //
-                                    },
-                                  );
-                                }),
-                              ],
+                            child: SingleChildScrollView(
+                              controller: inputFieldValues.tagScrollController,
+                              padding: const EdgeInsets.only(
+                                left: 3.0,
+                                top: 6.0,
+                                bottom: 6.0,
+                              ),
+                              child: Wrap(
+                                runSpacing: 6.0,
+                                children: [
+                                  ...inputFieldValues.tags.map((data) {
+                                    return _buildTag(
+                                      theme: theme,
+                                      data: data,
+                                      onRemove: (tag) {
+                                        inputFieldValues.onTagRemoved(tag);
+                                        widget.onChange(
+                                          inputFieldValues.tags
+                                              .map((_) => _.data)
+                                              .toList(),
+                                        );
+                                      },
+                                      onTap: (tag) {
+                                        //
+                                      },
+                                    );
+                                  }),
+                                ],
+                              ),
                             ),
-                          ),
+                          )
+                        : null,
+                  ),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(100),
+                  ],
+                  onChanged: (value) {
+                    final tag = value
+                        .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
+                        .replaceAll(RegExp(r'\s{2,}'), '')
+                        .trim();
+
+                    if (tag.isEmpty) {
+                      return;
+                    }
+
+                    _tagController.onTagChanged(
+                      DynamicTagData(tag, tag),
+                    );
+                  },
+                  onSubmitted: (value) {
+                    final tag = value
+                        .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
+                        .replaceAll(RegExp(r'\s{2,}'), '')
+                        .trim();
+
+                    if (tag.isEmpty) {
+                      return;
+                    }
+
+                    _tagController.onTagSubmitted(
+                      DynamicTagData(tag, tag),
+                    );
+
+                    final tags = _tagController.getTags
+                        ?.map(
+                          (_) => _.data,
                         )
-                      : null,
+                        .toList();
+
+                    widget.onChange(tags ?? []);
+
+                    inputFieldValues.focusNode.requestFocus();
+                  },
+                  onTap: () {
+                    _tagController.getFocusNode?.requestFocus();
+                  },
                 ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(100),
-                ],
-                onChanged: (value) {
-                  final tag = value
-                      .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
-                      .replaceAll(RegExp(r'\s{2,}'), '')
-                      .trim();
-
-                  if (tag.isEmpty) {
-                    return;
-                  }
-
-                  _tagController.onTagChanged(
-                    DynamicTagData(tag, tag),
-                  );
-                },
-                onSubmitted: (value) {
-                  final tag = value
-                      .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
-                      .replaceAll(RegExp(r'\s{2,}'), '')
-                      .trim();
-
-                  if (tag.isEmpty) {
-                    return;
-                  }
-
-                  _tagController.onTagSubmitted(
-                    DynamicTagData(tag, tag),
-                  );
-
-                  final tags = _tagController.getTags
-                      ?.map(
-                        (_) => _.data,
-                      )
-                      .toList();
-
-                  widget.onChange(tags ?? []);
-
-                  inputFieldValues.focusNode.requestFocus();
-                },
-                onTap: () {
-                  _tagController.getFocusNode?.requestFocus();
-                },
               ),
             );
           },

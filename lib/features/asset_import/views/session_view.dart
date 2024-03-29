@@ -6,12 +6,13 @@ import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/asset_import_session.dart';
+import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/features/asset_import/bloc/file_bloc.dart';
 import 'package:tmz_damz/features/asset_import/bloc/session_bloc.dart';
 import 'package:tmz_damz/features/asset_import/view_models/file_upload_view_model.dart';
 import 'package:tmz_damz/features/asset_import/view_models/file_view_model.dart';
+import 'package:tmz_damz/features/asset_import/widgets/bulk_update_form.dart';
 import 'package:tmz_damz/features/asset_import/widgets/session_file.dart';
-import 'package:tmz_damz/features/asset_import/widgets/session_file_form.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
@@ -32,15 +33,19 @@ class SessionView extends StatefulWidget {
 
 class _SessionViewState extends State<SessionView> {
   late DropzoneViewController _dropController;
-  final _fileFormControllers = <String, SessionFileFormController>{};
+  final _bulkUpdateFormController = BulkUpdateFormController();
+  final _fileControllers = <String, SessionFileController>{};
+  bool _expandAll = false;
 
   @override
   void dispose() {
-    for (var i = 0; i < _fileFormControllers.length; i++) {
-      _fileFormControllers.entries.elementAt(i).value.dispose();
+    for (var i = 0; i < _fileControllers.length; i++) {
+      _fileControllers.entries.elementAt(i).value.dispose();
     }
 
-    _fileFormControllers.clear();
+    _fileControllers.clear();
+
+    _bulkUpdateFormController.dispose();
 
     super.dispose();
   }
@@ -63,6 +68,7 @@ class _SessionViewState extends State<SessionView> {
         listenWhen: (_, state) =>
             state is GetSessionDetailsFailureState ||
             state is RemoveSessionFileFailureState ||
+            state is RemoveSessionFileSuccessState ||
             state is SessionFinalizationSuccessState ||
             state is SessionFinalizationFailureState ||
             state is SetFileMetaFailureState,
@@ -84,6 +90,14 @@ class _SessionViewState extends State<SessionView> {
               type: ToastTypeEnum.error,
               title: 'Failed to Remove File',
               message: state.failure.message,
+            );
+          } else if (state is RemoveSessionFileSuccessState) {
+            _fileControllers.remove(state.fileID);
+
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.information,
+              title: 'File Removed',
             );
           } else if (state is SessionFinalizationSuccessState) {
             Toast.showNotification(
@@ -254,13 +268,18 @@ class _SessionViewState extends State<SessionView> {
         final file = files[index];
 
         return SessionFile(
+          key: ValueKey(file.fileID),
           file: file,
           onControllerCreated: (controller) {
             if (file.meta != null) {
-              controller.setFrom(file.meta!);
+              controller.form.setFrom(file.meta!);
             }
 
-            _fileFormControllers[file.fileID] = controller;
+            if (_fileControllers.containsKey(file.fileID)) {
+              _fileControllers[file.fileID]!.dispose();
+            }
+
+            _fileControllers[file.fileID] = controller;
           },
           onChange: (meta) {
             BlocProvider.of<SessionBloc>(context).add(
@@ -333,21 +352,64 @@ class _SessionViewState extends State<SessionView> {
                         vertical: 10.0,
                       ),
                       child: Text(
-                        'Submit',
+                        'SUBMIT',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
+                          letterSpacing: 1.0,
                         ),
                       ),
                     ),
                     onPressed: () {
                       final fileMeta =
-                          _fileFormControllers.map((fileID, controller) {
-                        final model = controller.getModel();
+                          _fileControllers.map((fileID, controller) {
+                        final model = controller.form.getModel();
                         return MapEntry(fileID, model);
                       });
 
                       if (fileMeta.isEmpty) {
                         return;
+                      }
+
+                      for (var i = 0; i < fileMeta.length; i++) {
+                        final meta = fileMeta.values.elementAt(i);
+
+                        if (meta.headline.isEmpty) {
+                          Toast.showNotification(
+                            showDuration: const Duration(seconds: 5),
+                            type: ToastTypeEnum.error,
+                            title: 'Missing Information',
+                            message: 'Headline is required!',
+                          );
+
+                          return;
+                        }
+
+                        if (meta.metadata.rights ==
+                            AssetMetadataRightsEnum.unknown) {
+                          Toast.showNotification(
+                            showDuration: const Duration(seconds: 5),
+                            type: ToastTypeEnum.error,
+                            title: 'Missing Information',
+                            message: 'Headline is required!',
+                          );
+
+                          return;
+                        }
+
+                        if (meta.metadata.rights !=
+                            AssetMetadataRightsEnum.freeTMZ) {
+                          if (meta.metadata.agency.isEmpty &&
+                              !(meta.metadata.credit?.isNotEmpty ?? false)) {
+                            Toast.showNotification(
+                              showDuration: const Duration(seconds: 5),
+                              type: ToastTypeEnum.error,
+                              title: 'Missing Information',
+                              message: 'Agency and/or Credit is required',
+                            );
+
+                            return;
+                          }
+                        }
                       }
 
                       BlocProvider.of<SessionBloc>(context).add(
@@ -371,12 +433,140 @@ class _SessionViewState extends State<SessionView> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (sessionStatus == AssetImportSessionStatusEnum.$new)
+                    if (sessionStatus == AssetImportSessionStatusEnum.$new) ...[
                       _buildDropHeader(),
+                      const SizedBox(height: 20.0),
+                      BulkUpdateForm(
+                        controller: _bulkUpdateFormController,
+                        onApply: (model) {
+                          if (_fileControllers.isEmpty) {
+                            return;
+                          }
+
+                          for (var i = 0; i < _fileControllers.length; i++) {
+                            final controller =
+                                _fileControllers.values.elementAt(i);
+
+                            controller.form.setFromBulk(model);
+                          }
+
+                          Toast.showNotification(
+                            showDuration: const Duration(seconds: 5),
+                            type: ToastTypeEnum.success,
+                            message: 'Metadata applied!',
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                    ],
                     ..._buildUploadingList(
                       context: context,
                       files: uploading,
                     ),
+                    const SizedBox(height: 10.0),
+                    if (files.isNotEmpty) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                const Color(0x30FFFFFF),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                    color: Color(0x80000000),
+                                  ),
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14.0,
+                                vertical: 10.0,
+                              ),
+                              child: Text(
+                                'EXPAND ALL',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.0,
+                                ),
+                              ),
+                            ),
+                            onPressed: () async {
+                              _expandAll = true;
+
+                              for (var i = 0; i < files.length; i++) {
+                                final controller =
+                                    _fileControllers[files[i].fileID];
+
+                                if (controller == null) {
+                                  continue;
+                                }
+
+                                if (i > 0) {
+                                  await Future<void>.delayed(
+                                    const Duration(milliseconds: 250),
+                                  );
+                                }
+
+                                if (!_expandAll) {
+                                  return;
+                                }
+
+                                controller.expand();
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 20.0),
+                          TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                const Color(0x30FFFFFF),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                    color: Color(0x80000000),
+                                  ),
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14.0,
+                                vertical: 10.0,
+                              ),
+                              child: Text(
+                                'COLLAPSE ALL',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.0,
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              _expandAll = false;
+
+                              for (var i = 0; i < files.length; i++) {
+                                final controller =
+                                    _fileControllers[files[i].fileID];
+
+                                if (controller == null) {
+                                  continue;
+                                }
+
+                                controller.collapse();
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                    ],
                     ..._buildFileList(
                       context: context,
                       files: files,
@@ -473,7 +663,7 @@ class _SessionViewState extends State<SessionView> {
       ),
       if (files.isNotEmpty)
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
+          padding: EdgeInsets.symmetric(vertical: 20.0),
           child: Divider(),
         ),
     ];

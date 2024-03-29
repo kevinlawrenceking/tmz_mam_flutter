@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
+import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.dart';
 import 'package:tmz_damz/features/asset_import/widgets/tag_field.dart';
 import 'package:tmz_damz/utils/debounce_timer.dart';
 
 class SessionFileForm extends StatefulWidget {
   final SessionFileFormController controller;
-  final void Function(AssetImportSessionFileMetaModel meta)? onChange;
+  final void Function(AssetImportSessionFileMetaModel model)? onChange;
 
   const SessionFileForm({
     super.key,
@@ -29,6 +30,30 @@ class _SessionFileFormState extends State<SessionFileForm> {
   );
 
   @override
+  void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.controller.addListener(_onControllerChanged);
+  }
+
+  void _onControllerChanged() {
+    if (mounted) {
+      setState(() {});
+
+      _onChangeDebounce.wrap(() {
+        widget.onChange?.call(widget.controller.getModel());
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
@@ -37,141 +62,9 @@ class _SessionFileFormState extends State<SessionFileForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Headline
-          Row(
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Headline ',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                      const TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: TextFormField(
-                  controller: widget.controller._headlineController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(250),
-                  ],
-                  onChanged: (value) {
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildHeadline(theme),
           const SizedBox(height: 10.0),
-          // Celebrity
-          Row(
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Celebrity ',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                      const TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              AnimatedToggleSwitch.dual(
-                current: widget.controller.celebrity,
-                first: false,
-                second: true,
-                height: 30,
-                borderWidth: 1,
-                indicatorSize: const Size.fromWidth(28),
-                indicatorTransition:
-                    const ForegroundIndicatorTransition.fading(),
-                animationDuration: const Duration(milliseconds: 250),
-                styleBuilder: (value) {
-                  if (value) {
-                    return ToggleStyle(
-                      backgroundColor: const Color(0xFF1D1E1F),
-                      borderColor: const Color(0xFF101010),
-                      indicatorColor: const Color(0xFFD5D7DD),
-                      indicatorBorder: Border.all(
-                        color: Colors.black.withAlpha(180),
-                      ),
-                    );
-                  } else {
-                    return ToggleStyle(
-                      backgroundColor: const Color(0xFF1D1E1F),
-                      borderColor: const Color(0xFF101010),
-                      indicatorColor: const Color(0xFF40434C),
-                      indicatorBorder: Border.all(
-                        color: Colors.black.withAlpha(180),
-                      ),
-                    );
-                  }
-                },
-                textBuilder: (value) {
-                  if (value) {
-                    return Text(
-                      'YES',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    );
-                  } else {
-                    return Text(
-                      'NO',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF505662),
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    );
-                  }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    widget.controller.celebrity = value;
-                  });
-
-                  _onChangeDebounce.wrap(() {
-                    widget.onChange?.call(widget.controller.getModel());
-                  });
-                },
-              ),
-              const Spacer(),
-            ],
-          ),
+          _buildCelebrity(theme),
           const SizedBox(height: 10.0),
           AnimatedCrossFade(
             firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
@@ -184,370 +77,32 @@ class _SessionFileFormState extends State<SessionFileForm> {
             firstChild: const SizedBox(height: 0.0),
             secondChild: Column(
               children: [
-                // Celebrity (In Photo)
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      child: Text(
-                        'Celebrity (In Photo)',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: TagField(
-                        hintText: 'Add celebrity...',
-                        initialTags: widget.controller.celebrityInPhoto,
-                        onChange: (tags) {
-                          setState(() {
-                            widget.controller.celebrityInPhoto = tags;
-                          });
-
-                          _onChangeDebounce.wrap(() {
-                            widget.onChange?.call(widget.controller.getModel());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                _buildCelebrityInPhoto(theme),
                 const SizedBox(height: 10.0),
-                // Celebrity (Associated)
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      child: Text(
-                        'Celebrity (Associated)',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: TagField(
-                        hintText: 'Add celebrity...',
-                        initialTags: widget.controller.celebrityAssociated,
-                        onChange: (tags) {
-                          setState(() {
-                            widget.controller.celebrityAssociated = tags;
-                          });
-
-                          _onChangeDebounce.wrap(() {
-                            widget.onChange?.call(widget.controller.getModel());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                _buildCelebrityAssociated(theme),
                 const SizedBox(height: 10.0),
               ],
             ),
           ),
-          // Shot Description
-          Row(
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: Text(
-                  'Shot Description',
-                  style: TextStyle(
-                    color: theme.textTheme.labelMedium?.color,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: TextFormField(
-                  controller: widget.controller._shotDescriptionController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(2000),
-                  ],
-                  minLines: 3,
-                  maxLines: 5,
-                  onChanged: (value) {
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildShotDescription(theme),
           const SizedBox(height: 10.0),
-          // Keywords
-          Row(
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: Text(
-                  'Keywords',
-                  style: TextStyle(
-                    color: theme.textTheme.labelMedium?.color,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: TagField(
-                  hintText: 'Add keyword...',
-                  initialTags: widget.controller.keywords,
-                  onChange: (tags) {
-                    setState(() {
-                      widget.controller.keywords = tags;
-                    });
-
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildKeywords(theme),
           const SizedBox(height: 10.0),
-          // Agency
-          Row(
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: Text(
-                  'Agency',
-                  style: TextStyle(
-                    color: theme.textTheme.labelMedium?.color,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: TagField(
-                  hintText: 'Add agency...',
-                  initialTags: widget.controller.agency,
-                  onChange: (tags) {
-                    setState(() {
-                      widget.controller.agency = tags;
-                    });
-
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildAgency(theme),
           const SizedBox(height: 20.0),
-          // Emotions
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: Text(
-                  'Emotions',
-                  style: TextStyle(
-                    color: theme.textTheme.labelMedium?.color,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: Choice.inline(
-                  clearable: true,
-                  multiple: true,
-                  value: widget.controller.emotion,
-                  itemCount: 4,
-                  itemBuilder: (state, index) {
-                    const emotions = [
-                      AssetMetadataEmotionEnum.positive,
-                      AssetMetadataEmotionEnum.negative,
-                      AssetMetadataEmotionEnum.surprised,
-                      AssetMetadataEmotionEnum.neutral,
-                    ];
-
-                    return ChoiceChip(
-                      label: Text(
-                        {
-                              AssetMetadataEmotionEnum.positive: 'Positive',
-                              AssetMetadataEmotionEnum.negative: 'Negative',
-                              AssetMetadataEmotionEnum.surprised: 'Surprised',
-                              AssetMetadataEmotionEnum.neutral: 'Neutral',
-                            }[emotions[index]] ??
-                            '',
-                      ),
-                      selected:
-                          widget.controller.emotion.contains(emotions[index]),
-                      selectedColor: const Color(0xFF8E0000),
-                      onSelected: (value) {
-                        if (value) {
-                          state.add(emotions[index]);
-                        } else {
-                          state.remove(emotions[index]);
-                        }
-                      },
-                    );
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      widget.controller.emotion = value;
-                    });
-
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildEmotions(theme),
           const SizedBox(height: 20.0),
-          // Overlays
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: Text(
-                  'Overlays',
-                  style: TextStyle(
-                    color: theme.textTheme.labelMedium?.color,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: Choice.inline(
-                  clearable: true,
-                  multiple: true,
-                  value: widget.controller.overlay,
-                  itemCount: 3,
-                  itemBuilder: (state, index) {
-                    const overlays = [
-                      AssetMetadataOverlayEnum.blackBarCensor,
-                      AssetMetadataOverlayEnum.blurCensor,
-                      AssetMetadataOverlayEnum.watermark,
-                    ];
-
-                    return ChoiceChip(
-                      label: Text(
-                        {
-                              AssetMetadataOverlayEnum.blackBarCensor:
-                                  'Black Bar Censor',
-                              AssetMetadataOverlayEnum.blurCensor:
-                                  'Blur Censor',
-                              AssetMetadataOverlayEnum.watermark: 'Watermark',
-                            }[overlays[index]] ??
-                            '',
-                      ),
-                      selected:
-                          widget.controller.overlay.contains(overlays[index]),
-                      selectedColor: const Color(0xFF8E0000),
-                      onSelected: (value) {
-                        if (value) {
-                          state.add(overlays[index]);
-                        } else {
-                          state.remove(overlays[index]);
-                        }
-                      },
-                    );
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      widget.controller.overlay = value;
-                    });
-
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildOverlays(theme),
           const SizedBox(height: 20.0),
-          // Rights Summary
-          Row(
-            children: [
-              SizedBox(
-                width: 150.0,
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Rights Summary ',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                      const TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 20.0),
-              Expanded(
-                child: Choice.inline(
-                  value: [widget.controller.rights],
-                  itemCount: 3,
-                  itemBuilder: (state, index) {
-                    const rights = [
-                      AssetMetadataRightsEnum.freeTMZ,
-                      AssetMetadataRightsEnum.freeNonTMZ,
-                      AssetMetadataRightsEnum.costNonTMZ,
-                    ];
-
-                    return ChoiceChip(
-                      label: Text(
-                        {
-                              AssetMetadataRightsEnum.costNonTMZ:
-                                  'Cost (Non-TMZ)',
-                              AssetMetadataRightsEnum.freeNonTMZ:
-                                  'Free (Non-TMZ)',
-                              AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
-                            }[rights[index]] ??
-                            '',
-                      ),
-                      selected: widget.controller.rights == rights[index],
-                      selectedColor: const Color(0xFF8E0000),
-                      onSelected: (value) {
-                        state.replace([rights[index]]);
-                      },
-                    );
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      widget.controller.rights =
-                          value.firstOrNull ?? AssetMetadataRightsEnum.unknown;
-                    });
-
-                    _onChangeDebounce.wrap(() {
-                      widget.onChange?.call(widget.controller.getModel());
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
+          _buildRightsSummary(theme),
           AnimatedCrossFade(
             firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
             secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
             sizeCurve: Curves.fastOutSlowIn,
             crossFadeState:
-                widget.controller.rights == AssetMetadataRightsEnum.freeTMZ
+                (widget.controller.rights == AssetMetadataRightsEnum.unknown) ||
+                        (widget.controller.rights ==
+                            AssetMetadataRightsEnum.freeTMZ)
                     ? CrossFadeState.showFirst
                     : CrossFadeState.showSecond,
             duration: kThemeAnimationDuration,
@@ -555,176 +110,690 @@ class _SessionFileFormState extends State<SessionFileForm> {
             secondChild: Column(
               children: [
                 const SizedBox(height: 20.0),
-                // Credit Location
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      child: Text(
-                        'Credit Location',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: Choice.inline(
-                        value: [widget.controller.creditLocation],
-                        itemCount: 2,
-                        itemBuilder: (state, index) {
-                          const creditLocation = [
-                            AssetMetadataCreditLocationEnum.end,
-                            AssetMetadataCreditLocationEnum.onScreen,
-                          ];
-
-                          return ChoiceChip(
-                            label: Text(
-                              {
-                                    AssetMetadataCreditLocationEnum.end: 'End',
-                                    AssetMetadataCreditLocationEnum.onScreen:
-                                        'On-Screen',
-                                  }[creditLocation[index]] ??
-                                  '',
-                            ),
-                            selected: widget.controller.creditLocation ==
-                                creditLocation[index],
-                            selectedColor: const Color(0xFF8E0000),
-                            onSelected: (value) {
-                              state.replace([creditLocation[index]]);
-                            },
-                          );
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            widget.controller.creditLocation =
-                                value.firstOrNull ??
-                                    AssetMetadataCreditLocationEnum.end;
-                          });
-
-                          _onChangeDebounce.wrap(() {
-                            widget.onChange?.call(widget.controller.getModel());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                _buildCreditLocation(theme),
                 const SizedBox(height: 20.0),
-                // Credit
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Credit ',
-                              style: TextStyle(
-                                color: theme.textTheme.labelMedium?.color,
-                              ),
-                            ),
-                            const TextSpan(
-                              text: '*',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: TextFormField(
-                        controller: widget.controller._creditController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(50),
-                        ],
-                        onChanged: (value) {
-                          _onChangeDebounce.wrap(() {
-                            widget.onChange?.call(widget.controller.getModel());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                _buildCredit(theme),
                 const SizedBox(height: 10.0),
-                // Rights Instructions
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      child: Text(
-                        'Rights Instructions',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: TextFormField(
-                        controller:
-                            widget.controller._rightsInstructionsController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(250),
-                        ],
-                        onChanged: (value) {
-                          _onChangeDebounce.wrap(() {
-                            widget.onChange?.call(widget.controller.getModel());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                _buildRightsInstructions(theme),
                 const SizedBox(height: 10.0),
-                // Rights Details
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      child: Text(
-                        'Rights Details',
-                        style: TextStyle(
-                          color: theme.textTheme.labelMedium?.color,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20.0),
-                    Expanded(
-                      child: TextFormField(
-                        controller: widget.controller._rightsDetailsController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(250),
-                        ],
-                        onChanged: (value) {
-                          _onChangeDebounce.wrap(() {
-                            widget.onChange?.call(widget.controller.getModel());
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                _buildRightsDetails(theme),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAgency(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Agency',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TagField(
+            key: UniqueKey(),
+            hintText: 'Add agency...',
+            initialTags: widget.controller.agency,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.agency = tags;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCelebrity(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Celebrity ',
+                  style: TextStyle(
+                    color: theme.textTheme.labelMedium?.color,
+                  ),
+                ),
+                const TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        AnimatedToggleSwitch.dual(
+          current: widget.controller.celebrity,
+          first: false,
+          second: true,
+          height: 30,
+          borderWidth: 1,
+          indicatorSize: const Size.fromWidth(28),
+          indicatorTransition: const ForegroundIndicatorTransition.fading(),
+          animationDuration: const Duration(milliseconds: 250),
+          styleBuilder: (value) {
+            if (value) {
+              return ToggleStyle(
+                backgroundColor: const Color(0xFF1D1E1F),
+                borderColor: const Color(0xFF101010),
+                indicatorColor: const Color(0xFFD5D7DD),
+                indicatorBorder: Border.all(
+                  color: Colors.black.withAlpha(180),
+                ),
+              );
+            } else {
+              return ToggleStyle(
+                backgroundColor: const Color(0xFF1D1E1F),
+                borderColor: const Color(0xFF101010),
+                indicatorColor: const Color(0xFF40434C),
+                indicatorBorder: Border.all(
+                  color: Colors.black.withAlpha(180),
+                ),
+              );
+            }
+          },
+          textBuilder: (value) {
+            if (value) {
+              return Text(
+                'YES',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            } else {
+              return Text(
+                'NO',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF505662),
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }
+          },
+          onChanged: (value) {
+            setState(() {
+              widget.controller.celebrity = value;
+            });
+
+            _onChangeDebounce.wrap(() {
+              widget.onChange?.call(widget.controller.getModel());
+            });
+          },
+        ),
+        const Spacer(),
+      ],
+    );
+  }
+
+  Widget _buildCelebrityAssociated(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Celebrity (Associated)',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TagField(
+            key: UniqueKey(),
+            hintText: 'Add celebrity...',
+            initialTags: widget.controller.celebrityAssociated,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.celebrityAssociated = tags;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCelebrityInPhoto(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Celebrity (In Photo)',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TagField(
+            key: UniqueKey(),
+            hintText: 'Add celebrity...',
+            initialTags: widget.controller.celebrityInPhoto,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.celebrityInPhoto = tags;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCredit(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Credit ',
+                  style: TextStyle(
+                    color: theme.textTheme.labelMedium?.color,
+                  ),
+                ),
+                const TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TextFormField(
+            key: UniqueKey(),
+            controller: widget.controller._creditController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(50),
+            ],
+            onChanged: (value) {
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCreditLocation(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Credit Location',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: Choice.inline(
+            value: [widget.controller.creditLocation],
+            itemCount: 2,
+            itemBuilder: (state, index) {
+              const creditLocation = [
+                AssetMetadataCreditLocationEnum.end,
+                AssetMetadataCreditLocationEnum.onScreen,
+              ];
+
+              return ChoiceChip(
+                label: Text(
+                  {
+                        AssetMetadataCreditLocationEnum.end: 'End',
+                        AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
+                      }[creditLocation[index]] ??
+                      '',
+                ),
+                selected:
+                    widget.controller.creditLocation == creditLocation[index],
+                selectedColor: const Color(0xFF8E0000),
+                onSelected: (value) {
+                  state.replace([creditLocation[index]]);
+                },
+              );
+            },
+            onChanged: (value) {
+              setState(() {
+                widget.controller.creditLocation =
+                    value.firstOrNull ?? AssetMetadataCreditLocationEnum.end;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmotions(ThemeData theme) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Emotions',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: Choice.inline(
+            clearable: true,
+            multiple: true,
+            value: widget.controller.emotion,
+            itemCount: 4,
+            itemBuilder: (state, index) {
+              const emotions = [
+                AssetMetadataEmotionEnum.positive,
+                AssetMetadataEmotionEnum.negative,
+                AssetMetadataEmotionEnum.surprised,
+                AssetMetadataEmotionEnum.neutral,
+              ];
+
+              return ChoiceChip(
+                label: Text(
+                  {
+                        AssetMetadataEmotionEnum.positive: 'Positive',
+                        AssetMetadataEmotionEnum.negative: 'Negative',
+                        AssetMetadataEmotionEnum.surprised: 'Surprised',
+                        AssetMetadataEmotionEnum.neutral: 'Neutral',
+                      }[emotions[index]] ??
+                      '',
+                ),
+                selected: widget.controller.emotion.contains(emotions[index]),
+                selectedColor: const Color(0xFF8E0000),
+                onSelected: (value) {
+                  if (value) {
+                    state.add(emotions[index]);
+                  } else {
+                    state.remove(emotions[index]);
+                  }
+                },
+              );
+            },
+            onChanged: (value) {
+              setState(() {
+                widget.controller.emotion = value;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeadline(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Headline ',
+                  style: TextStyle(
+                    color: theme.textTheme.labelMedium?.color,
+                  ),
+                ),
+                const TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TextFormField(
+            key: UniqueKey(),
+            controller: widget.controller._headlineController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(250),
+            ],
+            onChanged: (value) {
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildKeywords(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Keywords',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TagField(
+            key: UniqueKey(),
+            hintText: 'Add keyword...',
+            initialTags: widget.controller.keywords,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.keywords = tags;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOverlays(ThemeData theme) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Overlays',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: Choice.inline(
+            clearable: true,
+            multiple: true,
+            value: widget.controller.overlay,
+            itemCount: 3,
+            itemBuilder: (state, index) {
+              const overlays = [
+                AssetMetadataOverlayEnum.blackBarCensor,
+                AssetMetadataOverlayEnum.blurCensor,
+                AssetMetadataOverlayEnum.watermark,
+              ];
+
+              return ChoiceChip(
+                label: Text(
+                  {
+                        AssetMetadataOverlayEnum.blackBarCensor:
+                            'Black Bar Censor',
+                        AssetMetadataOverlayEnum.blurCensor: 'Blur Censor',
+                        AssetMetadataOverlayEnum.watermark: 'Watermark',
+                      }[overlays[index]] ??
+                      '',
+                ),
+                selected: widget.controller.overlay.contains(overlays[index]),
+                selectedColor: const Color(0xFF8E0000),
+                onSelected: (value) {
+                  if (value) {
+                    state.add(overlays[index]);
+                  } else {
+                    state.remove(overlays[index]);
+                  }
+                },
+              );
+            },
+            onChanged: (value) {
+              setState(() {
+                widget.controller.overlay = value;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRightsDetails(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Rights Details',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TextFormField(
+            key: UniqueKey(),
+            controller: widget.controller._rightsDetailsController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(250),
+            ],
+            onChanged: (value) {
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRightsInstructions(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Rights Instructions',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TextFormField(
+            key: UniqueKey(),
+            controller: widget.controller._rightsInstructionsController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(250),
+            ],
+            onChanged: (value) {
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRightsSummary(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Rights Summary ',
+                  style: TextStyle(
+                    color: theme.textTheme.labelMedium?.color,
+                  ),
+                ),
+                const TextSpan(
+                  text: '*',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: Choice.inline(
+            value: [widget.controller.rights],
+            itemCount: 3,
+            itemBuilder: (state, index) {
+              const rights = [
+                AssetMetadataRightsEnum.freeTMZ,
+                AssetMetadataRightsEnum.freeNonTMZ,
+                AssetMetadataRightsEnum.costNonTMZ,
+              ];
+
+              return ChoiceChip(
+                label: Text(
+                  {
+                        AssetMetadataRightsEnum.costNonTMZ: 'Cost (Non-TMZ)',
+                        AssetMetadataRightsEnum.freeNonTMZ: 'Free (Non-TMZ)',
+                        AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
+                      }[rights[index]] ??
+                      '',
+                ),
+                selected: widget.controller.rights == rights[index],
+                selectedColor: const Color(0xFF8E0000),
+                onSelected: (value) {
+                  state.replace([rights[index]]);
+                },
+              );
+            },
+            onChanged: (value) {
+              setState(() {
+                widget.controller.rights =
+                    value.firstOrNull ?? AssetMetadataRightsEnum.unknown;
+              });
+
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildShotDescription(ThemeData theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 150.0,
+          child: Text(
+            'Shot Description',
+            style: TextStyle(
+              color: theme.textTheme.labelMedium?.color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 20.0),
+        Expanded(
+          child: TextFormField(
+            key: UniqueKey(),
+            controller: widget.controller._shotDescriptionController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(2000),
+            ],
+            minLines: 3,
+            maxLines: 5,
+            onChanged: (value) {
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -752,6 +821,7 @@ class SessionFileFormController extends ChangeNotifier {
 
   final _creditController = TextEditingController();
   String get credit => _creditController.text.trim();
+  set credit(String value) => _creditController.text = value;
 
   final _creditLocationController =
       ValueNotifier<AssetMetadataCreditLocationEnum>(
@@ -769,6 +839,7 @@ class SessionFileFormController extends ChangeNotifier {
 
   final _headlineController = TextEditingController();
   String get headline => _headlineController.text.trim();
+  set headline(String value) => _headlineController.text = value;
 
   final _keywordsController = ValueNotifier<List<String>>([]);
   List<String> get keywords => _keywordsController.value;
@@ -787,12 +858,16 @@ class SessionFileFormController extends ChangeNotifier {
 
   final _rightsDetailsController = TextEditingController();
   String get rightsDetails => _rightsDetailsController.text.trim();
+  set rightsDetails(String value) => _rightsDetailsController.text = value;
 
   final _rightsInstructionsController = TextEditingController();
   String get rightsInstructions => _rightsInstructionsController.text.trim();
+  set rightsInstructions(String value) =>
+      _rightsInstructionsController.text = value;
 
   final _shotDescriptionController = TextEditingController();
   String get shotDescription => _shotDescriptionController.text.trim();
+  set shotDescription(String value) => _shotDescriptionController.text = value;
 
   @override
   void dispose() {
@@ -851,7 +926,7 @@ class SessionFileFormController extends ChangeNotifier {
   void reset() {
     _agencyController.value = _model?.metadata.agency ?? [];
 
-    _celebrityController.value = true;
+    _celebrityController.value = _model?.metadata.celebrity ?? true;
 
     _celebrityAssociatedController.value =
         _model?.metadata.celebrityAssociated ?? [];
@@ -892,5 +967,61 @@ class SessionFileFormController extends ChangeNotifier {
   void setFrom(AssetImportSessionFileMetaModel model) {
     _model = model;
     reset();
+  }
+
+  void setFromBulk(BulkMetaViewModel model) {
+    if (model.agency != null) {
+      agency = model.agency!;
+    }
+
+    if (model.celebrity != null) {
+      celebrity = model.celebrity!;
+    }
+
+    if (model.celebrityAssociated != null) {
+      celebrityAssociated = model.celebrityAssociated!;
+    }
+
+    if (model.celebrityInPhoto != null) {
+      celebrityInPhoto = model.celebrityInPhoto!;
+    }
+
+    if (model.credit != null) {
+      credit = model.credit!;
+    }
+
+    if (model.creditLocation != null) {
+      creditLocation = model.creditLocation!;
+    }
+
+    if (model.emotion != null) {
+      emotion = model.emotion!;
+    }
+
+    if (model.headline != null) {
+      headline = model.headline!;
+    }
+
+    if (model.keywords != null) {
+      keywords = model.keywords!;
+    }
+
+    if (model.overlay != null) {
+      overlay = model.overlay!;
+    }
+
+    if (model.rights != null) {
+      rights = model.rights!;
+    }
+
+    if (model.rightsDetails != null) {
+      rightsDetails = model.rightsDetails!;
+    }
+
+    if (model.rightsInstructions != null) {
+      rightsInstructions = model.rightsInstructions!;
+    }
+
+    notifyListeners();
   }
 }

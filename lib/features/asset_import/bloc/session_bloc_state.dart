@@ -51,6 +51,19 @@ class RemoveSessionFileFailureState extends SessionBlocState {
       ];
 }
 
+class RemoveSessionFileSuccessState extends SessionBlocState {
+  final String fileID;
+
+  RemoveSessionFileSuccessState({
+    required this.fileID,
+  });
+
+  @override
+  List<Object?> get props => [
+        fileID,
+      ];
+}
+
 class SessionDetailsState extends SessionBlocState {
   final String _stateID;
   final AssetImportSessionStatusEnum sessionStatus;

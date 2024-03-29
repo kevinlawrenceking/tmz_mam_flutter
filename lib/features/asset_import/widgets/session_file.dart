@@ -18,12 +18,24 @@ enum SessionFileUploadState {
   sessionFileAlreadyExists,
 }
 
+class SessionFileController {
+  final _expansionController = ExpansionTileController();
+  final _controller = SessionFileFormController();
+
+  SessionFileFormController get form => _controller;
+
+  void dispose() => _controller.dispose();
+
+  void collapse() => _expansionController.collapse();
+
+  void expand() => _expansionController.expand();
+}
+
 class SessionFile extends StatefulWidget {
   final FileViewModel? file;
   final FileUploadViewModel? uploadFile;
   final SessionFileUploadState uploadState;
-  final void Function(SessionFileFormController controller)?
-      onControllerCreated;
+  final void Function(SessionFileController controller)? onControllerCreated;
   final void Function(AssetImportSessionFileMetaModel meta)? onChange;
   final void Function() onRemove;
 
@@ -42,7 +54,7 @@ class SessionFile extends StatefulWidget {
 }
 
 class _SessionFileState extends State<SessionFile> {
-  late SessionFileFormController _controller;
+  late SessionFileController _controller;
 
   @override
   void dispose() {
@@ -55,7 +67,7 @@ class _SessionFileState extends State<SessionFile> {
   void initState() {
     super.initState();
 
-    _controller = SessionFileFormController();
+    _controller = SessionFileController();
 
     widget.onControllerCreated?.call(_controller);
   }
@@ -70,6 +82,7 @@ class _SessionFileState extends State<SessionFile> {
         opacity: (widget.file != null) ? 1.0 : 0.4,
         child: (widget.file != null)
             ? ExpansionTile(
+                controller: _controller._expansionController,
                 backgroundColor: const Color(0x10FFFFFF),
                 collapsedBackgroundColor: const Color(0x10FFFFFF),
                 clipBehavior: Clip.antiAlias,
@@ -90,7 +103,7 @@ class _SessionFileState extends State<SessionFile> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SessionFileForm(
-                      controller: _controller,
+                      controller: _controller.form,
                       onChange: widget.onChange,
                     ),
                   ),
@@ -110,9 +123,7 @@ class _SessionFileState extends State<SessionFile> {
     );
   }
 
-  Widget _buildContent(
-    BuildContext context,
-  ) {
+  Widget _buildContent(BuildContext context) {
     final theme = Theme.of(context);
 
     final uploadedAt = widget.file?.uploadedAt ?? widget.uploadFile?.uploadedAt;

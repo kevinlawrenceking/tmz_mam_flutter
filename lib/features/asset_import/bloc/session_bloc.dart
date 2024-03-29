@@ -206,6 +206,12 @@ class SessionBloc extends Bloc<SessionBlocEvent, SessionBlocState> {
           _files.removeWhere((_) => _.fileID == event.fileID);
 
           emit(
+            RemoveSessionFileSuccessState(
+              fileID: event.fileID!,
+            ),
+          );
+
+          emit(
             SessionDetailsState(
               sessionStatus: _sessionStatus,
               files: _files,
