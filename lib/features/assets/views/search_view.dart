@@ -168,7 +168,8 @@ class _SearchViewState extends State<SearchView> {
                   );
 
                   return KeyEventResult.handled;
-                } else if (HardwareKeyboard.instance.isControlPressed &&
+                } else if ((HardwareKeyboard.instance.isControlPressed ||
+                        HardwareKeyboard.instance.isMetaPressed) &&
                     ((event.logicalKey == LogicalKeyboardKey.keyR) ||
                         (event.physicalKey == PhysicalKeyboardKey.keyR))) {
                   BlocProvider.of<AssetsBloc>(context).add(

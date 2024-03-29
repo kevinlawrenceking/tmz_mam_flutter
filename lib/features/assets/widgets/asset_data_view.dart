@@ -32,6 +32,8 @@ class AssetDataView extends StatefulWidget {
 
 class _AssetDataViewState extends State<AssetDataView> {
   final _selectIDs = <String>[];
+  int? _selectionStart;
+  int? _selectionEnd;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class _AssetDataViewState extends State<AssetDataView> {
 
   Widget _buildTileItem({
     required BuildContext context,
+    required int index,
     required double margin,
     required double width,
     required AssetDetailsModel model,
@@ -53,14 +56,42 @@ class _AssetDataViewState extends State<AssetDataView> {
         widget.onDoubleTap(model);
       },
       onLongPressDown: (details) {
-        if (!_selectIDs.any((id) => id == model.id)) {
-          if (!HardwareKeyboard.instance.isControlPressed) {
-            _selectIDs.clear();
+        if (!HardwareKeyboard.instance.isShiftPressed) {
+          _selectionStart = index != -1 ? index : null;
+
+          if (!_selectIDs.any((id) => id == model.id)) {
+            if (!HardwareKeyboard.instance.isControlPressed &&
+                !HardwareKeyboard.instance.isMetaPressed) {
+              _selectIDs.clear();
+            }
+            _selectIDs.add(model.id);
+          } else {
+            if (HardwareKeyboard.instance.isControlPressed ||
+                HardwareKeyboard.instance.isMetaPressed) {
+              _selectIDs.removeWhere((id) => id == model.id);
+            } else {
+              _selectIDs.removeWhere((id) => id != model.id);
+            }
           }
-          _selectIDs.add(model.id);
         } else {
-          if (!HardwareKeyboard.instance.isControlPressed) {
-            _selectIDs.removeWhere((id) => id != model.id);
+          _selectionEnd = index != -1 ? index : null;
+
+          if ((_selectionStart != null) && (_selectionEnd != null)) {
+            if (_selectionStart! < _selectionEnd!) {
+              final selectedIDs = widget.assets
+                  .getRange(_selectionStart!, _selectionEnd! + 1)
+                  .where((_) => !_selectIDs.any((id) => id == _.id))
+                  .map((_) => _.id);
+
+              _selectIDs.addAll(selectedIDs);
+            } else if (_selectionEnd! < _selectionStart!) {
+              final selectedIDs = widget.assets
+                  .getRange(_selectionEnd!, _selectionStart!)
+                  .where((_) => !_selectIDs.any((id) => id == _.id))
+                  .map((_) => _.id);
+
+              _selectIDs.addAll(selectedIDs);
+            }
           }
         }
 
@@ -115,16 +146,15 @@ class _AssetDataViewState extends State<AssetDataView> {
         return Padding(
           padding: const EdgeInsets.all(itemMargin),
           child: Wrap(
-            children: widget.assets
-                .map(
-                  (model) => _buildTileItem(
-                    context: context,
-                    margin: itemMargin,
-                    width: itemWidth,
-                    model: model,
-                  ),
-                )
-                .toList(),
+            children: widget.assets.indexed.map((_) {
+              return _buildTileItem(
+                context: context,
+                index: _.$1,
+                margin: itemMargin,
+                width: itemWidth,
+                model: _.$2,
+              );
+            }).toList(),
           ),
         );
       },
