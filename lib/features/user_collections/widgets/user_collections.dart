@@ -131,7 +131,8 @@ class _UserCollectionsState extends State<UserCollections> {
 
               return Focus(
                 onKeyEvent: (node, event) {
-                  if (event is! KeyDownEvent) {
+                  if ((event is! KeyDownEvent) ||
+                      (FocusManager.instance.primaryFocus != node)) {
                     return KeyEventResult.ignored;
                   }
 

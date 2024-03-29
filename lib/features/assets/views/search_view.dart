@@ -44,6 +44,7 @@ class _SearchViewState extends State<SearchView> {
   late final ScrollController _scrollController;
   late final TextEditingController _searchTermController;
 
+  String _searchTerm = '';
   AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
   LayoutModeEnum _layoutMode = LayoutModeEnum.tile;
@@ -138,7 +139,8 @@ class _SearchViewState extends State<SearchView> {
           builder: (context, state) {
             return Focus(
               onKeyEvent: (node, event) {
-                if (event is! KeyDownEvent) {
+                if ((event is! KeyDownEvent) ||
+                    (FocusManager.instance.primaryFocus != node)) {
                   return KeyEventResult.ignored;
                 }
 
@@ -448,7 +450,28 @@ class _SearchViewState extends State<SearchView> {
               ReloadCurrentPageEvent(),
             );
           },
-          onSearch: (searchTerm) {
+          onSearchTermClear: () {
+            _searchTermController.clear();
+
+            if (_searchTerm.isNotEmpty) {
+              setState(() {
+                _searchTerm = '';
+              });
+
+              BlocProvider.of<AssetsBloc>(context).add(
+                SearchEvent(
+                  sortField: _sortField,
+                  sortDirection: _sortDirection,
+                  searchTerm: '',
+                ),
+              );
+            }
+          },
+          onSearchTermChange: (searchTerm) {
+            setState(() {
+              _searchTerm = searchTerm;
+            });
+
             BlocProvider.of<AssetsBloc>(context).add(
               SearchEvent(
                 sortField: _sortField,

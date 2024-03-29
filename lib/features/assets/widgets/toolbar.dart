@@ -15,7 +15,8 @@ class Toolbar extends StatefulWidget {
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;
   final VoidCallback onReload;
-  final void Function(String searchTerm) onSearch;
+  final void Function() onSearchTermClear;
+  final void Function(String searchTerm) onSearchTermChange;
   final SortOptionsChangedCallback onSortChanged;
   final void Function(LayoutModeEnum mode) onLayoutChange;
   final void Function(ThumbnailSizeEnum size) onThumbnailSizeChange;
@@ -28,7 +29,8 @@ class Toolbar extends StatefulWidget {
     required this.layoutMode,
     required this.thumbnailSize,
     required this.onReload,
-    required this.onSearch,
+    required this.onSearchTermClear,
+    required this.onSearchTermChange,
     required this.onSortChanged,
     required this.onLayoutChange,
     required this.onThumbnailSizeChange,
@@ -61,7 +63,8 @@ class _ToolbarState extends State<Toolbar> {
                     Expanded(
                       child: SearchInput(
                         controller: widget.searchTermController,
-                        onFieldSubmitted: widget.onSearch,
+                        onClear: widget.onSearchTermClear,
+                        onFieldSubmitted: widget.onSearchTermChange,
                       ),
                     ),
                   ],
@@ -104,7 +107,8 @@ class _ToolbarState extends State<Toolbar> {
                 Expanded(
                   child: SearchInput(
                     controller: widget.searchTermController,
-                    onFieldSubmitted: widget.onSearch,
+                    onClear: widget.onSearchTermClear,
+                    onFieldSubmitted: widget.onSearchTermChange,
                   ),
                 ),
                 const SizedBox(width: 20.0),

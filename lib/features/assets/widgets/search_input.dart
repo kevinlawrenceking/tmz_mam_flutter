@@ -3,11 +3,13 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class SearchInput extends StatelessWidget {
   final TextEditingController? controller;
+  final void Function() onClear;
   final void Function(String value) onFieldSubmitted;
 
   const SearchInput({
     super.key,
     required this.controller,
+    required this.onClear,
     required this.onFieldSubmitted,
   });
 
@@ -28,10 +30,7 @@ class SearchInput extends StatelessWidget {
             color: const Color(0xDEFFFFFF),
             size: 22,
           ),
-          onPressed: () {
-            controller?.clear();
-            onFieldSubmitted('');
-          },
+          onPressed: onClear,
         ),
       ),
       style: const TextStyle(
