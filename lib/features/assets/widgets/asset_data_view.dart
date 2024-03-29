@@ -12,7 +12,7 @@ class AssetDataView extends StatefulWidget {
   final List<AssetDetailsModel> assets;
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;
-  final void Function(AssetDetailsModel model) onItemClicked;
+  final void Function(AssetDetailsModel model) onDoubleTap;
   final void Function(List<String> selectedIDs) onSelectionChanged;
 
   const AssetDataView({
@@ -22,7 +22,7 @@ class AssetDataView extends StatefulWidget {
     required this.assets,
     required this.layoutMode,
     required this.thumbnailSize,
-    required this.onItemClicked,
+    required this.onDoubleTap,
     required this.onSelectionChanged,
   });
 
@@ -49,7 +49,10 @@ class _AssetDataViewState extends State<AssetDataView> {
     required AssetDetailsModel model,
   }) {
     return GestureDetector(
-      onTap: () {
+      onDoubleTap: () {
+        widget.onDoubleTap(model);
+      },
+      onLongPressDown: (details) {
         if (!_selectIDs.any((id) => id == model.id)) {
           if (!HardwareKeyboard.instance.isControlPressed) {
             _selectIDs.clear();
@@ -63,10 +66,6 @@ class _AssetDataViewState extends State<AssetDataView> {
 
         if (mounted) {
           setState(() {});
-        }
-
-        if (!HardwareKeyboard.instance.isControlPressed) {
-          widget.onItemClicked(model);
         }
 
         widget.onSelectionChanged(_selectIDs);

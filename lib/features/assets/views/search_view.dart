@@ -394,11 +394,9 @@ class _SearchViewState extends State<SearchView> {
                 assets: state.assets,
                 layoutMode: _layoutMode,
                 thumbnailSize: _thumbnailSize,
-                onItemClicked: (model) {
+                onDoubleTap: (model) {
                   setState(() {
-                    if (_currentModel == null) {
-                      _assetDetailsVisible = true;
-                    }
+                    _assetDetailsVisible = true;
                     _currentModel = model;
                   });
                 },
