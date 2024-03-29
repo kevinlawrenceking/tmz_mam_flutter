@@ -33,6 +33,14 @@ class MetadataContainer extends StatelessWidget {
             style: theme.textTheme.titleLarge,
           ),
           const SizedBox(height: 20.0),
+          if (model.metadata.daletID != null)
+            _buildMetadata(
+              context: context,
+              theme: theme,
+              label: 'Dalet ID',
+              canCopy: true,
+              value: model.metadata.daletID!.toString(),
+            ),
           if (!model.metadata.celebrity) ...[
             _buildMetadata(
               context: context,
