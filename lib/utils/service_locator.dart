@@ -16,6 +16,7 @@ import 'package:tmz_damz/features/authentication/service_locator.dart'
     as authentication;
 import 'package:tmz_damz/features/user_collections/service_locator.dart'
     as user_collections;
+import 'package:tmz_damz/shared/bloc/global_bloc.dart';
 import 'package:tmz_damz/utils/config.dart';
 
 void initServiceLocator() {
@@ -48,6 +49,7 @@ void initServiceLocator() {
   authentication.ServiceLocator.init();
 
   sl.registerSingleton(AppRouter());
+  sl.registerSingleton(GlobalBloc());
 }
 
 void _initDataSources() {

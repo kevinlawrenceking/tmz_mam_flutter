@@ -16,9 +16,7 @@ class GetSessionDetailsFailureState extends SessionBlocState {
   });
 
   @override
-  List<Object?> get props => [
-        failure,
-      ];
+  List<Object?> get props => [failure];
 }
 
 class FinalizingSessionState extends SessionBlocState {
@@ -59,9 +57,7 @@ class RemoveSessionFileSuccessState extends SessionBlocState {
   });
 
   @override
-  List<Object?> get props => [
-        fileID,
-      ];
+  List<Object?> get props => [fileID];
 }
 
 class SessionDetailsState extends SessionBlocState {
@@ -88,9 +84,7 @@ class SessionFinalizationFailureState extends SessionBlocState {
   });
 
   @override
-  List<Object?> get props => [
-        failure,
-      ];
+  List<Object?> get props => [failure];
 }
 
 class SessionFinalizationSuccessState extends SessionBlocState {}
@@ -103,9 +97,7 @@ class SessionInitializationFailureState extends SessionBlocState {
   });
 
   @override
-  List<Object?> get props => [
-        failure,
-      ];
+  List<Object?> get props => [failure];
 }
 
 class SessionInitializedState extends SessionBlocState {
@@ -116,9 +108,7 @@ class SessionInitializedState extends SessionBlocState {
   });
 
   @override
-  List<Object?> get props => [
-        sessionID,
-      ];
+  List<Object?> get props => [sessionID];
 }
 
 class SetFileMetaFailureState extends SessionBlocState {
@@ -134,14 +124,13 @@ class SetFileMetaFailureState extends SessionBlocState {
 }
 
 class SetFileMetaSuccessState extends SessionBlocState {
-  final AssetImportSessionFileMetaModel meta;
+  final String _stateID;
+  final bool bulk;
 
   SetFileMetaSuccessState({
-    required this.meta,
-  });
+    required this.bulk,
+  }) : _stateID = const Uuid().v4();
 
   @override
-  List<Object?> get props => [
-        meta,
-      ];
+  List<Object?> get props => [_stateID];
 }

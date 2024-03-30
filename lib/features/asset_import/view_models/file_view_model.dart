@@ -35,6 +35,19 @@ class FileViewModel extends Equatable {
     );
   }
 
+  FileViewModel copyWith({
+    AssetImportSessionFileMetaModel? meta,
+  }) =>
+      FileViewModel(
+        sessionID: sessionID,
+        fileID: fileID,
+        fileName: fileName,
+        fileSize: fileSize,
+        uploadedAt: uploadedAt,
+        status: status,
+        meta: meta ?? this.meta,
+      );
+
   @override
   List<Object?> get props => [
         sessionID,

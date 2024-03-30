@@ -14,9 +14,7 @@ class AddSessionFileEvent extends SessionBlocEvent {
   });
 
   @override
-  List<Object?> get props => [
-        file,
-      ];
+  List<Object?> get props => [file];
 }
 
 class FinalizeSessionEvent extends SessionBlocEvent {
@@ -43,9 +41,7 @@ class GetSessionDetailsEvent extends SessionBlocEvent {
   });
 
   @override
-  List<Object?> get props => [
-        sessionID,
-      ];
+  List<Object?> get props => [sessionID];
 }
 
 class InitializeSession extends SessionBlocEvent {}
@@ -83,11 +79,13 @@ class SessionFileUploadedEvent extends SessionBlocEvent {
 }
 
 class SetFileMetaEvent extends SessionBlocEvent {
+  final bool bulk;
   final String sessionID;
   final String fileID;
   final AssetImportSessionFileMetaModel meta;
 
   SetFileMetaEvent({
+    required this.bulk,
     required this.sessionID,
     required this.fileID,
     required this.meta,
@@ -95,6 +93,7 @@ class SetFileMetaEvent extends SessionBlocEvent {
 
   @override
   List<Object?> get props => [
+        bulk,
         sessionID,
         fileID,
         meta,

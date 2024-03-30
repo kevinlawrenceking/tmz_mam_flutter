@@ -13,6 +13,8 @@ import 'package:tmz_damz/features/asset_import/view_models/file_upload_view_mode
 import 'package:tmz_damz/features/asset_import/view_models/file_view_model.dart';
 import 'package:tmz_damz/features/asset_import/widgets/bulk_update_form.dart';
 import 'package:tmz_damz/features/asset_import/widgets/session_file.dart';
+import 'package:tmz_damz/features/assets/views/search_view.dart';
+import 'package:tmz_damz/shared/bloc/global_bloc.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
@@ -32,9 +34,10 @@ class SessionView extends StatefulWidget {
 }
 
 class _SessionViewState extends State<SessionView> {
-  late DropzoneViewController _dropController;
-  final _bulkUpdateFormController = BulkUpdateFormController();
-  final _fileControllers = <String, SessionFileController>{};
+  late final DropzoneViewController _dropController;
+  late final BulkUpdateFormController _bulkUpdateFormController;
+  late final Map<String, SessionFileController> _fileControllers;
+
   bool _expandAll = false;
 
   @override
@@ -51,118 +54,165 @@ class _SessionViewState extends State<SessionView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _bulkUpdateFormController = BulkUpdateFormController();
+    _fileControllers = <String, SessionFileController>{};
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider<SessionBloc>(
-      create: (context) {
-        final bloc = GetIt.instance<SessionBloc>();
+    return BlocProvider<GlobalBloc>(
+      create: (context) => GetIt.instance<GlobalBloc>(),
+      child: BlocProvider<SessionBloc>(
+        create: (context) {
+          final bloc = GetIt.instance<SessionBloc>();
 
-        bloc.add(
-          GetSessionDetailsEvent(
-            sessionID: widget.sessionID,
+          bloc.add(
+            GetSessionDetailsEvent(
+              sessionID: widget.sessionID,
+            ),
+          );
+
+          return bloc;
+        },
+        child: _buildSessionBlocListener(
+          child: BlocBuilder<SessionBloc, SessionBlocState>(
+            buildWhen: (_, state) =>
+                state is SessionDetailsState || state is FinalizingSessionState,
+            builder: (context, state) {
+              if (state is SessionDetailsState) {
+                return _buildSessionDetails(
+                  context: context,
+                  sessionStatus: state.sessionStatus,
+                  files: state.files,
+                  uploading: state.uploading,
+                );
+              } else if (state is FinalizingSessionState) {
+                return Stack(
+                  children: [
+                    _buildSessionDetails(
+                      context: context,
+                      sessionStatus: AssetImportSessionStatusEnum.processing,
+                      files: state.files,
+                      uploading: state.uploading,
+                    ),
+                    Container(
+                      color: const Color(0xB0232323),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
-        );
+        ),
+      ),
+    );
+  }
 
-        return bloc;
-      },
-      child: BlocListener<SessionBloc, SessionBlocState>(
-        listenWhen: (_, state) =>
-            state is GetSessionDetailsFailureState ||
-            state is RemoveSessionFileFailureState ||
-            state is RemoveSessionFileSuccessState ||
-            state is SessionFinalizationSuccessState ||
-            state is SessionFinalizationFailureState ||
-            state is SetFileMetaFailureState,
-        listener: (context, state) async {
-          if (state is GetSessionDetailsFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Retrieve Session Details',
-              message: state.failure.message,
-            );
+  BlocListener<SessionBloc, SessionBlocState> _buildSessionBlocListener({
+    required Widget child,
+  }) {
+    return BlocListener<SessionBloc, SessionBlocState>(
+      listenWhen: (_, state) =>
+          state is GetSessionDetailsFailureState ||
+          state is SessionDetailsState ||
+          state is RemoveSessionFileFailureState ||
+          state is RemoveSessionFileSuccessState ||
+          state is SessionFinalizationSuccessState ||
+          state is SessionFinalizationFailureState ||
+          state is SetFileMetaFailureState ||
+          state is SetFileMetaSuccessState,
+      listener: (context, state) async {
+        if (state is SessionDetailsState) {
+          _fileControllers.addEntries(
+            state.files
+                .where((_) => !_fileControllers.containsKey(_.fileID))
+                .map((_) {
+              final controller = SessionFileController();
+              return MapEntry(_.fileID, controller);
+            }),
+          );
 
-            await AutoRouter.of(context).navigate(
-              const AssetImportRoute(),
-            );
-          } else if (state is RemoveSessionFileFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Remove File',
-              message: state.failure.message,
-            );
-          } else if (state is RemoveSessionFileSuccessState) {
-            _fileControllers.remove(state.fileID);
+          for (final file in state.files) {
+            _fileControllers[file.fileID]?.form.setFrom(
+                  sessionID: file.sessionID,
+                  fileID: file.fileID,
+                  meta: file.meta!,
+                );
+          }
+        } else if (state is GetSessionDetailsFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 5),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Retrieve Session Details',
+            message: state.failure.message,
+          );
 
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
-              type: ToastTypeEnum.information,
-              title: 'File Removed',
-            );
-          } else if (state is SessionFinalizationSuccessState) {
+          await AutoRouter.of(context).navigate(
+            const AssetImportRoute(),
+          );
+        } else if (state is RemoveSessionFileFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 5),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Remove File',
+            message: state.failure.message,
+          );
+        } else if (state is RemoveSessionFileSuccessState) {
+          _fileControllers[state.fileID]?.dispose();
+          _fileControllers.remove(state.fileID);
+
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 5),
+            type: ToastTypeEnum.information,
+            title: 'File Removed',
+          );
+        } else if (state is SessionFinalizationSuccessState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 5),
+            type: ToastTypeEnum.success,
+            message: 'Import Complete',
+          );
+
+          SearchView.refreshResults = true;
+
+          await AutoRouter.of(context).replace(
+            AssetsSearchRoute(),
+          );
+        } else if (state is SessionFinalizationFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 5),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Finalize Import',
+            message: state.failure.message,
+          );
+        } else if (state is SetFileMetaFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 5),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Update Metadata',
+            message: state.failure.message,
+          );
+        } else if (state is SetFileMetaSuccessState) {
+          if (state.bulk) {
             Toast.showNotification(
               showDuration: const Duration(seconds: 5),
               type: ToastTypeEnum.success,
-              message: 'Import Complete',
-            );
-
-            await AutoRouter.of(context).navigate(
-              AssetsSearchRoute(
-                refresh: true,
-              ),
-            );
-          } else if (state is SessionFinalizationFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Finalize Import',
-              message: state.failure.message,
-            );
-          } else if (state is SetFileMetaFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Update Metadata',
-              message: state.failure.message,
+              message: 'Metadata applied!',
             );
           }
-        },
-        child: BlocBuilder<SessionBloc, SessionBlocState>(
-          buildWhen: (_, state) =>
-              state is SessionDetailsState || state is FinalizingSessionState,
-          builder: (context, state) {
-            if (state is SessionDetailsState) {
-              return _buildSessionDetails(
-                context: context,
-                sessionStatus: state.sessionStatus,
-                files: state.files,
-                uploading: state.uploading,
-              );
-            } else if (state is FinalizingSessionState) {
-              return Stack(
-                children: [
-                  _buildSessionDetails(
-                    context: context,
-                    sessionStatus: AssetImportSessionStatusEnum.processing,
-                    files: state.files,
-                    uploading: state.uploading,
-                  ),
-                  Container(
-                    color: const Color(0xB0232323),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
-      ),
+        }
+      },
+      child: child,
     );
   }
 
@@ -269,21 +319,12 @@ class _SessionViewState extends State<SessionView> {
 
         return SessionFile(
           key: ValueKey(file.fileID),
+          controller: _fileControllers[file.fileID]!,
           file: file,
-          onControllerCreated: (controller) {
-            if (file.meta != null) {
-              controller.form.setFrom(file.meta!);
-            }
-
-            if (_fileControllers.containsKey(file.fileID)) {
-              _fileControllers[file.fileID]!.dispose();
-            }
-
-            _fileControllers[file.fileID] = controller;
-          },
           onChange: (meta) {
             BlocProvider.of<SessionBloc>(context).add(
               SetFileMetaEvent(
+                bulk: false,
                 sessionID: file.sessionID,
                 fileID: file.fileID,
                 meta: meta,
@@ -333,92 +374,9 @@ class _SessionViewState extends State<SessionView> {
                     style: theme.textTheme.headlineMedium,
                   ),
                   const Spacer(),
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0x30FFFFFF)),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          side: const BorderSide(
-                            color: Color(0x80000000),
-                          ),
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14.0,
-                        vertical: 10.0,
-                      ),
-                      child: Text(
-                        'SUBMIT',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      final fileMeta =
-                          _fileControllers.map((fileID, controller) {
-                        final model = controller.form.getModel();
-                        return MapEntry(fileID, model);
-                      });
-
-                      if (fileMeta.isEmpty) {
-                        return;
-                      }
-
-                      for (var i = 0; i < fileMeta.length; i++) {
-                        final meta = fileMeta.values.elementAt(i);
-
-                        if (meta.headline.isEmpty) {
-                          Toast.showNotification(
-                            showDuration: const Duration(seconds: 5),
-                            type: ToastTypeEnum.error,
-                            title: 'Missing Information',
-                            message: 'Headline is required!',
-                          );
-
-                          return;
-                        }
-
-                        if (meta.metadata.rights ==
-                            AssetMetadataRightsEnum.unknown) {
-                          Toast.showNotification(
-                            showDuration: const Duration(seconds: 5),
-                            type: ToastTypeEnum.error,
-                            title: 'Missing Information',
-                            message: 'Rights Summary is required!',
-                          );
-
-                          return;
-                        }
-
-                        if (meta.metadata.rights !=
-                            AssetMetadataRightsEnum.freeTMZ) {
-                          if (meta.metadata.agency.isEmpty &&
-                              !(meta.metadata.credit?.isNotEmpty ?? false)) {
-                            Toast.showNotification(
-                              showDuration: const Duration(seconds: 5),
-                              type: ToastTypeEnum.error,
-                              title: 'Missing Information',
-                              message: 'Agency and/or Credit is required',
-                            );
-
-                            return;
-                          }
-                        }
-                      }
-
-                      BlocProvider.of<SessionBloc>(context).add(
-                        FinalizeSessionEvent(
-                          sessionID: widget.sessionID,
-                          fileMeta: fileMeta,
-                        ),
-                      );
-                    },
+                  _buildSubmitButton(
+                    context: context,
+                    theme: theme,
                   ),
                 ],
               ),
@@ -448,13 +406,19 @@ class _SessionViewState extends State<SessionView> {
                                 _fileControllers.values.elementAt(i);
 
                             controller.form.setFromBulk(model);
-                          }
 
-                          Toast.showNotification(
-                            showDuration: const Duration(seconds: 5),
-                            type: ToastTypeEnum.success,
-                            message: 'Metadata applied!',
-                          );
+                            if ((controller.sessionID != null) &&
+                                (controller.fileID != null)) {
+                              BlocProvider.of<SessionBloc>(context).add(
+                                SetFileMetaEvent(
+                                  bulk: true,
+                                  sessionID: controller.sessionID!,
+                                  fileID: controller.fileID!,
+                                  meta: controller.form.getModel(),
+                                ),
+                              );
+                            }
+                          }
                         },
                       ),
                       const SizedBox(height: 20.0),
@@ -581,6 +545,95 @@ class _SessionViewState extends State<SessionView> {
     );
   }
 
+  Widget _buildSubmitButton({
+    required BuildContext context,
+    required ThemeData theme,
+  }) {
+    return TextButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(const Color(0x30FFFFFF)),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            side: const BorderSide(
+              color: Color(0x80000000),
+            ),
+            borderRadius: BorderRadius.circular(6.0),
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14.0,
+          vertical: 10.0,
+        ),
+        child: Text(
+          'SUBMIT',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.0,
+          ),
+        ),
+      ),
+      onPressed: () {
+        final fileMeta = _fileControllers.map((fileID, controller) {
+          final model = controller.form.getModel();
+          return MapEntry(fileID, model);
+        });
+
+        if (fileMeta.isEmpty) {
+          return;
+        }
+
+        for (var i = 0; i < fileMeta.length; i++) {
+          final meta = fileMeta.values.elementAt(i);
+
+          if (meta.headline.isEmpty) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Missing Information',
+              message: 'Headline is required!',
+            );
+
+            return;
+          }
+
+          if (meta.metadata.rights == AssetMetadataRightsEnum.unknown) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.error,
+              title: 'Missing Information',
+              message: 'Rights Summary is required!',
+            );
+
+            return;
+          }
+
+          if (meta.metadata.rights != AssetMetadataRightsEnum.freeTMZ) {
+            if (meta.metadata.agency.isEmpty &&
+                !(meta.metadata.credit?.isNotEmpty ?? false)) {
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 5),
+                type: ToastTypeEnum.error,
+                title: 'Missing Information',
+                message: 'Agency and/or Credit is required',
+              );
+
+              return;
+            }
+          }
+        }
+
+        BlocProvider.of<SessionBloc>(context).add(
+          FinalizeSessionEvent(
+            sessionID: widget.sessionID,
+            fileMeta: fileMeta,
+          ),
+        );
+      },
+    );
+  }
+
   List<Widget> _buildUploadingList({
     required BuildContext context,
     required List<FileUploadViewModel> files,
@@ -590,6 +643,7 @@ class _SessionViewState extends State<SessionView> {
         files.length,
         (index) {
           final file = files[index];
+          final controller = SessionFileController();
 
           return BlocProvider<FileBloc>(
             key: ValueKey(file.uploadID),
@@ -643,6 +697,7 @@ class _SessionViewState extends State<SessionView> {
                       }
 
                       return SessionFile(
+                        controller: controller,
                         uploadFile: file,
                         uploadState: uploadState,
                         onRemove: () {

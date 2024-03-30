@@ -271,11 +271,21 @@ class SessionBloc extends Bloc<SessionBlocEvent, SessionBlocState> {
           failure: failure,
         ),
       ),
-      (meta) => emit(
-        SetFileMetaSuccessState(
+      (meta) {
+        final index = _files.indexWhere(
+          (_) => _.fileID == event.fileID,
+        );
+
+        _files[index] = _files[index].copyWith(
           meta: meta,
-        ),
-      ),
+        );
+
+        emit(
+          SetFileMetaSuccessState(
+            bulk: event.bulk,
+          ),
+        );
+      },
     );
   }
 

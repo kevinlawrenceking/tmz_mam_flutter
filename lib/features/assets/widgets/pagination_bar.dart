@@ -355,6 +355,8 @@ class PaginationBar extends StatelessWidget {
 }
 
 class PaginationInfo {
+  static const kMaxResults = 15000;
+
   final int currentPage;
   final int limit;
   final int totalPages;
@@ -375,7 +377,7 @@ class PaginationInfo {
     final info = PaginationInfo(
       currentPage: (offset / limit).floor(),
       limit: limit,
-      totalPages: (totalRecords / limit).ceil(),
+      totalPages: (min(totalRecords, kMaxResults) / limit).ceil(),
       totalRecords: totalRecords,
     );
 

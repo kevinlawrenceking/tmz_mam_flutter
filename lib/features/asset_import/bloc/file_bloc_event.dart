@@ -14,7 +14,5 @@ class UploadFileEvent extends FileBlocEvent {
   });
 
   @override
-  List<Object?> get props => [
-        file,
-      ];
+  List<Object?> get props => [file];
 }

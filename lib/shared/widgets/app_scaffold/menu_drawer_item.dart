@@ -40,6 +40,7 @@ class MenuDrawerItem extends StatelessWidget {
             ? Theme.of(context).highlightColor
             : Colors.transparent,
         child: InkWell(
+          hoverColor: const Color(0x30FFFFFF),
           mouseCursor: !isDisabled ? SystemMouseCursors.click : null,
           onTap: !isDisabled ? () => onTap?.call() : null,
           child: Stack(
@@ -55,7 +56,6 @@ class MenuDrawerItem extends StatelessWidget {
                       right: padding.right,
                       bottom: padding.bottom,
                     ),
-                    alignment: Alignment.centerLeft,
                     child: _buildTitle(theme),
                   ),
                   builder: (context, isCollapsed, child) {
@@ -106,11 +106,15 @@ class MenuDrawerItem extends StatelessWidget {
           theme.itemData.activeStyle?.labelTextStyle;
     }
 
-    return Text(
-      title ?? '',
-      style: textStyle ??
-          style?.labelTextStyle ??
-          theme.itemData.style.labelTextStyle,
+    return Padding(
+      padding: const EdgeInsets.only(top: 2.0),
+      child: Text(
+        title ?? '',
+        softWrap: true,
+        style: textStyle ??
+            style?.labelTextStyle ??
+            theme.itemData.style.labelTextStyle,
+      ),
     );
   }
 

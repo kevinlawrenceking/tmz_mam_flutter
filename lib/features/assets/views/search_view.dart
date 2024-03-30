@@ -1,5 +1,10 @@
-import 'package:auto_route/annotations.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
+
+import 'package:auto_route/auto_route.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -7,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/features/asset_details/widgets/asset_details.dart';
@@ -18,6 +24,7 @@ import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/toolbar.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection.dart';
 import 'package:tmz_damz/features/user_collections/widgets/user_collections.dart';
+import 'package:tmz_damz/shared/bloc/global_bloc.dart' as global;
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
@@ -25,16 +32,16 @@ import 'package:tmz_damz/utils/config.dart';
 @RoutePage(name: 'AssetsSearchRoute')
 class SearchView extends StatefulWidget {
   final String? collectionID;
-  final bool? refresh;
 
   const SearchView({
     super.key,
     @PathParam('collectionID') this.collectionID,
-    @PathParam('refresh') this.refresh,
   });
 
   @override
   State<SearchView> createState() => _SearchViewState();
+
+  static bool refreshResults = false;
 }
 
 class _SearchViewState extends State<SearchView> {
@@ -50,7 +57,6 @@ class _SearchViewState extends State<SearchView> {
   LayoutModeEnum _layoutMode = LayoutModeEnum.tile;
   ThumbnailSizeEnum _thumbnailSize = ThumbnailSizeEnum.medium;
 
-  int _lastStateHash = 0;
   bool _favoritesVisible = false;
   bool _assetDetailsVisible = false;
 
@@ -91,49 +97,7 @@ class _SearchViewState extends State<SearchView> {
 
         return bloc;
       },
-      child: BlocListener<AssetsBloc, BlocState>(
-        listenWhen: (_, state) =>
-            state is AddAssetsToCollectionFailureState ||
-            state is AddAssetsToCollectionSuccessState ||
-            state is RemoveAssetsFromCollectionFailureState ||
-            state is RemoveAssetsFromCollectionSuccessState ||
-            state is SearchFailureState,
-        listener: (context, state) {
-          if (state is AddAssetsToCollectionFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Add Assets to Collection',
-              message: state.failure.message,
-            );
-          } else if (state is AddAssetsToCollectionSuccessState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
-              type: ToastTypeEnum.success,
-              message: 'Assets added to collection!',
-            );
-          } else if (state is RemoveAssetsFromCollectionFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Remove Assets from Collection',
-              message: state.failure.message,
-            );
-          } else if (state is RemoveAssetsFromCollectionSuccessState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
-              type: ToastTypeEnum.success,
-              message: 'Assets removed from collection!',
-            );
-          } else if (state is SearchFailureState) {
-            Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
-              type: ToastTypeEnum.error,
-              title: 'Failed to Load Results',
-              message: state.failure.message,
-            );
-          }
-        },
+      child: _buildAssetsBlocListener(
         child: BlocBuilder<AssetsBloc, BlocState>(
           buildWhen: (_, state) => state is InitialState,
           builder: (context, state) {
@@ -207,6 +171,50 @@ class _SearchViewState extends State<SearchView> {
           },
         ),
       ),
+    );
+  }
+
+  BlocListener<AssetsBloc, BlocState> _buildAssetsBlocListener({
+    required Widget child,
+  }) {
+    return BlocListener<AssetsBloc, BlocState>(
+      listener: (context, state) {
+        if (state is AddAssetsToCollectionFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Add Assets to Collection',
+            message: state.failure.message,
+          );
+        } else if (state is AddAssetsToCollectionSuccessState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.success,
+            message: 'Assets added to collection!',
+          );
+        } else if (state is RemoveAssetsFromCollectionFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Remove Assets from Collection',
+            message: state.failure.message,
+          );
+        } else if (state is RemoveAssetsFromCollectionSuccessState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.success,
+            message: 'Assets removed from collection!',
+          );
+        } else if (state is SearchFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Load Results',
+            message: state.failure.message,
+          );
+        }
+      },
+      child: child,
     );
   }
 
@@ -378,6 +386,13 @@ class _SearchViewState extends State<SearchView> {
           state is SearchResultsLoadedState ||
           state is SearchResultsLoadingState,
       builder: (context, state) {
+        if (SearchView.refreshResults) {
+          SearchView.refreshResults = false;
+          BlocProvider.of<AssetsBloc>(context).add(
+            RefreshEvent(),
+          );
+        }
+
         if (state is SearchFailureState) {
           return Center(
             child: Text('Error: ${state.failure.message}'),
@@ -388,28 +403,75 @@ class _SearchViewState extends State<SearchView> {
           );
         } else if (state is SearchResultsLoadedState) {
           if (state.assets.isNotEmpty) {
-            return MaskedScrollView(
-              controller: _scrollController,
-              padding: EdgeInsets.zero,
-              child: AssetDataView(
-                scrollController: _scrollController,
-                config: GetIt.instance<Config>(),
-                assets: state.assets,
-                layoutMode: _layoutMode,
-                thumbnailSize: _thumbnailSize,
-                onDoubleTap: (model) {
-                  setState(() {
-                    _assetDetailsVisible = true;
-                    _currentModel = model;
-                  });
-                },
-                onSelectionChanged: (selectedIDs) {
-                  _focusNode.requestFocus();
+            final assets = state.assets;
 
-                  setState(() {
-                    _selectIDs = selectedIDs;
-                  });
+            return BlocProvider<global.GlobalBloc>(
+              create: (context) => GetIt.instance<global.GlobalBloc>(),
+              child: BlocListener<global.GlobalBloc, global.GlobalBlocState>(
+                listener: (context, state) {
+                  if (state is global.DownloadSelectedAssetsState) {
+                    if (_selectIDs.isEmpty) {
+                      Toast.showNotification(
+                        showDuration: const Duration(seconds: 3),
+                        type: ToastTypeEnum.information,
+                        message: 'No assets selected!',
+                      );
+                      return;
+                    }
+
+                    final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
+
+                    assets
+                        .where((asset) => _selectIDs.contains(asset.id))
+                        .forEach((asset) {
+                      final img = asset.images.firstWhereOrNull(
+                        (_) => _.type == AssetImageTypeEnum.source,
+                      );
+
+                      if (img == null) {
+                        return;
+                      }
+
+                      final url =
+                          '$apiBaseUrl/asset/${asset.id}/image/${img.id}/download';
+
+                      if (kIsWeb) {
+                        html.window.open(url, asset.headline);
+                      }
+                    });
+                  }
                 },
+                child: MaskedScrollView(
+                  controller: _scrollController,
+                  padding: EdgeInsets.zero,
+                  child: AssetDataView(
+                    scrollController: _scrollController,
+                    config: GetIt.instance<Config>(),
+                    assets: assets,
+                    layoutMode: _layoutMode,
+                    thumbnailSize: _thumbnailSize,
+                    onTap: (model) {
+                      if (_assetDetailsVisible) {
+                        setState(() {
+                          _currentModel = model;
+                        });
+                      }
+                    },
+                    onDoubleTap: (model) {
+                      setState(() {
+                        _assetDetailsVisible = true;
+                        _currentModel = model;
+                      });
+                    },
+                    onSelectionChanged: (selectedIDs) {
+                      _focusNode.requestFocus();
+
+                      setState(() {
+                        _selectIDs = selectedIDs;
+                      });
+                    },
+                  ),
+                ),
               ),
             );
           } else {
@@ -427,19 +489,6 @@ class _SearchViewState extends State<SearchView> {
   Widget _buildToolbar() {
     return BlocBuilder<AssetsBloc, BlocState>(
       builder: (context, state) {
-        if (widget.refresh ?? false) {
-          if ((state is SearchResultsLoadedState) &&
-              (_lastStateHash == state.hashCode)) {
-            BlocProvider.of<AssetsBloc>(context).add(
-              RefreshEvent(),
-            );
-          }
-        }
-
-        if (state is SearchResultsLoadedState) {
-          _lastStateHash = state.hashCode;
-        }
-
         return Toolbar(
           searchTermController: _searchTermController,
           sortField: _sortField,

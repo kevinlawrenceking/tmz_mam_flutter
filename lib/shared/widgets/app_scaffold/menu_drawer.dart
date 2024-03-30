@@ -6,6 +6,7 @@ class MenuDrawer extends StatefulWidget {
   final MenuDrawerStyle? style;
   final Widget? header;
   final List<Widget> topItems;
+  final List<Widget> contextualItems;
   final List<Widget> bottomItems;
 
   const MenuDrawer({
@@ -17,6 +18,7 @@ class MenuDrawer extends StatefulWidget {
     this.style,
     this.header,
     required this.topItems,
+    required this.contextualItems,
     required this.bottomItems,
   });
 
@@ -58,23 +60,40 @@ class _MenuDrawerState extends State<MenuDrawer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            widget.header ?? const SizedBox(),
-            Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: widget.scrollPhysics,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: widget.topItems,
-                ),
+            widget.header ?? const SizedBox.shrink(),
+            ...widget.topItems,
+            if (widget.contextualItems.isNotEmpty) ...[
+              const Divider(
+                color: Color(0x50000000),
               ),
+              ...widget.contextualItems,
+            ],
+            const Spacer(),
+            ChangeNotifierProvider(
+              create: (context) => widget.isCollapsed,
+              builder: (context, child) {
+                if (!widget.isCollapsed.value) {
+                  return FutureBuilder(
+                    future: PackageInfo.fromPlatform(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data != null) {
+                        final version = snapshot.data!.version;
+                        final buildNumber = snapshot.data!.buildNumber;
+                        return Text(
+                          '$version+$buildNumber',
+                          textAlign: TextAlign.center,
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: widget.bottomItems,
-            ),
+            ...widget.bottomItems,
           ],
         ),
       ),

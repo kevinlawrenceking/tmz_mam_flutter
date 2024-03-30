@@ -9,7 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i6;
+import 'package:flutter/foundation.dart' as _i6;
+import 'package:flutter/material.dart' as _i7;
 import 'package:tmz_damz/features/asset_import/views/asset_import_view.dart'
     as _i1;
 import 'package:tmz_damz/features/asset_import/views/session_view.dart' as _i4;
@@ -37,15 +38,12 @@ abstract class $AppRouter extends _i5.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<AssetsSearchRouteArgs>(
           orElse: () => AssetsSearchRouteArgs(
-                collectionID: pathParams.optString('collectionID'),
-                refresh: pathParams.optBool('refresh'),
-              ));
+              collectionID: pathParams.optString('collectionID')));
       return _i5.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i3.SearchView(
           key: args.key,
           collectionID: args.collectionID,
-          refresh: args.refresh,
         ),
       );
     },
@@ -99,19 +97,14 @@ class AssetsSearchRoute extends _i5.PageRouteInfo<AssetsSearchRouteArgs> {
   AssetsSearchRoute({
     _i6.Key? key,
     String? collectionID,
-    bool? refresh,
     List<_i5.PageRouteInfo>? children,
   }) : super(
           AssetsSearchRoute.name,
           args: AssetsSearchRouteArgs(
             key: key,
             collectionID: collectionID,
-            refresh: refresh,
           ),
-          rawPathParams: {
-            'collectionID': collectionID,
-            'refresh': refresh,
-          },
+          rawPathParams: {'collectionID': collectionID},
           initialChildren: children,
         );
 
@@ -125,18 +118,15 @@ class AssetsSearchRouteArgs {
   const AssetsSearchRouteArgs({
     this.key,
     this.collectionID,
-    this.refresh,
   });
 
   final _i6.Key? key;
 
   final String? collectionID;
 
-  final bool? refresh;
-
   @override
   String toString() {
-    return 'AssetsSearchRouteArgs{key: $key, collectionID: $collectionID, refresh: $refresh}';
+    return 'AssetsSearchRouteArgs{key: $key, collectionID: $collectionID}';
   }
 }
 
@@ -145,7 +135,7 @@ class AssetsSearchRouteArgs {
 class AssetImportSessionRoute
     extends _i5.PageRouteInfo<AssetImportSessionRouteArgs> {
   AssetImportSessionRoute({
-    _i6.Key? key,
+    _i7.Key? key,
     required String sessionID,
     List<_i5.PageRouteInfo>? children,
   }) : super(
@@ -170,7 +160,7 @@ class AssetImportSessionRouteArgs {
     required this.sessionID,
   });
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
   final String sessionID;
 

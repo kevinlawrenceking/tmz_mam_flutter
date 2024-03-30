@@ -18,33 +18,20 @@ enum SessionFileUploadState {
   sessionFileAlreadyExists,
 }
 
-class SessionFileController {
-  final _expansionController = ExpansionTileController();
-  final _controller = SessionFileFormController();
-
-  SessionFileFormController get form => _controller;
-
-  void dispose() => _controller.dispose();
-
-  void collapse() => _expansionController.collapse();
-
-  void expand() => _expansionController.expand();
-}
-
 class SessionFile extends StatefulWidget {
+  final SessionFileController controller;
   final FileViewModel? file;
   final FileUploadViewModel? uploadFile;
   final SessionFileUploadState uploadState;
-  final void Function(SessionFileController controller)? onControllerCreated;
   final void Function(AssetImportSessionFileMetaModel meta)? onChange;
   final void Function() onRemove;
 
   const SessionFile({
     super.key,
+    required this.controller,
     this.file,
     this.uploadFile,
     this.uploadState = SessionFileUploadState.uploading,
-    this.onControllerCreated,
     this.onChange,
     required this.onRemove,
   });
@@ -54,22 +41,11 @@ class SessionFile extends StatefulWidget {
 }
 
 class _SessionFileState extends State<SessionFile> {
-  late SessionFileController _controller;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-
-    super.dispose();
-  }
-
   @override
   void initState() {
     super.initState();
 
-    _controller = SessionFileController();
-
-    widget.onControllerCreated?.call(_controller);
+    widget.controller._expansionController = ExpansionTileController();
   }
 
   @override
@@ -81,33 +57,37 @@ class _SessionFileState extends State<SessionFile> {
       child: Opacity(
         opacity: (widget.file != null) ? 1.0 : 0.4,
         child: (widget.file != null)
-            ? ExpansionTile(
-                controller: _controller._expansionController,
-                backgroundColor: const Color(0x10FFFFFF),
-                collapsedBackgroundColor: const Color(0x10FFFFFF),
-                clipBehavior: Clip.antiAlias,
-                collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                tilePadding: const EdgeInsets.only(
-                  left: 20.0,
-                  top: 10.0,
-                  right: 20.0,
-                  bottom: 10.0,
-                ),
-                title: _buildContent(context),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: SessionFileForm(
-                      controller: _controller.form,
-                      onChange: widget.onChange,
+            ? Builder(
+                builder: (context) {
+                  return ExpansionTile(
+                    controller: widget.controller._expansionController,
+                    backgroundColor: const Color(0x10FFFFFF),
+                    collapsedBackgroundColor: const Color(0x10FFFFFF),
+                    clipBehavior: Clip.antiAlias,
+                    collapsedShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
                     ),
-                  ),
-                ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    tilePadding: const EdgeInsets.only(
+                      left: 20.0,
+                      top: 10.0,
+                      right: 20.0,
+                      bottom: 10.0,
+                    ),
+                    title: _buildContent(context),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: SessionFileForm(
+                          controller: widget.controller.form,
+                          onChange: widget.onChange,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               )
             : DecoratedBox(
                 decoration: BoxDecoration(
@@ -389,4 +369,19 @@ class _SessionFileState extends State<SessionFile> {
       ),
     );
   }
+}
+
+class SessionFileController {
+  final _controller = SessionFileFormController();
+  ExpansionTileController? _expansionController;
+
+  String? get sessionID => _controller.sessionID;
+  String? get fileID => _controller.fileID;
+  SessionFileFormController get form => _controller;
+
+  void dispose() => _controller.dispose();
+
+  void collapse() => _expansionController?.collapse();
+
+  void expand() => _expansionController?.expand();
 }

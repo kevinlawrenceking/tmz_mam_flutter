@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
+import 'package:tmz_damz/shared/bloc/global_bloc.dart';
 
 part 'menu_drawer.dart';
 part 'menu_drawer_header.dart';
@@ -28,7 +32,7 @@ class AppScaffold extends StatefulWidget {
 class _AppScaffoldState extends State<AppScaffold>
     with SingleTickerProviderStateMixin {
   static const _iconSize = 26.0;
-  static const _menuExpandedWidth = 200;
+  static const _menuExpandedWidth = 300;
   static const _menuItemPadding = EdgeInsets.symmetric(
     horizontal: 16,
     vertical: 10,
@@ -84,19 +88,27 @@ class _AppScaffoldState extends State<AppScaffold>
       _animationController.value = _isMenuCollapsed.value ? 0 : 1;
     }
 
-    return Material(
-      child: AnimatedBuilder(
-        animation: _animation,
-        builder: (context, _) {
-          final collapsedWidth =
-              _menuItemPadding.resolve(TextDirection.ltr).horizontal +
-                  _iconSize;
-          final menuWidth = collapsedWidth +
-              ((_menuExpandedWidth - collapsedWidth) * _animation.value);
+    return BlocProvider<GlobalBloc>(
+      create: (context) => GetIt.instance<GlobalBloc>(),
+      child: BlocBuilder<GlobalBloc, GlobalBlocState>(
+        buildWhen: (_, state) => state is InitialState,
+        builder: (context, state) {
+          return Material(
+            child: AnimatedBuilder(
+              animation: _animation,
+              builder: (context, _) {
+                final collapsedWidth =
+                    _menuItemPadding.resolve(TextDirection.ltr).horizontal +
+                        _iconSize;
+                final menuWidth = collapsedWidth +
+                    ((_menuExpandedWidth - collapsedWidth) * _animation.value);
 
-          return SizedBox(
-            width: menuWidth,
-            child: _buildMenuDrawer(context),
+                return SizedBox(
+                  width: menuWidth,
+                  child: _buildMenuDrawer(context),
+                );
+              },
+            ),
           );
         },
       ),
@@ -126,11 +138,26 @@ class _AppScaffoldState extends State<AppScaffold>
         icon: MdiIcons.progressUpload,
         title: 'Import Images',
         isActive: (widget.router.current.name == AssetImportRoute.name) ||
-            widget.router.current.name == AssetImportSessionRoute.name,
+            (widget.router.current.name == AssetImportSessionRoute.name),
         onTap: () {
           widget.router.navigate(const AssetImportRoute());
         },
       ),
+    ];
+
+    final contextualItems = [
+      if (widget.router.current.name == AssetsSearchRoute.name) ...[
+        _MenuItem(
+          icon: MdiIcons.trayArrowDown,
+          title: 'Download Selected Images',
+          isActive: false,
+          onTap: () {
+            BlocProvider.of<GlobalBloc>(context).add(
+              DownloadSelectedAssetsEvent(),
+            );
+          },
+        ),
+      ],
     ];
 
     final bottomItems = [
@@ -231,6 +258,15 @@ class _AppScaffoldState extends State<AppScaffold>
           },
         ),
         topItems: topItems.map((e) {
+          return MenuDrawerItem(
+            icon: e.icon,
+            title: e.title,
+            isActive: e.isActive,
+            isCollapsed: _isMenuCollapsed,
+            onTap: e.onTap,
+          );
+        }).toList(),
+        contextualItems: contextualItems.map((e) {
           return MenuDrawerItem(
             icon: e.icon,
             title: e.title,

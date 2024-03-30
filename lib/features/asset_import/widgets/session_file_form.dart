@@ -46,10 +46,6 @@ class _SessionFileFormState extends State<SessionFileForm> {
   void _onControllerChanged() {
     if (mounted) {
       setState(() {});
-
-      _onChangeDebounce.wrap(() {
-        widget.onChange?.call(widget.controller.getModel());
-      });
     }
   }
 
@@ -799,7 +795,14 @@ class _SessionFileFormState extends State<SessionFileForm> {
 }
 
 class SessionFileFormController extends ChangeNotifier {
-  AssetImportSessionFileMetaModel? _model;
+  String? _sessionID;
+  String? get sessionID => _sessionID;
+
+  String? _fileID;
+  String? get fileID => _fileID;
+
+  AssetImportSessionFileMetaModel? _meta;
+  AssetImportSessionFileMetaModel? get meta => _meta;
 
   final _agencyController = ValueNotifier<List<String>>([]);
   List<String> get agency => _agencyController.value;
@@ -895,7 +898,7 @@ class SessionFileFormController extends ChangeNotifier {
         daletID: null,
         keywords: keywords,
         shotDescription: shotDescription,
-        location: _model?.metadata.location ??
+        location: _meta?.metadata.location ??
             const AssetMetadataLocationModel(
               description: null,
               country: null,
@@ -924,48 +927,53 @@ class SessionFileFormController extends ChangeNotifier {
   }
 
   void reset() {
-    _agencyController.value = _model?.metadata.agency ?? [];
+    _agencyController.value = _meta?.metadata.agency ?? [];
 
-    _celebrityController.value = _model?.metadata.celebrity ?? true;
+    _celebrityController.value = _meta?.metadata.celebrity ?? true;
 
     _celebrityAssociatedController.value =
-        _model?.metadata.celebrityAssociated ?? [];
+        _meta?.metadata.celebrityAssociated ?? [];
 
-    _celebrityInPhotoController.value = _model?.metadata.celebrityInPhoto ?? [];
+    _celebrityInPhotoController.value = _meta?.metadata.celebrityInPhoto ?? [];
 
-    _creditController.text = _model?.metadata.credit ?? '';
+    _creditController.text = _meta?.metadata.credit ?? '';
 
-    if ((_model?.metadata.creditLocation != null) &&
-        (_model?.metadata.creditLocation !=
+    if ((_meta?.metadata.creditLocation != null) &&
+        (_meta?.metadata.creditLocation !=
             AssetMetadataCreditLocationEnum.unknown)) {
-      _creditLocationController.value = _model!.metadata.creditLocation!;
+      _creditLocationController.value = _meta!.metadata.creditLocation!;
     } else {
       _creditLocationController.value = AssetMetadataCreditLocationEnum.end;
     }
 
-    _emotionController.value = _model?.metadata.emotion ?? [];
+    _emotionController.value = _meta?.metadata.emotion ?? [];
 
-    _headlineController.text = _model?.headline ?? '';
+    _headlineController.text = _meta?.headline ?? '';
 
-    _keywordsController.value = _model?.metadata.keywords ?? [];
+    _keywordsController.value = _meta?.metadata.keywords ?? [];
 
-    _overlayController.value = _model?.metadata.overlay ?? [];
+    _overlayController.value = _meta?.metadata.overlay ?? [];
 
     _rightsController.value =
-        _model?.metadata.rights ?? AssetMetadataRightsEnum.unknown;
+        _meta?.metadata.rights ?? AssetMetadataRightsEnum.unknown;
 
-    _rightsDetailsController.text = _model?.metadata.rightsDetails ?? '';
+    _rightsDetailsController.text = _meta?.metadata.rightsDetails ?? '';
 
     _rightsInstructionsController.text =
-        _model?.metadata.rightsInstructions ?? '';
+        _meta?.metadata.rightsInstructions ?? '';
 
-    _shotDescriptionController.text = _model?.metadata.shotDescription ?? '';
-
-    notifyListeners();
+    _shotDescriptionController.text = _meta?.metadata.shotDescription ?? '';
   }
 
-  void setFrom(AssetImportSessionFileMetaModel model) {
-    _model = model;
+  void setFrom({
+    required String sessionID,
+    required String fileID,
+    required AssetImportSessionFileMetaModel meta,
+  }) {
+    _sessionID = sessionID;
+    _fileID = fileID;
+    _meta = meta;
+
     reset();
   }
 
@@ -1020,6 +1028,10 @@ class SessionFileFormController extends ChangeNotifier {
 
     if (model.rightsInstructions != null) {
       rightsInstructions = model.rightsInstructions!;
+    }
+
+    if (model.shotDescription != null) {
+      shotDescription = model.shotDescription!;
     }
 
     notifyListeners();
