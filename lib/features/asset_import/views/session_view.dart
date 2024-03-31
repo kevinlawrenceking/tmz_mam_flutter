@@ -63,8 +63,8 @@ class _SessionViewState extends State<SessionView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<GlobalBloc>(
-      create: (context) => GetIt.instance<GlobalBloc>(),
+    return BlocProvider.value(
+      value: GetIt.instance<GlobalBloc>(),
       child: BlocProvider<SessionBloc>(
         create: (context) {
           final bloc = GetIt.instance<SessionBloc>();

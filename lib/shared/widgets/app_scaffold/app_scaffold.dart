@@ -88,8 +88,8 @@ class _AppScaffoldState extends State<AppScaffold>
       _animationController.value = _isMenuCollapsed.value ? 0 : 1;
     }
 
-    return BlocProvider<GlobalBloc>(
-      create: (context) => GetIt.instance<GlobalBloc>(),
+    return BlocProvider.value(
+      value: GetIt.instance<GlobalBloc>(),
       child: BlocBuilder<GlobalBloc, GlobalBlocState>(
         buildWhen: (_, state) => state is InitialState,
         builder: (context, state) {
