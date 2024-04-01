@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.dart';
-import 'package:tmz_damz/features/asset_import/widgets/tag_field.dart';
+import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/utils/debounce_timer.dart';
 
 class SessionFileForm extends StatefulWidget {
@@ -29,6 +31,15 @@ class _SessionFileFormState extends State<SessionFileForm> {
     ),
   );
 
+  var _picklistAgencyTagFieldUniqueKey = UniqueKey();
+  final _picklistAgencyTagFieldFocusNode = FocusNode();
+  var _picklistCelebrityAssociatedTagFieldUniqueKey = UniqueKey();
+  final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
+  var _picklistCelebrityInPhotoTagFieldUniqueKey = UniqueKey();
+  final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
+  var _picklistKeywordsTagFieldUniqueKey = UniqueKey();
+  final _picklistKeywordsTagFieldFocusNode = FocusNode();
+
   @override
   void dispose() {
     widget.controller.removeListener(_onControllerChanged);
@@ -45,7 +56,12 @@ class _SessionFileFormState extends State<SessionFileForm> {
 
   void _onControllerChanged() {
     if (mounted) {
-      setState(() {});
+      setState(() {
+        _picklistAgencyTagFieldUniqueKey = UniqueKey();
+        _picklistCelebrityAssociatedTagFieldUniqueKey = UniqueKey();
+        _picklistCelebrityInPhotoTagFieldUniqueKey = UniqueKey();
+        _picklistKeywordsTagFieldUniqueKey = UniqueKey();
+      });
     }
   }
 
@@ -135,18 +151,24 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
-            key: UniqueKey(),
-            hintText: 'Add agency...',
-            initialTags: widget.controller.agency,
-            onChange: (tags) {
-              setState(() {
-                widget.controller.agency = tags;
-              });
+          child: Builder(
+            builder: (context) {
+              return PicklistAgencyTagField(
+                key: _picklistAgencyTagFieldUniqueKey,
+                focusNode: _picklistAgencyTagFieldFocusNode,
+                tags: widget.controller.agency,
+                onChange: (tags) {
+                  setState(() {
+                    widget.controller.agency = tags;
+                  });
 
-              _onChangeDebounce.wrap(() {
-                widget.onChange?.call(widget.controller.getModel());
-              });
+                  _picklistAgencyTagFieldFocusNode.requestFocus();
+
+                  _onChangeDebounce.wrap(() {
+                    widget.onChange?.call(widget.controller.getModel());
+                  });
+                },
+              );
             },
           ),
         ),
@@ -259,18 +281,24 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
-            key: UniqueKey(),
-            hintText: 'Add celebrity...',
-            initialTags: widget.controller.celebrityAssociated,
-            onChange: (tags) {
-              setState(() {
-                widget.controller.celebrityAssociated = tags;
-              });
+          child: Builder(
+            builder: (context) {
+              return PicklistCelebrityTagField(
+                key: _picklistCelebrityAssociatedTagFieldUniqueKey,
+                focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
+                tags: widget.controller.celebrityAssociated,
+                onChange: (tags) {
+                  setState(() {
+                    widget.controller.celebrityAssociated = tags;
+                  });
 
-              _onChangeDebounce.wrap(() {
-                widget.onChange?.call(widget.controller.getModel());
-              });
+                  _picklistCelebrityAssociatedTagFieldFocusNode.requestFocus();
+
+                  _onChangeDebounce.wrap(() {
+                    widget.onChange?.call(widget.controller.getModel());
+                  });
+                },
+              );
             },
           ),
         ),
@@ -292,18 +320,24 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
-            key: UniqueKey(),
-            hintText: 'Add celebrity...',
-            initialTags: widget.controller.celebrityInPhoto,
-            onChange: (tags) {
-              setState(() {
-                widget.controller.celebrityInPhoto = tags;
-              });
+          child: Builder(
+            builder: (context) {
+              return PicklistCelebrityTagField(
+                key: _picklistCelebrityInPhotoTagFieldUniqueKey,
+                focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
+                tags: widget.controller.celebrityInPhoto,
+                onChange: (tags) {
+                  setState(() {
+                    widget.controller.celebrityInPhoto = tags;
+                  });
 
-              _onChangeDebounce.wrap(() {
-                widget.onChange?.call(widget.controller.getModel());
-              });
+                  _picklistCelebrityInPhotoTagFieldFocusNode.requestFocus();
+
+                  _onChangeDebounce.wrap(() {
+                    widget.onChange?.call(widget.controller.getModel());
+                  });
+                },
+              );
             },
           ),
         ),
@@ -538,18 +572,24 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
-            key: UniqueKey(),
-            hintText: 'Add keyword...',
-            initialTags: widget.controller.keywords,
-            onChange: (tags) {
-              setState(() {
-                widget.controller.keywords = tags;
-              });
+          child: Builder(
+            builder: (context) {
+              return PicklistKeywordTagField(
+                key: _picklistKeywordsTagFieldUniqueKey,
+                focusNode: _picklistKeywordsTagFieldFocusNode,
+                tags: widget.controller.keywords,
+                onChange: (tags) {
+                  setState(() {
+                    widget.controller.keywords = tags;
+                  });
 
-              _onChangeDebounce.wrap(() {
-                widget.onChange?.call(widget.controller.getModel());
-              });
+                  _picklistKeywordsTagFieldFocusNode.requestFocus();
+
+                  _onChangeDebounce.wrap(() {
+                    widget.onChange?.call(widget.controller.getModel());
+                  });
+                },
+              );
             },
           ),
         ),

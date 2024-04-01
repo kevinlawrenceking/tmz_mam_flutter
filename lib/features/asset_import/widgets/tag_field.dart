@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
-class TagField extends StatefulWidget {
+class TagField<T> extends StatefulWidget {
+  final Key fieldKey;
+  final FocusNode? focusNode;
   final bool? enabled;
   final String hintText;
-  final List<String> initialTags;
-  final void Function(List<String> tags) onChange;
+  final List<T> tags;
+  final List<T> suggestions;
+  final int maxTagLength;
+  final String Function(T tag) labelProvider;
+  final T Function(String value) tagProvider;
+  final void Function(List<T> tags) onChange;
+  final void Function(String query)? onSearchTextChanged;
 
   const TagField({
     super.key,
+    required this.fieldKey,
+    this.focusNode,
     this.enabled,
     required this.hintText,
-    required this.initialTags,
+    required this.tags,
+    this.suggestions = const [],
+    this.maxTagLength = 100,
+    required this.labelProvider,
+    required this.tagProvider,
     required this.onChange,
+    this.onSearchTextChanged,
   });
 
   @override
-  State<TagField> createState() => _TagFieldState();
+  State<TagField<T>> createState() => _TagFieldState();
 }
 
-class _TagFieldState extends State<TagField> {
-  late DynamicTagController<DynamicTagData<String>> _tagController;
+class _TagFieldState<T> extends State<TagField<T>> {
+  late final DynamicTagController<DynamicTagData<T>> _tagController;
+
+  final kSuggestionDecoration = SuggestionDecoration(
+    border: Border.all(),
+    borderRadius: BorderRadius.circular(6.0),
+    color: Colors.grey.shade800,
+    elevation: 10.0,
+  );
 
   @override
   void dispose() {
@@ -34,7 +55,7 @@ class _TagFieldState extends State<TagField> {
   void initState() {
     super.initState();
 
-    _tagController = DynamicTagController<DynamicTagData<String>>();
+    _tagController = DynamicTagController<DynamicTagData<T>>();
   }
 
   @override
@@ -43,27 +64,28 @@ class _TagFieldState extends State<TagField> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return TextFieldTags<DynamicTagData<String>>(
+        return TextFieldTags<DynamicTagData<T>>(
           textfieldTagsController: _tagController,
-          initialTags: widget.initialTags
-              .map((_) => DynamicTagData<String>(_, _))
-              .toList(),
+          initialTags: widget.tags.map((tag) {
+            final label = widget.labelProvider(tag);
+            return DynamicTagData<T>(label, tag);
+          }).toList(),
           inputFieldBuilder: (context, inputFieldValues) {
             return Focus(
               skipTraversal: !(widget.enabled ?? true),
               onFocusChange: (hasFocus) {
                 if (!hasFocus) {
-                  final tag = inputFieldValues.textEditingController.text
+                  final value = inputFieldValues.textEditingController.text
                       .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
                       .replaceAll(RegExp(r'\s{2,}'), '')
                       .trim();
 
-                  if (tag.isEmpty) {
+                  if (value.isEmpty) {
                     return;
                   }
 
                   _tagController.onTagSubmitted(
-                    DynamicTagData(tag, tag),
+                    DynamicTagData(value, widget.tagProvider(value)),
                   );
 
                   final tags = _tagController.getTags
@@ -77,101 +99,11 @@ class _TagFieldState extends State<TagField> {
               },
               child: Opacity(
                 opacity: (widget.enabled ?? true) ? 1.0 : 0.5,
-                child: TextField(
-                  enabled: widget.enabled,
-                  controller: inputFieldValues.textEditingController,
-                  focusNode: inputFieldValues.focusNode,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    errorText: inputFieldValues.error,
-                    hintText:
-                        inputFieldValues.tags.isNotEmpty ? '' : widget.hintText,
-                    isDense: true,
-                    prefixIconConstraints: BoxConstraints(
-                      maxWidth: constraints.maxWidth - 150,
-                    ),
-                    prefixIcon: inputFieldValues.tags.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                              right: 5.0,
-                            ),
-                            child: SingleChildScrollView(
-                              controller: inputFieldValues.tagScrollController,
-                              padding: const EdgeInsets.only(
-                                left: 3.0,
-                                top: 6.0,
-                                bottom: 6.0,
-                              ),
-                              child: Wrap(
-                                runSpacing: 6.0,
-                                children: [
-                                  ...inputFieldValues.tags.map((data) {
-                                    return _buildTag(
-                                      theme: theme,
-                                      data: data,
-                                      onRemove: (tag) {
-                                        inputFieldValues.onTagRemoved(tag);
-                                        widget.onChange(
-                                          inputFieldValues.tags
-                                              .map((_) => _.data)
-                                              .toList(),
-                                        );
-                                      },
-                                      onTap: (tag) {
-                                        //
-                                      },
-                                    );
-                                  }),
-                                ],
-                              ),
-                            ),
-                          )
-                        : null,
-                  ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(100),
-                  ],
-                  onChanged: (value) {
-                    final tag = value
-                        .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
-                        .replaceAll(RegExp(r'\s{2,}'), '')
-                        .trim();
-
-                    if (tag.isEmpty) {
-                      return;
-                    }
-
-                    _tagController.onTagChanged(
-                      DynamicTagData(tag, tag),
-                    );
-                  },
-                  onSubmitted: (value) {
-                    final tag = value
-                        .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
-                        .replaceAll(RegExp(r'\s{2,}'), '')
-                        .trim();
-
-                    if (tag.isEmpty) {
-                      return;
-                    }
-
-                    _tagController.onTagSubmitted(
-                      DynamicTagData(tag, tag),
-                    );
-
-                    final tags = _tagController.getTags
-                        ?.map(
-                          (_) => _.data,
-                        )
-                        .toList();
-
-                    widget.onChange(tags ?? []);
-
-                    inputFieldValues.focusNode.requestFocus();
-                  },
-                  onTap: () {
-                    _tagController.getFocusNode?.requestFocus();
-                  },
+                child: _buildInput(
+                  theme: theme,
+                  constraints: constraints,
+                  inputFieldValues: inputFieldValues,
+                  onSearchTextChanged: widget.onSearchTextChanged,
                 ),
               ),
             );
@@ -191,11 +123,138 @@ class _TagFieldState extends State<TagField> {
     );
   }
 
+  Widget _buildInput({
+    required ThemeData theme,
+    required BoxConstraints constraints,
+    required InputFieldValues<DynamicTagData<T>> inputFieldValues,
+    required void Function(String query)? onSearchTextChanged,
+  }) {
+    return SearchField<T>(
+      key: widget.fieldKey,
+      controller: inputFieldValues.textEditingController,
+      focusNode: widget.focusNode,
+      animationDuration: const Duration(milliseconds: 150),
+      autoCorrect: false,
+      enabled: widget.enabled,
+      maxSuggestionsInViewPort: 10,
+      suggestions: widget.suggestions.map((item) {
+        final label = widget.labelProvider(item);
+
+        return SearchFieldListItem<T>(
+          label,
+          item: item,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+            ),
+            child: Text(
+              label,
+              style: theme.textTheme.bodyMedium,
+            ),
+          ),
+        );
+      }).toList(),
+      emptyWidget: inputFieldValues.textEditingController.text.length >= 2
+          ? Container(
+              decoration: kSuggestionDecoration,
+              padding: const EdgeInsets.symmetric(
+                vertical: 10.0,
+              ),
+              child: Center(
+                child: Text(
+                  'No results...',
+                  style: theme.textTheme.bodyMedium,
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
+      suggestionsDecoration: kSuggestionDecoration,
+      searchInputDecoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        errorText: inputFieldValues.error,
+        hintText: inputFieldValues.tags.isNotEmpty ? '' : widget.hintText,
+        isDense: true,
+        prefixIconConstraints: BoxConstraints(
+          maxWidth: constraints.maxWidth - 150,
+        ),
+        prefixIcon: inputFieldValues.tags.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.only(
+                  right: 5.0,
+                ),
+                child: SingleChildScrollView(
+                  controller: inputFieldValues.tagScrollController,
+                  padding: const EdgeInsets.only(
+                    left: 3.0,
+                    top: 6.0,
+                    bottom: 6.0,
+                  ),
+                  child: Wrap(
+                    runSpacing: 6.0,
+                    children: [
+                      ...inputFieldValues.tags.map((data) {
+                        return _buildTag(
+                          theme: theme,
+                          data: data,
+                          onRemove: (tag) {
+                            inputFieldValues.onTagRemoved(tag);
+                            widget.onChange(
+                              inputFieldValues.tags.map((_) => _.data).toList(),
+                            );
+                          },
+                          onTap: (tag) {
+                            //
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+              )
+            : null,
+      ),
+      onSearchTextChanged: (query) {
+        if (onSearchTextChanged != null) {
+          widget.onSearchTextChanged!(query);
+        }
+
+        return [];
+      },
+      onSuggestionTap: (item) {
+        final tag = item.item;
+        if (tag == null) {
+          return;
+        }
+
+        _tagController.onTagSubmitted(
+          DynamicTagData(
+            widget.labelProvider(tag),
+            tag,
+          ),
+        );
+
+        final tags = _tagController.getTags
+            ?.map(
+              (_) => _.data,
+            )
+            .toList();
+
+        widget.onChange(tags ?? []);
+
+        inputFieldValues.textEditingController.text = '';
+
+        if (onSearchTextChanged != null) {
+          widget.onSearchTextChanged!('');
+        }
+      },
+    );
+  }
+
   Widget _buildTag({
     required ThemeData theme,
-    required DynamicTagData<String> data,
-    required void Function(DynamicTagData<String> data) onRemove,
-    required void Function(DynamicTagData<String> data) onTap,
+    required DynamicTagData<T> data,
+    required void Function(DynamicTagData<T> data) onRemove,
+    required void Function(DynamicTagData<T> data) onTap,
   }) {
     return Container(
       decoration: const BoxDecoration(

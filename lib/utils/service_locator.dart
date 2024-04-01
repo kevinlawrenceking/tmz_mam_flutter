@@ -6,6 +6,9 @@ import 'package:tmz_damz/data/sources/asset.dart';
 import 'package:tmz_damz/data/sources/asset_import_session.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/data/sources/collection.dart';
+import 'package:tmz_damz/data/sources/picklist_agency.dart';
+import 'package:tmz_damz/data/sources/picklist_celebrity.dart';
+import 'package:tmz_damz/data/sources/picklist_keyword.dart';
 import 'package:tmz_damz/data/sources/user_collection.dart';
 import 'package:tmz_damz/features/asset_details/service_locator.dart'
     as asset_details;
@@ -77,6 +80,27 @@ void _initDataSources() {
 
   sl.registerSingleton<ICollectionDataSource>(
     CollectionDataSource(
+      auth: sl(),
+      client: sl(),
+    ),
+  );
+
+  sl.registerSingleton<IPicklistAgencyDataSource>(
+    PicklistAgencyDataSource(
+      auth: sl(),
+      client: sl(),
+    ),
+  );
+
+  sl.registerSingleton<IPicklistCelebrityDataSource>(
+    PicklistCelebrityDataSource(
+      auth: sl(),
+      client: sl(),
+    ),
+  );
+
+  sl.registerSingleton<IPicklistKeywordDataSource>(
+    PicklistKeywordDataSource(
       auth: sl(),
       client: sl(),
     ),

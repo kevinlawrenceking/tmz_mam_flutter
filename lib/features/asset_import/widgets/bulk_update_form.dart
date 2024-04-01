@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.dart';
-import 'package:tmz_damz/features/asset_import/widgets/tag_field.dart';
+import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
 
 class BulkUpdateForm extends StatefulWidget {
   final BulkUpdateFormController controller;
@@ -36,6 +38,11 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   bool _includeRightsInstructions = false;
   bool _includeRightsSummary = false;
   bool _includeShotDescription = false;
+
+  final _picklistAgencyTagFieldFocusNode = FocusNode();
+  final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
+  final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
+  final _picklistKeywordsTagFieldFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -251,14 +258,16 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
+          child: PicklistAgencyTagField(
+            focusNode: _picklistAgencyTagFieldFocusNode,
             enabled: _includeAgency,
-            hintText: 'Add agency...',
-            initialTags: widget.controller.agency,
+            tags: widget.controller.agency,
             onChange: (tags) {
               setState(() {
                 widget.controller.agency = tags;
               });
+
+              _picklistAgencyTagFieldFocusNode.requestFocus();
             },
           ),
         ),
@@ -377,14 +386,16 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
+          child: PicklistCelebrityTagField(
+            focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
             enabled: _includeCelebrityAssociated,
-            hintText: 'Add celebrity...',
-            initialTags: widget.controller.celebrityAssociated,
+            tags: widget.controller.celebrityAssociated,
             onChange: (tags) {
               setState(() {
                 widget.controller.celebrityAssociated = tags;
               });
+
+              _picklistCelebrityAssociatedTagFieldFocusNode.requestFocus();
             },
           ),
         ),
@@ -425,14 +436,16 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
+          child: PicklistCelebrityTagField(
+            focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
             enabled: _includeCelebrityInPhoto,
-            hintText: 'Add celebrity...',
-            initialTags: widget.controller.celebrityInPhoto,
+            tags: widget.controller.celebrityInPhoto,
             onChange: (tags) {
               setState(() {
                 widget.controller.celebrityInPhoto = tags;
               });
+
+              _picklistCelebrityInPhotoTagFieldFocusNode.requestFocus();
             },
           ),
         ),
@@ -725,14 +738,16 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: TagField(
+          child: PicklistKeywordTagField(
+            focusNode: _picklistKeywordsTagFieldFocusNode,
             enabled: _includeKeywords,
-            hintText: 'Add keyword...',
-            initialTags: widget.controller.keywords,
+            tags: widget.controller.keywords,
             onChange: (tags) {
               setState(() {
                 widget.controller.keywords = tags;
               });
+
+              _picklistKeywordsTagFieldFocusNode.requestFocus();
             },
           ),
         ),
