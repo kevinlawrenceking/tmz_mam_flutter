@@ -405,8 +405,8 @@ class _SearchViewState extends State<SearchView> {
           if (state.assets.isNotEmpty) {
             final assets = state.assets;
 
-            return BlocProvider<global.GlobalBloc>(
-              create: (context) => GetIt.instance<global.GlobalBloc>(),
+            return BlocProvider.value(
+              value: GetIt.instance<global.GlobalBloc>(),
               child: BlocListener<global.GlobalBloc, global.GlobalBlocState>(
                 listener: (context, state) {
                   if (state is global.DownloadSelectedAssetsState) {
