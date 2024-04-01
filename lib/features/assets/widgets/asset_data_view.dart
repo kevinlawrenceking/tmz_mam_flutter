@@ -33,7 +33,7 @@ class AssetDataView extends StatefulWidget {
 }
 
 class _AssetDataViewState extends State<AssetDataView> {
-  final _selectIDs = <String>[];
+  final _selectedIDs = <String>[];
   int? _selectionStart;
   int? _selectionEnd;
 
@@ -59,18 +59,18 @@ class _AssetDataViewState extends State<AssetDataView> {
         if (!HardwareKeyboard.instance.isShiftPressed) {
           _selectionStart = index != -1 ? index : null;
 
-          if (!_selectIDs.any((id) => id == model.id)) {
+          if (!_selectedIDs.any((id) => id == model.id)) {
             if (!HardwareKeyboard.instance.isControlPressed &&
                 !HardwareKeyboard.instance.isMetaPressed) {
-              _selectIDs.clear();
+              _selectedIDs.clear();
             }
-            _selectIDs.add(model.id);
+            _selectedIDs.add(model.id);
           } else {
             if (HardwareKeyboard.instance.isControlPressed ||
                 HardwareKeyboard.instance.isMetaPressed) {
-              _selectIDs.removeWhere((id) => id == model.id);
+              _selectedIDs.removeWhere((id) => id == model.id);
             } else {
-              _selectIDs.removeWhere((id) => id != model.id);
+              _selectedIDs.removeWhere((id) => id != model.id);
             }
           }
         } else {
@@ -80,17 +80,17 @@ class _AssetDataViewState extends State<AssetDataView> {
             if (_selectionStart! < _selectionEnd!) {
               final selectedIDs = widget.assets
                   .getRange(_selectionStart!, _selectionEnd! + 1)
-                  .where((_) => !_selectIDs.any((id) => id == _.id))
+                  .where((_) => !_selectedIDs.any((id) => id == _.id))
                   .map((_) => _.id);
 
-              _selectIDs.addAll(selectedIDs);
+              _selectedIDs.addAll(selectedIDs);
             } else if (_selectionEnd! < _selectionStart!) {
               final selectedIDs = widget.assets
                   .getRange(_selectionEnd!, _selectionStart!)
-                  .where((_) => !_selectIDs.any((id) => id == _.id))
+                  .where((_) => !_selectedIDs.any((id) => id == _.id))
                   .map((_) => _.id);
 
-              _selectIDs.addAll(selectedIDs);
+              _selectedIDs.addAll(selectedIDs);
             }
           }
         }
@@ -105,7 +105,7 @@ class _AssetDataViewState extends State<AssetDataView> {
           widget.onTap(model);
         }
 
-        widget.onSelectionChanged(_selectIDs);
+        widget.onSelectionChanged(_selectedIDs);
       },
       child: Container(
         padding: EdgeInsets.all(margin),
@@ -114,7 +114,7 @@ class _AssetDataViewState extends State<AssetDataView> {
           apiBaseUrl: widget.config.apiBaseUrl,
           scrollController: widget.scrollController,
           model: model,
-          selected: _selectIDs.any((id) => id == model.id),
+          selected: _selectedIDs.any((id) => id == model.id),
         ),
       ),
     );

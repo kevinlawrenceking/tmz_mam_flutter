@@ -408,7 +408,7 @@ class _SearchViewState extends State<SearchView> {
             return BlocProvider.value(
               value: GetIt.instance<global.GlobalBloc>(),
               child: BlocListener<global.GlobalBloc, global.GlobalBlocState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state is global.DownloadSelectedAssetsState) {
                     if (_selectIDs.isEmpty) {
                       Toast.showNotification(
@@ -421,9 +421,13 @@ class _SearchViewState extends State<SearchView> {
 
                     final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
 
-                    assets
+                    final selected = assets
                         .where((asset) => _selectIDs.contains(asset.id))
-                        .forEach((asset) {
+                        .toList();
+
+                    for (var i = 0; i < selected.length; i++) {
+                      final asset = selected[i];
+
                       final img = asset.images.firstWhereOrNull(
                         (_) => _.type == AssetImageTypeEnum.source,
                       );
@@ -438,7 +442,13 @@ class _SearchViewState extends State<SearchView> {
                       if (kIsWeb) {
                         html.window.open(url, asset.headline);
                       }
-                    });
+
+                      await Future<void>.delayed(
+                        const Duration(
+                          milliseconds: 50,
+                        ),
+                      );
+                    }
                   }
                 },
                 child: MaskedScrollView(

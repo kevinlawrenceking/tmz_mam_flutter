@@ -80,8 +80,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         final version = snapshot.data!.version;
                         final buildNumber = snapshot.data!.buildNumber;
                         return Text(
-                          '$version+$buildNumber',
+                          'Version $version+$buildNumber',
                           textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         );
                       } else {
                         return const SizedBox.shrink();
@@ -93,6 +97,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 }
               },
             ),
+            const SizedBox(height: 20.0),
             ...widget.bottomItems,
           ],
         ),
