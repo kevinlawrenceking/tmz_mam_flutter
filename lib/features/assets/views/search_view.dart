@@ -61,7 +61,7 @@ class _SearchViewState extends State<SearchView> {
   bool _assetDetailsVisible = false;
 
   String? _collectionID;
-  List<String> _selectIDs = [];
+  List<String> _selectedIDs = [];
   AssetDetailsModel? _currentModel;
 
   @override
@@ -110,14 +110,14 @@ class _SearchViewState extends State<SearchView> {
 
                 if ((event.logicalKey == LogicalKeyboardKey.delete) ||
                     (event.physicalKey == PhysicalKeyboardKey.delete)) {
-                  if ((_collectionID != null) && _selectIDs.isNotEmpty) {
+                  if ((_collectionID != null) && _selectedIDs.isNotEmpty) {
                     _showAssetRemovalConfirmation(
                       context: context,
                       onConfirm: () {
                         BlocProvider.of<AssetsBloc>(context).add(
                           RemoveAssetsFromCollectionEvent(
                             collectionID: _collectionID!,
-                            assetIDs: _selectIDs,
+                            assetIDs: _selectedIDs,
                           ),
                         );
                       },
@@ -293,7 +293,7 @@ class _SearchViewState extends State<SearchView> {
           color: const Color(0xFF232323),
           width: expandedWidth,
           child: UserCollections(
-            onAddSelectedAssetsToCollection: _selectIDs.isNotEmpty
+            onAddSelectedAssetsToCollection: _selectedIDs.isNotEmpty
                 ? () {
                     showDialog<void>(
                       context: context,
@@ -309,14 +309,14 @@ class _SearchViewState extends State<SearchView> {
                               Navigator.of(context).pop();
                             },
                             onConfirm: (collectionID) {
-                              if (_selectIDs.isEmpty) {
+                              if (_selectedIDs.isEmpty) {
                                 return;
                               }
 
                               BlocProvider.of<AssetsBloc>(blocContext).add(
                                 AddAssetsToCollectionEvent(
                                   collectionID: collectionID,
-                                  assetIDs: _selectIDs,
+                                  assetIDs: _selectedIDs,
                                 ),
                               );
 
@@ -410,7 +410,7 @@ class _SearchViewState extends State<SearchView> {
               child: BlocListener<global.GlobalBloc, global.GlobalBlocState>(
                 listener: (context, state) async {
                   if (state is global.DownloadSelectedAssetsState) {
-                    if (_selectIDs.isEmpty) {
+                    if (_selectedIDs.isEmpty) {
                       Toast.showNotification(
                         showDuration: const Duration(seconds: 3),
                         type: ToastTypeEnum.information,
@@ -422,7 +422,7 @@ class _SearchViewState extends State<SearchView> {
                     final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
 
                     final selected = assets
-                        .where((asset) => _selectIDs.contains(asset.id))
+                        .where((asset) => _selectedIDs.contains(asset.id))
                         .toList();
 
                     for (var i = 0; i < selected.length; i++) {
@@ -440,7 +440,7 @@ class _SearchViewState extends State<SearchView> {
                           '$apiBaseUrl/asset/${asset.id}/image/${img.id}/download';
 
                       if (kIsWeb) {
-                        html.window.open(url, asset.headline);
+                        html.window.open(url, '_blank');
                       }
 
                       await Future<void>.delayed(
@@ -477,7 +477,7 @@ class _SearchViewState extends State<SearchView> {
                       _focusNode.requestFocus();
 
                       setState(() {
-                        _selectIDs = selectedIDs;
+                        _selectedIDs = selectedIDs;
                       });
                     },
                   ),

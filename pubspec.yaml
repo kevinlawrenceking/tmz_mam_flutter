@@ -1,7 +1,7 @@
 name: tmz_damz
 description: "TMZ's digital media asset management system."
 publish_to: 'none'
-version: 1.0.0+3
+version: 1.0.0+7
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.19.0
   json_path: ^0.7.0
   jwt_decoder: ^2.0.1
+  logger: ^2.2.0
   material_design_icons_flutter: ^7.0.7296
   motion_toast: ^2.8.0
   overlay_support: ^2.1.0

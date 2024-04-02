@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
@@ -40,6 +41,18 @@ void initServiceLocator() {
         apiBaseUrl: '$apiBaseAddress/api/v1',
       );
     },
+  );
+
+  sl.registerSingleton(
+    Logger(
+      filter: ProductionFilter(),
+      level: Level.debug,
+      printer: PrettyPrinter(
+        methodCount: 0,
+        noBoxingByDefault: true,
+        printTime: true,
+      ),
+    ),
   );
 
   _initRestClient();
