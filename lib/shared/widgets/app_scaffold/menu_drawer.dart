@@ -78,9 +78,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
                     builder: (context, snapshot) {
                       if (snapshot.data != null) {
                         final version = snapshot.data!.version;
-                        final buildNumber = snapshot.data!.buildNumber;
+                        final buildNumber =
+                            snapshot.data!.buildNumber.isNotEmpty
+                                ? '+${snapshot.data!.buildNumber}'
+                                : '';
                         return Text(
-                          'Version $version+$buildNumber',
+                          'Version $version$buildNumber',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 16,

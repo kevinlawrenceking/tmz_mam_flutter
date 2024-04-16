@@ -6,6 +6,7 @@ import 'package:tmz_damz/data/models/user.dart';
 enum AssetStatusEnum {
   unknown,
   available,
+  deleted,
   processing;
 
   factory AssetStatusEnum.fromJsonDtoValue(
@@ -14,6 +15,8 @@ enum AssetStatusEnum {
     switch (value?.toUpperCase()) {
       case 'AVAILABLE':
         return available;
+      case 'DELETED':
+        return deleted;
       case 'PROCESSING':
         return processing;
       default:

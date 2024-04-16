@@ -7,12 +7,14 @@ import 'package:tmz_damz/shared/widgets/toast.dart';
 
 class AddAssetsToCollection extends StatefulWidget {
   final ThemeData theme;
+  final String? title;
   final VoidCallback onCancel;
   final void Function(String collectionID) onConfirm;
 
   const AddAssetsToCollection({
     super.key,
     required this.theme,
+    this.title,
     required this.onCancel,
     required this.onConfirm,
   });
@@ -34,14 +36,14 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
           color: const Color(0xFF1D1E1F),
         ),
         borderRadius: BorderRadius.circular(12.0),
-        boxShadow: kElevationToShadow[24],
+        boxShadow: kElevationToShadow[8],
         color: const Color(0xFF232323),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildTitle('Add selected assets to collection...'),
+          _buildTitle(widget.title ?? 'Add selected assets to collection...'),
           Padding(
             padding: const EdgeInsets.only(
               left: 40.0,
@@ -134,6 +136,33 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
           SizedBox(
             width: 100.0,
             child: TextButton(
+              onPressed: () {
+                if (model == null) {
+                  Toast.showNotification(
+                    showDuration: const Duration(seconds: 3),
+                    type: ToastTypeEnum.warning,
+                    message: 'You must select a collection first.',
+                  );
+                } else {
+                  widget.onConfirm(model.id);
+                }
+              },
+              style: widget.theme.textButtonTheme.style,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  'Add',
+                  style: widget.theme.textTheme.bodySmall,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10.0),
+          SizedBox(
+            width: 100.0,
+            child: TextButton(
               onPressed: widget.onCancel,
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
@@ -162,33 +191,6 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
                 ),
                 child: Text(
                   'Cancel',
-                  style: widget.theme.textTheme.bodySmall,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10.0),
-          SizedBox(
-            width: 100.0,
-            child: TextButton(
-              onPressed: () {
-                if (model == null) {
-                  Toast.showNotification(
-                    showDuration: const Duration(seconds: 3),
-                    type: ToastTypeEnum.warning,
-                    message: 'You must select a collection first.',
-                  );
-                } else {
-                  widget.onConfirm(model.id);
-                }
-              },
-              style: widget.theme.textButtonTheme.style,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                ),
-                child: Text(
-                  'Add',
                   style: widget.theme.textTheme.bodySmall,
                 ),
               ),

@@ -31,7 +31,7 @@ class _AssetTileItemState extends State<AssetTileItem> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         boxShadow: kElevationToShadow[3],
-        color: Colors.black,
+        color: Colors.transparent,
       ),
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -40,111 +40,119 @@ class _AssetTileItemState extends State<AssetTileItem> {
           side: BorderSide(
             color: widget.selected
                 ? const Color(0xFF8E0000)
-                : const Color(0x20000000),
+                : const Color(0x80000000),
             width: widget.selected ? 3.0 : 1.0,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Container(
-                color: Colors.black,
-                child: ScrollAwareBuilder(
-                  controller: widget.scrollController,
-                  builder: (context) => FileThumbnail(
-                    url:
-                        '${widget.apiBaseUrl}/asset/${widget.model.id}/thumbnail',
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    widget.model.headline,
-                    style: theme.textTheme.titleSmall,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                  ),
-                  Opacity(
-                    opacity: 0.4,
-                    child: Text(
-                      'ID: ${widget.model.id}',
-                      style: theme.textTheme.labelSmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
+        child: Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Container(
+                    color: Colors.black,
+                    child: ScrollAwareBuilder(
+                      controller: widget.scrollController,
+                      builder: (context) => FileThumbnail(
+                        url:
+                            '${widget.apiBaseUrl}/asset/${widget.model.id}/thumbnail',
+                      ),
                     ),
                   ),
-                  const Divider(),
-                  const SizedBox(height: 4),
-                  _MetadataValue(
-                    theme: theme,
-                    label: 'Celebrity',
-                    value: !widget.model.metadata.celebrity
-                        ? 'Not Applicable'
-                        : (widget.model.metadata.celebrityInPhoto.isNotEmpty
-                            ? widget.model.metadata.celebrityInPhoto.join(', ')
-                            : '-'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        widget.model.headline,
+                        style: theme.textTheme.titleSmall,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                      ),
+                      Opacity(
+                        opacity: 0.4,
+                        child: Text(
+                          'ID: ${widget.model.id}',
+                          style: theme.textTheme.labelSmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                        ),
+                      ),
+                      const Divider(),
+                      const SizedBox(height: 4),
+                      _MetadataValue(
+                        theme: theme,
+                        label: 'Celebrity',
+                        value: !widget.model.metadata.celebrity
+                            ? 'Not Applicable'
+                            : (widget.model.metadata.celebrityInPhoto.isNotEmpty
+                                ? widget.model.metadata.celebrityInPhoto
+                                    .join(', ')
+                                : '-'),
+                      ),
+                      _MetadataValue(
+                        theme: theme,
+                        label: 'Associated Celebrity',
+                        value: !widget.model.metadata.celebrity
+                            ? '-'
+                            : (widget.model.metadata.celebrityAssociated
+                                    .isNotEmpty
+                                ? widget.model.metadata.celebrityAssociated
+                                    .join(', ')
+                                : '-'),
+                      ),
+                      _MetadataValue(
+                        theme: theme,
+                        label: 'Shot Description',
+                        value: widget.model.metadata.shotDescription.isNotEmpty
+                            ? widget.model.metadata.shotDescription
+                            : '-',
+                      ),
+                      _MetadataValue(
+                        theme: theme,
+                        label: 'Rights Summary',
+                        value: () {
+                          switch (widget.model.metadata.rights) {
+                            case AssetMetadataRightsEnum.costNonTMZ:
+                              return 'Cost (Non-TMZ)';
+                            case AssetMetadataRightsEnum.freeNonTMZ:
+                              return 'Free (Non-TMZ)';
+                            case AssetMetadataRightsEnum.freeTMZ:
+                              return 'Free (TMZ)';
+                            default:
+                              return '-';
+                          }
+                        }(),
+                      ),
+                      _MetadataValue(
+                        theme: theme,
+                        label: 'Agency',
+                        value: widget.model.metadata.agency.isNotEmpty
+                            ? widget.model.metadata.agency.join(', ')
+                            : '-',
+                      ),
+                      _MetadataValue(
+                        theme: theme,
+                        label: 'Credit',
+                        value: widget.model.metadata.credit?.isNotEmpty ?? false
+                            ? widget.model.metadata.credit!
+                            : '-',
+                      ),
+                    ],
                   ),
-                  _MetadataValue(
-                    theme: theme,
-                    label: 'Associated Celebrity',
-                    value: !widget.model.metadata.celebrity
-                        ? '-'
-                        : (widget.model.metadata.celebrityAssociated.isNotEmpty
-                            ? widget.model.metadata.celebrityAssociated
-                                .join(', ')
-                            : '-'),
-                  ),
-                  _MetadataValue(
-                    theme: theme,
-                    label: 'Shot Description',
-                    value: widget.model.metadata.shotDescription.isNotEmpty
-                        ? widget.model.metadata.shotDescription
-                        : '-',
-                  ),
-                  _MetadataValue(
-                    theme: theme,
-                    label: 'Rights Summary',
-                    value: () {
-                      switch (widget.model.metadata.rights) {
-                        case AssetMetadataRightsEnum.costNonTMZ:
-                          return 'Cost (Non-TMZ)';
-                        case AssetMetadataRightsEnum.freeNonTMZ:
-                          return 'Free (Non-TMZ)';
-                        case AssetMetadataRightsEnum.freeTMZ:
-                          return 'Free (TMZ)';
-                        default:
-                          return '-';
-                      }
-                    }(),
-                  ),
-                  _MetadataValue(
-                    theme: theme,
-                    label: 'Agency',
-                    value: widget.model.metadata.agency.isNotEmpty
-                        ? widget.model.metadata.agency.join(', ')
-                        : '-',
-                  ),
-                  _MetadataValue(
-                    theme: theme,
-                    label: 'Credit',
-                    value: widget.model.metadata.credit?.isNotEmpty ?? false
-                        ? widget.model.metadata.credit!
-                        : '-',
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

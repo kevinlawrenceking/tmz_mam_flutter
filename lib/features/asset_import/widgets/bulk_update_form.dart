@@ -8,6 +8,7 @@ import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.
 import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
 import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
 import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
 
 class BulkUpdateForm extends StatefulWidget {
   final BulkUpdateFormController controller;
@@ -43,6 +44,16 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
   final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
   final _picklistKeywordsTagFieldFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _picklistAgencyTagFieldFocusNode.dispose();
+    _picklistCelebrityAssociatedTagFieldFocusNode.dispose();
+    _picklistCelebrityInPhotoTagFieldFocusNode.dispose();
+    _picklistKeywordsTagFieldFocusNode.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +178,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                     ),
                     child: Text(
                       'APPLY TO ALL',
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.0,
                       ),
@@ -454,6 +465,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   }
 
   Widget _buildCredit(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         AnimatedToggleSwitch.dual(
@@ -490,6 +503,13 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
             opacity: _includeCredit ? 1.0 : 0.5,
             child: TextFormField(
               controller: widget.controller._creditController,
+              undoController: undoController,
+              contextMenuBuilder: (context, editableTextState) =>
+                  kEditableTextContextMenuBuilder(
+                context,
+                editableTextState,
+                undoController,
+              ),
               enabled: _includeCredit,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -657,6 +677,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   }
 
   Widget _buildHeadline(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         AnimatedToggleSwitch.dual(
@@ -692,6 +714,13 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
             opacity: _includeHeadline ? 1.0 : 0.5,
             child: TextFormField(
               controller: widget.controller._headlineController,
+              undoController: undoController,
+              contextMenuBuilder: (context, editableTextState) =>
+                  kEditableTextContextMenuBuilder(
+                context,
+                editableTextState,
+                undoController,
+              ),
               enabled: _includeHeadline,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -835,6 +864,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   }
 
   Widget _buildRightsDetails(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         AnimatedToggleSwitch.dual(
@@ -871,6 +902,13 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
             opacity: _includeRightsDetails ? 1.0 : 0.5,
             child: TextFormField(
               controller: widget.controller._rightsDetailsController,
+              undoController: undoController,
+              contextMenuBuilder: (context, editableTextState) =>
+                  kEditableTextContextMenuBuilder(
+                context,
+                editableTextState,
+                undoController,
+              ),
               enabled: _includeRightsDetails,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -886,6 +924,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   }
 
   Widget _buildRightsInstructions(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         AnimatedToggleSwitch.dual(
@@ -922,6 +962,13 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
             opacity: _includeRightsInstructions ? 1.0 : 0.5,
             child: TextFormField(
               controller: widget.controller._rightsInstructionsController,
+              undoController: undoController,
+              contextMenuBuilder: (context, editableTextState) =>
+                  kEditableTextContextMenuBuilder(
+                context,
+                editableTextState,
+                undoController,
+              ),
               enabled: _includeRightsInstructions,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -1025,6 +1072,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   }
 
   Widget _buildShotDescription(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         AnimatedToggleSwitch.dual(
@@ -1060,6 +1109,13 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
             opacity: _includeShotDescription ? 1.0 : 0.5,
             child: TextFormField(
               controller: widget.controller._shotDescriptionController,
+              undoController: undoController,
+              contextMenuBuilder: (context, editableTextState) =>
+                  kEditableTextContextMenuBuilder(
+                context,
+                editableTextState,
+                undoController,
+              ),
               enabled: _includeShotDescription,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),

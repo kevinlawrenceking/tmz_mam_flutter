@@ -22,6 +22,14 @@ class AppRouter extends $AppRouter implements AutoRouteGuard {
           transitionsBuilder: _customTransition,
         ),
         CustomRoute(
+          path: '/asset/:assetID',
+          page: AssetDetailsRoute.page,
+          durationInMilliseconds: 0,
+          keepHistory: false,
+          reverseDurationInMilliseconds: 0,
+          transitionsBuilder: _customTransition,
+        ),
+        CustomRoute(
           path: '/assets/import/:sessionID',
           page: AssetImportSessionRoute.page,
           durationInMilliseconds: 0,

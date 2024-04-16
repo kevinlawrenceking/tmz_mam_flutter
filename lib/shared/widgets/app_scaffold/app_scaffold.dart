@@ -145,19 +145,22 @@ class _AppScaffoldState extends State<AppScaffold>
       ),
     ];
 
-    final contextualItems = [
-      if (widget.router.current.name == AssetsSearchRoute.name) ...[
-        _MenuItem(
-          icon: MdiIcons.trayArrowDown,
-          title: 'Download Selected Images',
-          isActive: false,
-          onTap: () {
-            BlocProvider.of<GlobalBloc>(context).add(
-              DownloadSelectedAssetsEvent(),
-            );
-          },
-        ),
-      ],
+    final contextualItems = <_MenuItem>[
+      // NOTE: left this here is for future reference when
+      // needing to add contextual menu items (if any)...
+
+      // if (widget.router.current.name == AssetsSearchRoute.name) ...[
+      //   _MenuItem(
+      //     icon: MdiIcons.trayArrowDown,
+      //     title: 'Download Selected Images',
+      //     isActive: false,
+      //     onTap: () {
+      //       BlocProvider.of<GlobalBloc>(context).add(
+      //         DownloadSelectedAssetsEvent(),
+      //       );
+      //     },
+      //   ),
+      // ],
     ];
 
     final bottomItems = [

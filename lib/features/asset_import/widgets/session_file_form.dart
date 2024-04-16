@@ -8,6 +8,7 @@ import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.
 import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
 import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
 import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
 import 'package:tmz_damz/utils/debounce_timer.dart';
 
 class SessionFileForm extends StatefulWidget {
@@ -346,6 +347,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
   }
 
   Widget _buildCredit(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         SizedBox(
@@ -375,6 +378,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
           child: TextFormField(
             key: UniqueKey(),
             controller: widget.controller._creditController,
+            undoController: undoController,
+            contextMenuBuilder: (context, editableTextState) =>
+                kEditableTextContextMenuBuilder(
+              context,
+              editableTextState,
+              undoController,
+            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -512,6 +522,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
   }
 
   Widget _buildHeadline(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         SizedBox(
@@ -541,6 +553,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
           child: TextFormField(
             key: UniqueKey(),
             controller: widget.controller._headlineController,
+            undoController: undoController,
+            contextMenuBuilder: (context, editableTextState) =>
+                kEditableTextContextMenuBuilder(
+              context,
+              editableTextState,
+              undoController,
+            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -661,6 +680,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
   }
 
   Widget _buildRightsDetails(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         SizedBox(
@@ -677,6 +698,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
           child: TextFormField(
             key: UniqueKey(),
             controller: widget.controller._rightsDetailsController,
+            undoController: undoController,
+            contextMenuBuilder: (context, editableTextState) =>
+                kEditableTextContextMenuBuilder(
+              context,
+              editableTextState,
+              undoController,
+            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -695,6 +723,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
   }
 
   Widget _buildRightsInstructions(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         SizedBox(
@@ -711,6 +741,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
           child: TextFormField(
             key: UniqueKey(),
             controller: widget.controller._rightsInstructionsController,
+            undoController: undoController,
+            contextMenuBuilder: (context, editableTextState) =>
+                kEditableTextContextMenuBuilder(
+              context,
+              editableTextState,
+              undoController,
+            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),
@@ -798,6 +835,8 @@ class _SessionFileFormState extends State<SessionFileForm> {
   }
 
   Widget _buildShotDescription(ThemeData theme) {
+    final undoController = UndoHistoryController();
+
     return Row(
       children: [
         SizedBox(
@@ -814,6 +853,13 @@ class _SessionFileFormState extends State<SessionFileForm> {
           child: TextFormField(
             key: UniqueKey(),
             controller: widget.controller._shotDescriptionController,
+            undoController: undoController,
+            contextMenuBuilder: (context, editableTextState) =>
+                kEditableTextContextMenuBuilder(
+              context,
+              editableTextState,
+              undoController,
+            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
             ),

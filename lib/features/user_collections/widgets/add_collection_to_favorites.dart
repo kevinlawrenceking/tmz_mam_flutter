@@ -72,7 +72,7 @@ class _AddCollectionToFavoritesState extends State<AddCollectionToFavorites> {
           color: const Color(0xFF1D1E1F),
         ),
         borderRadius: BorderRadius.circular(12.0),
-        boxShadow: kElevationToShadow[24],
+        boxShadow: kElevationToShadow[8],
         color: const Color(0xFF232323),
       ),
       child: Column(
@@ -207,43 +207,6 @@ class _AddCollectionToFavoritesState extends State<AddCollectionToFavorites> {
           SizedBox(
             width: 100.0,
             child: TextButton(
-              onPressed: widget.onCancel,
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  const Color(0x30FFFFFF),
-                ),
-                padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 6.0,
-                  ),
-                ),
-                shape: MaterialStateProperty.resolveWith(
-                  (states) {
-                    return RoundedRectangleBorder(
-                      side: const BorderSide(
-                        color: Color(0x80000000),
-                      ),
-                      borderRadius: BorderRadius.circular(6.0),
-                    );
-                  },
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                ),
-                child: Text(
-                  'Cancel',
-                  style: widget.theme.textTheme.bodySmall,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10.0),
-          SizedBox(
-            width: 100.0,
-            child: TextButton(
               onPressed: () {
                 if (_isNewController.value) {
                   final name = _nameController.text.trim();
@@ -284,6 +247,43 @@ class _AddCollectionToFavoritesState extends State<AddCollectionToFavorites> {
                 ),
                 child: Text(
                   'Add',
+                  style: widget.theme.textTheme.bodySmall,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10.0),
+          SizedBox(
+            width: 100.0,
+            child: TextButton(
+              onPressed: widget.onCancel,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  const Color(0x30FFFFFF),
+                ),
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 6.0,
+                  ),
+                ),
+                shape: MaterialStateProperty.resolveWith(
+                  (states) {
+                    return RoundedRectangleBorder(
+                      side: const BorderSide(
+                        color: Color(0x80000000),
+                      ),
+                      borderRadius: BorderRadius.circular(6.0),
+                    );
+                  },
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  'Cancel',
                   style: widget.theme.textTheme.bodySmall,
                 ),
               ),

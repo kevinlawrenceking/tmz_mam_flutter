@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
 
 class SearchInput extends StatelessWidget {
   final TextEditingController? controller;
@@ -15,8 +16,17 @@ class SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final undoController = UndoHistoryController();
+
     return TextFormField(
       controller: controller,
+      undoController: undoController,
+      contextMenuBuilder: (context, editableTextState) =>
+          kEditableTextContextMenuBuilder(
+        context,
+        editableTextState,
+        undoController,
+      ),
       decoration: InputDecoration(
         hintText: 'Search...',
         prefixIcon: const Icon(

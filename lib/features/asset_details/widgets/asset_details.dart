@@ -6,8 +6,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/features/asset_details/bloc/bloc.dart';
-import 'package:tmz_damz/features/asset_details/widgets/metadata_container.dart';
-import 'package:tmz_damz/features/asset_details/widgets/photo_info_container.dart';
+import 'package:tmz_damz/features/asset_details/widgets/metadata_summary.dart';
+import 'package:tmz_damz/features/asset_details/widgets/photo_info.dart';
 import 'package:tmz_damz/shared/widgets/copy_text.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
@@ -105,15 +105,6 @@ class AssetDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Toolbar(
-        //   model: model,
-        // ),
-        // Divider(
-        //   indent: 8.0,
-        //   endIndent: 8.0,
-        //   thickness: 1.0,
-        //   color: FlutterFlowTheme.of(context).secondaryText,
-        // ),
         Padding(
           padding: const EdgeInsets.only(
             left: 20.0,
@@ -208,11 +199,19 @@ class AssetDetails extends StatelessWidget {
                     ],
                   ),
                 ),
-                MetadataContainer(
-                  model: model,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 0.5),
+                    borderRadius: BorderRadius.circular(6.0),
+                    color: const Color(0x20000000),
+                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: MetadataSummary(
+                    model: model,
+                  ),
                 ),
                 const SizedBox(height: 20),
-                PhotoInfoContainer(
+                PhotoInfo(
                   model: model,
                 ),
               ],

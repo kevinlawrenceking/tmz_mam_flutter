@@ -11,9 +11,18 @@ class HttpFailure extends Failure {
   static Failure fromResponse(
     Response response,
   ) {
-    final body = json.decode(response.body) as Map<String, dynamic>;
+    ApiError? err;
 
-    final err = ApiError.fromJsonDto(body['err']);
+    try {
+      if (response.body.isNotEmpty) {
+        final payload = json.decode(response.body) as Map<String, dynamic>?;
+
+        err = ApiError.fromJsonDto(payload?['err']);
+      }
+    } on Exception {
+      // do nothing
+    }
+
     if (err != null) {
       return err;
     } else {
@@ -27,11 +36,20 @@ class HttpFailure extends Failure {
   static Future<Failure> fromStreamedResponse(
     StreamedResponse response,
   ) async {
-    final body = json.decode(
-      await response.stream.bytesToString(),
-    ) as Map<String, dynamic>;
+    ApiError? err;
 
-    final err = ApiError.fromJsonDto(body['err']);
+    try {
+      final body = await response.stream.bytesToString();
+
+      if (body.isNotEmpty) {
+        final payload = json.decode(body) as Map<String, dynamic>?;
+
+        err = ApiError.fromJsonDto(payload?['err']);
+      }
+    } on Exception {
+      // do nothing
+    }
+
     if (err != null) {
       return err;
     } else {

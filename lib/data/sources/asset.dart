@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
@@ -22,6 +23,12 @@ abstract class IAssetDataSource {
     String? searchTerm,
     AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
+  });
+
+  Future<Either<Failure, AssetUpdateMetadataResult>> updateAssetMetadata({
+    required String assetID,
+    required String headline,
+    required AssetMetadataModel metadata,
   });
 }
 
@@ -170,6 +177,41 @@ class AssetDataSource implements IAssetDataSource {
           },
         );
       })();
+
+  @override
+  Future<Either<Failure, AssetUpdateMetadataResult>> updateAssetMetadata({
+    required String assetID,
+    required String headline,
+    required AssetMetadataModel metadata,
+  }) async =>
+      ExceptionHandler<AssetUpdateMetadataResult>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.patch(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/$assetID/metadata',
+              body: json.encode({
+                'headline': headline,
+                'metadata': metadata.toJsonDto(),
+              }),
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            final data = json.decode(response.body);
+            final result = AssetUpdateMetadataResult.fromJsonDto(data);
+
+            return Right(result);
+          },
+        );
+      })();
 }
 
 class AssetSearchResults {
@@ -194,6 +236,25 @@ class AssetSearchResults {
               )
               .toList() ??
           [],
+    );
+  }
+}
+
+class AssetUpdateMetadataResult {
+  final String headline;
+  final AssetMetadataModel metadata;
+
+  AssetUpdateMetadataResult({
+    required this.headline,
+    required this.metadata,
+  });
+
+  factory AssetUpdateMetadataResult.fromJsonDto(
+    Map<String, dynamic> dto,
+  ) {
+    return AssetUpdateMetadataResult(
+      headline: dto['headline'] as String,
+      metadata: AssetMetadataModel.fromJsonDto(dto['metadata']),
     );
   }
 }

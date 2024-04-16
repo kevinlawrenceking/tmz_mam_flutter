@@ -10,12 +10,10 @@ import 'package:tmz_damz/features/user_collections/widgets/user_collection_item.
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
 class UserCollections extends StatefulWidget {
-  final VoidCallback? onAddSelectedAssetsToCollection;
   final void Function(CollectionModel? model) onSelectionChanged;
 
   const UserCollections({
     super.key,
-    required this.onAddSelectedAssetsToCollection,
     required this.onSelectionChanged,
   });
 
@@ -211,39 +209,11 @@ class _UserCollectionsState extends State<UserCollections> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Opacity(
-                  opacity: (widget.onAddSelectedAssetsToCollection != null)
-                      ? 1.0
-                      : 0.4,
-                  child: TextButton(
-                    onPressed: widget.onAddSelectedAssetsToCollection,
-                    style: theme.textButtonTheme.style,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                      ),
-                      child: Text(
-                        'Add selected assets to collection...',
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Divider(height: 10.0),
-        Padding(
           padding: const EdgeInsets.only(
             left: 14.0,
-            top: 10.0,
+            top: 14.0,
             right: 10.0,
-            bottom: 10.0,
+            bottom: 14.0,
           ),
           child: Row(
             children: [

@@ -14,6 +14,10 @@ class ServiceLocator {
     sl.registerFactory(
       () => AssetDetailsBloc(
         assetDataSource: sl(),
+        collectionDataSource: sl(),
+        picklistAgencyDataSource: sl(),
+        picklistCelebrityDataSource: sl(),
+        picklistKeywordDataSource: sl(),
       ),
     );
 

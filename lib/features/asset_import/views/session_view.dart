@@ -453,7 +453,7 @@ class _SessionViewState extends State<SessionView> {
                               ),
                               child: Text(
                                 'EXPAND ALL',
-                                style: theme.textTheme.titleMedium?.copyWith(
+                                style: theme.textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                   letterSpacing: 1.0,
                                 ),
@@ -506,7 +506,7 @@ class _SessionViewState extends State<SessionView> {
                               ),
                               child: Text(
                                 'COLLAPSE ALL',
-                                style: theme.textTheme.titleMedium?.copyWith(
+                                style: theme.textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                   letterSpacing: 1.0,
                                 ),
@@ -568,7 +568,7 @@ class _SessionViewState extends State<SessionView> {
         ),
         child: Text(
           'SUBMIT',
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: 1.0,
           ),

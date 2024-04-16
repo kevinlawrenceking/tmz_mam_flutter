@@ -6,10 +6,12 @@ import 'package:tmz_damz/data/sources/auth.dart';
 
 class FileThumbnail extends StatefulWidget {
   final String url;
+  final void Function(Size imageSize)? onLoaded;
 
   const FileThumbnail({
     super.key,
     required this.url,
+    this.onLoaded,
   });
 
   @override
@@ -108,6 +110,15 @@ class _FileThumbnailState extends State<FileThumbnail> {
                           _loading = false;
                           _opacity = 1.0;
                         });
+
+                        widget.onLoaded?.call(
+                          Size(
+                            state.extendedImageInfo?.image.width.toDouble() ??
+                                0.0,
+                            state.extendedImageInfo?.image.height.toDouble() ??
+                                0.0,
+                          ),
+                        );
                       });
 
                       return null;

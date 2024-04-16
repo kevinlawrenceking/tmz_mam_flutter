@@ -2,12 +2,9 @@
 import 'dart:html' as html;
 
 import 'package:auto_route/auto_route.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -25,7 +22,7 @@ import 'package:tmz_damz/features/assets/widgets/toolbar.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection.dart';
 import 'package:tmz_damz/features/user_collections/widgets/user_collections.dart';
 import 'package:tmz_damz/shared/bloc/global_bloc.dart' as global;
-import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
+import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
 
@@ -99,74 +96,31 @@ class _SearchViewState extends State<SearchView> {
       },
       child: _buildAssetsBlocListener(
         child: BlocBuilder<AssetsBloc, BlocState>(
-          buildWhen: (_, state) => state is InitialState,
+          buildWhen: (_, state) =>
+              state is InitialState || state is SearchResultsLoadedState,
           builder: (context, state) {
-            return Focus(
-              onKeyEvent: (node, event) {
-                if ((event is! KeyDownEvent) ||
-                    (FocusManager.instance.primaryFocus != node)) {
-                  return KeyEventResult.ignored;
-                }
-
-                if ((event.logicalKey == LogicalKeyboardKey.delete) ||
-                    (event.physicalKey == PhysicalKeyboardKey.delete)) {
-                  if ((_collectionID != null) && _selectedIDs.isNotEmpty) {
-                    _showAssetRemovalConfirmation(
-                      context: context,
-                      onConfirm: () {
-                        BlocProvider.of<AssetsBloc>(context).add(
-                          RemoveAssetsFromCollectionEvent(
-                            collectionID: _collectionID!,
-                            assetIDs: _selectedIDs,
-                          ),
-                        );
-                      },
-                    );
-                  }
-
-                  return KeyEventResult.handled;
-                } else if ((event.logicalKey == LogicalKeyboardKey.f5) ||
-                    (event.physicalKey == PhysicalKeyboardKey.f5)) {
-                  BlocProvider.of<AssetsBloc>(context).add(
-                    ReloadCurrentPageEvent(),
-                  );
-
-                  return KeyEventResult.handled;
-                } else if ((HardwareKeyboard.instance.isControlPressed ||
-                        HardwareKeyboard.instance.isMetaPressed) &&
-                    ((event.logicalKey == LogicalKeyboardKey.keyR) ||
-                        (event.physicalKey == PhysicalKeyboardKey.keyR))) {
-                  BlocProvider.of<AssetsBloc>(context).add(
-                    ReloadCurrentPageEvent(),
-                  );
-
-                  return KeyEventResult.handled;
-                } else {
-                  return KeyEventResult.ignored;
-                }
-              },
-              focusNode: _focusNode,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildToolbar(),
-                  const PaginationBar(),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildCollections(context),
-                        _buildCollectionsSplitter(),
-                        Expanded(
-                          child: _buildSearchResults(),
-                        ),
-                        if (_currentModel != null) _buildAssetDetailsSplitter(),
-                        _buildAssetDetails(),
-                      ],
-                    ),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildToolbar(),
+                const PaginationBar(),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildCollections(
+                        blocContext: context,
+                      ),
+                      _buildCollectionsSplitter(),
+                      Expanded(
+                        child: _buildSearchResults(),
+                      ),
+                      if (_currentModel != null) _buildAssetDetailsSplitter(),
+                      _buildAssetDetails(),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           },
         ),
@@ -212,6 +166,10 @@ class _SearchViewState extends State<SearchView> {
             title: 'Failed to Load Results',
             message: state.failure.message,
           );
+        } else if (state is SearchResultsLoadingState) {
+          setState(() {
+            _selectedIDs.clear();
+          });
         }
       },
       child: child,
@@ -280,7 +238,9 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
-  Widget _buildCollections(BuildContext blocContext) {
+  Widget _buildCollections({
+    required BuildContext blocContext,
+  }) {
     const expandedWidth = 300.0;
 
     return AnimatedContainer(
@@ -293,41 +253,6 @@ class _SearchViewState extends State<SearchView> {
           color: const Color(0xFF232323),
           width: expandedWidth,
           child: UserCollections(
-            onAddSelectedAssetsToCollection: _selectedIDs.isNotEmpty
-                ? () {
-                    showDialog<void>(
-                      context: context,
-                      barrierColor: Colors.black26,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        final theme = Theme.of(context);
-
-                        return Center(
-                          child: AddAssetsToCollection(
-                            theme: theme,
-                            onCancel: () {
-                              Navigator.of(context).pop();
-                            },
-                            onConfirm: (collectionID) {
-                              if (_selectedIDs.isEmpty) {
-                                return;
-                              }
-
-                              BlocProvider.of<AssetsBloc>(blocContext).add(
-                                AddAssetsToCollectionEvent(
-                                  collectionID: collectionID,
-                                  assetIDs: _selectedIDs,
-                                ),
-                              );
-
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }
-                : null,
             onSelectionChanged: (model) {
               _collectionID = model?.id;
 
@@ -386,9 +311,11 @@ class _SearchViewState extends State<SearchView> {
           state is SearchResultsLoadedState ||
           state is SearchResultsLoadingState,
       builder: (context, state) {
+        final assetsBloc = BlocProvider.of<AssetsBloc>(context);
+
         if (SearchView.refreshResults) {
           SearchView.refreshResults = false;
-          BlocProvider.of<AssetsBloc>(context).add(
+          assetsBloc.add(
             RefreshEvent(),
           );
         }
@@ -451,36 +378,89 @@ class _SearchViewState extends State<SearchView> {
                     }
                   }
                 },
-                child: MaskedScrollView(
-                  controller: _scrollController,
-                  padding: EdgeInsets.zero,
-                  child: AssetDataView(
-                    scrollController: _scrollController,
-                    config: GetIt.instance<Config>(),
-                    assets: assets,
-                    layoutMode: _layoutMode,
-                    thumbnailSize: _thumbnailSize,
-                    onTap: (model) {
-                      if (_assetDetailsVisible) {
-                        setState(() {
-                          _currentModel = model;
-                        });
-                      }
-                    },
-                    onDoubleTap: (model) {
+                child: AssetDataView(
+                  scrollController: _scrollController,
+                  config: GetIt.instance<Config>(),
+                  assets: assets,
+                  selectedIDs: _selectedIDs,
+                  layoutMode: _layoutMode,
+                  thumbnailSize: _thumbnailSize,
+                  enableRemoveFromCollection: _collectionID != null,
+                  onTap: (model) {
+                    if (_assetDetailsVisible) {
                       setState(() {
-                        _assetDetailsVisible = true;
                         _currentModel = model;
                       });
-                    },
-                    onSelectionChanged: (selectedIDs) {
-                      _focusNode.requestFocus();
+                    }
+                  },
+                  onDoubleTap: (model) {
+                    setState(() {
+                      _assetDetailsVisible = true;
+                      _currentModel = model;
+                    });
+                  },
+                  onSelectionChanged: (selectedIDs) {
+                    _focusNode.requestFocus();
 
-                      setState(() {
-                        _selectedIDs = selectedIDs;
-                      });
-                    },
-                  ),
+                    setState(() {
+                      _selectedIDs = selectedIDs;
+                    });
+                  },
+                  onAddSelectedToCollection: (selectedIDs) {
+                    showDialog<void>(
+                      context: context,
+                      barrierColor: Colors.black26,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        final theme = Theme.of(context);
+
+                        return Center(
+                          child: AddAssetsToCollection(
+                            theme: theme,
+                            title:
+                                'Add selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                            onCancel: () {
+                              Navigator.of(context).pop();
+                            },
+                            onConfirm: (collectionID) {
+                              assetsBloc.add(
+                                AddAssetsToCollectionEvent(
+                                  collectionID: collectionID,
+                                  assetIDs: selectedIDs,
+                                ),
+                              );
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  onRemoveSelected: (selectedIDs) {
+                    if ((_collectionID != null) && selectedIDs.isNotEmpty) {
+                      showConfirmationPrompt(
+                        context: context,
+                        title:
+                            'Are you sure you want to remove the selected asset${selectedIDs.length == 1 ? 's' : ''}?',
+                        message:
+                            'This will remove the selected asset${selectedIDs.length == 1 ? 's' : ''} from the active collection only.',
+                        onConfirm: () {
+                          assetsBloc.add(
+                            RemoveAssetsFromCollectionEvent(
+                              collectionID: _collectionID!,
+                              assetIDs: selectedIDs,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  onReload: () {
+                    assetsBloc.add(
+                      ReloadCurrentPageEvent(),
+                    );
+                  },
                 ),
               ),
             );
@@ -563,178 +543,6 @@ class _SearchViewState extends State<SearchView> {
               _thumbnailSize = size;
             });
           },
-        );
-      },
-    );
-  }
-
-  void _showAssetRemovalConfirmation({
-    required BuildContext context,
-    required VoidCallback onConfirm,
-  }) {
-    BotToast.showAnimationWidget(
-      animationDuration: const Duration(milliseconds: 100),
-      allowClick: false,
-      clickClose: false,
-      crossPage: false,
-      onlyOne: true,
-      wrapToastAnimation: (controller, cancelFunc, child) {
-        return Stack(
-          children: [
-            GestureDetector(
-              onTap: () => cancelFunc(),
-              child: const DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.black26,
-                ),
-                child: SizedBox.expand(),
-              ),
-            ),
-            child
-                .animate(
-                  controller: controller,
-                )
-                .move(
-                  curve: Curves.decelerate,
-                  begin: const Offset(0, 20),
-                  end: Offset.zero,
-                ),
-          ],
-        )
-            .animate(
-              controller: controller,
-            )
-            .fadeIn(
-              curve: Curves.decelerate,
-              begin: 0.0,
-            );
-      },
-      toastBuilder: (cancelFunc) {
-        final theme = Theme.of(context);
-
-        return Center(
-          child: Container(
-            width: 500,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFF1D1E1F),
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-              boxShadow: kElevationToShadow[24],
-              color: const Color(0xFF232323),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 10.0,
-                  ),
-                  color: const Color(0xFF1D1E1F),
-                  child: Text(
-                    'Are you sure you want to remove the selected assets?',
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.blue,
-                      letterSpacing: 1.0,
-                    ),
-                    softWrap: true,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20.0,
-                    top: 20.0,
-                    right: 20.0,
-                    bottom: 10.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        MdiIcons.helpCircleOutline,
-                        color: Colors.blue,
-                        size: 36.0,
-                      ),
-                      const SizedBox(width: 16.0),
-                      Expanded(
-                        child: Text(
-                          'This will remove the selected assets from the active collection only.',
-                          style: theme.textTheme.bodySmall,
-                          softWrap: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      SizedBox(
-                        width: 100.0,
-                        child: TextButton(
-                          onPressed: cancelFunc,
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              const Color(0x30FFFFFF),
-                            ),
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                                vertical: 6.0,
-                              ),
-                            ),
-                            shape: MaterialStateProperty.resolveWith(
-                              (states) {
-                                return RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                    color: Color(0x80000000),
-                                  ),
-                                  borderRadius: BorderRadius.circular(6.0),
-                                );
-                              },
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                            ),
-                            child: Text(
-                              'Cancel',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10.0),
-                      SizedBox(
-                        width: 100.0,
-                        child: TextButton(
-                          onPressed: () {
-                            cancelFunc();
-                            onConfirm.call();
-                          },
-                          style: theme.textButtonTheme.style,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                            ),
-                            child: Text(
-                              'Confirm',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         );
       },
     );

@@ -175,7 +175,7 @@ class _TagFieldState<T> extends State<TagField<T>> {
         hintText: inputFieldValues.tags.isNotEmpty ? '' : widget.hintText,
         isDense: true,
         prefixIconConstraints: BoxConstraints(
-          maxWidth: constraints.maxWidth - 150,
+          maxWidth: constraints.maxWidth - 100,
         ),
         prefixIcon: inputFieldValues.tags.isNotEmpty
             ? Padding(

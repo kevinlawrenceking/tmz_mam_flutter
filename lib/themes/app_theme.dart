@@ -4,12 +4,25 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static ThemeData dark(BuildContext context) {
     return ThemeData.dark().copyWith(
+      brightness: Brightness.dark,
       canvasColor: const Color(0xFF232323),
       cardTheme: Theme.of(context).cardTheme.copyWith(
             clipBehavior: Clip.hardEdge,
             color: const Color(0xFF1F2937),
             margin: EdgeInsets.zero,
             surfaceTintColor: Colors.transparent,
+          ),
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+            background: const Color(0xFF1D1E1F),
+            primary: const Color(0xDEFFFFFF),
+            secondary: const Color(0xFFE81B1B),
+          ),
+      dividerTheme: Theme.of(context).dividerTheme.copyWith(
+            color: const Color(
+              0x20FFFFFF,
+            ),
+            space: 15.0,
+            thickness: 1.0,
           ),
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
@@ -91,6 +104,9 @@ class AppTheme {
               fontWeight: FontWeight.w600,
               letterSpacing: 2.0,
             ),
+          ),
+      listTileTheme: Theme.of(context).listTileTheme.copyWith(
+            textColor: const Color(0xDEFFFFFF),
           ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
