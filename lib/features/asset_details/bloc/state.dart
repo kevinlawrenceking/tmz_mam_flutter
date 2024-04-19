@@ -83,6 +83,17 @@ class CelebrityPicklistState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
+class DeleteAssetFailureState extends BlocState {
+  final Failure failure;
+
+  DeleteAssetFailureState(this.failure);
+
+  @override
+  List<Object?> get props => [failure];
+}
+
+class DeleteAssetSuccessState extends BlocState {}
+
 class KeywordPicklistState extends BlocState {
   final String _stateID;
   final List<PicklistKeywordModel> picklist;

@@ -8,10 +8,15 @@ import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
+import 'package:tmz_damz/shared/empty.dart';
 import 'package:tmz_damz/shared/errors/exception_handler.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 
 abstract class IAssetDataSource {
+  Future<Either<Failure, Empty>> deleteAsset({
+    required String assetID,
+  });
+
   Future<Either<Failure, AssetDetailsModel>> getAssetDetails({
     required String assetID,
   });
@@ -41,6 +46,32 @@ class AssetDataSource implements IAssetDataSource {
     required IRestClient client,
   })  : _auth = auth,
         _client = client;
+
+  @override
+  Future<Either<Failure, Empty>> deleteAsset({
+    required String assetID,
+  }) async =>
+      ExceptionHandler<Empty>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.delete(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/$assetID',
+            );
+
+            if (response.statusCode != HttpStatus.noContent) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            return const Right(Empty());
+          },
+        );
+      })();
 
   @override
   Future<Either<Failure, AssetDetailsModel>> getAssetDetails({

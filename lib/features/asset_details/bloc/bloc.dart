@@ -32,6 +32,7 @@ class AssetDetailsBloc extends Bloc<BlocEvent, BlocState> {
     required this.picklistKeywordDataSource,
   }) : super(InitialState()) {
     on<AddToCollectionEvent>(_addToCollectionEvent);
+    on<DeleteAssetEvent>(_deleteAssetEvent);
     on<LoadAssetDetailsEvent>(_loadAssetDetailsEvent);
     on<ReloadAssetDetailsEvent>(_reloadAssetDetailsEvent);
     on<RetrieveAgencyPicklistEvent>(_retrieveAgencyPicklistEvent);
@@ -52,6 +53,20 @@ class AssetDetailsBloc extends Bloc<BlocEvent, BlocState> {
     result.fold(
       (failure) => emit(AddToCollectionFailureState(failure)),
       (_) => emit(AddToCollectionSuccessState()),
+    );
+  }
+
+  Future<void> _deleteAssetEvent(
+    DeleteAssetEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    final result = await assetDataSource.deleteAsset(
+      assetID: event.assetID,
+    );
+
+    result.fold(
+      (failure) => emit(DeleteAssetFailureState(failure)),
+      (_) => emit(DeleteAssetSuccessState()),
     );
   }
 

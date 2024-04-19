@@ -1,16 +1,10 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
@@ -19,7 +13,7 @@ import 'package:tmz_damz/features/asset_details/bloc/bloc.dart';
 import 'package:tmz_damz/features/asset_details/widgets/metadata_form.dart';
 import 'package:tmz_damz/features/asset_details/widgets/metadata_summary.dart';
 import 'package:tmz_damz/features/asset_details/widgets/photo_info.dart';
-import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection.dart';
+import 'package:tmz_damz/features/asset_details/widgets/toolbar.dart';
 import 'package:tmz_damz/shared/widgets/copy_text.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
@@ -87,6 +81,8 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             state is AddToCollectionSuccessState ||
             state is AssetDetailsFailureState ||
             state is AssetDetailsLoadedState ||
+            state is DeleteAssetFailureState ||
+            state is DeleteAssetSuccessState ||
             state is MetadataUpdatedState ||
             state is UpdateMetadataFailureState,
         listener: (context, state) {
@@ -115,6 +111,21 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
               title: 'Failed to Load Details',
               message: state.failure.message,
             );
+          } else if (state is DeleteAssetFailureState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 3),
+              type: ToastTypeEnum.error,
+              title: 'Failed to Delete Asset',
+              message: state.failure.message,
+            );
+          } else if (state is DeleteAssetSuccessState) {
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 3),
+              type: ToastTypeEnum.success,
+              message: 'Asset deleted!',
+            );
+
+            Navigator.of(context).pop();
           } else if (state is MetadataUpdatedState) {
             Toast.showNotification(
               showDuration: const Duration(seconds: 5),
@@ -199,10 +210,27 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildToolbar(
-                      context: context,
+                    Toolbar(
                       permissions: permissions,
                       model: model,
+                      onAddToCollection: (collectionID, assetID) {
+                        BlocProvider.of<AssetDetailsBloc>(context).add(
+                          AddToCollectionEvent(
+                            collectionID: collectionID,
+                            assetID: assetID,
+                          ),
+                        );
+                      },
+                      onDelete: (assetID) {
+                        BlocProvider.of<AssetDetailsBloc>(context).add(
+                          DeleteAssetEvent(
+                            assetID: assetID,
+                          ),
+                        );
+                      },
+                      onEdit: () {
+                        setState(() => _editing = true);
+                      },
                     ),
                     const SizedBox(height: 10.0),
                     Expanded(
@@ -532,248 +560,6 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
           style: theme.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: 1.0,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildToolbar({
-    required BuildContext context,
-    required AccessControlPermissionMapModel? permissions,
-    required AssetDetailsModel model,
-  }) {
-    final assetDetailsBloc = BlocProvider.of<AssetDetailsBloc>(context);
-
-    return SizedBox(
-      height: 54,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color(0xFF454647),
-          ),
-          borderRadius: BorderRadius.circular(6.0),
-          color: const Color(0xFF353637),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 46,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      const Color(0x30FFFFFF),
-                    ),
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    shape: MaterialStateProperty.resolveWith(
-                      (states) {
-                        return RoundedRectangleBorder(
-                          side: const BorderSide(
-                            color: Color(0x80000000),
-                          ),
-                          borderRadius: BorderRadius.circular(6.0),
-                        );
-                      },
-                    ),
-                  ),
-                  icon: Transform.flip(
-                    flipX: true,
-                    child: Icon(
-                      MdiIcons.exitToApp,
-                      color: const Color(0xAEFFFFFF),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              SizedBox(
-                width: 46,
-                child: Opacity(
-                  opacity: (permissions?.collections.canAddAssets ?? false)
-                      ? 1.0
-                      : 0.4,
-                  child: IconButton(
-                    onPressed: (permissions?.collections.canAddAssets ?? false)
-                        ? () {
-                            showDialog<void>(
-                              context: context,
-                              barrierColor: Colors.black26,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                final theme = Theme.of(context);
-
-                                return Center(
-                                  child: AddAssetsToCollection(
-                                    theme: theme,
-                                    title: 'Add asset to collection...',
-                                    onCancel: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    onConfirm: (collectionID) {
-                                      assetDetailsBloc.add(
-                                        AddToCollectionEvent(
-                                          collectionID: collectionID,
-                                          assetID: model.id,
-                                        ),
-                                      );
-
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        : null,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        const Color(0x30FFFFFF),
-                      ),
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      shape: MaterialStateProperty.resolveWith(
-                        (states) {
-                          return RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Color(0x80000000),
-                            ),
-                            borderRadius: BorderRadius.circular(6.0),
-                          );
-                        },
-                      ),
-                    ),
-                    icon: Icon(
-                      MdiIcons.folderPlusOutline,
-                      color: const Color(0xAEFFFFFF),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              SizedBox(
-                width: 46,
-                child: Opacity(
-                  opacity: (permissions?.assets.canDownloadSource ?? false)
-                      ? 1.0
-                      : 0.4,
-                  child: IconButton(
-                    onPressed: (permissions?.assets.canDownloadSource ?? false)
-                        ? () {
-                            final img = model.images.firstWhereOrNull(
-                              (_) => _.type == AssetImageTypeEnum.source,
-                            );
-
-                            if (img == null) {
-                              return;
-                            }
-
-                            final apiBaseUrl =
-                                GetIt.instance<Config>().apiBaseUrl;
-
-                            final url =
-                                '$apiBaseUrl/asset/${model.id}/image/${img.id}/download';
-
-                            if (kIsWeb) {
-                              html.window.open(url, '_blank');
-                            }
-                          }
-                        : null,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        const Color(0x30FFFFFF),
-                      ),
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      shape: MaterialStateProperty.resolveWith(
-                        (states) {
-                          return RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Color(0x80000000),
-                            ),
-                            borderRadius: BorderRadius.circular(6.0),
-                          );
-                        },
-                      ),
-                    ),
-                    icon: Icon(
-                      MdiIcons.trayArrowDown,
-                      color: const Color(0xAEFFFFFF),
-                    ),
-                  ),
-                ),
-              ),
-              const Spacer(),
-              SizedBox(
-                width: 46,
-                child: Opacity(
-                  opacity: (permissions?.assets.canModify ?? false) ? 1.0 : 0.4,
-                  child: IconButton(
-                    onPressed: (permissions?.assets.canModify ?? false)
-                        ? () {
-                            setState(() => _editing = true);
-                          }
-                        : null,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        const Color(0x30FFFFFF),
-                      ),
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      shape: MaterialStateProperty.resolveWith(
-                        (states) {
-                          return RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Color(0x80000000),
-                            ),
-                            borderRadius: BorderRadius.circular(6.0),
-                          );
-                        },
-                      ),
-                    ),
-                    icon: Icon(
-                      MdiIcons.textBoxEditOutline,
-                      color: const Color(0xAEFFFFFF),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              SizedBox(
-                width: 46,
-                child: Opacity(
-                  opacity: (permissions?.assets.canDelete ?? false) ? 1.0 : 0.4,
-                  child: IconButton(
-                    onPressed: (permissions?.assets.canDelete ?? false)
-                        ? () {
-                            //
-                          }
-                        : null,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        const Color(0x30FFFFFF),
-                      ),
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      shape: MaterialStateProperty.resolveWith(
-                        (states) {
-                          return RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Color(0x80000000),
-                            ),
-                            borderRadius: BorderRadius.circular(6.0),
-                          );
-                        },
-                      ),
-                    ),
-                    icon: Icon(
-                      MdiIcons.deleteOutline,
-                      color: const Color(0xAEFFFFFF),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),
