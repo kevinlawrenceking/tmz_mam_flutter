@@ -14,6 +14,7 @@ enum AssetMetadataFieldEnum {
   locationDescription,
   locationState,
   overlay,
+  qcNotes,
   rights,
   rightsDetails,
   rightsInstructions,
@@ -34,6 +35,7 @@ enum AssetMetadataFieldEnum {
       AssetMetadataFieldEnum.locationDescription: 'LOCATION_DESCRIPTION',
       AssetMetadataFieldEnum.locationState: 'LOCATION_STATE',
       AssetMetadataFieldEnum.overlay: 'OVERLAY',
+      AssetMetadataFieldEnum.qcNotes: 'QC_NOTES',
       AssetMetadataFieldEnum.rights: 'RIGHTS',
       AssetMetadataFieldEnum.rightsDetails: 'RIGHTS_DETAILS',
       AssetMetadataFieldEnum.rightsInstructions: 'RIGHTS_INSTRUCTIONS',
@@ -43,14 +45,18 @@ enum AssetMetadataFieldEnum {
 }
 
 enum AssetMetadataFieldModeEnum {
+  add,
   append,
   prepend,
+  remove,
   replace;
 
   String? toJsonDtoValue() {
     return {
+      AssetMetadataFieldModeEnum.add: 'ADD',
       AssetMetadataFieldModeEnum.append: 'APPEND',
       AssetMetadataFieldModeEnum.prepend: 'PREPEND',
+      AssetMetadataFieldModeEnum.remove: 'REMOVE',
       AssetMetadataFieldModeEnum.replace: 'REPLACE',
     }[this];
   }

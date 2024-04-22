@@ -189,7 +189,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
             ),
             child: MetadataFieldInput(
               canAdd: index == (_fields.length - 1),
-              enableUpdateMode: ![
+              showModeSelection: ![
                 AssetMetadataFieldEnum.creditLocation,
                 AssetMetadataFieldEnum.emotion,
                 AssetMetadataFieldEnum.overlay,
@@ -199,20 +199,21 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                 AssetMetadataFieldEnum.agency,
                 AssetMetadataFieldEnum.celebrityAssociated,
                 AssetMetadataFieldEnum.celebrityInPhoto,
+                AssetMetadataFieldEnum.locationCity,
+                AssetMetadataFieldEnum.locationCountry,
                 AssetMetadataFieldEnum.credit,
                 AssetMetadataFieldEnum.creditLocation,
                 AssetMetadataFieldEnum.emotion,
                 AssetMetadataFieldEnum.headline,
                 AssetMetadataFieldEnum.keywords,
-                AssetMetadataFieldEnum.locationCity,
-                AssetMetadataFieldEnum.locationCountry,
-                AssetMetadataFieldEnum.locationDescription,
-                AssetMetadataFieldEnum.locationState,
                 AssetMetadataFieldEnum.overlay,
+                AssetMetadataFieldEnum.qcNotes,
                 AssetMetadataFieldEnum.rightsDetails,
                 AssetMetadataFieldEnum.rights,
                 AssetMetadataFieldEnum.rightsInstructions,
+                AssetMetadataFieldEnum.locationDescription, // Shoot Location
                 AssetMetadataFieldEnum.shotDescription,
+                AssetMetadataFieldEnum.locationState,
               ].where((_) => (_ == field) || !_fields.contains(_)).toList(),
               modes: (() {
                 if ([
@@ -223,7 +224,8 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                 ].contains(field)) {
                   return [
                     AssetMetadataFieldModeEnum.replace,
-                    AssetMetadataFieldModeEnum.append,
+                    AssetMetadataFieldModeEnum.add,
+                    AssetMetadataFieldModeEnum.remove,
                   ];
                 } else {
                   return [
@@ -263,6 +265,8 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                     return _buildKeywords(theme);
                   case AssetMetadataFieldEnum.overlay:
                     return _buildOverlays(theme);
+                  case AssetMetadataFieldEnum.qcNotes:
+                    return _buildQCNotes(theme);
                   case AssetMetadataFieldEnum.rights:
                     return _buildRightsSummary(theme);
                   case AssetMetadataFieldEnum.rightsDetails:
@@ -326,6 +330,8 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   _controller.keywords.clear();
                 } else if (field == AssetMetadataFieldEnum.overlay) {
                   _controller.overlay.clear();
+                } else if (field == AssetMetadataFieldEnum.qcNotes) {
+                  _controller.qcNotes = '';
                 } else if (field == AssetMetadataFieldEnum.rights) {
                   _controller.rights = AssetMetadataRightsEnum.unknown;
                 } else if (field == AssetMetadataFieldEnum.rightsDetails) {
@@ -406,6 +412,8 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                           return _controller.overlay
                               .map((_) => _.toJsonDtoValue())
                               .toList();
+                        } else if (field == AssetMetadataFieldEnum.qcNotes) {
+                          return _controller.qcNotes;
                         } else if (field == AssetMetadataFieldEnum.rights) {
                           return _controller.rights.toJsonDtoValue();
                         } else if (field ==
@@ -780,6 +788,20 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
     );
   }
 
+  Widget _buildQCNotes(ThemeData theme) {
+    return TextFormField(
+      key: UniqueKey(),
+      controller: _controller._qcNotesController,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+      ),
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(500),
+      ],
+      maxLines: null,
+    );
+  }
+
   Widget _buildRightsDetails(ThemeData theme) {
     return TextFormField(
       key: UniqueKey(),
@@ -896,6 +918,10 @@ class BulkUpdateModalController extends ChangeNotifier {
   String get locationState => _locationStateController.text.trim();
   set locationState(String value) => _locationStateController.text = value;
 
+  final _qcNotesController = TextEditingController();
+  String get qcNotes => _qcNotesController.text.trim();
+  set qcNotes(String value) => _qcNotesController.text = value;
+
   final _rightsDetailsController = TextEditingController();
   String get rightsDetails => _rightsDetailsController.text.trim();
   set rightsDetails(String value) => _rightsDetailsController.text = value;
@@ -917,6 +943,7 @@ class BulkUpdateModalController extends ChangeNotifier {
     _locationCountryController.dispose();
     _locationDescriptionController.dispose();
     _locationStateController.dispose();
+    _qcNotesController.dispose();
     _rightsDetailsController.dispose();
     _rightsInstructionsController.dispose();
     _shotDescriptionController.dispose();

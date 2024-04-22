@@ -7,7 +7,7 @@ import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 class MetadataFieldInput extends StatefulWidget {
   final bool canAdd;
-  final bool enableUpdateMode;
+  final bool showModeSelection;
   final List<AssetMetadataFieldEnum> fields;
   final List<AssetMetadataFieldModeEnum> modes;
   final AssetMetadataFieldEnum? initialField;
@@ -24,7 +24,7 @@ class MetadataFieldInput extends StatefulWidget {
   const MetadataFieldInput({
     super.key,
     required this.canAdd,
-    this.enableUpdateMode = true,
+    this.showModeSelection = true,
     required this.fields,
     required this.modes,
     required this.initialField,
@@ -80,7 +80,7 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
             ),
           ],
         ),
-        if ((widget.inputWidget != null) && widget.enableUpdateMode)
+        if ((widget.inputWidget != null) && widget.showModeSelection)
           TableRow(
             children: [
               const SizedBox.shrink(),
@@ -104,9 +104,11 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
                     labelBuilder: (value) {
                       return Text(
                         {
-                              AssetMetadataFieldModeEnum.replace: 'Replace',
+                              AssetMetadataFieldModeEnum.add: 'Add',
                               AssetMetadataFieldModeEnum.append: 'Append',
                               AssetMetadataFieldModeEnum.prepend: 'Prepend',
+                              AssetMetadataFieldModeEnum.remove: 'Remove',
+                              AssetMetadataFieldModeEnum.replace: 'Replace',
                             }[value] ??
                             '',
                       );
@@ -140,12 +142,12 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
                 AssetMetadataFieldEnum.emotion: 'Emotions',
                 AssetMetadataFieldEnum.headline: 'Headline',
                 AssetMetadataFieldEnum.keywords: 'Keywords',
-                AssetMetadataFieldEnum.locationCity: 'Location (City)',
-                AssetMetadataFieldEnum.locationCountry: 'Location (Country)',
-                AssetMetadataFieldEnum.locationDescription:
-                    'Location (Description)',
-                AssetMetadataFieldEnum.locationState: 'Location (State)',
+                AssetMetadataFieldEnum.locationCity: 'City',
+                AssetMetadataFieldEnum.locationCountry: 'Country',
+                AssetMetadataFieldEnum.locationDescription: 'Shoot Location',
+                AssetMetadataFieldEnum.locationState: 'State',
                 AssetMetadataFieldEnum.overlay: 'Overlays',
+                AssetMetadataFieldEnum.qcNotes: 'QC Notes',
                 AssetMetadataFieldEnum.rights: 'Rights Summary',
                 AssetMetadataFieldEnum.rightsDetails: 'Rights Details',
                 AssetMetadataFieldEnum.rightsInstructions:
