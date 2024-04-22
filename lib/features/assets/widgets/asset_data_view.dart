@@ -31,7 +31,8 @@ class AssetDataView extends StatefulWidget {
   final void Function(List<String> selectedIDs) onSelectionChanged;
   final void Function(List<String> selectedIDs) onAddSelectedToCollection;
   final void Function(List<String> selectedIDs) onMoveSelectedToCollection;
-  final void Function(List<String> selectedIDs) onRemoveSelected;
+  final void Function(List<String> selectedIDs) onDeleteSelected;
+  final void Function(List<String> selectedIDs) onRemoveSelectedFromCollection;
   final VoidCallback onReload;
 
   const AssetDataView({
@@ -48,7 +49,8 @@ class AssetDataView extends StatefulWidget {
     required this.onSelectionChanged,
     required this.onAddSelectedToCollection,
     required this.onMoveSelectedToCollection,
-    required this.onRemoveSelected,
+    required this.onDeleteSelected,
+    required this.onRemoveSelectedFromCollection,
     required this.onReload,
   });
 
@@ -88,7 +90,11 @@ class _AssetDataViewState extends State<AssetDataView> {
         if ((event.logicalKey == LogicalKeyboardKey.delete) ||
             (event.physicalKey == PhysicalKeyboardKey.delete)) {
           if (widget.selectedIDs.isNotEmpty) {
-            widget.onRemoveSelected(widget.selectedIDs);
+            if (widget.collectionID != null) {
+              widget.onRemoveSelectedFromCollection(widget.selectedIDs);
+            } else {
+              widget.onDeleteSelected(widget.selectedIDs);
+            }
           }
 
           return KeyEventResult.handled;
@@ -250,20 +256,21 @@ class _AssetDataViewState extends State<AssetDataView> {
                     onPressed: () =>
                         widget.onAddSelectedToCollection(widget.selectedIDs),
                   ),
-                if ((permissions?.collections.canAddAssets ?? false) &&
-                    (permissions?.collections.canRemoveAssets ?? false) &&
-                    (widget.collectionID != null))
+                if (widget.collectionID != null) ...[
                   ContextMenuButtonConfig(
                     'Move selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
                     icon: Icon(
                       MdiIcons.arrowLeftBold,
                       size: 16.0,
                     ),
-                    onPressed: () =>
-                        widget.onMoveSelectedToCollection(widget.selectedIDs),
+                    onPressed: (permissions?.collections.canAddAssets ??
+                                false) &&
+                            (permissions?.collections.canRemoveAssets ?? false)
+                        ? () => widget.onMoveSelectedToCollection(
+                              widget.selectedIDs,
+                            )
+                        : null,
                   ),
-                if ((permissions?.collections.canRemoveAssets ?? false) &&
-                    (widget.collectionID != null))
                   ContextMenuButtonConfig(
                     'Remove selected asset${widget.selectedIDs.length > 1 ? 's' : ''} from collection',
                     shortcutLabel: 'Del',
@@ -271,12 +278,32 @@ class _AssetDataViewState extends State<AssetDataView> {
                       MdiIcons.closeThick,
                       size: 16.0,
                     ),
-                    onPressed: () =>
-                        widget.onRemoveSelected(widget.selectedIDs),
+                    onPressed:
+                        (permissions?.collections.canRemoveAssets ?? false)
+                            ? () => widget.onRemoveSelectedFromCollection(
+                                  widget.selectedIDs,
+                                )
+                            : null,
                   ),
+                ],
                 if ((permissions?.collections.canAddAssets ?? false) ||
-                    (permissions?.collections.canRemoveAssets ?? false))
+                    (widget.collectionID != null))
                   null, // divider
+                ContextMenuButtonConfig(
+                  'Delete selected asset${widget.selectedIDs.length > 1 ? 's' : ''}',
+                  shortcutLabel: (widget.collectionID == null) ? 'Del' : null,
+                  icon: Icon(
+                    MdiIcons.closeThick,
+                    size: 16.0,
+                  ),
+                  onPressed: ((widget.selectedIDs.length == 1) ||
+                          (permissions?.assets.canDeleteMultiple ?? false))
+                      ? () => widget.onDeleteSelected(
+                            widget.selectedIDs,
+                          )
+                      : null,
+                ),
+                null, // divider
               ],
               ContextMenuButtonConfig(
                 'Select All',

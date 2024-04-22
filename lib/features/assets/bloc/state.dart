@@ -26,6 +26,17 @@ class AddAssetsToCollectionSuccessState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
+class DeleteAssetFailureState extends BlocState {
+  final Failure failure;
+
+  DeleteAssetFailureState(this.failure);
+
+  @override
+  List<Object?> get props => [failure];
+}
+
+class DeleteAssetSuccessState extends BlocState {}
+
 class MoveAssetsToCollectionFailureState extends BlocState {
   final Failure failure;
 

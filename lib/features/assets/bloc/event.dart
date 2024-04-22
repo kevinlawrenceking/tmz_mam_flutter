@@ -22,6 +22,17 @@ class AddAssetsToCollectionEvent extends BlocEvent {
       ];
 }
 
+class DeleteAssetEvent extends BlocEvent {
+  final List<String> assetIDs;
+
+  DeleteAssetEvent({
+    required this.assetIDs,
+  });
+
+  @override
+  List<Object?> get props => [assetIDs];
+}
+
 class MoveAssetsToCollectionEvent extends BlocEvent {
   final String sourceCollectionID;
   final String targetCollectionID;

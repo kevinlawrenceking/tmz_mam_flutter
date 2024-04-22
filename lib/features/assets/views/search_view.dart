@@ -137,40 +137,53 @@ class _SearchViewState extends State<SearchView> {
           Toast.showNotification(
             showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
-            title: 'Failed to Add Assets to Collection',
+            title: 'Failed to Add Asset(s) to Collection',
             message: state.failure.message,
           );
         } else if (state is AddAssetsToCollectionSuccessState) {
           Toast.showNotification(
             showDuration: const Duration(seconds: 3),
             type: ToastTypeEnum.success,
-            message: 'Assets added to collection!',
+            message: 'Asset(s) added to collection!',
+          );
+        } else if (state is DeleteAssetFailureState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 6),
+            type: ToastTypeEnum.error,
+            title: 'Failed to Delete Asset(s)',
+            message: state.failure.message,
+          );
+        } else if (state is DeleteAssetSuccessState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.success,
+            message: 'Asset(s) deleted!',
           );
         } else if (state is MoveAssetsToCollectionFailureState) {
           Toast.showNotification(
             showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
-            title: 'Failed to Move Assets to Collection',
+            title: 'Failed to Move Asset(s) to Collection',
             message: state.failure.message,
           );
         } else if (state is MoveAssetsToCollectionSuccessState) {
           Toast.showNotification(
             showDuration: const Duration(seconds: 3),
             type: ToastTypeEnum.success,
-            message: 'Assets moved to collection!',
+            message: 'Asset(s) moved to collection!',
           );
         } else if (state is RemoveAssetsFromCollectionFailureState) {
           Toast.showNotification(
             showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
-            title: 'Failed to Remove Assets from Collection',
+            title: 'Failed to Remove Asset(s) from Collection',
             message: state.failure.message,
           );
         } else if (state is RemoveAssetsFromCollectionSuccessState) {
           Toast.showNotification(
             showDuration: const Duration(seconds: 3),
             type: ToastTypeEnum.success,
-            message: 'Assets removed from collection!',
+            message: 'Asset(s) removed from collection!',
           );
         } else if (state is SearchFailureState) {
           Toast.showNotification(
@@ -507,7 +520,27 @@ class _SearchViewState extends State<SearchView> {
                       },
                     );
                   },
-                  onRemoveSelected: (selectedIDs) {
+                  onDeleteSelected: (selectedIDs) {
+                    if (selectedIDs.isEmpty) {
+                      return;
+                    }
+
+                    showConfirmationPrompt(
+                      context: context,
+                      title:
+                          'Are you sure you want to delete the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                      message:
+                          'This will delete the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from DAMZ.',
+                      onConfirm: () {
+                        assetsBloc.add(
+                          DeleteAssetEvent(
+                            assetIDs: selectedIDs,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  onRemoveSelectedFromCollection: (selectedIDs) {
                     if ((_collectionID == null) || selectedIDs.isEmpty) {
                       return;
                     }
@@ -515,9 +548,9 @@ class _SearchViewState extends State<SearchView> {
                     showConfirmationPrompt(
                       context: context,
                       title:
-                          'Are you sure you want to remove the selected asset${selectedIDs.length == 1 ? 's' : ''}?',
+                          'Are you sure you want to remove the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
                       message:
-                          'This will remove the selected asset${selectedIDs.length == 1 ? 's' : ''} from the active collection only.',
+                          'This will remove the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from the active collection only.',
                       onConfirm: () {
                         assetsBloc.add(
                           RemoveAssetsFromCollectionEvent(

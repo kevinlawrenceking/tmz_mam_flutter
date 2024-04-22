@@ -30,6 +30,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     required this.collectionDataSource,
   }) : super(InitialState()) {
     on<AddAssetsToCollectionEvent>(_addAssetsToCollectionEvent);
+    on<DeleteAssetEvent>(_deleteAssetEvent);
     on<MoveAssetsToCollectionEvent>(_moveAssetsToCollectionEvent);
     on<PaginationChangedEvent>(_paginationChangedEvent);
     on<RefreshEvent>(_refreshEvent);
@@ -64,6 +65,42 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     }
 
     emit(AddAssetsToCollectionSuccessState());
+  }
+
+  Future<void> _deleteAssetEvent(
+    DeleteAssetEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    if (event.assetIDs.isEmpty) {
+      return;
+    }
+
+    for (var i = 0; i < event.assetIDs.length; i++) {
+      final result = await assetDataSource.deleteAsset(
+        assetID: event.assetIDs[i],
+      );
+
+      result.fold(
+        (failure) => emit(DeleteAssetFailureState(failure)),
+        (_) {},
+      );
+
+      if (result.isLeft()) {
+        return;
+      }
+    }
+
+    emit(DeleteAssetSuccessState());
+
+    await _getAssetList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
+      collectionID: _collectionID,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
   }
 
   Future<void> _moveAssetsToCollectionEvent(

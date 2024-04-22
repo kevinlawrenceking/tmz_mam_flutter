@@ -13,7 +13,9 @@ class AccessControlPermissionMapModel extends Equatable {
     Map<String, dynamic>? dto,
   ) {
     return AccessControlPermissionMapModel(
-      assets: AccessControlPermissionMapAssetsModel.fromJsonDto(dto?['assets']),
+      assets: AccessControlPermissionMapAssetsModel.fromJsonDto(
+        dto?['assets'],
+      ),
       collections: AccessControlPermissionMapCollectionsModel.fromJsonDto(
         dto?['collections'],
       ),
@@ -30,6 +32,7 @@ class AccessControlPermissionMapModel extends Equatable {
 class AccessControlPermissionMapAssetsModel extends Equatable {
   final bool canImport;
   final bool canDelete;
+  final bool canDeleteMultiple;
   final bool canModify;
   final bool canBulkUpdate;
   final bool canSearch;
@@ -39,6 +42,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
   const AccessControlPermissionMapAssetsModel({
     required this.canImport,
     required this.canDelete,
+    required this.canDeleteMultiple,
     required this.canModify,
     required this.canBulkUpdate,
     required this.canSearch,
@@ -52,6 +56,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
     return AccessControlPermissionMapAssetsModel(
       canImport: dto?['can_import'] ?? false,
       canDelete: dto?['can_delete'] ?? false,
+      canDeleteMultiple: dto?['can_delete_multiple'] ?? false,
       canModify: dto?['can_modify'] ?? false,
       canBulkUpdate: dto?['can_bulk_update'] ?? false,
       canSearch: dto?['can_search'] ?? false,
@@ -64,6 +69,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
   List<Object?> get props => [
         canImport,
         canDelete,
+        canDeleteMultiple,
         canModify,
         canBulkUpdate,
         canSearch,

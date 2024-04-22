@@ -179,8 +179,8 @@ class Toolbar extends StatelessWidget {
               ? () {
                   showConfirmationPrompt(
                     context: context,
-                    title: '',
-                    message: 'Are you sure you want to delete this asset?',
+                    title: 'Are you sure you want to delete this asset?',
+                    message: 'This will delete the asset from DAMZ.',
                     onConfirm: () => onDelete(model.id),
                   );
                 }
