@@ -172,16 +172,16 @@ enum AssetMetadataRightsEnum {
 
 class AssetMetadataModel extends Equatable {
   final Int32? daletID;
-  final List<String> keywords;
-  final String shotDescription;
-  final AssetMetadataLocationModel location;
-  final List<String> agency;
-  final List<AssetMetadataEmotionEnum> emotion;
-  final List<AssetMetadataOverlayEnum> overlay;
-  final bool celebrity;
-  final List<String> celebrityInPhoto;
-  final List<String> celebrityAssociated;
-  final AssetMetadataRightsEnum rights;
+  final List<String>? keywords;
+  final String? shotDescription;
+  final AssetMetadataLocationModel? location;
+  final List<String>? agency;
+  final List<AssetMetadataEmotionEnum>? emotion;
+  final List<AssetMetadataOverlayEnum>? overlay;
+  final bool? celebrity;
+  final List<String>? celebrityInPhoto;
+  final List<String>? celebrityAssociated;
+  final AssetMetadataRightsEnum? rights;
   final String? credit;
   final AssetMetadataCreditLocationEnum? creditLocation;
   final AssetMetadataExclusivityEnum? exclusivity;
@@ -190,23 +190,23 @@ class AssetMetadataModel extends Equatable {
   final String? qcNotes;
 
   const AssetMetadataModel({
-    required this.daletID,
-    required this.keywords,
-    required this.shotDescription,
-    required this.location,
-    required this.agency,
-    required this.emotion,
-    required this.overlay,
-    required this.celebrity,
-    required this.celebrityInPhoto,
-    required this.celebrityAssociated,
-    required this.rights,
-    required this.credit,
-    required this.creditLocation,
-    required this.exclusivity,
-    required this.rightsInstructions,
-    required this.rightsDetails,
-    required this.qcNotes,
+    this.daletID,
+    this.keywords,
+    this.shotDescription,
+    this.location,
+    this.agency,
+    this.emotion,
+    this.overlay,
+    this.celebrity,
+    this.celebrityInPhoto,
+    this.celebrityAssociated,
+    this.rights,
+    this.credit,
+    this.creditLocation,
+    this.exclusivity,
+    this.rightsInstructions,
+    this.rightsDetails,
+    this.qcNotes,
   });
 
   static AssetMetadataModel fromJsonDto(
@@ -223,30 +223,27 @@ class AssetMetadataModel extends Equatable {
         dto?['location'],
       ),
       agency: (dto?['agency'] as List<dynamic>?)
-              ?.map((_) => _.toString())
-              .toList() ??
-          [],
+          ?.map(
+            (_) => _.toString(),
+          )
+          .toList(),
       emotion: (dto?['emotion'] as List<dynamic>?)
-              ?.map(
-                (_) => AssetMetadataEmotionEnum.fromJsonDtoValue(_.toString()),
-              )
-              .toList() ??
-          [],
+          ?.map(
+            (_) => AssetMetadataEmotionEnum.fromJsonDtoValue(_.toString()),
+          )
+          .toList(),
       overlay: (dto?['overlay'] as List<dynamic>?)
-              ?.map(
-                (_) => AssetMetadataOverlayEnum.fromJsonDtoValue(_.toString()),
-              )
-              .toList() ??
-          [],
+          ?.map(
+            (_) => AssetMetadataOverlayEnum.fromJsonDtoValue(_.toString()),
+          )
+          .toList(),
       celebrity: dto?['celebrity'] ?? false,
       celebrityInPhoto: (dto?['celebrity_in_photo'] as List<dynamic>?)
-              ?.map((_) => _.toString())
-              .toList() ??
-          [],
+          ?.map((_) => _.toString())
+          .toList(),
       celebrityAssociated: (dto?['celebrity_associated'] as List<dynamic>?)
-              ?.map((_) => _.toString())
-              .toList() ??
-          [],
+          ?.map((_) => _.toString())
+          .toList(),
       rights: AssetMetadataRightsEnum.fromJsonDtoValue(
         dto?['rights'],
       ),
@@ -289,20 +286,20 @@ class AssetMetadataModel extends Equatable {
       'dalet_id': daletID?.toInt(),
       'keywords': keywords,
       'shot_description': shotDescription,
-      'location': location.toJsonDto(),
+      'location': location?.toJsonDto(),
       'agency': agency,
       'emotion': emotion
-          .map((_) => _.toJsonDtoValue())
+          ?.map((_) => _.toJsonDtoValue())
           .where((_) => _ != null)
           .toList(),
       'overlay': overlay
-          .map((_) => _.toJsonDtoValue())
+          ?.map((_) => _.toJsonDtoValue())
           .where((_) => _ != null)
           .toList(),
       'celebrity': celebrity,
       'celebrity_in_photo': celebrityInPhoto,
       'celebrity_associated': celebrityAssociated,
-      'rights': rights.toJsonDtoValue(),
+      'rights': rights?.toJsonDtoValue(),
       'credit': credit,
       'credit_location': creditLocation?.toJsonDtoValue(),
       'exclusivity': exclusivity?.toJsonDtoValue(),

@@ -30,6 +30,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     required this.collectionDataSource,
   }) : super(InitialState()) {
     on<AddAssetsToCollectionEvent>(_addAssetsToCollectionEvent);
+    on<MoveAssetsToCollectionEvent>(_moveAssetsToCollectionEvent);
     on<PaginationChangedEvent>(_paginationChangedEvent);
     on<RefreshEvent>(_refreshEvent);
     on<ReloadCurrentPageEvent>(_reloadCurrentPageEvent);
@@ -63,6 +64,44 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
     }
 
     emit(AddAssetsToCollectionSuccessState());
+  }
+
+  Future<void> _moveAssetsToCollectionEvent(
+    MoveAssetsToCollectionEvent event,
+    Emitter<BlocState> emit,
+  ) async {
+    if (event.assetIDs.isEmpty) {
+      return;
+    }
+
+    for (var i = 0; i < event.assetIDs.length; i++) {
+      final result = await collectionDataSource.moveAssetToCollection(
+        sourceCollectionID: event.sourceCollectionID,
+        targetCollectionID: event.targetCollectionID,
+        assetID: event.assetIDs[i],
+      );
+
+      result.fold(
+        (failure) => emit(MoveAssetsToCollectionFailureState(failure)),
+        (_) {},
+      );
+
+      if (result.isLeft()) {
+        return;
+      }
+    }
+
+    emit(MoveAssetsToCollectionSuccessState());
+
+    await _getAssetList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
+      collectionID: _collectionID,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
   }
 
   Future<void> _paginationChangedEvent(

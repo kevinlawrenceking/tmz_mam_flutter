@@ -142,6 +142,19 @@ class AppTheme {
           }),
         ),
       ),
+      radioTheme: Theme.of(context).radioTheme.copyWith(
+            overlayColor: MaterialStateProperty.all(Colors.white24),
+            splashRadius: 10.0,
+          ),
+      scrollbarTheme: Theme.of(context).scrollbarTheme.copyWith(
+        thumbColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.hovered)) {
+            return const Color(0x40FFFFFF);
+          } else {
+            return const Color(0x20FFFFFF);
+          }
+        }),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(

@@ -32,6 +32,12 @@ abstract class ICollectionDataSource {
     required int limit,
   });
 
+  Future<Either<Failure, Empty>> moveAssetToCollection({
+    required String sourceCollectionID,
+    required String targetCollectionID,
+    required String assetID,
+  });
+
   Future<Either<Failure, Empty>> removeAssetFromCollection({
     required String collectionID,
     required String assetID,
@@ -179,6 +185,48 @@ class CollectionDataSource implements ICollectionDataSource {
             final results = CollectionSearchResults.fromJsonDto(data);
 
             return Right(results);
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, Empty>> moveAssetToCollection({
+    required String sourceCollectionID,
+    required String targetCollectionID,
+    required String assetID,
+  }) async =>
+      ExceptionHandler<Empty>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final addResponse = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/collection/$targetCollectionID/asset',
+              body: json.encode({
+                'asset_id': assetID,
+              }),
+            );
+
+            if (addResponse.statusCode != HttpStatus.noContent) {
+              return Left(
+                HttpFailure.fromResponse(addResponse),
+              );
+            }
+
+            final removeResponse = await _client.delete(
+              authToken: authToken,
+              endPoint: '/api/v1/collection/$sourceCollectionID/asset/$assetID',
+            );
+
+            if (removeResponse.statusCode != HttpStatus.noContent) {
+              return Left(
+                HttpFailure.fromResponse(removeResponse),
+              );
+            }
+
+            return const Right(Empty());
           },
         );
       })();

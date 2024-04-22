@@ -35,7 +35,7 @@ class SortOptions extends StatelessWidget {
 
   Widget _buildFieldSelector() {
     return SizedBox(
-      width: 240,
+      width: 240.0,
       child: DropdownSelector<AssetSortFieldEnum>(
         initialValue: initialField,
         items: const [

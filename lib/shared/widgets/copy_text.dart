@@ -96,6 +96,7 @@ class _CopyTextState extends State<CopyText> {
               );
 
               Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
                 type: ToastTypeEnum.success,
                 message: 'Value copied to clipboard!',
               );

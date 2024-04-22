@@ -9,7 +9,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
-import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection.dart';
+import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection_modal.dart';
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/utils/config.dart';
 
@@ -79,23 +79,27 @@ class Toolbar extends StatelessWidget {
               ? () {
                   showDialog<void>(
                     context: context,
-                    barrierColor: Colors.black26,
+                    barrierColor: Colors.black54,
                     barrierDismissible: false,
                     builder: (context) {
                       final theme = Theme.of(context);
 
-                      return Center(
-                        child: AddAssetsToCollection(
-                          theme: theme,
-                          title: 'Add asset to collection...',
-                          onCancel: () {
-                            Navigator.of(context).pop();
-                          },
-                          onConfirm: (collectionID) {
-                            onAddToCollection(collectionID, model.id);
+                      return OverflowBox(
+                        minWidth: 600.0,
+                        maxWidth: 600.0,
+                        child: Center(
+                          child: AddAssetsToCollectionModal(
+                            theme: theme,
+                            title: 'Add asset to collection...',
+                            onCancel: () {
+                              Navigator.of(context).pop();
+                            },
+                            onConfirm: (collectionID) {
+                              onAddToCollection(collectionID, model.id);
 
-                            Navigator.of(context).pop();
-                          },
+                              Navigator.of(context).pop();
+                            },
+                          ),
                         ),
                       );
                     },

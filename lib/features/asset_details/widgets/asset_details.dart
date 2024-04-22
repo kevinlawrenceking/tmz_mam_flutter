@@ -49,7 +49,7 @@ class AssetDetails extends StatelessWidget {
         listener: (context, state) {
           if (state is AssetDetailsFailureState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Failed to Load Details',
               message: state.failure.message,

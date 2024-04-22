@@ -92,29 +92,34 @@ class _AssetTileItemState extends State<AssetTileItem> {
                       _MetadataValue(
                         theme: theme,
                         label: 'Celebrity',
-                        value: !widget.model.metadata.celebrity
+                        value: !(widget.model.metadata.celebrity ?? false)
                             ? 'Not Applicable'
-                            : (widget.model.metadata.celebrityInPhoto.isNotEmpty
-                                ? widget.model.metadata.celebrityInPhoto
+                            : ((widget.model.metadata.celebrityInPhoto
+                                        ?.isNotEmpty ??
+                                    false)
+                                ? widget.model.metadata.celebrityInPhoto!
                                     .join(', ')
                                 : '-'),
                       ),
                       _MetadataValue(
                         theme: theme,
                         label: 'Associated Celebrity',
-                        value: !widget.model.metadata.celebrity
+                        value: !(widget.model.metadata.celebrity ?? false)
                             ? '-'
-                            : (widget.model.metadata.celebrityAssociated
-                                    .isNotEmpty
-                                ? widget.model.metadata.celebrityAssociated
+                            : ((widget.model.metadata.celebrityAssociated
+                                        ?.isNotEmpty ??
+                                    false)
+                                ? widget.model.metadata.celebrityAssociated!
                                     .join(', ')
                                 : '-'),
                       ),
                       _MetadataValue(
                         theme: theme,
                         label: 'Shot Description',
-                        value: widget.model.metadata.shotDescription.isNotEmpty
-                            ? widget.model.metadata.shotDescription
+                        value: (widget.model.metadata.shotDescription
+                                    ?.isNotEmpty ??
+                                false)
+                            ? widget.model.metadata.shotDescription!
                             : '-',
                       ),
                       _MetadataValue(
@@ -136,9 +141,10 @@ class _AssetTileItemState extends State<AssetTileItem> {
                       _MetadataValue(
                         theme: theme,
                         label: 'Agency',
-                        value: widget.model.metadata.agency.isNotEmpty
-                            ? widget.model.metadata.agency.join(', ')
-                            : '-',
+                        value:
+                            (widget.model.metadata.agency?.isNotEmpty ?? false)
+                                ? widget.model.metadata.agency!.join(', ')
+                                : '-',
                       ),
                       _MetadataValue(
                         theme: theme,

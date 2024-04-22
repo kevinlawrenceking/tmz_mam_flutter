@@ -34,7 +34,7 @@ class MetadataSummary extends StatelessWidget {
             canCopy: true,
             value: model.metadata.daletID!.toString(),
           ),
-        if (!model.metadata.celebrity) ...[
+        if (!(model.metadata.celebrity ?? false)) ...[
           _buildMetadata(
             context: context,
             theme: theme,
@@ -50,18 +50,18 @@ class MetadataSummary extends StatelessWidget {
             context: context,
             theme: theme,
             label: 'Celebrity',
-            canCopy: model.metadata.celebrityInPhoto.isNotEmpty,
-            value: model.metadata.celebrityInPhoto.isNotEmpty
-                ? model.metadata.celebrityInPhoto.join(', ')
+            canCopy: model.metadata.celebrityInPhoto?.isNotEmpty ?? false,
+            value: model.metadata.celebrityInPhoto?.isNotEmpty ?? false
+                ? model.metadata.celebrityInPhoto!.join(', ')
                 : '-',
           ),
           _buildMetadata(
             context: context,
             theme: theme,
             label: 'Associated Celebrity',
-            canCopy: model.metadata.celebrityAssociated.isNotEmpty,
-            value: model.metadata.celebrityAssociated.isNotEmpty
-                ? model.metadata.celebrityAssociated.join(', ')
+            canCopy: model.metadata.celebrityAssociated?.isNotEmpty ?? false,
+            value: model.metadata.celebrityAssociated?.isNotEmpty ?? false
+                ? model.metadata.celebrityAssociated!.join(', ')
                 : '-',
           ),
         ],
@@ -69,45 +69,62 @@ class MetadataSummary extends StatelessWidget {
           context: context,
           theme: theme,
           label: 'Shot Description',
-          canCopy: model.metadata.shotDescription.isNotEmpty,
-          value: model.metadata.shotDescription.isNotEmpty
-              ? model.metadata.shotDescription
+          canCopy: model.metadata.shotDescription?.isNotEmpty ?? false,
+          value: model.metadata.shotDescription?.isNotEmpty ?? false
+              ? model.metadata.shotDescription!
               : '-',
         ),
         _buildMetadata(
           context: context,
           theme: theme,
           label: 'Keywords',
-          value: model.metadata.keywords.isNotEmpty
-              ? model.metadata.keywords.join(', ')
+          canCopy: model.metadata.keywords?.isNotEmpty ?? false,
+          value: model.metadata.keywords?.isNotEmpty ?? false
+              ? model.metadata.keywords!.join(', ')
               : '-',
-          canCopy: model.metadata.keywords.isNotEmpty,
         ),
         _buildMetadata(
           context: context,
           theme: theme,
           label: 'Shoot Location',
-          canCopy: model.metadata.location.description?.isNotEmpty ?? false,
-          value: (model.metadata.location.description?.isNotEmpty ?? false)
-              ? model.metadata.location.description!
+          canCopy: model.metadata.location?.description?.isNotEmpty ?? false,
+          value: (model.metadata.location?.description?.isNotEmpty ?? false)
+              ? model.metadata.location!.description!
               : '-',
         ),
         _buildMetadata(
           context: context,
           theme: theme,
-          label: 'City, State, Country',
-          canCopy: model.metadata.keywords.isNotEmpty,
+          label: (() {
+            final parts = <String>[];
+
+            if (model.metadata.location?.city?.isNotEmpty ?? false) {
+              parts.add('City');
+            }
+            if (model.metadata.location?.state?.isNotEmpty ?? false) {
+              parts.add('State');
+            }
+            if (model.metadata.location?.country?.isNotEmpty ?? false) {
+              parts.add('Country');
+            }
+
+            if (parts.isNotEmpty) {
+              return parts.join(', ');
+            } else {
+              return 'City, State, Country';
+            }
+          })(),
           value: (() {
             final parts = <String>[];
 
-            if (model.metadata.location.city?.isNotEmpty ?? false) {
-              parts.add(model.metadata.location.city!);
+            if (model.metadata.location?.city?.isNotEmpty ?? false) {
+              parts.add(model.metadata.location!.city!);
             }
-            if (model.metadata.location.state?.isNotEmpty ?? false) {
-              parts.add(model.metadata.location.state!);
+            if (model.metadata.location?.state?.isNotEmpty ?? false) {
+              parts.add(model.metadata.location!.state!);
             }
-            if (model.metadata.location.country?.isNotEmpty ?? false) {
-              parts.add(model.metadata.location.country!);
+            if (model.metadata.location?.country?.isNotEmpty ?? false) {
+              parts.add(model.metadata.location!.country!);
             }
 
             if (parts.isNotEmpty) {
@@ -143,9 +160,9 @@ class MetadataSummary extends StatelessWidget {
           context: context,
           theme: theme,
           label: 'Source',
-          canCopy: model.metadata.agency.isNotEmpty,
-          value: model.metadata.agency.isNotEmpty
-              ? model.metadata.agency.join(', ')
+          canCopy: model.metadata.agency?.isNotEmpty ?? false,
+          value: model.metadata.agency?.isNotEmpty ?? false
+              ? model.metadata.agency!.join(', ')
               : '-',
         ),
         _buildMetadata(
@@ -215,14 +232,16 @@ class MetadataSummary extends StatelessWidget {
           value: () {
             final parts = <String>[];
 
-            for (var i = 0; i < model.metadata.overlay.length; i++) {
-              switch (model.metadata.overlay[i]) {
-                case AssetMetadataOverlayEnum.blackBarCensor:
-                  parts.add('Black Bar');
-                case AssetMetadataOverlayEnum.blurCensor:
-                  parts.add('Blur');
-                default:
-                  break;
+            if (model.metadata.overlay != null) {
+              for (var i = 0; i < model.metadata.overlay!.length; i++) {
+                switch (model.metadata.overlay![i]) {
+                  case AssetMetadataOverlayEnum.blackBarCensor:
+                    parts.add('Black Bar');
+                  case AssetMetadataOverlayEnum.blurCensor:
+                    parts.add('Blur');
+                  default:
+                    break;
+                }
               }
             }
 
@@ -239,8 +258,10 @@ class MetadataSummary extends StatelessWidget {
           context: context,
           theme: theme,
           label: 'Watermark Required',
-          value: model.metadata.overlay
-                  .any((_) => _ == AssetMetadataOverlayEnum.watermark)
+          value: (model.metadata.overlay?.any(
+                    (_) => _ == AssetMetadataOverlayEnum.watermark,
+                  ) ??
+                  false)
               ? 'Yes'
               : 'No',
         ),
@@ -266,18 +287,20 @@ class MetadataSummary extends StatelessWidget {
           value: () {
             final parts = <String>[];
 
-            for (var i = 0; i < model.metadata.emotion.length; i++) {
-              switch (model.metadata.emotion[i]) {
-                case AssetMetadataEmotionEnum.negative:
-                  parts.add('Negative');
-                case AssetMetadataEmotionEnum.neutral:
-                  parts.add('Neutral');
-                case AssetMetadataEmotionEnum.positive:
-                  parts.add('Positive');
-                case AssetMetadataEmotionEnum.surprised:
-                  parts.add('Surprised');
-                default:
-                  break;
+            if (model.metadata.emotion != null) {
+              for (var i = 0; i < model.metadata.emotion!.length; i++) {
+                switch (model.metadata.emotion![i]) {
+                  case AssetMetadataEmotionEnum.negative:
+                    parts.add('Negative');
+                  case AssetMetadataEmotionEnum.neutral:
+                    parts.add('Neutral');
+                  case AssetMetadataEmotionEnum.positive:
+                    parts.add('Positive');
+                  case AssetMetadataEmotionEnum.surprised:
+                    parts.add('Surprised');
+                  default:
+                    break;
+                }
               }
             }
 

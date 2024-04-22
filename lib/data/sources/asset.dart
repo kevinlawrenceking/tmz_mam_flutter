@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
+import 'package:tmz_damz/data/models/asset_metadata_field.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
@@ -32,8 +33,13 @@ abstract class IAssetDataSource {
 
   Future<Either<Failure, AssetUpdateMetadataResult>> updateAssetMetadata({
     required String assetID,
-    required String headline,
+    required String? headline,
     required AssetMetadataModel metadata,
+  });
+
+  Future<Either<Failure, Empty>> updateAssetMetadataField({
+    required String assetID,
+    required List<IAssetMetadataFieldValue> values,
   });
 }
 
@@ -212,7 +218,7 @@ class AssetDataSource implements IAssetDataSource {
   @override
   Future<Either<Failure, AssetUpdateMetadataResult>> updateAssetMetadata({
     required String assetID,
-    required String headline,
+    required String? headline,
     required AssetMetadataModel metadata,
   }) async =>
       ExceptionHandler<AssetUpdateMetadataResult>(() async {
@@ -240,6 +246,34 @@ class AssetDataSource implements IAssetDataSource {
             final result = AssetUpdateMetadataResult.fromJsonDto(data);
 
             return Right(result);
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, Empty>> updateAssetMetadataField({
+    required String assetID,
+    required List<IAssetMetadataFieldValue> values,
+  }) async =>
+      ExceptionHandler<Empty>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/$assetID/metadata/field',
+              body: json.encode(values.map((_) => _.toJsonDto()).toList()),
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            return const Right(Empty());
           },
         );
       })();

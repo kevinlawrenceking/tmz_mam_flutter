@@ -151,7 +151,7 @@ class _SessionViewState extends State<SessionView> {
           }
         } else if (state is GetSessionDetailsFailureState) {
           Toast.showNotification(
-            showDuration: const Duration(seconds: 5),
+            showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
             title: 'Failed to Retrieve Session Details',
             message: state.failure.message,
@@ -162,7 +162,7 @@ class _SessionViewState extends State<SessionView> {
           );
         } else if (state is RemoveSessionFileFailureState) {
           Toast.showNotification(
-            showDuration: const Duration(seconds: 5),
+            showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
             title: 'Failed to Remove File',
             message: state.failure.message,
@@ -172,13 +172,13 @@ class _SessionViewState extends State<SessionView> {
           _fileControllers.remove(state.fileID);
 
           Toast.showNotification(
-            showDuration: const Duration(seconds: 5),
+            showDuration: const Duration(seconds: 3),
             type: ToastTypeEnum.information,
             title: 'File Removed',
           );
         } else if (state is SessionFinalizationSuccessState) {
           Toast.showNotification(
-            showDuration: const Duration(seconds: 5),
+            showDuration: const Duration(seconds: 3),
             type: ToastTypeEnum.success,
             message: 'Import Complete',
           );
@@ -190,14 +190,14 @@ class _SessionViewState extends State<SessionView> {
           );
         } else if (state is SessionFinalizationFailureState) {
           Toast.showNotification(
-            showDuration: const Duration(seconds: 5),
+            showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
             title: 'Failed to Finalize Import',
             message: state.failure.message,
           );
         } else if (state is SetFileMetaFailureState) {
           Toast.showNotification(
-            showDuration: const Duration(seconds: 5),
+            showDuration: const Duration(seconds: 6),
             type: ToastTypeEnum.error,
             title: 'Failed to Update Metadata',
             message: state.failure.message,
@@ -205,7 +205,7 @@ class _SessionViewState extends State<SessionView> {
         } else if (state is SetFileMetaSuccessState) {
           if (state.bulk) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 3),
               type: ToastTypeEnum.success,
               message: 'Metadata applied!',
             );
@@ -589,7 +589,7 @@ class _SessionViewState extends State<SessionView> {
 
           if (meta.headline.isEmpty) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Missing Information',
               message: 'Headline is required!',
@@ -600,7 +600,7 @@ class _SessionViewState extends State<SessionView> {
 
           if (meta.metadata.rights == AssetMetadataRightsEnum.unknown) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Missing Information',
               message: 'Rights Summary is required!',
@@ -610,10 +610,10 @@ class _SessionViewState extends State<SessionView> {
           }
 
           if (meta.metadata.rights != AssetMetadataRightsEnum.freeTMZ) {
-            if (meta.metadata.agency.isEmpty &&
+            if ((meta.metadata.agency?.isEmpty ?? false) &&
                 !(meta.metadata.credit?.isNotEmpty ?? false)) {
               Toast.showNotification(
-                showDuration: const Duration(seconds: 5),
+                showDuration: const Duration(seconds: 6),
                 type: ToastTypeEnum.error,
                 title: 'Missing Information',
                 message: 'Agency and/or Credit is required',

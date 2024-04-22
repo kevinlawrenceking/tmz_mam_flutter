@@ -88,7 +88,7 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
         listener: (context, state) {
           if (state is AddToCollectionFailureState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Failed to Add Asset to Collection',
               message: state.failure.message,
@@ -106,14 +106,14 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             );
           } else if (state is AssetDetailsFailureState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Failed to Load Details',
               message: state.failure.message,
             );
           } else if (state is DeleteAssetFailureState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 3),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Failed to Delete Asset',
               message: state.failure.message,
@@ -128,7 +128,7 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             Navigator.of(context).pop();
           } else if (state is MetadataUpdatedState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 3),
               type: ToastTypeEnum.success,
               message: 'Metadata updated!',
             );
@@ -144,7 +144,7 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             });
           } else if (state is UpdateMetadataFailureState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Failed to Update Metadata',
               message: state.failure.message,
@@ -493,7 +493,7 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
 
               if (headline.isEmpty) {
                 Toast.showNotification(
-                  showDuration: const Duration(seconds: 5),
+                  showDuration: const Duration(seconds: 6),
                   type: ToastTypeEnum.error,
                   title: 'Missing Information',
                   message: 'Headline is required!',
@@ -506,7 +506,7 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
 
               if (metadata.rights == AssetMetadataRightsEnum.unknown) {
                 Toast.showNotification(
-                  showDuration: const Duration(seconds: 5),
+                  showDuration: const Duration(seconds: 6),
                   type: ToastTypeEnum.error,
                   title: 'Missing Information',
                   message: 'Rights Summary is required!',
@@ -516,10 +516,10 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
               }
 
               if (metadata.rights != AssetMetadataRightsEnum.freeTMZ) {
-                if (metadata.agency.isEmpty &&
+                if ((metadata.agency?.isEmpty ?? false) &&
                     !(metadata.credit?.isNotEmpty ?? false)) {
                   Toast.showNotification(
-                    showDuration: const Duration(seconds: 5),
+                    showDuration: const Duration(seconds: 6),
                     type: ToastTypeEnum.error,
                     title: 'Missing Information',
                     message: 'Agency and/or Credit is required',

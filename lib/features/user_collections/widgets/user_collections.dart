@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/user_collections/bloc/bloc.dart';
-import 'package:tmz_damz/features/user_collections/widgets/add_collection_to_favorites.dart';
+import 'package:tmz_damz/features/user_collections/widgets/add_collection_to_favorites_modal.dart';
 import 'package:tmz_damz/features/user_collections/widgets/user_collection_item.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
@@ -63,7 +63,7 @@ class _UserCollectionsState extends State<UserCollections> {
           listener: (context, state) {
             if (state is AddCollectionToFavoritesFailureState) {
               Toast.showNotification(
-                showDuration: const Duration(seconds: 3),
+                showDuration: const Duration(seconds: 6),
                 type: ToastTypeEnum.error,
                 title: 'Failed to Add Collection to Favorites',
                 message: state.failure.message,
@@ -76,7 +76,7 @@ class _UserCollectionsState extends State<UserCollections> {
               );
             } else if (state is CreateCollectionFailureState) {
               Toast.showNotification(
-                showDuration: const Duration(seconds: 3),
+                showDuration: const Duration(seconds: 6),
                 type: ToastTypeEnum.error,
                 title: 'Failed to Create Collection',
                 message: state.failure.message,
@@ -89,14 +89,14 @@ class _UserCollectionsState extends State<UserCollections> {
               );
             } else if (state is LoadCollectionsFailureState) {
               Toast.showNotification(
-                showDuration: const Duration(seconds: 3),
+                showDuration: const Duration(seconds: 6),
                 type: ToastTypeEnum.error,
                 title: 'Failed to Load Collection Favorites',
                 message: state.failure.message,
               );
             } else if (state is RemoveCollectionFromFavoritesFailureState) {
               Toast.showNotification(
-                showDuration: const Duration(seconds: 3),
+                showDuration: const Duration(seconds: 6),
                 type: ToastTypeEnum.error,
                 title: 'Failed to Remove Collection from Favorites',
                 message: state.failure.message,
@@ -294,36 +294,40 @@ class _UserCollectionsState extends State<UserCollections> {
   void _showAddCollectionToFavoritesDialog(BuildContext context) {
     showDialog<void>(
       context: context,
-      barrierColor: Colors.black26,
+      barrierColor: Colors.black54,
       barrierDismissible: false,
       builder: (_) {
-        return Center(
-          child: AddCollectionToFavorites(
-            theme: Theme.of(context),
-            onCancel: () {
-              Navigator.of(context).pop();
-            },
-            onAdd: (collectionID) {
-              BlocProvider.of<UserCollectionsBloc>(context).add(
-                AddCollectionToFavoritesEvent(
-                  collectionID: collectionID,
-                ),
-              );
+        return OverflowBox(
+          minWidth: 600.0,
+          maxWidth: 600.0,
+          child: Center(
+            child: AddCollectionToFavoritesModal(
+              theme: Theme.of(context),
+              onCancel: () {
+                Navigator.of(context).pop();
+              },
+              onAdd: (collectionID) {
+                BlocProvider.of<UserCollectionsBloc>(context).add(
+                  AddCollectionToFavoritesEvent(
+                    collectionID: collectionID,
+                  ),
+                );
 
-              Navigator.of(context).pop();
-            },
-            onCreate: (params) {
-              BlocProvider.of<UserCollectionsBloc>(context).add(
-                CreateCollectionEvent(
-                  name: params.name,
-                  description: params.description,
-                  isPrivate: params.isPrivate,
-                  autoClear: params.autoClear,
-                ),
-              );
+                Navigator.of(context).pop();
+              },
+              onCreate: (params) {
+                BlocProvider.of<UserCollectionsBloc>(context).add(
+                  CreateCollectionEvent(
+                    name: params.name,
+                    description: params.description,
+                    isPrivate: params.isPrivate,
+                    autoClear: params.autoClear,
+                  ),
+                );
 
-              Navigator.of(context).pop();
-            },
+                Navigator.of(context).pop();
+              },
+            ),
           ),
         );
       },

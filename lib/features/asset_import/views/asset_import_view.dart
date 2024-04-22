@@ -32,7 +32,7 @@ class _AssetImportViewState extends State<AssetImportView> {
         listener: (context, state) async {
           if (state is SessionInitializationFailureState) {
             Toast.showNotification(
-              showDuration: const Duration(seconds: 5),
+              showDuration: const Duration(seconds: 6),
               type: ToastTypeEnum.error,
               title: 'Failed to Initialize Session',
               message: state.failure.message,

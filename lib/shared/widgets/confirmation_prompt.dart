@@ -24,7 +24,7 @@ void showConfirmationPrompt({
             onTap: () => cancelFunc(),
             child: const DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.black26,
+                color: Colors.black54,
               ),
               child: SizedBox.expand(),
             ),

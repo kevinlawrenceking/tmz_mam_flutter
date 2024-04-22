@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
             listener: (context, state) {
               if (state is AuthenticationFailureState) {
                 Toast.showNotification(
-                  showDuration: const Duration(seconds: 5),
+                  showDuration: const Duration(seconds: 6),
                   type: ToastTypeEnum.error,
                   title: 'Authentication Failure',
                   message: state.failure.message,

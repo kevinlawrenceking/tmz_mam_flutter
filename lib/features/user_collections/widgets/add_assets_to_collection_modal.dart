@@ -5,31 +5,34 @@ import 'package:tmz_damz/features/user_collections/widgets/collection_autocomple
 import 'package:tmz_damz/features/user_collections/widgets/collection_details.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
-class AddAssetsToCollection extends StatefulWidget {
+class AddAssetsToCollectionModal extends StatefulWidget {
   final ThemeData theme;
   final String? title;
+  final String confirmButtonLabel;
   final VoidCallback onCancel;
   final void Function(String collectionID) onConfirm;
 
-  const AddAssetsToCollection({
+  const AddAssetsToCollectionModal({
     super.key,
     required this.theme,
     this.title,
+    this.confirmButtonLabel = 'Add',
     required this.onCancel,
     required this.onConfirm,
   });
 
   @override
-  State<AddAssetsToCollection> createState() => _AddAssetsToCollectionState();
+  State<AddAssetsToCollectionModal> createState() =>
+      _AddAssetsToCollectionModalState();
 }
 
-class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
+class _AddAssetsToCollectionModalState
+    extends State<AddAssetsToCollectionModal> {
   CollectionModel? _selectedCollection;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 600,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         border: Border.all(
@@ -153,7 +156,7 @@ class _AddAssetsToCollectionState extends State<AddAssetsToCollection> {
                   vertical: 8.0,
                 ),
                 child: Text(
-                  'Add',
+                  widget.confirmButtonLabel,
                   style: widget.theme.textTheme.bodySmall,
                 ),
               ),

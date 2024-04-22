@@ -26,6 +26,24 @@ class AddAssetsToCollectionSuccessState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
+class MoveAssetsToCollectionFailureState extends BlocState {
+  final Failure failure;
+
+  MoveAssetsToCollectionFailureState(this.failure);
+
+  @override
+  List<Object?> get props => [failure];
+}
+
+class MoveAssetsToCollectionSuccessState extends BlocState {
+  final String _stateID;
+
+  MoveAssetsToCollectionSuccessState() : _stateID = const Uuid().v4();
+
+  @override
+  List<Object?> get props => [_stateID];
+}
+
 class PaginationChangedState extends BlocState {
   final int offset;
   final int limit;

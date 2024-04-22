@@ -879,6 +879,7 @@ class MetadataFormController extends ChangeNotifier {
     _celebrityController.dispose();
     _celebrityAssociatedController.dispose();
     _celebrityInPhotoController.dispose();
+    _creditController.dispose();
     _creditLocationController.dispose();
     _emotionController.dispose();
     _keywordsController.dispose();
@@ -894,7 +895,6 @@ class MetadataFormController extends ChangeNotifier {
 
   AssetMetadataModel getMetadata() {
     return AssetMetadataModel(
-      daletID: null,
       keywords: keywords,
       shotDescription: shotDescription,
       location: _metadata?.location ??
@@ -914,7 +914,6 @@ class MetadataFormController extends ChangeNotifier {
       credit: rights != AssetMetadataRightsEnum.freeTMZ ? credit : null,
       creditLocation:
           rights != AssetMetadataRightsEnum.freeTMZ ? creditLocation : null,
-      exclusivity: null,
       rightsInstructions:
           rights != AssetMetadataRightsEnum.freeTMZ ? rightsInstructions : null,
       rightsDetails:

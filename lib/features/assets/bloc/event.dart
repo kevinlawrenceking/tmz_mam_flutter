@@ -22,6 +22,25 @@ class AddAssetsToCollectionEvent extends BlocEvent {
       ];
 }
 
+class MoveAssetsToCollectionEvent extends BlocEvent {
+  final String sourceCollectionID;
+  final String targetCollectionID;
+  final List<String> assetIDs;
+
+  MoveAssetsToCollectionEvent({
+    required this.sourceCollectionID,
+    required this.targetCollectionID,
+    required this.assetIDs,
+  });
+
+  @override
+  List<Object?> get props => [
+        sourceCollectionID,
+        targetCollectionID,
+        assetIDs,
+      ];
+}
+
 class PaginationChangedEvent extends BlocEvent {
   final int offset;
   final int limit;

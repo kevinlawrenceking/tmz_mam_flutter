@@ -21,13 +21,13 @@ class NewCollectionParams {
   });
 }
 
-class AddCollectionToFavorites extends StatefulWidget {
+class AddCollectionToFavoritesModal extends StatefulWidget {
   final ThemeData theme;
   final VoidCallback onCancel;
   final void Function(String collectionID) onAdd;
   final void Function(NewCollectionParams params) onCreate;
 
-  const AddCollectionToFavorites({
+  const AddCollectionToFavoritesModal({
     super.key,
     required this.theme,
     required this.onCancel,
@@ -36,11 +36,12 @@ class AddCollectionToFavorites extends StatefulWidget {
   });
 
   @override
-  State<AddCollectionToFavorites> createState() =>
-      _AddCollectionToFavoritesState();
+  State<AddCollectionToFavoritesModal> createState() =>
+      _AddCollectionToFavoritesModalState();
 }
 
-class _AddCollectionToFavoritesState extends State<AddCollectionToFavorites> {
+class _AddCollectionToFavoritesModalState
+    extends State<AddCollectionToFavoritesModal> {
   final _isNewController = ValueNotifier<bool>(false);
 
   final _nameController = TextEditingController();
@@ -65,7 +66,6 @@ class _AddCollectionToFavoritesState extends State<AddCollectionToFavorites> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 600,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         border: Border.all(
