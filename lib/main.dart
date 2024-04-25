@@ -30,7 +30,7 @@ Future<void> main() async {
     await BrowserContextMenu.disableContextMenu();
   }
 
-  initServiceLocator();
+  await initServiceLocator();
 
   if (!kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux)) {
     await windowManager.ensureInitialized();

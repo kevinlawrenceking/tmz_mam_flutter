@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
@@ -25,8 +26,20 @@ import 'package:tmz_damz/features/user_collections/service_locator.dart'
 import 'package:tmz_damz/shared/bloc/global_bloc.dart';
 import 'package:tmz_damz/utils/config.dart';
 
-void initServiceLocator() {
+Future<void> initServiceLocator() async {
   final sl = GetIt.instance;
+
+  final packageInfo = await PackageInfo.fromPlatform();
+
+  final version = packageInfo.version;
+  final buildNumber =
+      packageInfo.buildNumber.isNotEmpty ? '+${packageInfo.buildNumber}' : '';
+
+  sl.registerSingleton(
+    AppIdentifier(
+      value: 'DAMZ Web v$version$buildNumber',
+    ),
+  );
 
   sl.registerLazySingleton<Config>(
     () {
@@ -136,6 +149,13 @@ void _initRestClient() {
   sl.registerSingleton<IRestClient>(
     RestClient(
       baseUrl: sl<Config>().apiBaseAddress,
+      appIdentifier: sl<AppIdentifier>().value,
     ),
   );
+}
+
+class AppIdentifier {
+  final String value;
+
+  AppIdentifier({required this.value});
 }

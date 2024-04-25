@@ -230,10 +230,10 @@ class AssetDataSource implements IAssetDataSource {
             final response = await _client.patch(
               authToken: authToken,
               endPoint: '/api/v1/asset/$assetID/metadata',
-              body: json.encode({
+              body: {
                 'headline': headline,
                 'metadata': metadata.toJsonDto(),
-              }),
+              },
             );
 
             if (response.statusCode != HttpStatus.ok) {
@@ -264,7 +264,7 @@ class AssetDataSource implements IAssetDataSource {
             final response = await _client.post(
               authToken: authToken,
               endPoint: '/api/v1/asset/$assetID/metadata/field',
-              body: json.encode(values.map((_) => _.toJsonDto()).toList()),
+              body: values.map((_) => _.toJsonDto()).toList(),
             );
 
             if (response.statusCode != HttpStatus.ok) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
+import 'package:tmz_damz/utils/service_locator.dart';
 
 class FileThumbnail extends StatefulWidget {
   final String url;
@@ -91,7 +92,8 @@ class _FileThumbnailState extends State<FileThumbnail> {
                   timeLimit: const Duration(seconds: 3),
                   headers: (authToken != null)
                       ? {
-                          'Authorization': 'Bearer $authToken',
+                          'authorization': 'Bearer $authToken',
+                          'x-app': GetIt.instance<AppIdentifier>().value,
                         }
                       : null,
                   loadStateChanged: (state) {

@@ -48,10 +48,10 @@ class AuthDataSource implements IAuthDataSource {
       ExceptionHandler<String>(() async {
         final response = await _client.post(
           endPoint: '/login',
-          body: json.encode({
+          body: {
             'username': username,
             'password': password,
-          }),
+          },
         );
 
         if (response.statusCode != HttpStatus.ok) {

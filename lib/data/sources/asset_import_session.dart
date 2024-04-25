@@ -213,7 +213,7 @@ class AssetImportSessionDataSource implements IAssetImportSessionDataSource {
             final response = await _client.put(
               authToken: authToken,
               endPoint: '/api/v1/asset/import/session/$sessionID/file/$fileID',
-              body: json.encode(meta.toJsonDto()),
+              body: meta.toJsonDto(),
             );
 
             if (response.statusCode != HttpStatus.ok) {

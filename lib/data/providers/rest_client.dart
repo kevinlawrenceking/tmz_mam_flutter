@@ -1,11 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-
-const String kUserAgent = 'TMZDAMZ';
-
-// this should be updated to pull the actual version...
-const String appVersion = '1.0';
 
 abstract class IRestClient {
   /// Sends an HTTP DELETE request with the given headers to the given URL.
@@ -26,17 +23,7 @@ abstract class IRestClient {
   /// Sends an HTTP PATCH request with the given headers and body to the given
   /// URL.
   ///
-  /// [body] sets the body of the request. It can be a [String], a [List<int>] or
-  /// a [Map<String, String>]. If it's a String, it's encoded using UTF-8 and
-  /// used as the body of the request. The content-type of the request will
-  /// default to "text/plain".
-  ///
-  /// If [body] is a List, it's used as a list of bytes for the body of the
-  /// request.
-  ///
-  /// If [body] is a Map, it's encoded as form fields using UTF-8. The
-  /// content-type of the request will be set to
-  /// `"application/x-www-form-urlencoded"`; this cannot be overridden.
+  /// [body] sets the body of the request.
   Future<http.Response> patch({
     required String endPoint,
     String? authToken,
@@ -47,17 +34,7 @@ abstract class IRestClient {
   /// Sends an HTTP POST request with the given headers and body to the given
   /// URL.
   ///
-  /// [body] sets the body of the request. It can be a [String], a [List<int>]
-  /// or a [Map<String, String>]. If it's a String, it's encoded using UTF-8
-  /// and used as the body of the request. The content-type of the request will
-  /// default to "text/plain".
-  ///
-  /// If [body] is a List, it's used as a list of bytes for the body of the
-  /// request.
-  ///
-  /// If [body] is a Map, it's encoded as form fields using UTF-8. The
-  /// content-type of the request will be set to
-  /// `"application/x-www-form-urlencoded"`; this cannot be overridden.
+  /// [body] sets the body of the request.
   Future<http.Response> post({
     required String endPoint,
     String? authToken,
@@ -68,17 +45,7 @@ abstract class IRestClient {
   /// Sends an HTTP PUT request with the given headers and body to the given
   /// URL.
   ///
-  /// [body] sets the body of the request. It can be a [String], a [List<int>]
-  /// or a [Map<String, String>]. If it's a String, it's encoded using UTF-8
-  /// and used as the body of the request. The content-type of the request will
-  /// default to "text/plain".
-  ///
-  /// If [body] is a List, it's used as a list of bytes for the body of the
-  /// request.
-  ///
-  /// If [body] is a Map, it's encoded as form fields using UTF-8. The
-  /// content-type of the request will be set to
-  /// `"application/x-www-form-urlencoded"`; this cannot be overridden.
+  /// [body] sets the body of the request.
   Future<http.Response> put({
     required String endPoint,
     String? authToken,
@@ -99,17 +66,13 @@ abstract class IRestClient {
 
 class RestClient implements IRestClient {
   final String _baseUrl;
-  http.Client? _client;
+  final String _appIdentifier;
 
   RestClient({
     required String baseUrl,
+    required String appIdentifier,
   })  : _baseUrl = '${baseUrl.replaceAll(r'/+$', '')}/',
-        _client = http.Client();
-
-  void dispose() {
-    _client?.close();
-    _client = null;
-  }
+        _appIdentifier = appIdentifier;
 
   @override
   Future<http.Response> delete({
@@ -119,28 +82,30 @@ class RestClient implements IRestClient {
   }) async {
     final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
 
-    final mergedHeaders = {
-      'Cache-Control': 'no-cache',
-    };
-
-    if (!kIsWeb) {
-      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
-    }
+    final mergedHeaders = <String, String>{};
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
     }
 
     if (authToken?.isNotEmpty ?? false) {
-      mergedHeaders['Authorization'] = 'Bearer $authToken';
+      mergedHeaders['authorization'] = 'Bearer $authToken';
     }
 
-    final response = await http.delete(
-      url,
-      headers: mergedHeaders,
-    );
+    final request = http.Request('DELETE', url);
 
-    return response;
+    request.headers.addAll(mergedHeaders);
+
+    return _withClient((client) async {
+      final response = await client.send(request);
+      final responseBody = await response.stream.bytesToString();
+
+      return http.Response(
+        responseBody,
+        response.statusCode,
+        request: request,
+      );
+    });
   }
 
   @override
@@ -153,28 +118,30 @@ class RestClient implements IRestClient {
     final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}')
         .replace(queryParameters: queryParams);
 
-    final mergedHeaders = {
-      'Cache-Control': 'no-cache',
-    };
-
-    if (!kIsWeb) {
-      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
-    }
+    final mergedHeaders = <String, String>{};
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
     }
 
     if (authToken?.isNotEmpty ?? false) {
-      mergedHeaders['Authorization'] = 'Bearer $authToken';
+      mergedHeaders['authorization'] = 'Bearer $authToken';
     }
 
-    final response = await http.get(
-      url,
-      headers: mergedHeaders,
-    );
+    final request = http.Request('GET', url);
 
-    return response;
+    request.headers.addAll(mergedHeaders);
+
+    return _withClient((client) async {
+      final response = await client.send(request);
+      final responseBody = await response.stream.bytesToString();
+
+      return http.Response(
+        responseBody,
+        response.statusCode,
+        request: request,
+      );
+    });
   }
 
   @override
@@ -187,29 +154,35 @@ class RestClient implements IRestClient {
     final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
 
     final mergedHeaders = {
-      'Cache-Control': 'no-cache',
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
     };
-
-    if (!kIsWeb) {
-      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
-    }
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
     }
 
     if (authToken?.isNotEmpty ?? false) {
-      mergedHeaders['Authorization'] = 'Bearer $authToken';
+      mergedHeaders['authorization'] = 'Bearer $authToken';
     }
 
-    final response = await http.patch(
-      url,
-      headers: mergedHeaders,
-      body: body,
-    );
+    final request = http.Request('PATCH', url);
 
-    return response;
+    request.headers.addAll(mergedHeaders);
+
+    if (body != null) {
+      request.body = (body is String) ? body : json.encode(body);
+    }
+
+    return _withClient((client) async {
+      final response = await client.send(request);
+      final responseBody = await response.stream.bytesToString();
+
+      return http.Response(
+        responseBody,
+        response.statusCode,
+        request: request,
+      );
+    });
   }
 
   @override
@@ -222,29 +195,35 @@ class RestClient implements IRestClient {
     final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
 
     final mergedHeaders = {
-      'Cache-Control': 'no-cache',
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
     };
-
-    if (!kIsWeb) {
-      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
-    }
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
     }
 
     if (authToken?.isNotEmpty ?? false) {
-      mergedHeaders['Authorization'] = 'Bearer $authToken';
+      mergedHeaders['authorization'] = 'Bearer $authToken';
     }
 
-    final response = await http.post(
-      url,
-      headers: mergedHeaders,
-      body: body,
-    );
+    final request = http.Request('POST', url);
 
-    return response;
+    request.headers.addAll(mergedHeaders);
+
+    if (body != null) {
+      request.body = (body is String) ? body : json.encode(body);
+    }
+
+    return _withClient((client) async {
+      final response = await client.send(request);
+      final responseBody = await response.stream.bytesToString();
+
+      return http.Response(
+        responseBody,
+        response.statusCode,
+        request: request,
+      );
+    });
   }
 
   @override
@@ -257,29 +236,35 @@ class RestClient implements IRestClient {
     final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
 
     final mergedHeaders = {
-      'Cache-Control': 'no-cache',
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
     };
-
-    if (!kIsWeb) {
-      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
-    }
 
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
     }
 
     if (authToken?.isNotEmpty ?? false) {
-      mergedHeaders['Authorization'] = 'Bearer $authToken';
+      mergedHeaders['authorization'] = 'Bearer $authToken';
     }
 
-    final response = await http.put(
-      url,
-      headers: mergedHeaders,
-      body: body,
-    );
+    final request = http.Request('PUT', url);
 
-    return response;
+    request.headers.addAll(mergedHeaders);
+
+    if (body != null) {
+      request.body = (body is String) ? body : json.encode(body);
+    }
+
+    return _withClient((client) async {
+      final response = await client.send(request);
+      final responseBody = await response.stream.bytesToString();
+
+      return http.Response(
+        responseBody,
+        response.statusCode,
+        request: request,
+      );
+    });
   }
 
   @override
@@ -296,20 +281,17 @@ class RestClient implements IRestClient {
 
     final mergedHeaders = <String, String>{};
 
-    if (!kIsWeb) {
-      mergedHeaders['User-Agent'] = '$kUserAgent/$appVersion';
-    }
-
     if (headers?.isNotEmpty ?? false) {
       mergedHeaders.addAll(headers!);
     }
 
     if (authToken?.isNotEmpty ?? false) {
-      mergedHeaders['Authorization'] = 'Bearer $authToken';
+      mergedHeaders['authorization'] = 'Bearer $authToken';
     }
 
-    final request = http.MultipartRequest('POST', url)
-      ..headers.addAll(mergedHeaders);
+    final request = http.MultipartRequest('POST', url);
+
+    request.headers.addAll(mergedHeaders);
 
     request.files.add(
       http.MultipartFile(
@@ -321,8 +303,41 @@ class RestClient implements IRestClient {
       ),
     );
 
-    final response = await request.send();
+    return _withClient((client) async {
+      final response = await client.send(request);
 
-    return response;
+      return response;
+    });
+  }
+
+  Future<T> _withClient<T>(
+    Future<T> Function(_HttpClient client) fn,
+  ) async {
+    final client = _HttpClient(
+      appIdentifier: _appIdentifier,
+    );
+
+    try {
+      return await fn(client);
+    } finally {
+      client.close();
+    }
+  }
+}
+
+class _HttpClient extends http.BaseClient {
+  final http.Client _client;
+  final String _appIdentifier;
+
+  _HttpClient({
+    required String appIdentifier,
+  })  : _appIdentifier = appIdentifier,
+        _client = http.Client();
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    request.headers['cache-control'] = 'no-cache';
+    request.headers['x-app'] = _appIdentifier;
+    return _client.send(request);
   }
 }

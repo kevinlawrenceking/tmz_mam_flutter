@@ -68,9 +68,9 @@ class CollectionDataSource implements ICollectionDataSource {
             final response = await _client.post(
               authToken: authToken,
               endPoint: '/api/v1/collection/$collectionID/asset',
-              body: json.encode({
+              body: {
                 'asset_id': assetID,
-              }),
+              },
             );
 
             if (response.statusCode != HttpStatus.noContent) {
@@ -100,12 +100,12 @@ class CollectionDataSource implements ICollectionDataSource {
             final response = await _client.post(
               authToken: authToken,
               endPoint: '/api/v1/collection/',
-              body: json.encode({
+              body: {
                 'private': isPrivate,
                 'auto_clear': autoClear,
                 'name': name,
                 'description': description,
-              }),
+              },
             );
 
             if (response.statusCode != HttpStatus.ok) {
@@ -204,9 +204,9 @@ class CollectionDataSource implements ICollectionDataSource {
             final addResponse = await _client.post(
               authToken: authToken,
               endPoint: '/api/v1/collection/$targetCollectionID/asset',
-              body: json.encode({
+              body: {
                 'asset_id': assetID,
-              }),
+              },
             );
 
             if (addResponse.statusCode != HttpStatus.noContent) {
