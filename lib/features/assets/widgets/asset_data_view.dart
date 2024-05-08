@@ -1,19 +1,23 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
+
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:context_menus/context_menus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_list_item.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_tile_item.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 import 'package:tmz_damz/features/bulk_update/widgets/bulk_update_modal.dart';
-import 'package:tmz_damz/shared/bloc/global_bloc.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
@@ -238,11 +242,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                     size: 16.0,
                   ),
                   onPressed: (permissions?.assets.canDownloadSource ?? false)
-                      ? () {
-                          BlocProvider.of<GlobalBloc>(context).add(
-                            DownloadSelectedAssetsEvent(),
-                          );
-                        }
+                      ? _downloadSourceImages
                       : null,
                 ),
                 null, // divider
@@ -591,5 +591,46 @@ class _AssetDataViewState extends State<AssetDataView> {
 
   void _selectAll() {
     widget.onSelectionChanged(widget.assets.map((_) => _.id).toList());
+  }
+
+  Future<void> _downloadSourceImages() async {
+    if (widget.selectedIDs.isEmpty) {
+      Toast.showNotification(
+        showDuration: const Duration(seconds: 3),
+        type: ToastTypeEnum.information,
+        message: 'No assets selected!',
+      );
+      return;
+    }
+
+    final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
+
+    final selected = widget.assets
+        .where((asset) => widget.selectedIDs.contains(asset.id))
+        .toList();
+
+    for (var i = 0; i < selected.length; i++) {
+      final asset = selected[i];
+
+      final img = asset.images.firstWhereOrNull(
+        (_) => _.type == AssetImageTypeEnum.source,
+      );
+
+      if (img == null) {
+        return;
+      }
+
+      final url = '$apiBaseUrl/asset/${asset.id}/image/${img.id}/download';
+
+      if (kIsWeb) {
+        html.window.open(url, '_blank');
+      }
+
+      await Future<void>.delayed(
+        const Duration(
+          milliseconds: 50,
+        ),
+      );
+    }
   }
 }

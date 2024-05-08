@@ -1,15 +1,9 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-
 import 'package:auto_route/auto_route.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
-import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/features/asset_details/widgets/asset_details.dart';
@@ -21,7 +15,6 @@ import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/toolbar.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection_modal.dart';
 import 'package:tmz_damz/features/user_collections/widgets/user_collections.dart';
-import 'package:tmz_damz/shared/bloc/global_bloc.dart' as global;
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
@@ -358,216 +351,168 @@ class _SearchViewState extends State<SearchView> {
           if (state.assets.isNotEmpty) {
             final assets = state.assets;
 
-            return BlocProvider.value(
-              value: GetIt.instance<global.GlobalBloc>(),
-              child: BlocListener<global.GlobalBloc, global.GlobalBlocState>(
-                listener: (context, state) async {
-                  if (state is global.DownloadSelectedAssetsState) {
-                    if (_selectedIDs.isEmpty) {
-                      Toast.showNotification(
-                        showDuration: const Duration(seconds: 3),
-                        type: ToastTypeEnum.information,
-                        message: 'No assets selected!',
-                      );
-                      return;
-                    }
+            return AssetDataView(
+              scrollController: _scrollController,
+              config: GetIt.instance<Config>(),
+              collectionID: _collectionID,
+              assets: assets,
+              selectedIDs: _selectedIDs,
+              layoutMode: _layoutMode,
+              thumbnailSize: _thumbnailSize,
+              onTap: (model) {
+                if (_assetDetailsVisible) {
+                  setState(() {
+                    _currentModel = model;
+                  });
+                }
+              },
+              onDoubleTap: (model) {
+                setState(() {
+                  _assetDetailsVisible = true;
+                  _currentModel = model;
+                });
+              },
+              onSelectionChanged: (selectedIDs) {
+                _focusNode.requestFocus();
 
-                    final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
+                setState(() {
+                  _selectedIDs = selectedIDs;
+                });
+              },
+              onAddSelectedToCollection: (selectedIDs) {
+                showDialog<void>(
+                  context: context,
+                  barrierColor: Colors.black54,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    final theme = Theme.of(context);
 
-                    final selected = assets
-                        .where((asset) => _selectedIDs.contains(asset.id))
-                        .toList();
+                    return OverflowBox(
+                      minWidth: 600.0,
+                      maxWidth: 600.0,
+                      child: Center(
+                        child: AddAssetsToCollectionModal(
+                          theme: theme,
+                          title:
+                              'Add selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                          onCancel: () {
+                            Navigator.of(context).pop();
+                          },
+                          onConfirm: (collectionID) {
+                            assetsBloc.add(
+                              AddAssetsToCollectionEvent(
+                                collectionID: collectionID,
+                                assetIDs: selectedIDs,
+                              ),
+                            );
 
-                    for (var i = 0; i < selected.length; i++) {
-                      final asset = selected[i];
-
-                      final img = asset.images.firstWhereOrNull(
-                        (_) => _.type == AssetImageTypeEnum.source,
-                      );
-
-                      if (img == null) {
-                        return;
-                      }
-
-                      final url =
-                          '$apiBaseUrl/asset/${asset.id}/image/${img.id}/download';
-
-                      if (kIsWeb) {
-                        html.window.open(url, '_blank');
-                      }
-
-                      await Future<void>.delayed(
-                        const Duration(
-                          milliseconds: 50,
+                            Navigator.of(context).pop();
+                          },
                         ),
-                      );
-                    }
-                  }
-                },
-                child: AssetDataView(
-                  scrollController: _scrollController,
-                  config: GetIt.instance<Config>(),
-                  collectionID: _collectionID,
-                  assets: assets,
-                  selectedIDs: _selectedIDs,
-                  layoutMode: _layoutMode,
-                  thumbnailSize: _thumbnailSize,
-                  onTap: (model) {
-                    if (_assetDetailsVisible) {
-                      setState(() {
-                        _currentModel = model;
-                      });
-                    }
-                  },
-                  onDoubleTap: (model) {
-                    setState(() {
-                      _assetDetailsVisible = true;
-                      _currentModel = model;
-                    });
-                  },
-                  onSelectionChanged: (selectedIDs) {
-                    _focusNode.requestFocus();
-
-                    setState(() {
-                      _selectedIDs = selectedIDs;
-                    });
-                  },
-                  onAddSelectedToCollection: (selectedIDs) {
-                    showDialog<void>(
-                      context: context,
-                      barrierColor: Colors.black54,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        final theme = Theme.of(context);
-
-                        return OverflowBox(
-                          minWidth: 600.0,
-                          maxWidth: 600.0,
-                          child: Center(
-                            child: AddAssetsToCollectionModal(
-                              theme: theme,
-                              title:
-                                  'Add selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
-                              onCancel: () {
-                                Navigator.of(context).pop();
-                              },
-                              onConfirm: (collectionID) {
-                                assetsBloc.add(
-                                  AddAssetsToCollectionEvent(
-                                    collectionID: collectionID,
-                                    assetIDs: selectedIDs,
-                                  ),
-                                );
-
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ),
-                        );
-                      },
+                      ),
                     );
                   },
-                  onMoveSelectedToCollection: (selectedIDs) {
-                    if ((_collectionID == null) || selectedIDs.isEmpty) {
-                      return;
-                    }
+                );
+              },
+              onMoveSelectedToCollection: (selectedIDs) {
+                if ((_collectionID == null) || selectedIDs.isEmpty) {
+                  return;
+                }
 
-                    final sourceCollectionID = _collectionID!;
+                final sourceCollectionID = _collectionID!;
 
-                    showDialog<void>(
-                      context: context,
-                      barrierColor: Colors.black54,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        final theme = Theme.of(context);
+                showDialog<void>(
+                  context: context,
+                  barrierColor: Colors.black54,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    final theme = Theme.of(context);
 
-                        return OverflowBox(
-                          minWidth: 600.0,
-                          maxWidth: 600.0,
-                          child: Center(
-                            child: AddAssetsToCollectionModal(
-                              theme: theme,
-                              title:
-                                  'Move selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
-                              confirmButtonLabel: 'Move',
-                              onCancel: () {
-                                Navigator.of(context).pop();
-                              },
-                              onConfirm: (collectionID) {
-                                if (collectionID == sourceCollectionID) {
-                                  Toast.showNotification(
-                                    showDuration: const Duration(seconds: 6),
-                                    type: ToastTypeEnum.information,
-                                    message:
-                                        'You must select a collection that is not the same as the current collection.',
-                                  );
-                                  return;
-                                }
+                    return OverflowBox(
+                      minWidth: 600.0,
+                      maxWidth: 600.0,
+                      child: Center(
+                        child: AddAssetsToCollectionModal(
+                          theme: theme,
+                          title:
+                              'Move selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                          confirmButtonLabel: 'Move',
+                          onCancel: () {
+                            Navigator.of(context).pop();
+                          },
+                          onConfirm: (collectionID) {
+                            if (collectionID == sourceCollectionID) {
+                              Toast.showNotification(
+                                showDuration: const Duration(seconds: 6),
+                                type: ToastTypeEnum.information,
+                                message:
+                                    'You must select a collection that is not the same as the current collection.',
+                              );
+                              return;
+                            }
 
-                                assetsBloc.add(
-                                  MoveAssetsToCollectionEvent(
-                                    sourceCollectionID: sourceCollectionID,
-                                    targetCollectionID: collectionID,
-                                    assetIDs: selectedIDs,
-                                  ),
-                                );
+                            assetsBloc.add(
+                              MoveAssetsToCollectionEvent(
+                                sourceCollectionID: sourceCollectionID,
+                                targetCollectionID: collectionID,
+                                assetIDs: selectedIDs,
+                              ),
+                            );
 
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ),
-                        );
-                      },
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
                     );
                   },
-                  onDeleteSelected: (selectedIDs) {
-                    if (selectedIDs.isEmpty) {
-                      return;
-                    }
+                );
+              },
+              onDeleteSelected: (selectedIDs) {
+                if (selectedIDs.isEmpty) {
+                  return;
+                }
 
-                    showConfirmationPrompt(
-                      context: context,
-                      title:
-                          'Are you sure you want to delete the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
-                      message:
-                          'This will delete the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from DAMZ.',
-                      onConfirm: () {
-                        assetsBloc.add(
-                          DeleteAssetEvent(
-                            assetIDs: selectedIDs,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  onRemoveSelectedFromCollection: (selectedIDs) {
-                    if ((_collectionID == null) || selectedIDs.isEmpty) {
-                      return;
-                    }
-
-                    showConfirmationPrompt(
-                      context: context,
-                      title:
-                          'Are you sure you want to remove the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
-                      message:
-                          'This will remove the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from the active collection only.',
-                      onConfirm: () {
-                        assetsBloc.add(
-                          RemoveAssetsFromCollectionEvent(
-                            collectionID: _collectionID!,
-                            assetIDs: selectedIDs,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  onReload: () {
+                showConfirmationPrompt(
+                  context: context,
+                  title:
+                      'Are you sure you want to delete the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                  message:
+                      'This will delete the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from DAMZ.',
+                  onConfirm: () {
                     assetsBloc.add(
-                      ReloadCurrentPageEvent(),
+                      DeleteAssetEvent(
+                        assetIDs: selectedIDs,
+                      ),
                     );
                   },
-                ),
-              ),
+                );
+              },
+              onRemoveSelectedFromCollection: (selectedIDs) {
+                if ((_collectionID == null) || selectedIDs.isEmpty) {
+                  return;
+                }
+
+                showConfirmationPrompt(
+                  context: context,
+                  title:
+                      'Are you sure you want to remove the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                  message:
+                      'This will remove the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from the active collection only.',
+                  onConfirm: () {
+                    assetsBloc.add(
+                      RemoveAssetsFromCollectionEvent(
+                        collectionID: _collectionID!,
+                        assetIDs: selectedIDs,
+                      ),
+                    );
+                  },
+                );
+              },
+              onReload: () {
+                assetsBloc.add(
+                  ReloadCurrentPageEvent(),
+                );
+              },
             );
           } else {
             return const Center(

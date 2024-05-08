@@ -5,5 +5,3 @@ abstract class GlobalBlocEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
-
-class DownloadSelectedAssetsEvent extends GlobalBlocEvent {}

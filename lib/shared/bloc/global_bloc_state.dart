@@ -8,6 +8,4 @@ abstract class GlobalBlocState extends Equatable {
 
 class InitialState extends GlobalBlocState {}
 
-class DownloadSelectedAssetsState extends GlobalBlocState {}
-
 class ResetState extends GlobalBlocState {}
