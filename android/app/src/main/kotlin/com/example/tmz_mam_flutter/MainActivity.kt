@@ -1,4 +1,4 @@
-package com.example.tmz_mam_flutter
+package com.tmz.damz
 
 import io.flutter.embedding.android.FlutterActivity
 

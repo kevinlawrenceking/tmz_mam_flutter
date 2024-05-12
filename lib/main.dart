@@ -1,28 +1,65 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'theme_manager.dart';
-import 'app_theme.dart';
-import 'login_screen.dart'; // Ensure this file exists with your TestPage class
+import 'dart:io';
 
-void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeManager(),
-      child: MyApp(),
-    ),
-  );
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:tmz_damz/app.dart';
+import 'package:tmz_damz/utils/service_locator.dart';
+import 'package:window_manager/window_manager.dart';
+
+Future<void> main() async {
+  HttpOverrides.global = CustomHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  const env = String.fromEnvironment('ENV');
+  if (env.isEmpty) {
+    return;
+  }
+
+  try {
+    await dotenv.load(
+      fileName: '.env.$env',
+    );
+    // ignore: avoid_catching_errors
+  } on Error {
+    return;
+  }
+
+  if (kIsWeb) {
+    await BrowserContextMenu.disableContextMenu();
+  }
+
+  await initServiceLocator();
+
+  if (!kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux)) {
+    await windowManager.ensureInitialized();
+
+    const windowOptions = WindowOptions(
+      center: true,
+      skipTaskbar: false,
+      size: Size(1200, 800),
+      minimumSize: Size(1200, 800),
+      title: 'TMZ DAMZ',
+    );
+
+    await windowManager.waitUntilReadyToShow(
+      windowOptions,
+      () async {
+        await windowManager.show();
+        await windowManager.focus();
+      },
+    );
+  }
+
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
+class CustomHttpOverrides extends HttpOverrides {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: Provider.of<ThemeManager>(context).themeMode,
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // Directly go to TestPage
-    );
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+    client.badCertificateCallback = (cert, host, port) => true;
+    return client;
   }
 }

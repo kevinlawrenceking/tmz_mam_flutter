@@ -1,16 +1,50 @@
-# tmz_mam_flutter
+# TMZ DAMZ
 
-A new Flutter project.
+Welcome to the TMZ DAMZ project! This repository contains the source code for a Flutter application developed for TMZ's digital media asset management system.
 
-## Getting Started
+The project aims to provide a seamless and efficient way to manage, access, and distribute digital media assets across various platforms.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+The **TMZ DAMZ** project includes the following features:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+*   **Asset Browsing:** Browse through a catalog of media assets with ease.
+*   **Asset Management:** Upload, categorize, and manage assets within the application.
+*   **Search Functionality:** Quickly find assets using advanced search filters and tags.
+*   **User Authentication:** Secure access to the MAM system with user authentication and authorization.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Acknowledgments
+
+Special thanks to the Flutter community and the developers behind the numerous packages and tools that make this project possible.
+
+Kudos to the TMZ team for their continuous support and feedback throughout the development process.
+
+## Dev Notes
+
+Run the following command if you add, remove, or modify any app/feature routes:
+
+```
+make gen
+```
+
+Build the web deployment *(outputs to `.\build\web`)*:
+
+```
+make build-web-stg
+```
+
+---
+
+### Running a basic web server to host the web app
+
+Install the `dhttpd` basic web server:
+
+```
+dart pub global activate dhttpd
+```
+
+Run a basic web server that will host the app:
+
+```
+dart pub global run dhttpd --host=localhost -p 8080 --path .\build\web\
+```

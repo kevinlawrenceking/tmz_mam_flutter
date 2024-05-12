@@ -1,17 +1,43 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        
-        
-
-        
-
-        {
-            "name": "Flutter Development",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "debug"
-
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug (Windows)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "program": "${workspaceFolder}/lib/main.dart",
+      "args": ["--dart-define", "ENV=development"]
+    },
+    {
+      "name": "Debug (Chrome)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "program": "${workspaceFolder}/lib/main.dart",
+      "args": [
+        "--dart-define",
+        "ENV=development",
+        "-d",
+        "chrome",
+        "--web-renderer",
+        "canvaskit"
+      ]
+    },
+    {
+      "name": "Debug (Edge)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "program": "${workspaceFolder}/lib/main.dart",
+      "args": [
+        "--dart-define",
+        "ENV=development",
+        "-d",
+        "edge",
+        "--web-renderer",
+        "canvaskit"
+      ]
+    }
+  ]
 }

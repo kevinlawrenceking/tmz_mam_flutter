@@ -1,0 +1,15 @@
+enum AssetSortFieldEnum {
+  headline,
+  createdAt,
+  updatedAt,
+  agency,
+  celebrityAssociated,
+  celebrityInPhoto,
+  credit,
+  creditLocation,
+  keywords,
+  originalFileName,
+  rights,
+  rightsDetails,
+  shotDescription,
+}
