@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/pagination_info.dart';
-import 'package:tmz_damz/features/assets/bloc/bloc.dart';
+import 'package:tmz_damz/features/collections/bloc/bloc.dart';
+import 'package:tmz_damz/features/collections/widgets/create_collection_modal.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 class PaginationBar extends StatelessWidget {
@@ -16,7 +17,7 @@ class PaginationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AssetsBloc, BlocState>(
+    return BlocBuilder<CollectionsBloc, BlocState>(
       buildWhen: (_, state) => state is PaginationChangedState,
       builder: (context, state) {
         PaginationInfo paginationInfo;
@@ -55,8 +56,13 @@ class PaginationBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _buildNewCollectionButton(
+                context: context,
+                theme: theme,
+              ),
+              const SizedBox(width: 20.0),
               Text(
-                'Assets',
+                'Collections',
                 style: theme.textTheme.labelMedium,
               ),
               const SizedBox(width: 10.0),
@@ -121,6 +127,48 @@ class PaginationBar extends StatelessWidget {
     );
   }
 
+  Widget _buildNewCollectionButton({
+    required BuildContext context,
+    required ThemeData theme,
+  }) {
+    return TextButton(
+      onPressed: () {
+        _showCreateCollectionDialog(context);
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(
+          const Color(0xFF11853F),
+        ),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 6.0,
+          ),
+        ),
+        shape: MaterialStateProperty.resolveWith(
+          (states) {
+            return RoundedRectangleBorder(
+              side: const BorderSide(
+                color: Color(0xB0000000),
+              ),
+              borderRadius: BorderRadius.circular(6.0),
+            );
+          },
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 8.0,
+        ),
+        child: Text(
+          'New',
+          style: theme.textTheme.bodySmall,
+        ),
+      ),
+    );
+  }
+
   Widget _buildFirstPageButton({
     required BuildContext context,
     required PaginationInfo paginationInfo,
@@ -130,7 +178,7 @@ class PaginationBar extends StatelessWidget {
     return IconButton(
       onPressed: enabled
           ? () {
-              BlocProvider.of<AssetsBloc>(context).add(
+              BlocProvider.of<CollectionsBloc>(context).add(
                 PaginationChangedEvent(
                   offset: 0,
                   limit: paginationInfo.limit,
@@ -155,7 +203,7 @@ class PaginationBar extends StatelessWidget {
     return IconButton(
       onPressed: enabled
           ? () {
-              BlocProvider.of<AssetsBloc>(context).add(
+              BlocProvider.of<CollectionsBloc>(context).add(
                 PaginationChangedEvent(
                   offset: paginationInfo.lastPageOffset(),
                   limit: paginationInfo.limit,
@@ -180,7 +228,7 @@ class PaginationBar extends StatelessWidget {
     return TextButton(
       onPressed: enabled
           ? () {
-              BlocProvider.of<AssetsBloc>(context).add(
+              BlocProvider.of<CollectionsBloc>(context).add(
                 PaginationChangedEvent(
                   offset: paginationInfo.nextPageOffset(),
                   limit: paginationInfo.limit,
@@ -255,7 +303,7 @@ class PaginationBar extends StatelessWidget {
             child: TextButton(
               onPressed: !selected
                   ? () {
-                      BlocProvider.of<AssetsBloc>(context).add(
+                      BlocProvider.of<CollectionsBloc>(context).add(
                         PaginationChangedEvent(
                           offset: page * paginationInfo.limit,
                           limit: paginationInfo.limit,
@@ -298,7 +346,7 @@ class PaginationBar extends StatelessWidget {
     return TextButton(
       onPressed: enabled
           ? () {
-              BlocProvider.of<AssetsBloc>(context).add(
+              BlocProvider.of<CollectionsBloc>(context).add(
                 PaginationChangedEvent(
                   offset: paginationInfo.previousPageOffset(),
                   limit: paginationInfo.limit,
@@ -343,7 +391,7 @@ class PaginationBar extends StatelessWidget {
             return;
           }
 
-          BlocProvider.of<AssetsBloc>(context).add(
+          BlocProvider.of<CollectionsBloc>(context).add(
             PaginationChangedEvent(
               offset: 0,
               limit: value,
@@ -351,6 +399,40 @@ class PaginationBar extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  void _showCreateCollectionDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierColor: Colors.black54,
+      barrierDismissible: false,
+      builder: (_) {
+        return OverflowBox(
+          minWidth: 600.0,
+          maxWidth: 600.0,
+          child: Center(
+            child: CreateCollectionModal(
+              theme: Theme.of(context),
+              onCancel: () {
+                Navigator.of(context).pop();
+              },
+              onCreate: (params) {
+                BlocProvider.of<CollectionsBloc>(context).add(
+                  CreateCollectionEvent(
+                    name: params.name,
+                    description: params.description,
+                    isPrivate: params.isPrivate,
+                    autoClear: params.autoClear,
+                  ),
+                );
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

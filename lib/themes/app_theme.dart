@@ -3,31 +3,42 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData dark(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ThemeData.dark().copyWith(
       brightness: Brightness.dark,
       canvasColor: const Color(0xFF232323),
-      cardTheme: Theme.of(context).cardTheme.copyWith(
-            clipBehavior: Clip.hardEdge,
-            color: const Color(0xFF1F2937),
-            margin: EdgeInsets.zero,
-            surfaceTintColor: Colors.transparent,
-          ),
-      colorScheme: Theme.of(context).colorScheme.copyWith(
-            background: const Color(0xFF1D1E1F),
-            primary: const Color(0xDEFFFFFF),
-            secondary: const Color(0xFFE81B1B),
-          ),
-      dividerTheme: Theme.of(context).dividerTheme.copyWith(
-            color: const Color(
-              0x20FFFFFF,
-            ),
-            space: 15.0,
-            thickness: 1.0,
-          ),
+      cardTheme: theme.cardTheme.copyWith(
+        clipBehavior: Clip.hardEdge,
+        color: const Color(0xFF1F2937),
+        margin: EdgeInsets.zero,
+        surfaceTintColor: Colors.transparent,
+      ),
+      checkboxTheme: theme.checkboxTheme.copyWith(
+        fillColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return const Color(0xFF8E0000);
+          } else {
+            return Colors.transparent;
+          }
+        }),
+      ),
+      colorScheme: theme.colorScheme.copyWith(
+        background: const Color(0xFF1D1E1F),
+        primary: const Color(0xDEFFFFFF),
+        secondary: const Color(0xFF8E0000),
+      ),
+      dividerTheme: theme.dividerTheme.copyWith(
+        color: const Color(
+          0x20FFFFFF,
+        ),
+        space: 15.0,
+        thickness: 1.0,
+      ),
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           iconColor: MaterialStateProperty.resolveWith((states) {
-            final style = Theme.of(context).textTheme.labelMedium;
+            final style = theme.textTheme.labelMedium;
 
             if (states.contains(MaterialState.hovered)) {
               return style?.color;
@@ -52,62 +63,62 @@ class AppTheme {
           ),
         ),
       ),
-      inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFF454647),
-              ),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            contentPadding: const EdgeInsets.all(14.0),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFF454647),
-              ),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFFE54A4A),
-              ),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            errorStyle: GoogleFonts.getFont(
-              'Roboto',
-              color: const Color(0xFFE54A4A),
-              fontStyle: FontStyle.italic,
-            ),
-            fillColor: const Color(0xFF1D1E1F),
-            filled: true,
-            floatingLabelBehavior: FloatingLabelBehavior.never,
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFFE81B1B),
-              ),
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-            hintStyle: GoogleFonts.getFont(
-              'Roboto',
-              color: const Color(0x99FFFFFF),
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.0,
-            ),
-            hoverColor: const Color(0x08000000),
-            isDense: true,
-            labelStyle: GoogleFonts.getFont(
-              'Roboto',
-              fontSize: 12.0,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 2.0,
-            ),
+      inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFF454647),
           ),
-      listTileTheme: Theme.of(context).listTileTheme.copyWith(
-            textColor: const Color(0xDEFFFFFF),
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        contentPadding: const EdgeInsets.all(14.0),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFF454647),
           ),
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFFE54A4A),
+          ),
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        errorStyle: GoogleFonts.getFont(
+          'Roboto',
+          color: const Color(0xFFE54A4A),
+          fontStyle: FontStyle.italic,
+        ),
+        fillColor: const Color(0xFF1D1E1F),
+        filled: true,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFFE81B1B),
+          ),
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        hintStyle: GoogleFonts.getFont(
+          'Roboto',
+          color: const Color(0x99FFFFFF),
+          fontSize: 16.0,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.0,
+        ),
+        hoverColor: const Color(0x08000000),
+        isDense: true,
+        labelStyle: GoogleFonts.getFont(
+          'Roboto',
+          fontSize: 12.0,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 2.0,
+        ),
+      ),
+      listTileTheme: theme.listTileTheme.copyWith(
+        textColor: const Color(0xDEFFFFFF),
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           minimumSize: MaterialStateProperty.all(const Size(1.0, 1.0)),
@@ -142,11 +153,11 @@ class AppTheme {
           }),
         ),
       ),
-      radioTheme: Theme.of(context).radioTheme.copyWith(
-            overlayColor: MaterialStateProperty.all(Colors.white24),
-            splashRadius: 10.0,
-          ),
-      scrollbarTheme: Theme.of(context).scrollbarTheme.copyWith(
+      radioTheme: theme.radioTheme.copyWith(
+        overlayColor: MaterialStateProperty.all(Colors.white24),
+        splashRadius: 10.0,
+      ),
+      scrollbarTheme: theme.scrollbarTheme.copyWith(
         thumbColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.hovered)) {
             return const Color(0x40FFFFFF);
@@ -183,7 +194,7 @@ class AppTheme {
             ),
           ),
           textStyle: MaterialStateProperty.resolveWith((states) {
-            final style = Theme.of(context).textTheme.labelMedium;
+            final style = theme.textTheme.labelMedium;
 
             if (states.contains(MaterialState.hovered)) {
               return style;
@@ -195,11 +206,10 @@ class AppTheme {
           }),
         ),
       ),
-      textSelectionTheme: Theme.of(context).textSelectionTheme.copyWith(
-            selectionColor: Colors.blue.withOpacity(0.4),
-          ),
-      textTheme: Theme.of(context)
-          .textTheme
+      textSelectionTheme: theme.textSelectionTheme.copyWith(
+        selectionColor: Colors.blue.withOpacity(0.4),
+      ),
+      textTheme: theme.textTheme
           .copyWith(
             bodySmall: GoogleFonts.getFont(
               'Roboto',
@@ -241,25 +251,25 @@ class AppTheme {
             bodyColor: const Color(0xDEFFFFFF),
             displayColor: const Color(0xDEFFFFFF),
           ),
-      tooltipTheme: Theme.of(context).tooltipTheme.copyWith(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 10,
-            ),
-            margin: const EdgeInsets.all(20),
-            verticalOffset: 0,
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-              boxShadow: kElevationToShadow[3],
-              color: const Color(0xFF40434C),
-            ),
-            textStyle: GoogleFonts.getFont(
-              'Roboto',
-              color: const Color(0xFFAFB1B4),
-            ),
-            waitDuration: const Duration(milliseconds: 500),
-          ),
+      tooltipTheme: theme.tooltipTheme.copyWith(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 10,
+        ),
+        margin: const EdgeInsets.all(20),
+        verticalOffset: 0,
+        decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          boxShadow: kElevationToShadow[3],
+          color: const Color(0xFF40434C),
+        ),
+        textStyle: GoogleFonts.getFont(
+          'Roboto',
+          color: const Color(0xFFAFB1B4),
+        ),
+        waitDuration: const Duration(milliseconds: 500),
+      ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }

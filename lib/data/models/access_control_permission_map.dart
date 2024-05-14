@@ -81,16 +81,22 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
 class AccessControlPermissionMapCollectionsModel extends Equatable {
   final bool canCreate;
   final bool canDelete;
+  final bool canDeleteMultiple;
   final bool canModify;
   final bool canAddAssets;
   final bool canRemoveAssets;
+  final bool canAssignOwner;
+  final bool canViewPrivate;
 
   const AccessControlPermissionMapCollectionsModel({
     required this.canCreate,
     required this.canDelete,
+    required this.canDeleteMultiple,
     required this.canModify,
     required this.canAddAssets,
     required this.canRemoveAssets,
+    required this.canAssignOwner,
+    required this.canViewPrivate,
   });
 
   static AccessControlPermissionMapCollectionsModel fromJsonDto(
@@ -99,9 +105,12 @@ class AccessControlPermissionMapCollectionsModel extends Equatable {
     return AccessControlPermissionMapCollectionsModel(
       canCreate: dto?['can_create'] ?? false,
       canDelete: dto?['can_delete'] ?? false,
+      canDeleteMultiple: dto?['can_delete_multiple'] ?? false,
       canModify: dto?['can_modify'] ?? false,
       canAddAssets: dto?['can_add_assets'] ?? false,
       canRemoveAssets: dto?['can_remove_assets'] ?? false,
+      canAssignOwner: dto?['can_assign_owner'] ?? false,
+      canViewPrivate: dto?['can_view_private'] ?? false,
     );
   }
 
@@ -109,8 +118,11 @@ class AccessControlPermissionMapCollectionsModel extends Equatable {
   List<Object?> get props => [
         canCreate,
         canDelete,
+        canDeleteMultiple,
         canModify,
         canAddAssets,
         canRemoveAssets,
+        canAssignOwner,
+        canViewPrivate,
       ];
 }

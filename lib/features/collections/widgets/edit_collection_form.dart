@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
 
-class NewCollectionForm extends StatefulWidget {
+class EditCollectionForm extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController descriptionController;
   final ValueNotifier<bool> visibilityController;
   final ValueNotifier<bool> autoClearController;
 
-  const NewCollectionForm({
+  const EditCollectionForm({
     super.key,
     required this.nameController,
     required this.descriptionController,
@@ -19,10 +19,10 @@ class NewCollectionForm extends StatefulWidget {
   });
 
   @override
-  State<NewCollectionForm> createState() => _NewCollectionFormState();
+  State<EditCollectionForm> createState() => _EditCollectionFormState();
 }
 
-class _NewCollectionFormState extends State<NewCollectionForm> {
+class _EditCollectionFormState extends State<EditCollectionForm> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

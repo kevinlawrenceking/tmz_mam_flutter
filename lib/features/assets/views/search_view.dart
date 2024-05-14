@@ -37,7 +37,6 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   static const kDefaultResultsPerPage = 100;
 
-  late final FocusNode _focusNode;
   late final ScrollController _scrollController;
   late final TextEditingController _searchTermController;
 
@@ -56,7 +55,6 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
     _scrollController.dispose();
     _searchTermController.dispose();
 
@@ -67,7 +65,6 @@ class _SearchViewState extends State<SearchView> {
   void initState() {
     super.initState();
 
-    _focusNode = FocusNode();
     _scrollController = ScrollController();
     _searchTermController = TextEditingController();
   }
@@ -373,8 +370,6 @@ class _SearchViewState extends State<SearchView> {
                 });
               },
               onSelectionChanged: (selectedIDs) {
-                _focusNode.requestFocus();
-
                 setState(() {
                   _selectedIDs = selectedIDs;
                 });
@@ -394,7 +389,8 @@ class _SearchViewState extends State<SearchView> {
                         child: AddAssetsToCollectionModal(
                           theme: theme,
                           title:
-                              'Add selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                              // ignore: lines_longer_than_80_chars
+                              'Add selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
                           onCancel: () {
                             Navigator.of(context).pop();
                           },
@@ -435,7 +431,8 @@ class _SearchViewState extends State<SearchView> {
                         child: AddAssetsToCollectionModal(
                           theme: theme,
                           title:
-                              'Move selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                              // ignore: lines_longer_than_80_chars
+                              'Move selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
                           confirmButtonLabel: 'Move',
                           onCancel: () {
                             Navigator.of(context).pop();
@@ -446,6 +443,7 @@ class _SearchViewState extends State<SearchView> {
                                 showDuration: const Duration(seconds: 6),
                                 type: ToastTypeEnum.information,
                                 message:
+                                    // ignore: lines_longer_than_80_chars
                                     'You must select a collection that is not the same as the current collection.',
                               );
                               return;
@@ -475,9 +473,11 @@ class _SearchViewState extends State<SearchView> {
                 showConfirmationPrompt(
                   context: context,
                   title:
-                      'Are you sure you want to delete the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                      // ignore: lines_longer_than_80_chars
+                      'Delete asset${selectedIDs.length > 1 ? 's' : ''}...',
                   message:
-                      'This will delete the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from DAMZ.',
+                      // ignore: lines_longer_than_80_chars
+                      'Are you sure you want to delete the selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''}?',
                   onConfirm: () {
                     assetsBloc.add(
                       DeleteAssetEvent(
@@ -495,9 +495,11 @@ class _SearchViewState extends State<SearchView> {
                 showConfirmationPrompt(
                   context: context,
                   title:
-                      'Are you sure you want to remove the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                      // ignore: lines_longer_than_80_chars
+                      'Remove asset${selectedIDs.length > 1 ? 's' : ''} from current collection...',
                   message:
-                      'This will remove the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from the active collection only.',
+                      // ignore: lines_longer_than_80_chars
+                      'Are you sure you want to remove the selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} from the current collection?',
                   onConfirm: () {
                     assetsBloc.add(
                       RemoveAssetsFromCollectionEvent(

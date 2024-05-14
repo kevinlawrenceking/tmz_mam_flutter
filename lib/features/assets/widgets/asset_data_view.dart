@@ -164,6 +164,7 @@ class _AssetDataViewState extends State<AssetDataView> {
             buttonConfigs: [
               if (widget.selectedIDs.isNotEmpty) ...[
                 ContextMenuButtonConfig(
+                  // ignore: lines_longer_than_80_chars
                   'Copy Technical ID${widget.selectedIDs.length > 1 ? 's' : ''}',
                   icon: Icon(
                     MdiIcons.contentCopy,
@@ -180,6 +181,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                       showDuration: const Duration(seconds: 3),
                       type: ToastTypeEnum.success,
                       message:
+                          // ignore: lines_longer_than_80_chars
                           'Technical ID${widget.selectedIDs.length > 1 ? 's' : ''} copied to clipboard!',
                     );
                   },
@@ -236,6 +238,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                 ),
                 null, // divider
                 ContextMenuButtonConfig(
+                  // ignore: lines_longer_than_80_chars
                   'Download source image${widget.selectedIDs.length > 1 ? 's' : ''}...',
                   icon: Icon(
                     MdiIcons.trayArrowDown,
@@ -248,6 +251,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                 null, // divider
                 if (permissions?.collections.canAddAssets ?? false)
                   ContextMenuButtonConfig(
+                    // ignore: lines_longer_than_80_chars
                     'Add selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
                     icon: Icon(
                       MdiIcons.folderPlusOutline,
@@ -258,6 +262,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                   ),
                 if (widget.collectionID != null) ...[
                   ContextMenuButtonConfig(
+                    // ignore: lines_longer_than_80_chars
                     'Move selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
                     icon: Icon(
                       MdiIcons.arrowLeftBold,
@@ -272,6 +277,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                         : null,
                   ),
                   ContextMenuButtonConfig(
+                    // ignore: lines_longer_than_80_chars
                     'Remove selected asset${widget.selectedIDs.length > 1 ? 's' : ''} from collection',
                     shortcutLabel: 'Del',
                     icon: Icon(
@@ -286,10 +292,11 @@ class _AssetDataViewState extends State<AssetDataView> {
                             : null,
                   ),
                 ],
-                if ((permissions?.collections.canAddAssets ?? false) ||
-                    (widget.collectionID != null))
+                if ((permissions?.assets.canDelete ?? false) ||
+                    (permissions?.assets.canDeleteMultiple ?? false))
                   null, // divider
                 ContextMenuButtonConfig(
+                  // ignore: lines_longer_than_80_chars
                   'Delete selected asset${widget.selectedIDs.length > 1 ? 's' : ''}',
                   shortcutLabel: (widget.collectionID == null) ? 'Del' : null,
                   icon: Icon(

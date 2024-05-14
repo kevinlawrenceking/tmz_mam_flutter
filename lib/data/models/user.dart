@@ -27,4 +27,12 @@ class UserMetaModel extends Equatable {
         firstName,
         lastName,
       ];
+
+  UserMetaModel copy() {
+    return UserMetaModel(
+      userID: userID,
+      firstName: firstName,
+      lastName: lastName,
+    );
+  }
 }

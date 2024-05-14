@@ -42,6 +42,14 @@ abstract class ICollectionDataSource {
     required String collectionID,
     required String assetID,
   });
+
+  Future<Either<Failure, CollectionModel>> updateCollection({
+    required String collectionID,
+    required bool isPrivate,
+    required bool autoClear,
+    required String name,
+    required String description,
+  });
 }
 
 class CollectionDataSource implements ICollectionDataSource {
@@ -254,6 +262,45 @@ class CollectionDataSource implements ICollectionDataSource {
             }
 
             return const Right(Empty());
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, CollectionModel>> updateCollection({
+    required String collectionID,
+    required bool isPrivate,
+    required bool autoClear,
+    required String name,
+    required String description,
+  }) async =>
+      ExceptionHandler<CollectionModel>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/collection/$collectionID',
+              body: {
+                'private': isPrivate,
+                'auto_clear': autoClear,
+                'name': name,
+                'description': description,
+              },
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            final data = json.decode(response.body);
+            final model = CollectionModel.fromJsonDto(data);
+
+            return Right(model);
           },
         );
       })();

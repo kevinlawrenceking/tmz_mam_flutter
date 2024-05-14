@@ -14,6 +14,7 @@ class CollectionModel extends Equatable {
   final UserMetaModel? deletedBy;
   final DateTime? deletedAt;
   final Int32 totalAssets;
+  final bool favorited;
 
   const CollectionModel({
     required this.id,
@@ -27,6 +28,7 @@ class CollectionModel extends Equatable {
     required this.deletedBy,
     required this.deletedAt,
     required this.totalAssets,
+    required this.favorited,
   });
 
   static CollectionModel fromJsonDto(
@@ -48,6 +50,7 @@ class CollectionModel extends Equatable {
           : null,
       deletedAt: DateTime.tryParse(dto?['deleted_at'] ?? ''),
       totalAssets: Int32(dto?['total_assets'] ?? 0),
+      favorited: dto?['favorited'] ?? false,
     );
   }
 
@@ -64,5 +67,29 @@ class CollectionModel extends Equatable {
         deletedBy,
         deletedAt,
         totalAssets,
+        favorited,
       ];
+
+  CollectionModel copyWith({
+    bool? isPrivate,
+    bool? autoClear,
+    String? name,
+    String? description,
+    bool? favorited,
+  }) {
+    return CollectionModel(
+      id: id,
+      ownedBy: ownedBy.copy(),
+      isPrivate: isPrivate ?? this.isPrivate,
+      autoClear: autoClear ?? this.autoClear,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      createdAt: createdAt.add(Duration.zero),
+      deleted: deleted,
+      deletedBy: deletedBy?.copy(),
+      deletedAt: deletedAt?.add(Duration.zero),
+      totalAssets: totalAssets,
+      favorited: favorited ?? this.favorited,
+    );
+  }
 }
