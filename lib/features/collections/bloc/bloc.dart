@@ -3,6 +3,8 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tmz_damz/data/models/collection.dart';
+import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/data/sources/collection.dart';
 import 'package:tmz_damz/data/sources/user_collection.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
@@ -32,6 +34,8 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
   var _offset = 0;
   var _limit = 10;
   String? _searchTerm;
+  CollectionSortFieldEnum _sortField = CollectionSortFieldEnum.updatedAt;
+  SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
 
   var _totalRecords = 0;
   var _collections = <CollectionModel>[];
@@ -98,6 +102,53 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
       (failure) => emit(CreateCollectionFailureState(failure)),
       (_) => emit(CreateCollectionSuccessState()),
     );
+
+    final collection = result.fold(
+      (failure) {
+        emit(CreateCollectionFailureState(failure));
+        return null;
+      },
+      (collection) {
+        emit(CreateCollectionSuccessState());
+        return collection;
+      },
+    );
+
+    if (collection == null) {
+      return;
+    }
+
+    if (event.addToFavorites) {
+      final addResult = await userCollectionDataSource.addCollection(
+        collectionID: collection.id,
+      );
+
+      addResult.fold(
+        (failure) => emit(AddCollectionToFavoritesFailureState(failure)),
+        (_) {},
+      );
+    }
+
+    _offset = 0;
+    _sortField = CollectionSortFieldEnum.createdAt;
+    _sortDirection = SortDirectionEnum.descending;
+    _totalRecords = 0;
+
+    emit(
+      SortOptionsChangedState(
+        sortField: _sortField,
+        sortDirection: _sortDirection,
+      ),
+    );
+
+    await _getCollectionList(
+      emit: emit,
+      offset: _offset,
+      limit: _limit,
+      searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
+    );
   }
 
   Future<void> _deleteCollectionEvent(
@@ -159,6 +210,8 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
       offset: _offset,
       limit: _limit,
       searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
     );
   }
 
@@ -171,6 +224,8 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
       offset: _offset,
       limit: _limit,
       searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
     );
   }
 
@@ -265,6 +320,8 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
     required int offset,
     required int limit,
     required String? searchTerm,
+    required CollectionSortFieldEnum? sortField,
+    required SortDirectionEnum? sortDirection,
   }) async {
     emit(
       PaginationChangedState(
@@ -280,6 +337,8 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
       offset: offset,
       limit: limit,
       searchTerm: searchTerm,
+      sortField: sortField,
+      sortDirection: sortDirection,
     );
 
     result.fold(
@@ -314,13 +373,24 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
     }
 
     _offset = 0;
+    _sortField = event.sortField;
+    _sortDirection = event.sortDirection;
     _totalRecords = 0;
+
+    emit(
+      SortOptionsChangedState(
+        sortField: _sortField,
+        sortDirection: _sortDirection,
+      ),
+    );
 
     await _getCollectionList(
       emit: emit,
       offset: _offset,
       limit: _limit,
       searchTerm: _searchTerm,
+      sortField: _sortField,
+      sortDirection: _sortDirection,
     );
   }
 }

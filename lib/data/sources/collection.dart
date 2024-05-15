@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/collection.dart';
+import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/shared/empty.dart';
@@ -27,9 +29,11 @@ abstract class ICollectionDataSource {
   });
 
   Future<Either<Failure, CollectionSearchResults>> getCollectionList({
-    required String? searchTerm,
     required int offset,
     required int limit,
+    String? searchTerm,
+    CollectionSortFieldEnum? sortField,
+    SortDirectionEnum? sortDirection,
   });
 
   Future<Either<Failure, Empty>> moveAssetToCollection({
@@ -158,9 +162,11 @@ class CollectionDataSource implements ICollectionDataSource {
 
   @override
   Future<Either<Failure, CollectionSearchResults>> getCollectionList({
-    required String? searchTerm,
     required int offset,
     required int limit,
+    String? searchTerm,
+    CollectionSortFieldEnum? sortField,
+    SortDirectionEnum? sortDirection,
   }) async =>
       ExceptionHandler<CollectionSearchResults>(() async {
         final response = await _auth.getAuthToken();
@@ -175,6 +181,41 @@ class CollectionDataSource implements ICollectionDataSource {
 
             if (searchTerm != null && searchTerm.isNotEmpty) {
               queryParams['searchTerm'] = searchTerm;
+            }
+
+            if (sortField != null) {
+              const paramKey = 'sortField';
+
+              switch (sortField) {
+                case CollectionSortFieldEnum.name:
+                  queryParams[paramKey] = 'name';
+                  break;
+                case CollectionSortFieldEnum.createdAt:
+                  queryParams[paramKey] = 'created_at';
+                  break;
+                case CollectionSortFieldEnum.updatedAt:
+                  queryParams[paramKey] = 'updated_at';
+                  break;
+                case CollectionSortFieldEnum.autoClear:
+                  queryParams[paramKey] = 'auto_clear';
+                  break;
+                case CollectionSortFieldEnum.favorited:
+                  queryParams[paramKey] = 'favorited';
+                  break;
+              }
+            }
+
+            if (sortDirection != null) {
+              const paramKey = 'sortDirection';
+
+              switch (sortDirection) {
+                case SortDirectionEnum.ascending:
+                  queryParams[paramKey] = 'asc';
+                  break;
+                case SortDirectionEnum.descending:
+                  queryParams[paramKey] = 'desc';
+                  break;
+              }
             }
 
             final response = await _client.get(

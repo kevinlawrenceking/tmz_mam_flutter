@@ -9,6 +9,7 @@ class NewCollectionForm extends StatefulWidget {
   final TextEditingController descriptionController;
   final ValueNotifier<bool> visibilityController;
   final ValueNotifier<bool> autoClearController;
+  final ValueNotifier<bool> addToFavoritesController;
 
   const NewCollectionForm({
     super.key,
@@ -16,6 +17,7 @@ class NewCollectionForm extends StatefulWidget {
     required this.descriptionController,
     required this.visibilityController,
     required this.autoClearController,
+    required this.addToFavoritesController,
   });
 
   @override
@@ -410,6 +412,43 @@ class _NewCollectionFormState extends State<NewCollectionForm> {
                     fontStyle: FontStyle.italic,
                     letterSpacing: 1.0,
                   ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const TableRow(
+          children: [
+            TableCell(child: SizedBox()),
+            TableCell(child: SizedBox(height: 20.0)),
+            TableCell(child: SizedBox()),
+          ],
+        ),
+        TableRow(
+          children: [
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Text(
+                'Add to Favorites',
+                style: TextStyle(
+                  color: theme.textTheme.bodySmall?.color,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            ),
+            const TableCell(
+              child: SizedBox(),
+            ),
+            TableCell(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Checkbox(
+                  value: widget.addToFavoritesController.value,
+                  onChanged: (value) {
+                    setState(() {
+                      widget.addToFavoritesController.value = value ?? false;
+                    });
+                  },
                 ),
               ),
             ),

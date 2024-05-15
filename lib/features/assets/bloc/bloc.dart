@@ -20,8 +20,8 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   var _limit = 10;
   String? _collectionID;
   String? _searchTerm;
-  AssetSortFieldEnum? _sortField;
-  SortDirectionEnum? _sortDirection;
+  AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
+  SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
 
   var _totalRecords = 0;
 

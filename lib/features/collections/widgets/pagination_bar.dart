@@ -424,6 +424,7 @@ class PaginationBar extends StatelessWidget {
                     description: params.description,
                     isPrivate: params.isPrivate,
                     autoClear: params.autoClear,
+                    addToFavorites: params.addToFavorites,
                   ),
                 );
 

@@ -171,9 +171,13 @@ class _AssetDataViewState extends State<AssetDataView> {
                     size: 16.0,
                   ),
                   onPressed: () async {
+                    final ids = widget.selectedIDs.toList();
+
+                    ids.insert(0, 'Asset IDs:');
+
                     await Clipboard.setData(
                       ClipboardData(
-                        text: widget.selectedIDs.join(', '),
+                        text: ids.join('\n'),
                       ),
                     );
 

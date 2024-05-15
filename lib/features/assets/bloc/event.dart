@@ -90,8 +90,8 @@ class RemoveAssetsFromCollectionEvent extends BlocEvent {
 
 class SearchEvent extends BlocEvent {
   final String? searchTerm;
-  final AssetSortFieldEnum? sortField;
-  final SortDirectionEnum? sortDirection;
+  final AssetSortFieldEnum sortField;
+  final SortDirectionEnum sortDirection;
 
   SearchEvent({
     this.searchTerm,

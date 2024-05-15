@@ -13,6 +13,7 @@ import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/edit_collection_modal.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/scroll_aware_builder.dart';
+import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
 
 class CollectionDataView extends StatefulWidget {
@@ -130,8 +131,13 @@ class _CollectionDataViewState extends State<CollectionDataView> {
               color: const Color(0xFF3D3D3D),
             ),
           ),
-          child: _buildDataTable(
-            theme: theme,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return _buildDataTable(
+                constraints: constraints,
+                theme: theme,
+              );
+            },
           ),
         ),
       ),
@@ -156,9 +162,68 @@ class _CollectionDataViewState extends State<CollectionDataView> {
 
         return GenericContextMenu(
           buttonConfigs: [
-            if (permissions?.collections.canModify ?? false) ...[
+            if (widget.selectedIDs.isNotEmpty) ...[
               ContextMenuButtonConfig(
                 // ignore: lines_longer_than_80_chars
+                'Copy Technical ID${widget.selectedIDs.length > 1 ? 's' : ''}',
+                icon: Icon(
+                  MdiIcons.contentCopy,
+                  size: 16.0,
+                ),
+                onPressed: () async {
+                  final ids = widget.selectedIDs.toList();
+
+                  ids.insert(0, 'Collection IDs:');
+
+                  await Clipboard.setData(
+                    ClipboardData(
+                      text: ids.join('\n'),
+                    ),
+                  );
+
+                  Toast.showNotification(
+                    showDuration: const Duration(seconds: 3),
+                    type: ToastTypeEnum.success,
+                    message:
+                        // ignore: lines_longer_than_80_chars
+                        'Technical ID${ids.length > 1 ? 's' : ''} copied to clipboard!',
+                  );
+                },
+              ),
+              ContextMenuButtonConfig(
+                // ignore: lines_longer_than_80_chars
+                'Copy Collection Name${widget.selectedIDs.length > 1 ? 's' : ''}',
+                icon: Icon(
+                  MdiIcons.contentCopy,
+                  size: 16.0,
+                ),
+                onPressed: () async {
+                  final names = widget.collections
+                      .where((_) => widget.selectedIDs.contains(_.id))
+                      .map((_) => _.name)
+                      .toList();
+
+                  names.insert(0, 'Collection Names:');
+
+                  await Clipboard.setData(
+                    ClipboardData(
+                      text: names.join('\n'),
+                    ),
+                  );
+
+                  Toast.showNotification(
+                    showDuration: const Duration(seconds: 3),
+                    type: ToastTypeEnum.success,
+                    message:
+                        // ignore: lines_longer_than_80_chars
+                        'Collection Name${names.length > 1 ? 's' : ''} copied to clipboard!',
+                  );
+                },
+              ),
+              null, // divider
+            ],
+            if (permissions?.collections.canModify ?? false) ...[
+              ContextMenuButtonConfig(
                 'Edit collection...',
                 icon: Icon(
                   MdiIcons.pencil,
@@ -179,25 +244,6 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                           model: model,
                         );
                       }
-                    : null,
-              ),
-              null, // divider
-            ],
-            if ((permissions?.collections.canDelete ?? false) ||
-                (permissions?.collections.canDeleteMultiple ?? false)) ...[
-              ContextMenuButtonConfig(
-                // ignore: lines_longer_than_80_chars
-                'Delete selected collection${widget.selectedIDs.length > 1 ? 's' : ''}',
-                shortcutLabel: 'Del',
-                icon: Icon(
-                  MdiIcons.closeThick,
-                  size: 16.0,
-                ),
-                onPressed: ((widget.selectedIDs.length == 1) ||
-                        (permissions?.collections.canDeleteMultiple ?? false))
-                    ? () => widget.onDeleteSelected(
-                          widget.selectedIDs,
-                        )
                     : null,
               ),
               null, // divider
@@ -229,6 +275,25 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                 ),
               ),
             null, // divider
+            if ((permissions?.collections.canDelete ?? false) ||
+                (permissions?.collections.canDeleteMultiple ?? false)) ...[
+              ContextMenuButtonConfig(
+                // ignore: lines_longer_than_80_chars
+                'Delete selected collection${widget.selectedIDs.length > 1 ? 's' : ''}',
+                shortcutLabel: 'Del',
+                icon: Icon(
+                  MdiIcons.closeThick,
+                  size: 16.0,
+                ),
+                onPressed: ((widget.selectedIDs.length == 1) ||
+                        (permissions?.collections.canDeleteMultiple ?? false))
+                    ? () => widget.onDeleteSelected(
+                          widget.selectedIDs,
+                        )
+                    : null,
+              ),
+              null, // divider
+            ],
             ContextMenuButtonConfig(
               'Select All',
               shortcutLabel: 'Ctrl+A, Cmd+A',
@@ -255,6 +320,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
   }
 
   Widget _buildDataTable({
+    required BoxConstraints constraints,
     required ThemeData theme,
   }) {
     const rowHeight = 80.0;
@@ -271,6 +337,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
       lmRatio: 1.5,
       headingCheckboxTheme: theme.checkboxTheme,
       datarowCheckboxTheme: theme.checkboxTheme,
+      minWidth: (constraints.maxWidth < 1200) ? 1200 : null,
       columns: [
         DataColumn2(
           fixedWidth: (rowHeight - 10.0) * (16.0 / 9.0),
@@ -331,6 +398,18 @@ class _CollectionDataViewState extends State<CollectionDataView> {
             child: const Center(
               child: Text(
                 'CREATED',
+                style: kTableHeaderTextStyle,
+              ),
+            ),
+          ),
+        ),
+        DataColumn2(
+          fixedWidth: 200.0,
+          label: Container(
+            constraints: const BoxConstraints.expand(),
+            child: const Center(
+              child: Text(
+                'UPDATED',
                 style: kTableHeaderTextStyle,
               ),
             ),
@@ -546,6 +625,18 @@ class _CollectionDataViewState extends State<CollectionDataView> {
             child: Center(
               child: Text(
                 DateFormat.yMd().add_jms().format(model.createdAt),
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+              ),
+            ),
+          ),
+        ),
+        DataCell(
+          Container(
+            constraints: const BoxConstraints.expand(),
+            child: Center(
+              child: Text(
+                DateFormat.yMd().add_jms().format(model.updatedAt),
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
               ),

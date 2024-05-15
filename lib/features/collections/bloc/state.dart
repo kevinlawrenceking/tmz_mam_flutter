@@ -148,3 +148,19 @@ class SearchResultsLoadedState extends BlocState {
 }
 
 class SearchResultsLoadingState extends BlocState {}
+
+class SortOptionsChangedState extends BlocState {
+  final CollectionSortFieldEnum sortField;
+  final SortDirectionEnum sortDirection;
+
+  SortOptionsChangedState({
+    required this.sortField,
+    required this.sortDirection,
+  });
+
+  @override
+  List<Object?> get props => [
+        sortField,
+        sortDirection,
+      ];
+}

@@ -552,9 +552,9 @@ class _SearchViewState extends State<SearchView> {
 
               BlocProvider.of<AssetsBloc>(context).add(
                 SearchEvent(
+                  searchTerm: '',
                   sortField: _sortField,
                   sortDirection: _sortDirection,
-                  searchTerm: '',
                 ),
               );
             }
@@ -566,9 +566,9 @@ class _SearchViewState extends State<SearchView> {
 
             BlocProvider.of<AssetsBloc>(context).add(
               SearchEvent(
+                searchTerm: searchTerm,
                 sortField: _sortField,
                 sortDirection: _sortDirection,
-                searchTerm: searchTerm,
               ),
             );
           },

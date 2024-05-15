@@ -7,12 +7,14 @@ class NewCollectionParams {
   final String description;
   final bool isPrivate;
   final bool autoClear;
+  final bool addToFavorites;
 
   NewCollectionParams({
     required this.name,
     required this.description,
     required this.isPrivate,
     required this.autoClear,
+    required this.addToFavorites,
   });
 }
 
@@ -37,6 +39,7 @@ class _CreateCollectionModalState extends State<CreateCollectionModal> {
   final _descriptionController = TextEditingController();
   final _visibilityController = ValueNotifier<bool>(false);
   final _autoClearController = ValueNotifier<bool>(false);
+  final _addToFavoritesController = ValueNotifier<bool>(false);
 
   @override
   void dispose() {
@@ -44,6 +47,7 @@ class _CreateCollectionModalState extends State<CreateCollectionModal> {
     _descriptionController.dispose();
     _visibilityController.dispose();
     _autoClearController.dispose();
+    _addToFavoritesController.dispose();
 
     super.dispose();
   }
@@ -78,6 +82,7 @@ class _CreateCollectionModalState extends State<CreateCollectionModal> {
                 descriptionController: _descriptionController,
                 visibilityController: _visibilityController,
                 autoClearController: _autoClearController,
+                addToFavoritesController: _addToFavoritesController,
               ),
             ),
           ),
@@ -112,6 +117,7 @@ class _CreateCollectionModalState extends State<CreateCollectionModal> {
                       description: _descriptionController.text.trim(),
                       isPrivate: _visibilityController.value,
                       autoClear: _autoClearController.value,
+                      addToFavorites: _addToFavoritesController.value,
                     ),
                   );
                 }

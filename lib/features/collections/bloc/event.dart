@@ -22,12 +22,14 @@ class CreateCollectionEvent extends BlocEvent {
   final String description;
   final bool isPrivate;
   final bool autoClear;
+  final bool addToFavorites;
 
   CreateCollectionEvent({
     required this.name,
     required this.description,
     required this.isPrivate,
     required this.autoClear,
+    required this.addToFavorites,
   });
 
   @override
@@ -36,6 +38,7 @@ class CreateCollectionEvent extends BlocEvent {
         description,
         isPrivate,
         autoClear,
+        addToFavorites,
       ];
 }
 
@@ -106,13 +109,19 @@ class SaveCollectionEvent extends BlocEvent {
 
 class SearchEvent extends BlocEvent {
   final String? searchTerm;
+  final CollectionSortFieldEnum sortField;
+  final SortDirectionEnum sortDirection;
 
   SearchEvent({
     this.searchTerm,
+    required this.sortField,
+    required this.sortDirection,
   });
 
   @override
   List<Object?> get props => [
         searchTerm,
+        sortField,
+        sortDirection,
       ];
 }

@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/collection_data_view.dart';
 import 'package:tmz_damz/features/collections/widgets/pagination_bar.dart';
@@ -25,6 +27,8 @@ class _CollectionsViewState extends State<CollectionsView> {
   late final TextEditingController _searchTermController;
 
   String _searchTerm = '';
+  CollectionSortFieldEnum _sortField = CollectionSortFieldEnum.updatedAt;
+  SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
   List<String> _selectedIDs = [];
 
   @override
@@ -88,6 +92,13 @@ class _CollectionsViewState extends State<CollectionsView> {
   }) {
     return BlocListener<CollectionsBloc, BlocState>(
       listener: (context, state) {
+        if (state is SortOptionsChangedState) {
+          setState(() {
+            _sortField = state.sortField;
+            _sortDirection = state.sortDirection;
+          });
+        }
+
         if (state is AddCollectionToFavoritesFailureState) {
           Toast.showNotification(
             showDuration: const Duration(seconds: 6),
@@ -283,6 +294,8 @@ class _CollectionsViewState extends State<CollectionsView> {
       builder: (context, state) {
         return Toolbar(
           searchTermController: _searchTermController,
+          sortField: _sortField,
+          sortDirection: _sortDirection,
           onReload: () {
             BlocProvider.of<CollectionsBloc>(context).add(
               ReloadCurrentPageEvent(),
@@ -299,6 +312,8 @@ class _CollectionsViewState extends State<CollectionsView> {
               BlocProvider.of<CollectionsBloc>(context).add(
                 SearchEvent(
                   searchTerm: '',
+                  sortField: _sortField,
+                  sortDirection: _sortDirection,
                 ),
               );
             }
@@ -311,6 +326,21 @@ class _CollectionsViewState extends State<CollectionsView> {
             BlocProvider.of<CollectionsBloc>(context).add(
               SearchEvent(
                 searchTerm: searchTerm,
+                sortField: _sortField,
+                sortDirection: _sortDirection,
+              ),
+            );
+          },
+          onSortChanged: (field, direction) {
+            setState(() {
+              _sortField = field;
+              _sortDirection = direction;
+            });
+
+            BlocProvider.of<CollectionsBloc>(context).add(
+              SearchEvent(
+                sortField: _sortField,
+                sortDirection: _sortDirection,
               ),
             );
           },

@@ -10,6 +10,7 @@ class CollectionModel extends Equatable {
   final String name;
   final String description;
   final DateTime createdAt;
+  final DateTime updatedAt;
   final bool deleted;
   final UserMetaModel? deletedBy;
   final DateTime? deletedAt;
@@ -24,6 +25,7 @@ class CollectionModel extends Equatable {
     required this.name,
     required this.description,
     required this.createdAt,
+    required this.updatedAt,
     required this.deleted,
     required this.deletedBy,
     required this.deletedAt,
@@ -44,6 +46,9 @@ class CollectionModel extends Equatable {
       createdAt: DateTime.parse(
         dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
       ),
+      updatedAt: DateTime.parse(
+        dto?['updated_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+      ),
       deleted: dto?['deleted'] ?? false,
       deletedBy: dto?['deleted_by'] != null
           ? UserMetaModel.fromJsonDto(dto?['deleted_by'])
@@ -63,6 +68,7 @@ class CollectionModel extends Equatable {
         name,
         description,
         createdAt,
+        updatedAt,
         deleted,
         deletedBy,
         deletedAt,
@@ -85,6 +91,7 @@ class CollectionModel extends Equatable {
       name: name ?? this.name,
       description: description ?? this.description,
       createdAt: createdAt.add(Duration.zero),
+      updatedAt: updatedAt.add(Duration.zero),
       deleted: deleted,
       deletedBy: deletedBy?.copy(),
       deletedAt: deletedAt?.add(Duration.zero),

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 typedef SortOptionsChangedCallback = void Function(
-  AssetSortFieldEnum field,
+  CollectionSortFieldEnum field,
   SortDirectionEnum direction,
 );
 
 class SortOptions extends StatelessWidget {
-  final AssetSortFieldEnum initialField;
+  final CollectionSortFieldEnum initialField;
   final SortDirectionEnum initialDirection;
   final SortOptionsChangedCallback onChanged;
 
@@ -36,46 +36,29 @@ class SortOptions extends StatelessWidget {
   Widget _buildFieldSelector() {
     return SizedBox(
       width: 240.0,
-      child: DropdownSelector<AssetSortFieldEnum>(
+      child: DropdownSelector<CollectionSortFieldEnum>(
         initialValue: initialField,
         items: const [
-          AssetSortFieldEnum.headline,
-          AssetSortFieldEnum.createdAt,
-          AssetSortFieldEnum.updatedAt,
-          AssetSortFieldEnum.agency,
-          AssetSortFieldEnum.celebrityAssociated,
-          AssetSortFieldEnum.celebrityInPhoto,
-          AssetSortFieldEnum.credit,
-          AssetSortFieldEnum.creditLocation,
-          AssetSortFieldEnum.keywords,
-          AssetSortFieldEnum.originalFileName,
-          AssetSortFieldEnum.rights,
-          AssetSortFieldEnum.rightsDetails,
-          AssetSortFieldEnum.shotDescription,
+          CollectionSortFieldEnum.name,
+          CollectionSortFieldEnum.createdAt,
+          CollectionSortFieldEnum.updatedAt,
+          CollectionSortFieldEnum.autoClear,
+          CollectionSortFieldEnum.favorited,
         ],
         itemBuilder: (value) {
           final label = {
-                AssetSortFieldEnum.headline: 'Headline',
-                AssetSortFieldEnum.createdAt: 'Date Created',
-                AssetSortFieldEnum.updatedAt: 'Date Updated',
-                AssetSortFieldEnum.agency: 'Agency',
-                AssetSortFieldEnum.celebrityAssociated:
-                    'Celebrity (Associated)',
-                AssetSortFieldEnum.celebrityInPhoto: 'Celebrity (In Photo)',
-                AssetSortFieldEnum.credit: 'Credit',
-                AssetSortFieldEnum.creditLocation: 'Credit Location',
-                AssetSortFieldEnum.keywords: 'Keywords',
-                AssetSortFieldEnum.originalFileName: 'Original File Name',
-                AssetSortFieldEnum.rights: 'Rights Summary',
-                AssetSortFieldEnum.rightsDetails: 'Rights Details',
-                AssetSortFieldEnum.shotDescription: 'Shot Description',
+                CollectionSortFieldEnum.name: 'Name',
+                CollectionSortFieldEnum.createdAt: 'Date Created',
+                CollectionSortFieldEnum.updatedAt: 'Date Updated',
+                CollectionSortFieldEnum.autoClear: 'Auto-Clear',
+                CollectionSortFieldEnum.favorited: 'Favorited',
               }[value] ??
               '';
 
           return Text(label);
         },
         onSelectionChanged: (value) => onChanged(
-          value ?? AssetSortFieldEnum.createdAt,
+          value ?? CollectionSortFieldEnum.createdAt,
           initialDirection,
         ),
       ),
@@ -85,11 +68,19 @@ class SortOptions extends StatelessWidget {
   Widget _buildSortDirectionButton() {
     IconData icon;
 
-    if ((initialField == AssetSortFieldEnum.createdAt) ||
-        (initialField == AssetSortFieldEnum.updatedAt)) {
+    if ((initialField == CollectionSortFieldEnum.createdAt) ||
+        (initialField == CollectionSortFieldEnum.updatedAt)) {
       icon = initialDirection == SortDirectionEnum.descending
           ? MdiIcons.sortCalendarDescending
           : MdiIcons.sortCalendarAscending;
+    } else if (initialField == CollectionSortFieldEnum.autoClear) {
+      icon = initialDirection == SortDirectionEnum.descending
+          ? MdiIcons.sortBoolDescending
+          : MdiIcons.sortBoolAscending;
+    } else if (initialField == CollectionSortFieldEnum.favorited) {
+      icon = initialDirection == SortDirectionEnum.descending
+          ? MdiIcons.starSettings
+          : MdiIcons.starSettingsOutline;
     } else {
       icon = initialDirection == SortDirectionEnum.descending
           ? MdiIcons.sortAlphabeticalDescending

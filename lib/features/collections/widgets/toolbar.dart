@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_damz/features/assets/widgets/search_input.dart';
+import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/features/collections/widgets/search_input.dart';
+import 'package:tmz_damz/features/collections/widgets/sort_options.dart';
 import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 class Toolbar extends StatefulWidget {
   final TextEditingController? searchTermController;
+  final CollectionSortFieldEnum sortField;
+  final SortDirectionEnum sortDirection;
   final VoidCallback onReload;
   final void Function() onSearchTermClear;
   final void Function(String searchTerm) onSearchTermChange;
+  final SortOptionsChangedCallback onSortChanged;
 
   const Toolbar({
     super.key,
     required this.searchTermController,
+    required this.sortField,
+    required this.sortDirection,
     required this.onReload,
     required this.onSearchTermClear,
     required this.onSearchTermChange,
+    required this.onSortChanged,
   });
 
   @override
@@ -44,6 +53,12 @@ class _ToolbarState extends State<Toolbar> {
                   onClear: widget.onSearchTermClear,
                   onFieldSubmitted: widget.onSearchTermChange,
                 ),
+              ),
+              const SizedBox(width: 10.0),
+              SortOptions(
+                initialField: widget.sortField,
+                initialDirection: widget.sortDirection,
+                onChanged: widget.onSortChanged,
               ),
             ],
           );
