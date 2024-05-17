@@ -44,10 +44,12 @@ class CollectionModel extends Equatable {
       name: dto?['name'] ?? '',
       description: dto?['description'] ?? '',
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       updatedAt: DateTime.parse(
-        dto?['updated_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['updated_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       deleted: dto?['deleted'] ?? false,
       deletedBy: dto?['deleted_by'] != null

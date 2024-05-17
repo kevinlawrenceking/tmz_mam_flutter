@@ -51,10 +51,12 @@ class AssetImportSessionModel extends Equatable {
       id: dto?['id'] ?? '',
       userID: dto?['user_id'] ?? '',
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       updatedAt: DateTime.parse(
-        dto?['updated_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['updated_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       status: AssetImportSessionStatusEnum.fromJsonDtoValue(dto?['status']),
     );
@@ -94,10 +96,12 @@ class AssetImportSessionDetailsModel extends Equatable {
       id: dto?['id'] ?? '',
       userID: dto?['user_id'] ?? '',
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       updatedAt: DateTime.parse(
-        dto?['updated_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['updated_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       status: AssetImportSessionStatusEnum.fromJsonDtoValue(dto?['status']),
       files: (dto?['files'] as List<dynamic>?)

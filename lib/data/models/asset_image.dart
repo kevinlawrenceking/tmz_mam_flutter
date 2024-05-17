@@ -83,13 +83,16 @@ class AssetImageModel extends Equatable {
       mount: dto?['mount'] ?? '',
       path: dto?['path'] ?? '',
       importedAt: DateTime.parse(
-        dto?['imported_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['imported_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       modifiedAt: DateTime.parse(
-        dto?['modified_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['modified_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       sizeOnDisk: Int64(dto?['size_on_disk'] ?? 0),
       md5Hash: dto?['md5_hash'] ?? '',
