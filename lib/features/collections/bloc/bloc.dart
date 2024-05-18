@@ -32,7 +32,7 @@ class CollectionsBloc extends Bloc<BlocEvent, BlocState> {
   }
 
   var _offset = 0;
-  var _limit = 10;
+  var _limit = 100;
   String? _searchTerm;
   CollectionSortFieldEnum _sortField = CollectionSortFieldEnum.updatedAt;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;

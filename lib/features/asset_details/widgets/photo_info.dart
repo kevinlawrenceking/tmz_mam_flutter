@@ -339,7 +339,7 @@ class PhotoInfo extends StatelessWidget {
                               if (model?.createdBy != null) {
                                 final firstName = model!.createdBy.firstName;
                                 final lastName = model!.createdBy.lastName;
-                                return '$firstName $lastName';
+                                return '$firstName $lastName'.trim();
                               } else {
                                 return '';
                               }
@@ -455,7 +455,7 @@ class PhotoInfo extends StatelessWidget {
                   style: theme.textTheme.bodySmall?.copyWith(
                     fontSize: 12.0,
                     fontWeight: FontWeight.w600,
-                    letterSpacing: 1,
+                    letterSpacing: 1.0,
                     overflow: TextOverflow.ellipsis,
                   ),
                 )
@@ -466,7 +466,7 @@ class PhotoInfo extends StatelessWidget {
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12.0,
                       fontWeight: FontWeight.w600,
-                      letterSpacing: 1,
+                      letterSpacing: 1.0,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

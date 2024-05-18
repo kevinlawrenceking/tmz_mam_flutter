@@ -10,9 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/app_router.gr.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
-import 'package:tmz_damz/data/sources/auth.dart';
+import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_list_item.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_tile_item.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
@@ -25,7 +26,8 @@ import 'package:tmz_damz/utils/config.dart';
 class AssetDataView extends StatefulWidget {
   final ScrollController scrollController;
   final Config config;
-  final String? collectionID;
+  final AccessControlPermissionMapModel? permissions;
+  final CollectionModel? collection;
   final List<AssetDetailsModel> assets;
   final List<String> selectedIDs;
   final LayoutModeEnum layoutMode;
@@ -43,7 +45,8 @@ class AssetDataView extends StatefulWidget {
     super.key,
     required this.scrollController,
     required this.config,
-    required this.collectionID,
+    required this.permissions,
+    required this.collection,
     required this.assets,
     required this.selectedIDs,
     required this.layoutMode,
@@ -94,10 +97,59 @@ class _AssetDataViewState extends State<AssetDataView> {
         if ((event.logicalKey == LogicalKeyboardKey.delete) ||
             (event.physicalKey == PhysicalKeyboardKey.delete)) {
           if (widget.selectedIDs.isNotEmpty) {
-            if (widget.collectionID != null) {
-              widget.onRemoveSelectedFromCollection(widget.selectedIDs);
+            if (widget.collection != null) {
+              final canRemoveCollectionAssets = (() {
+                if (widget.collection?.ownedBy.userID ==
+                    widget.permissions?.userID) {
+                  return true;
+                } else if (widget.permissions?.collections.canRemoveAssets ??
+                    false) {
+                  return true;
+                }
+
+                return false;
+              })();
+
+              if (canRemoveCollectionAssets) {
+                widget.onRemoveSelectedFromCollection(widget.selectedIDs);
+              } else {
+                Toast.showNotification(
+                  showDuration: const Duration(seconds: 5),
+                  type: ToastTypeEnum.warning,
+                  message:
+                      // ignore: lines_longer_than_80_chars
+                      'You do not have permission to remove assets\nfrom collections you do not own.',
+                );
+              }
             } else {
-              widget.onDeleteSelected(widget.selectedIDs);
+              final canDelete = (() {
+                if ((widget.permissions?.assets.canDelete ?? false) &&
+                    (widget.selectedIDs.length == 1)) {
+                  return true;
+                } else if ((widget.permissions?.assets.canDeleteMultiple ??
+                        false) &&
+                    (widget.selectedIDs.length > 1)) {
+                  return true;
+                }
+
+                return false;
+              })();
+
+              if (canDelete) {
+                widget.onDeleteSelected(widget.selectedIDs);
+              } else {
+                final multiple =
+                    (widget.permissions?.assets.canDelete ?? false) &&
+                        (widget.selectedIDs.length > 1);
+
+                Toast.showNotification(
+                  showDuration: const Duration(seconds: 5),
+                  type: ToastTypeEnum.warning,
+                  message:
+                      // ignore: lines_longer_than_80_chars
+                      'You do not have permission to delete${multiple ? ' multiple' : ''} assets.',
+                );
+              }
             }
           }
 
@@ -148,56 +200,85 @@ class _AssetDataViewState extends State<AssetDataView> {
     required AssetDetailsModel model,
     required Widget child,
   }) {
-    final auth = GetIt.instance<IAuthDataSource>();
+    final canDelete = (() {
+      if ((widget.permissions?.assets.canDelete ?? false) &&
+          (widget.selectedIDs.length == 1)) {
+        return true;
+      } else if ((widget.permissions?.assets.canDeleteMultiple ?? false) &&
+          (widget.selectedIDs.length > 1)) {
+        return true;
+      }
 
-    return FutureBuilder(
-      future: auth.getPermissions(),
-      builder: (context, snapshot) {
-        final permissions = snapshot.data?.fold(
-          (failure) => null,
-          (permissions) => permissions,
-        );
+      return false;
+    })();
 
-        return ContextMenuRegion(
-          enableLongPress: false,
-          contextMenu: GenericContextMenu(
-            buttonConfigs: [
-              if (widget.selectedIDs.isNotEmpty) ...[
-                ContextMenuButtonConfig(
-                  // ignore: lines_longer_than_80_chars
-                  'Copy Technical ID${widget.selectedIDs.length > 1 ? 's' : ''}',
-                  icon: Icon(
-                    MdiIcons.contentCopy,
-                    size: 16.0,
+    final canAddCollectionAssets = (() {
+      if (widget.selectedIDs.isEmpty) {
+        return false;
+      }
+
+      if (widget.permissions?.collections.canAddAssets ?? false) {
+        return true;
+      }
+
+      return false;
+    })();
+
+    final canRemoveCollectionAssets = (() {
+      if (widget.selectedIDs.isEmpty) {
+        return false;
+      }
+
+      if (widget.collection?.ownedBy.userID == widget.permissions?.userID) {
+        return true;
+      } else if (widget.permissions?.collections.canRemoveAssets ?? false) {
+        return true;
+      }
+
+      return false;
+    })();
+
+    return ContextMenuRegion(
+      enableLongPress: false,
+      contextMenu: GenericContextMenu(
+        buttonConfigs: [
+          if (widget.selectedIDs.isNotEmpty) ...[
+            ContextMenuButtonConfig(
+              // ignore: lines_longer_than_80_chars
+              'Copy Technical ID${widget.selectedIDs.length > 1 ? 's' : ''}',
+              icon: Icon(
+                MdiIcons.contentCopy,
+                size: 16.0,
+              ),
+              onPressed: () async {
+                final ids = widget.selectedIDs.toList();
+
+                ids.insert(0, 'Asset IDs:');
+
+                await Clipboard.setData(
+                  ClipboardData(
+                    text: ids.join('\n'),
                   ),
-                  onPressed: () async {
-                    final ids = widget.selectedIDs.toList();
+                );
 
-                    ids.insert(0, 'Asset IDs:');
-
-                    await Clipboard.setData(
-                      ClipboardData(
-                        text: ids.join('\n'),
-                      ),
-                    );
-
-                    Toast.showNotification(
-                      showDuration: const Duration(seconds: 3),
-                      type: ToastTypeEnum.success,
-                      message:
-                          // ignore: lines_longer_than_80_chars
-                          'Technical ID${widget.selectedIDs.length > 1 ? 's' : ''} copied to clipboard!',
-                    );
-                  },
-                ),
-                null, // divider
-                ContextMenuButtonConfig(
-                  'View details...',
-                  icon: Icon(
-                    MdiIcons.imageEditOutline,
-                    size: 16.0,
-                  ),
-                  onPressed: ((permissions?.assets.canViewDetails ?? false) &&
+                Toast.showNotification(
+                  showDuration: const Duration(seconds: 3),
+                  type: ToastTypeEnum.success,
+                  message:
+                      // ignore: lines_longer_than_80_chars
+                      'Technical ID${widget.selectedIDs.length > 1 ? 's' : ''} copied to clipboard!',
+                );
+              },
+            ),
+            null, // divider
+            ContextMenuButtonConfig(
+              'View details...',
+              icon: Icon(
+                MdiIcons.imageEditOutline,
+                size: 16.0,
+              ),
+              onPressed:
+                  ((widget.permissions?.assets.canViewDetails ?? false) &&
                           (widget.selectedIDs.length == 1))
                       ? () {
                           AutoRouter.of(context).navigate(
@@ -207,139 +288,132 @@ class _AssetDataViewState extends State<AssetDataView> {
                           );
                         }
                       : null,
-                ),
-                ContextMenuButtonConfig(
-                  'Bulk update...',
-                  icon: Icon(
-                    MdiIcons.textBoxEditOutline,
-                    size: 16.0,
-                  ),
-                  onPressed: ((permissions?.assets.canBulkUpdate ?? false) &&
-                          widget.selectedIDs.isNotEmpty)
-                      ? () {
-                          showDialog<void>(
-                            context: context,
-                            barrierColor: Colors.black54,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return OverflowBox(
-                                minWidth: 900.0,
-                                maxWidth: 900.0,
-                                child: Center(
-                                  child: BulkUpdateModal(
-                                    theme: Theme.of(context),
-                                    assetIDs: widget.selectedIDs,
-                                    onClose: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
+            ),
+            ContextMenuButtonConfig(
+              'Bulk update...',
+              icon: Icon(
+                MdiIcons.textBoxEditOutline,
+                size: 16.0,
+              ),
+              onPressed: ((widget.permissions?.assets.canBulkUpdate ?? false) &&
+                      widget.selectedIDs.isNotEmpty)
+                  ? () {
+                      showDialog<void>(
+                        context: context,
+                        barrierColor: Colors.black54,
+                        barrierDismissible: false,
+                        builder: (context) {
+                          return OverflowBox(
+                            minWidth: 900.0,
+                            maxWidth: 900.0,
+                            child: Center(
+                              child: BulkUpdateModal(
+                                theme: Theme.of(context),
+                                assetIDs: widget.selectedIDs,
+                                onClose: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ),
                           );
-                        }
-                      : null,
-                ),
-                null, // divider
-                ContextMenuButtonConfig(
-                  // ignore: lines_longer_than_80_chars
-                  'Download source image${widget.selectedIDs.length > 1 ? 's' : ''}...',
-                  icon: Icon(
-                    MdiIcons.trayArrowDown,
-                    size: 16.0,
-                  ),
-                  onPressed: (permissions?.assets.canDownloadSource ?? false)
-                      ? _downloadSourceImages
-                      : null,
-                ),
-                null, // divider
-                if (permissions?.collections.canAddAssets ?? false)
-                  ContextMenuButtonConfig(
-                    // ignore: lines_longer_than_80_chars
-                    'Add selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
-                    icon: Icon(
-                      MdiIcons.folderPlusOutline,
-                      size: 16.0,
-                    ),
-                    onPressed: () =>
-                        widget.onAddSelectedToCollection(widget.selectedIDs),
-                  ),
-                if (widget.collectionID != null) ...[
-                  ContextMenuButtonConfig(
-                    // ignore: lines_longer_than_80_chars
-                    'Move selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
-                    icon: Icon(
-                      MdiIcons.arrowLeftBold,
-                      size: 16.0,
-                    ),
-                    onPressed: (permissions?.collections.canAddAssets ??
-                                false) &&
-                            (permissions?.collections.canRemoveAssets ?? false)
-                        ? () => widget.onMoveSelectedToCollection(
-                              widget.selectedIDs,
-                            )
-                        : null,
-                  ),
-                  ContextMenuButtonConfig(
-                    // ignore: lines_longer_than_80_chars
-                    'Remove selected asset${widget.selectedIDs.length > 1 ? 's' : ''} from collection',
-                    shortcutLabel: 'Del',
-                    icon: Icon(
-                      MdiIcons.closeThick,
-                      size: 16.0,
-                    ),
-                    onPressed:
-                        (permissions?.collections.canRemoveAssets ?? false)
-                            ? () => widget.onRemoveSelectedFromCollection(
-                                  widget.selectedIDs,
-                                )
-                            : null,
-                  ),
-                ],
-                if ((permissions?.assets.canDelete ?? false) ||
-                    (permissions?.assets.canDeleteMultiple ?? false))
-                  null, // divider
-                ContextMenuButtonConfig(
-                  // ignore: lines_longer_than_80_chars
-                  'Delete selected asset${widget.selectedIDs.length > 1 ? 's' : ''}',
-                  shortcutLabel: (widget.collectionID == null) ? 'Del' : null,
-                  icon: Icon(
-                    MdiIcons.closeThick,
-                    size: 16.0,
-                  ),
-                  onPressed: ((widget.selectedIDs.length == 1) ||
-                          (permissions?.assets.canDeleteMultiple ?? false))
-                      ? () => widget.onDeleteSelected(
-                            widget.selectedIDs,
-                          )
-                      : null,
-                ),
-                null, // divider
-              ],
+                        },
+                      );
+                    }
+                  : null,
+            ),
+            null, // divider
+            ContextMenuButtonConfig(
+              // ignore: lines_longer_than_80_chars
+              'Download source image${widget.selectedIDs.length > 1 ? 's' : ''}...',
+              icon: Icon(
+                MdiIcons.trayArrowDown,
+                size: 16.0,
+              ),
+              onPressed: (widget.permissions?.assets.canDownloadSource ?? false)
+                  ? _downloadSourceImages
+                  : null,
+            ),
+            null, // divider
+            ContextMenuButtonConfig(
+              // ignore: lines_longer_than_80_chars
+              'Add selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
+              icon: Icon(
+                MdiIcons.folderPlusOutline,
+                size: 16.0,
+              ),
+              onPressed: canAddCollectionAssets
+                  ? () => widget.onAddSelectedToCollection(widget.selectedIDs)
+                  : null,
+            ),
+            if (widget.collection == null) null, // divider
+            if (widget.collection != null) ...[
               ContextMenuButtonConfig(
-                'Select All',
-                shortcutLabel: 'Ctrl+A, Cmd+A',
+                // ignore: lines_longer_than_80_chars
+                'Move selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',
                 icon: Icon(
-                  MdiIcons.selectAll,
-                  size: 18.0,
+                  MdiIcons.arrowLeftBold,
+                  size: 16.0,
                 ),
-                onPressed: () => _selectAll(),
+                onPressed: canAddCollectionAssets && canRemoveCollectionAssets
+                    ? () => widget.onMoveSelectedToCollection(
+                          widget.selectedIDs,
+                        )
+                    : null,
               ),
               ContextMenuButtonConfig(
-                'Deselect All',
-                shortcutLabel: 'Ctrl+D, Cmd+D',
+                // ignore: lines_longer_than_80_chars
+                'Remove selected asset${widget.selectedIDs.length > 1 ? 's' : ''} from collection',
+                shortcutLabel: 'Del',
                 icon: Icon(
-                  MdiIcons.selectRemove,
-                  size: 18.0,
+                  MdiIcons.closeThick,
+                  size: 16.0,
                 ),
-                onPressed:
-                    widget.selectedIDs.isNotEmpty ? () => _deselectAll() : null,
+                onPressed: canRemoveCollectionAssets
+                    ? () => widget.onRemoveSelectedFromCollection(
+                          widget.selectedIDs,
+                        )
+                    : null,
               ),
+              null, // divider
             ],
+            ContextMenuButtonConfig(
+              // ignore: lines_longer_than_80_chars
+              'Delete selected asset${widget.selectedIDs.length > 1 ? 's' : ''}',
+              shortcutLabel: (widget.collection == null) ? 'Del' : null,
+              icon: Icon(
+                MdiIcons.closeThick,
+                size: 16.0,
+              ),
+              onPressed: canDelete
+                  ? () => widget.onDeleteSelected(
+                        widget.selectedIDs,
+                      )
+                  : null,
+            ),
+            null, // divider
+          ],
+          ContextMenuButtonConfig(
+            'Select All',
+            shortcutLabel: 'Ctrl+A, Cmd+A',
+            icon: Icon(
+              MdiIcons.selectAll,
+              size: 18.0,
+            ),
+            onPressed: () => _selectAll(),
           ),
-          child: child,
-        );
-      },
+          ContextMenuButtonConfig(
+            'Deselect All',
+            shortcutLabel: 'Ctrl+D, Cmd+D',
+            icon: Icon(
+              MdiIcons.selectRemove,
+              size: 18.0,
+            ),
+            onPressed:
+                widget.selectedIDs.isNotEmpty ? () => _deselectAll() : null,
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 

@@ -216,6 +216,11 @@ class AppTheme {
               fontSize: 14.0,
               letterSpacing: 0.5,
             ),
+            bodyMedium: GoogleFonts.getFont(
+              'Roboto',
+              fontSize: 14.0,
+              letterSpacing: 1.0,
+            ),
             headlineSmall: GoogleFonts.getFont(
               'Roboto',
               fontSize: 20.0,

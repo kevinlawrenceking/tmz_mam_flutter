@@ -2,15 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/collection_data_view.dart';
 import 'package:tmz_damz/features/collections/widgets/pagination_bar.dart';
 import 'package:tmz_damz/features/collections/widgets/toolbar.dart';
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
-import 'package:tmz_damz/utils/config.dart';
 
 @RoutePage(name: 'CollectionsViewRoute')
 class CollectionsView extends StatefulWidget {
@@ -51,39 +52,54 @@ class _CollectionsViewState extends State<CollectionsView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocProvider<CollectionsBloc>(
-      create: (context) {
-        final bloc = GetIt.instance<CollectionsBloc>();
+    final auth = GetIt.instance<IAuthDataSource>();
 
-        bloc.add(
-          PaginationChangedEvent(
-            limit: kDefaultResultsPerPage,
-            offset: 0,
-          ),
+    return FutureBuilder(
+      future: auth.getPermissions(),
+      builder: (_, snapshot) {
+        final permissions = snapshot.data?.fold(
+          (failure) => null,
+          (permissions) => permissions,
         );
 
-        return bloc;
-      },
-      child: _buildCollectionsBlocListener(
-        child: BlocBuilder<CollectionsBloc, BlocState>(
-          buildWhen: (_, state) =>
-              state is InitialState || state is SearchResultsLoadedState,
-          builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildToolbar(),
-                const PaginationBar(),
-                Expanded(
-                  child: _buildDataTable(
-                    theme: theme,
-                  ),
-                ),
-              ],
+        return BlocProvider<CollectionsBloc>(
+          create: (context) {
+            final bloc = GetIt.instance<CollectionsBloc>();
+
+            bloc.add(
+              PaginationChangedEvent(
+                limit: kDefaultResultsPerPage,
+                offset: 0,
+              ),
             );
+
+            return bloc;
           },
-        ),
-      ),
+          child: _buildCollectionsBlocListener(
+            child: BlocBuilder<CollectionsBloc, BlocState>(
+              buildWhen: (_, state) =>
+                  state is InitialState || state is SearchResultsLoadedState,
+              builder: (context, state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildToolbar(),
+                    PaginationBar(
+                      permissions: permissions,
+                    ),
+                    Expanded(
+                      child: _buildDataTable(
+                        theme: theme,
+                        permissions: permissions,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -195,6 +211,7 @@ class _CollectionsViewState extends State<CollectionsView> {
 
   Widget _buildDataTable({
     required ThemeData theme,
+    required AccessControlPermissionMapModel? permissions,
   }) {
     return BlocBuilder<CollectionsBloc, BlocState>(
       buildWhen: (_, state) =>
@@ -217,7 +234,7 @@ class _CollectionsViewState extends State<CollectionsView> {
 
           return CollectionDataView(
             scrollController: _scrollController,
-            config: GetIt.instance<Config>(),
+            permissions: permissions,
             collections: collections,
             selectedIDs: _selectedIDs,
             onSelectionChanged: (selectedIDs) {
@@ -261,12 +278,13 @@ class _CollectionsViewState extends State<CollectionsView> {
 
               showConfirmationPrompt(
                 context: context,
+                width: 550.0,
                 title:
                     // ignore: lines_longer_than_80_chars
                     'Delete collection${selectedIDs.length > 1 ? 's' : ''}...',
                 message:
                     // ignore: lines_longer_than_80_chars
-                    'Are you sure you want to delete the selected collection${selectedIDs.length > 1 ? 's' : ''}?.\n\nThis will not delete any associated assets.',
+                    'Are you sure you want to delete the selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} collection${selectedIDs.length > 1 ? 's' : ''}?\n\nThis will not delete any associated assets.',
                 onConfirm: () {
                   collectionsBloc.add(
                     DeleteCollectionEvent(

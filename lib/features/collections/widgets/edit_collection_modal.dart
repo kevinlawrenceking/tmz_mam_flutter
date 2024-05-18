@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/collections/widgets/edit_collection_form.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
@@ -21,6 +22,7 @@ class SaveCollectionParams {
 
 class EditCollectionModal extends StatefulWidget {
   final ThemeData theme;
+  final AccessControlPermissionMapModel? permissions;
   final CollectionModel model;
   final VoidCallback onCancel;
   final void Function(SaveCollectionParams params) onSave;
@@ -28,6 +30,7 @@ class EditCollectionModal extends StatefulWidget {
   const EditCollectionModal({
     super.key,
     required this.theme,
+    required this.permissions,
     required this.model,
     required this.onCancel,
     required this.onSave,
@@ -40,14 +43,14 @@ class EditCollectionModal extends StatefulWidget {
 class _EditCollectionModalState extends State<EditCollectionModal> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
-  late final ValueNotifier<bool> _visibilityController;
+  late final ValueNotifier<bool> _isPrivateController;
   late final ValueNotifier<bool> _autoClearController;
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _visibilityController.dispose();
+    _isPrivateController.dispose();
     _autoClearController.dispose();
 
     super.dispose();
@@ -63,7 +66,7 @@ class _EditCollectionModalState extends State<EditCollectionModal> {
     _descriptionController = TextEditingController(
       text: widget.model.description,
     );
-    _visibilityController = ValueNotifier<bool>(widget.model.isPrivate);
+    _isPrivateController = ValueNotifier<bool>(widget.model.isPrivate);
     _autoClearController = ValueNotifier<bool>(widget.model.autoClear);
   }
 
@@ -93,9 +96,11 @@ class _EditCollectionModalState extends State<EditCollectionModal> {
             ),
             child: FocusScope(
               child: EditCollectionForm(
+                permissions: widget.permissions,
+                model: widget.model,
                 nameController: _nameController,
                 descriptionController: _descriptionController,
-                visibilityController: _visibilityController,
+                isPrivateController: _isPrivateController,
                 autoClearController: _autoClearController,
               ),
             ),
@@ -130,7 +135,7 @@ class _EditCollectionModalState extends State<EditCollectionModal> {
                       collectionID: widget.model.id,
                       name: name,
                       description: _descriptionController.text.trim(),
-                      isPrivate: _visibilityController.value,
+                      isPrivate: _isPrivateController.value,
                       autoClear: _autoClearController.value,
                     ),
                   );

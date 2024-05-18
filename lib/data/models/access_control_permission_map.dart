@@ -1,10 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class AccessControlPermissionMapModel extends Equatable {
+  final String userID;
   final AccessControlPermissionMapAssetsModel assets;
   final AccessControlPermissionMapCollectionsModel collections;
 
   const AccessControlPermissionMapModel({
+    required this.userID,
     required this.assets,
     required this.collections,
   });
@@ -13,6 +15,7 @@ class AccessControlPermissionMapModel extends Equatable {
     Map<String, dynamic>? dto,
   ) {
     return AccessControlPermissionMapModel(
+      userID: dto?['user_id'] ?? '',
       assets: AccessControlPermissionMapAssetsModel.fromJsonDto(
         dto?['assets'],
       ),
@@ -24,6 +27,7 @@ class AccessControlPermissionMapModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        userID,
         assets,
         collections,
       ];
@@ -86,6 +90,7 @@ class AccessControlPermissionMapCollectionsModel extends Equatable {
   final bool canAddAssets;
   final bool canRemoveAssets;
   final bool canAssignOwner;
+  final bool canSetPoster;
   final bool canViewPrivate;
 
   const AccessControlPermissionMapCollectionsModel({
@@ -96,6 +101,7 @@ class AccessControlPermissionMapCollectionsModel extends Equatable {
     required this.canAddAssets,
     required this.canRemoveAssets,
     required this.canAssignOwner,
+    required this.canSetPoster,
     required this.canViewPrivate,
   });
 
@@ -110,6 +116,7 @@ class AccessControlPermissionMapCollectionsModel extends Equatable {
       canAddAssets: dto?['can_add_assets'] ?? false,
       canRemoveAssets: dto?['can_remove_assets'] ?? false,
       canAssignOwner: dto?['can_assign_owner'] ?? false,
+      canSetPoster: dto?['can_set_poster'] ?? false,
       canViewPrivate: dto?['can_view_private'] ?? false,
     );
   }
@@ -123,6 +130,7 @@ class AccessControlPermissionMapCollectionsModel extends Equatable {
         canAddAssets,
         canRemoveAssets,
         canAssignOwner,
+        canSetPoster,
         canViewPrivate,
       ];
 }

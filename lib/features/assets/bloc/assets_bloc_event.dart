@@ -1,12 +1,12 @@
-part of 'bloc.dart';
+part of 'assets_bloc.dart';
 
 @immutable
-abstract class BlocEvent extends Equatable {
+abstract class AssetsBlocEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class AddAssetsToCollectionEvent extends BlocEvent {
+class AddAssetsToCollectionEvent extends AssetsBlocEvent {
   final String collectionID;
   final List<String> assetIDs;
 
@@ -22,7 +22,7 @@ class AddAssetsToCollectionEvent extends BlocEvent {
       ];
 }
 
-class DeleteAssetEvent extends BlocEvent {
+class DeleteAssetEvent extends AssetsBlocEvent {
   final List<String> assetIDs;
 
   DeleteAssetEvent({
@@ -33,7 +33,7 @@ class DeleteAssetEvent extends BlocEvent {
   List<Object?> get props => [assetIDs];
 }
 
-class MoveAssetsToCollectionEvent extends BlocEvent {
+class MoveAssetsToCollectionEvent extends AssetsBlocEvent {
   final String sourceCollectionID;
   final String targetCollectionID;
   final List<String> assetIDs;
@@ -52,7 +52,7 @@ class MoveAssetsToCollectionEvent extends BlocEvent {
       ];
 }
 
-class PaginationChangedEvent extends BlocEvent {
+class PaginationChangedEvent extends AssetsBlocEvent {
   final int offset;
   final int limit;
 
@@ -68,11 +68,11 @@ class PaginationChangedEvent extends BlocEvent {
       ];
 }
 
-class RefreshEvent extends BlocEvent {}
+class RefreshEvent extends AssetsBlocEvent {}
 
-class ReloadCurrentPageEvent extends BlocEvent {}
+class ReloadCurrentPageEvent extends AssetsBlocEvent {}
 
-class RemoveAssetsFromCollectionEvent extends BlocEvent {
+class RemoveAssetsFromCollectionEvent extends AssetsBlocEvent {
   final String collectionID;
   final List<String> assetIDs;
 
@@ -88,7 +88,7 @@ class RemoveAssetsFromCollectionEvent extends BlocEvent {
       ];
 }
 
-class SearchEvent extends BlocEvent {
+class SearchEvent extends AssetsBlocEvent {
   final String? searchTerm;
   final AssetSortFieldEnum sortField;
   final SortDirectionEnum sortDirection;
@@ -107,7 +107,7 @@ class SearchEvent extends BlocEvent {
       ];
 }
 
-class SetCurrentCollectionEvent extends BlocEvent {
+class SetCurrentCollectionEvent extends AssetsBlocEvent {
   final String? collectionID;
 
   SetCurrentCollectionEvent({

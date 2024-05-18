@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/features/collections/widgets/new_collection_form.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
@@ -20,12 +21,14 @@ class NewCollectionParams {
 
 class CreateCollectionModal extends StatefulWidget {
   final ThemeData theme;
+  final AccessControlPermissionMapModel? permissions;
   final VoidCallback onCancel;
   final void Function(NewCollectionParams params) onCreate;
 
   const CreateCollectionModal({
     super.key,
     required this.theme,
+    required this.permissions,
     required this.onCancel,
     required this.onCreate,
   });
@@ -35,21 +38,34 @@ class CreateCollectionModal extends StatefulWidget {
 }
 
 class _CreateCollectionModalState extends State<CreateCollectionModal> {
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _visibilityController = ValueNotifier<bool>(false);
-  final _autoClearController = ValueNotifier<bool>(false);
-  final _addToFavoritesController = ValueNotifier<bool>(false);
+  late final TextEditingController _nameController;
+  late final TextEditingController _descriptionController;
+  late final ValueNotifier<bool> _isPrivateController;
+  late final ValueNotifier<bool> _autoClearController;
+  late final ValueNotifier<bool> _addToFavoritesController;
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _visibilityController.dispose();
+    _isPrivateController.dispose();
     _autoClearController.dispose();
     _addToFavoritesController.dispose();
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _nameController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _isPrivateController = ValueNotifier<bool>(
+      !(widget.permissions?.collections.canCreate ?? false),
+    );
+    _autoClearController = ValueNotifier<bool>(false);
+    _addToFavoritesController = ValueNotifier<bool>(false);
   }
 
   @override
@@ -78,9 +94,10 @@ class _CreateCollectionModalState extends State<CreateCollectionModal> {
             ),
             child: FocusScope(
               child: NewCollectionForm(
+                permissions: widget.permissions,
                 nameController: _nameController,
                 descriptionController: _descriptionController,
-                visibilityController: _visibilityController,
+                isPrivateController: _isPrivateController,
                 autoClearController: _autoClearController,
                 addToFavoritesController: _addToFavoritesController,
               ),
@@ -115,7 +132,7 @@ class _CreateCollectionModalState extends State<CreateCollectionModal> {
                     NewCollectionParams(
                       name: name,
                       description: _descriptionController.text.trim(),
-                      isPrivate: _visibilityController.value,
+                      isPrivate: _isPrivateController.value,
                       autoClear: _autoClearController.value,
                       addToFavorites: _addToFavoritesController.value,
                     ),

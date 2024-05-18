@@ -1,6 +1,7 @@
 import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/user_collections/widgets/collection_autocomplete_field.dart';
 import 'package:tmz_damz/features/user_collections/widgets/collection_details.dart';
@@ -23,6 +24,7 @@ class NewCollectionParams {
 
 class AddCollectionToFavoritesModal extends StatefulWidget {
   final ThemeData theme;
+  final AccessControlPermissionMapModel? permissions;
   final VoidCallback onCancel;
   final void Function(String collectionID) onAdd;
   final void Function(NewCollectionParams params) onCreate;
@@ -30,6 +32,7 @@ class AddCollectionToFavoritesModal extends StatefulWidget {
   const AddCollectionToFavoritesModal({
     super.key,
     required this.theme,
+    required this.permissions,
     required this.onCancel,
     required this.onAdd,
     required this.onCreate,
@@ -44,10 +47,10 @@ class _AddCollectionToFavoritesModalState
     extends State<AddCollectionToFavoritesModal> {
   final _isNewController = ValueNotifier<bool>(false);
 
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _visibilityController = ValueNotifier<bool>(false);
-  final _autoClearController = ValueNotifier<bool>(false);
+  late final TextEditingController _nameController;
+  late final TextEditingController _descriptionController;
+  late final ValueNotifier<bool> _isPrivateController;
+  late final ValueNotifier<bool> _autoClearController;
 
   CollectionModel? _selectedCollection;
 
@@ -57,10 +60,22 @@ class _AddCollectionToFavoritesModalState
 
     _nameController.dispose();
     _descriptionController.dispose();
-    _visibilityController.dispose();
+    _isPrivateController.dispose();
     _autoClearController.dispose();
 
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _nameController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _isPrivateController = ValueNotifier<bool>(
+      !(widget.permissions?.collections.canCreate ?? false),
+    );
+    _autoClearController = ValueNotifier<bool>(false);
   }
 
   @override
@@ -188,9 +203,10 @@ class _AddCollectionToFavoritesModalState
         const SizedBox(height: 30.0),
         _isNewController.value
             ? NewCollectionForm(
+                permissions: widget.permissions,
                 nameController: _nameController,
                 descriptionController: _descriptionController,
-                visibilityController: _visibilityController,
+                isPrivateController: _isPrivateController,
                 autoClearController: _autoClearController,
               )
             : _buildCollectionLookup(),
@@ -223,7 +239,7 @@ class _AddCollectionToFavoritesModalState
                       NewCollectionParams(
                         name: name,
                         description: _descriptionController.text.trim(),
-                        isPrivate: _visibilityController.value,
+                        isPrivate: _isPrivateController.value,
                         autoClear: _autoClearController.value,
                       ),
                     );

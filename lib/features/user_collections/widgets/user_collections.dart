@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/user_collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_collection_to_favorites_modal.dart';
@@ -10,10 +11,14 @@ import 'package:tmz_damz/features/user_collections/widgets/user_collection_item.
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
 class UserCollections extends StatefulWidget {
-  final void Function(CollectionModel? model) onSelectionChanged;
+  final AccessControlPermissionMapModel? permissions;
+  final String? selectedCollectionID;
+  final void Function(String? selectedID) onSelectionChanged;
 
   const UserCollections({
     super.key,
+    required this.permissions,
+    required this.selectedCollectionID,
     required this.onSelectionChanged,
   });
 
@@ -23,8 +28,6 @@ class UserCollections extends StatefulWidget {
 
 class _UserCollectionsState extends State<UserCollections> {
   late final FocusNode _focusNode;
-
-  CollectionModel? _selectedCollection;
 
   @override
   void dispose() {
@@ -268,17 +271,18 @@ class _UserCollectionsState extends State<UserCollections> {
                 value: BlocProvider.of<UserCollectionsBloc>(context),
                 child: UserCollectionItem(
                   model: collections[index],
-                  selected: _selectedCollection?.id == collections[index].id,
+                  selected:
+                      collections[index].id == widget.selectedCollectionID,
                   onTap: (model) {
-                    if (_selectedCollection?.id == model.id) {
-                      _selectedCollection = null;
+                    String? selectedID;
+
+                    if (widget.selectedCollectionID == model.id) {
+                      selectedID = null;
                     } else {
-                      _selectedCollection = model;
+                      selectedID = model.id;
                     }
 
-                    widget.onSelectionChanged(_selectedCollection);
-
-                    setState(() {});
+                    widget.onSelectionChanged(selectedID);
 
                     _focusNode.requestFocus();
                   },
@@ -303,6 +307,7 @@ class _UserCollectionsState extends State<UserCollections> {
           child: Center(
             child: AddCollectionToFavoritesModal(
               theme: Theme.of(context),
+              permissions: widget.permissions,
               onCancel: () {
                 Navigator.of(context).pop();
               },

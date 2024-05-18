@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/pagination_info.dart';
-import 'package:tmz_damz/features/assets/bloc/bloc.dart';
+import 'package:tmz_damz/features/assets/bloc/assets_bloc.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 
 class PaginationBar extends StatelessWidget {
@@ -16,7 +16,7 @@ class PaginationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AssetsBloc, BlocState>(
+    return BlocBuilder<AssetsBloc, AssetsBlocState>(
       buildWhen: (_, state) => state is PaginationChangedState,
       builder: (context, state) {
         PaginationInfo paginationInfo;
@@ -39,10 +39,11 @@ class PaginationBar extends StatelessWidget {
 
         return Container(
           decoration: const BoxDecoration(
-            border: Border.symmetric(
-              horizontal: BorderSide(
+            border: Border(
+              top: BorderSide(
                 color: Color(0xFF454647),
               ),
+              bottom: BorderSide(),
             ),
             color: Color(0xFF353637),
           ),

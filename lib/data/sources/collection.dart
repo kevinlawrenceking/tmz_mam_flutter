@@ -28,6 +28,10 @@ abstract class ICollectionDataSource {
     required String collectionID,
   });
 
+  Future<Either<Failure, CollectionModel>> getCollection({
+    required String collectionID,
+  });
+
   Future<Either<Failure, CollectionSearchResults>> getCollectionList({
     required int offset,
     required int limit,
@@ -43,6 +47,16 @@ abstract class ICollectionDataSource {
   });
 
   Future<Either<Failure, Empty>> removeAssetFromCollection({
+    required String collectionID,
+    required String assetID,
+  });
+
+  Future<Either<Failure, Empty>> setCollectionOwner({
+    required String collectionID,
+    required String ownerID,
+  });
+
+  Future<Either<Failure, Empty>> setCollectionPosterAsset({
     required String collectionID,
     required String assetID,
   });
@@ -156,6 +170,35 @@ class CollectionDataSource implements ICollectionDataSource {
             }
 
             return const Right(Empty());
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, CollectionModel>> getCollection({
+    required String collectionID,
+  }) async =>
+      ExceptionHandler<CollectionModel>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.get(
+              authToken: authToken,
+              endPoint: '/api/v1/collection/$collectionID',
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            final data = json.decode(response.body);
+            final model = CollectionModel.fromJsonDto(data);
+
+            return Right(model);
           },
         );
       })();
@@ -294,6 +337,66 @@ class CollectionDataSource implements ICollectionDataSource {
             final response = await _client.delete(
               authToken: authToken,
               endPoint: '/api/v1/collection/$collectionID/asset/$assetID',
+            );
+
+            if (response.statusCode != HttpStatus.noContent) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            return const Right(Empty());
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, Empty>> setCollectionOwner({
+    required String collectionID,
+    required String ownerID,
+  }) async =>
+      ExceptionHandler<Empty>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/collection/$collectionID/setOwner',
+              body: {
+                'owner_id': ownerID,
+              },
+            );
+
+            if (response.statusCode != HttpStatus.noContent) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            return const Right(Empty());
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, Empty>> setCollectionPosterAsset({
+    required String collectionID,
+    required String assetID,
+  }) async =>
+      ExceptionHandler<Empty>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/collection/$collectionID/setPosterAsset',
+              body: {
+                'asset_id': assetID,
+              },
             );
 
             if (response.statusCode != HttpStatus.noContent) {

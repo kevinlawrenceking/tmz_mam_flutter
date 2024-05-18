@@ -9,15 +9,15 @@ import 'package:tmz_damz/data/sources/collection.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:uuid/uuid.dart';
 
-part 'event.dart';
-part 'state.dart';
+part 'assets_bloc_event.dart';
+part 'assets_bloc_state.dart';
 
-class AssetsBloc extends Bloc<BlocEvent, BlocState> {
+class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
   final IAssetDataSource assetDataSource;
   final ICollectionDataSource collectionDataSource;
 
   var _offset = 0;
-  var _limit = 10;
+  var _limit = 100;
   String? _collectionID;
   String? _searchTerm;
   AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
@@ -42,7 +42,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _addAssetsToCollectionEvent(
     AddAssetsToCollectionEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     if (event.assetIDs.isEmpty) {
       return;
@@ -69,7 +69,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _deleteAssetEvent(
     DeleteAssetEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     if (event.assetIDs.isEmpty) {
       return;
@@ -105,7 +105,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _moveAssetsToCollectionEvent(
     MoveAssetsToCollectionEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     if (event.assetIDs.isEmpty) {
       return;
@@ -143,7 +143,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _paginationChangedEvent(
     PaginationChangedEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     _offset = event.offset;
     _limit = event.limit;
@@ -161,7 +161,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _refreshEvent(
     RefreshEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     _offset = 0;
 
@@ -178,7 +178,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _reloadCurrentPageEvent(
     ReloadCurrentPageEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     await _getAssetList(
       emit: emit,
@@ -193,7 +193,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _removeAssetsFromCollectionEvent(
     RemoveAssetsFromCollectionEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     if (event.assetIDs.isEmpty) {
       return;
@@ -230,7 +230,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _searchEvent(
     SearchEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     if (event.searchTerm != null) {
       _searchTerm = event.searchTerm;
@@ -254,7 +254,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
 
   Future<void> _setCurrentCollectionEvent(
     SetCurrentCollectionEvent event,
-    Emitter<BlocState> emit,
+    Emitter<AssetsBlocState> emit,
   ) async {
     _offset = 0;
     _totalRecords = 0;
@@ -272,7 +272,7 @@ class AssetsBloc extends Bloc<BlocEvent, BlocState> {
   }
 
   Future<void> _getAssetList({
-    required Emitter<BlocState> emit,
+    required Emitter<AssetsBlocState> emit,
     required int offset,
     required int limit,
     required String? collectionID,

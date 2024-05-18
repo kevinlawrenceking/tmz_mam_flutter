@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:context_menus/context_menus.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -7,8 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/app_router.gr.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection.dart';
-import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/edit_collection_modal.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
@@ -18,7 +20,7 @@ import 'package:tmz_damz/utils/config.dart';
 
 class CollectionDataView extends StatefulWidget {
   final ScrollController scrollController;
-  final Config config;
+  final AccessControlPermissionMapModel? permissions;
   final List<CollectionModel> collections;
   final List<String> selectedIDs;
   final void Function(List<String> selectedIDs) onSelectionChanged;
@@ -30,7 +32,7 @@ class CollectionDataView extends StatefulWidget {
   const CollectionDataView({
     super.key,
     required this.scrollController,
-    required this.config,
+    required this.permissions,
     required this.collections,
     required this.selectedIDs,
     required this.onSelectionChanged,
@@ -85,8 +87,39 @@ class _CollectionDataViewState extends State<CollectionDataView> {
 
         if ((event.logicalKey == LogicalKeyboardKey.delete) ||
             (event.physicalKey == PhysicalKeyboardKey.delete)) {
-          if (widget.selectedIDs.isNotEmpty) {
+          final canDelete = widget.collections
+              .where((_) => widget.selectedIDs.contains(_.id))
+              .every((_) {
+            if (_.ownedBy.userID == widget.permissions?.userID) {
+              return true;
+            }
+
+            if ((widget.permissions?.collections.canDelete ?? false) &&
+                (widget.selectedIDs.length == 1)) {
+              return true;
+            } else if ((widget.permissions?.collections.canDeleteMultiple ??
+                    false) &&
+                (widget.selectedIDs.length > 1)) {
+              return true;
+            }
+
+            return false;
+          });
+
+          if (canDelete) {
             widget.onDeleteSelected(widget.selectedIDs);
+          } else {
+            final multiple =
+                (widget.permissions?.collections.canDelete ?? false) &&
+                    (widget.selectedIDs.length > 1);
+
+            Toast.showNotification(
+              showDuration: const Duration(seconds: 5),
+              type: ToastTypeEnum.warning,
+              message:
+                  // ignore: lines_longer_than_80_chars
+                  'You do not have permission to delete${multiple ? ' multiple' : ''}\ncollections, unless you are the owner.',
+            );
           }
 
           return KeyEventResult.handled;
@@ -144,178 +177,196 @@ class _CollectionDataViewState extends State<CollectionDataView> {
     );
   }
 
-  Widget _buildContextMenu(BuildContext context) {
-    final auth = GetIt.instance<IAuthDataSource>();
+  Widget _buildContextMenu({
+    required BuildContext context,
+    required List<String> selectedIDs,
+  }) {
+    final firstSelected = widget.collections.firstWhereOrNull(
+      (_) => _.id == selectedIDs.firstOrNull,
+    );
 
-    return FutureBuilder(
-      future: auth.getPermissions(),
-      builder: (_, snapshot) {
-        final permissions = snapshot.data?.fold(
-          (failure) => null,
-          (permissions) => permissions,
-        );
+    final favorites =
+        widget.collections.where((_) => _.favorited).map((_) => _.id).toList();
 
-        final favorites = widget.collections
-            .where((_) => _.favorited)
-            .map((_) => _.id)
-            .toList();
+    final canDelete =
+        widget.collections.where((_) => selectedIDs.contains(_.id)).every((_) {
+      if (_.ownedBy.userID == widget.permissions?.userID) {
+        return true;
+      }
 
-        return GenericContextMenu(
-          buttonConfigs: [
-            if (widget.selectedIDs.isNotEmpty) ...[
-              ContextMenuButtonConfig(
-                // ignore: lines_longer_than_80_chars
-                'Copy Technical ID${widget.selectedIDs.length > 1 ? 's' : ''}',
-                icon: Icon(
-                  MdiIcons.contentCopy,
-                  size: 16.0,
-                ),
-                onPressed: () async {
-                  final ids = widget.selectedIDs.toList();
+      if ((widget.permissions?.collections.canDelete ?? false) &&
+          (selectedIDs.length == 1)) {
+        return true;
+      } else if ((widget.permissions?.collections.canDeleteMultiple ?? false) &&
+          (selectedIDs.length > 1)) {
+        return true;
+      }
 
-                  ids.insert(0, 'Collection IDs:');
+      return false;
+    });
 
-                  await Clipboard.setData(
-                    ClipboardData(
-                      text: ids.join('\n'),
-                    ),
-                  );
+    final canEdit = widget.collections
+        .where((_) => _.id == selectedIDs.firstOrNull)
+        .every((_) {
+      if ((_.ownedBy.userID == widget.permissions?.userID) ||
+          (widget.permissions?.collections.canModify ?? false)) {
+        return selectedIDs.length == 1;
+      }
 
-                  Toast.showNotification(
-                    showDuration: const Duration(seconds: 3),
-                    type: ToastTypeEnum.success,
-                    message:
-                        // ignore: lines_longer_than_80_chars
-                        'Technical ID${ids.length > 1 ? 's' : ''} copied to clipboard!',
-                  );
-                },
-              ),
-              ContextMenuButtonConfig(
-                // ignore: lines_longer_than_80_chars
-                'Copy Collection Name${widget.selectedIDs.length > 1 ? 's' : ''}',
-                icon: Icon(
-                  MdiIcons.contentCopy,
-                  size: 16.0,
-                ),
-                onPressed: () async {
-                  final names = widget.collections
-                      .where((_) => widget.selectedIDs.contains(_.id))
-                      .map((_) => _.name)
-                      .toList();
+      return false;
+    });
 
-                  names.insert(0, 'Collection Names:');
-
-                  await Clipboard.setData(
-                    ClipboardData(
-                      text: names.join('\n'),
-                    ),
-                  );
-
-                  Toast.showNotification(
-                    showDuration: const Duration(seconds: 3),
-                    type: ToastTypeEnum.success,
-                    message:
-                        // ignore: lines_longer_than_80_chars
-                        'Collection Name${names.length > 1 ? 's' : ''} copied to clipboard!',
-                  );
-                },
-              ),
-              null, // divider
-            ],
-            if (permissions?.collections.canModify ?? false) ...[
-              ContextMenuButtonConfig(
-                'Edit collection...',
-                icon: Icon(
-                  MdiIcons.pencil,
-                  size: 16.0,
-                ),
-                onPressed: (widget.selectedIDs.length == 1)
-                    ? () {
-                        final model = widget.collections.firstWhereOrNull(
-                          (_) => _.id == widget.selectedIDs[0],
-                        );
-
-                        if (model == null) {
-                          return;
-                        }
-
-                        _showEditCollectionDialog(
-                          context: context,
-                          model: model,
-                        );
-                      }
-                    : null,
-              ),
-              null, // divider
-            ],
-            if (widget.selectedIDs.isNotEmpty &&
-                widget.selectedIDs.any((_) => !favorites.contains(_)))
-              ContextMenuButtonConfig(
-                // ignore: lines_longer_than_80_chars
-                'Add selected collection${widget.selectedIDs.length > 1 ? 's' : ''} to favorites',
-                icon: Icon(
-                  MdiIcons.starPlus,
-                  size: 16.0,
-                ),
-                onPressed: () => widget.onAddSelectedToFavorites(
-                  widget.selectedIDs,
-                ),
-              ),
-            if (widget.selectedIDs.isNotEmpty &&
-                widget.selectedIDs.any((_) => favorites.contains(_)))
-              ContextMenuButtonConfig(
-                // ignore: lines_longer_than_80_chars
-                'Remove selected collection${widget.selectedIDs.length > 1 ? 's' : ''} from favorites',
-                icon: Icon(
-                  MdiIcons.starMinus,
-                  size: 16.0,
-                ),
-                onPressed: () => widget.onRemoveSelectedFromFavorites(
-                  widget.selectedIDs,
-                ),
-              ),
-            null, // divider
-            if ((permissions?.collections.canDelete ?? false) ||
-                (permissions?.collections.canDeleteMultiple ?? false)) ...[
-              ContextMenuButtonConfig(
-                // ignore: lines_longer_than_80_chars
-                'Delete selected collection${widget.selectedIDs.length > 1 ? 's' : ''}',
-                shortcutLabel: 'Del',
-                icon: Icon(
-                  MdiIcons.closeThick,
-                  size: 16.0,
-                ),
-                onPressed: ((widget.selectedIDs.length == 1) ||
-                        (permissions?.collections.canDeleteMultiple ?? false))
-                    ? () => widget.onDeleteSelected(
-                          widget.selectedIDs,
-                        )
-                    : null,
-              ),
-              null, // divider
-            ],
-            ContextMenuButtonConfig(
-              'Select All',
-              shortcutLabel: 'Ctrl+A, Cmd+A',
-              icon: Icon(
-                MdiIcons.selectAll,
-                size: 18.0,
-              ),
-              onPressed: () => _selectAll(),
+    return GenericContextMenu(
+      buttonConfigs: [
+        if (selectedIDs.isNotEmpty) ...[
+          ContextMenuButtonConfig(
+            'View collection...',
+            icon: Icon(
+              MdiIcons.folderOpen,
+              size: 16.0,
             ),
-            ContextMenuButtonConfig(
-              'Deselect All',
-              shortcutLabel: 'Ctrl+D, Cmd+D',
-              icon: Icon(
-                MdiIcons.selectRemove,
-                size: 18.0,
-              ),
-              onPressed:
-                  widget.selectedIDs.isNotEmpty ? () => _deselectAll() : null,
+            onPressed: (selectedIDs.length == 1)
+                ? () async {
+                    await AutoRouter.of(context).navigate(
+                      AssetsSearchRoute(
+                        collectionID: selectedIDs.first,
+                      ),
+                    );
+                  }
+                : null,
+          ),
+          null, // divider
+          ContextMenuButtonConfig(
+            'Copy Technical ID${selectedIDs.length > 1 ? 's' : ''}',
+            icon: Icon(
+              MdiIcons.contentCopy,
+              size: 16.0,
             ),
-          ],
-        );
-      },
+            onPressed: () async {
+              final ids = selectedIDs.toList();
+
+              ids.insert(0, 'Collection IDs:');
+
+              await Clipboard.setData(
+                ClipboardData(
+                  text: ids.join('\n'),
+                ),
+              );
+
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.success,
+                message:
+                    // ignore: lines_longer_than_80_chars
+                    'Technical ID${ids.length > 1 ? 's' : ''} copied to clipboard!',
+              );
+            },
+          ),
+          ContextMenuButtonConfig(
+            'Copy Collection Name${selectedIDs.length > 1 ? 's' : ''}',
+            icon: Icon(
+              MdiIcons.contentCopy,
+              size: 16.0,
+            ),
+            onPressed: () async {
+              final names = widget.collections
+                  .where((_) => selectedIDs.contains(_.id))
+                  .map((_) => _.name)
+                  .toList();
+
+              names.insert(0, 'Collection Names:');
+
+              await Clipboard.setData(
+                ClipboardData(
+                  text: names.join('\n'),
+                ),
+              );
+
+              Toast.showNotification(
+                showDuration: const Duration(seconds: 3),
+                type: ToastTypeEnum.success,
+                message:
+                    // ignore: lines_longer_than_80_chars
+                    'Collection Name${names.length > 1 ? 's' : ''} copied to clipboard!',
+              );
+            },
+          ),
+          null, // divider
+          ContextMenuButtonConfig(
+            'Edit collection...',
+            icon: Icon(
+              MdiIcons.pencil,
+              size: 16.0,
+            ),
+            onPressed: canEdit && (firstSelected != null)
+                ? () {
+                    _showEditCollectionDialog(
+                      context: context,
+                      model: firstSelected,
+                    );
+                  }
+                : null,
+          ),
+          null, // divider
+          if (selectedIDs.any((_) => !favorites.contains(_)))
+            ContextMenuButtonConfig(
+              // ignore: lines_longer_than_80_chars
+              'Add selected collection${selectedIDs.length > 1 ? 's' : ''} to favorites',
+              icon: Icon(
+                MdiIcons.starPlus,
+                size: 16.0,
+              ),
+              onPressed: () => widget.onAddSelectedToFavorites(
+                selectedIDs,
+              ),
+            ),
+          if (selectedIDs.any((_) => favorites.contains(_)))
+            ContextMenuButtonConfig(
+              // ignore: lines_longer_than_80_chars
+              'Remove selected collection${selectedIDs.length > 1 ? 's' : ''} from favorites',
+              icon: Icon(
+                MdiIcons.starMinus,
+                size: 16.0,
+              ),
+              onPressed: () => widget.onRemoveSelectedFromFavorites(
+                selectedIDs,
+              ),
+            ),
+          null, // divider
+          ContextMenuButtonConfig(
+            'Delete selected collection${selectedIDs.length > 1 ? 's' : ''}',
+            shortcutLabel: 'Del',
+            icon: Icon(
+              MdiIcons.closeThick,
+              size: 16.0,
+            ),
+            onPressed: canDelete
+                ? () => widget.onDeleteSelected(
+                      selectedIDs,
+                    )
+                : null,
+          ),
+          null, // divider
+        ],
+        ContextMenuButtonConfig(
+          'Select All',
+          shortcutLabel: 'Ctrl+A, Cmd+A',
+          icon: Icon(
+            MdiIcons.selectAll,
+            size: 18.0,
+          ),
+          onPressed: () => _selectAll(),
+        ),
+        ContextMenuButtonConfig(
+          'Deselect All',
+          shortcutLabel: 'Ctrl+D, Cmd+D',
+          icon: Icon(
+            MdiIcons.selectRemove,
+            size: 18.0,
+          ),
+          onPressed: selectedIDs.isNotEmpty ? () => _deselectAll() : null,
+        ),
+      ],
     );
   }
 
@@ -340,7 +391,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
       minWidth: (constraints.maxWidth < 1200) ? 1200 : null,
       columns: [
         DataColumn2(
-          fixedWidth: (rowHeight - 10.0) * (16.0 / 9.0),
+          fixedWidth: ((rowHeight - 10.0) * (16.0 / 9.0)).floorToDouble(),
           label: Container(
             constraints: const BoxConstraints.expand(),
           ),
@@ -491,7 +542,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                 controller: widget.scrollController,
                 builder: (context) => FileThumbnail(
                   url:
-                      '${widget.config.apiBaseUrl}/collection/${model.id}/thumbnail',
+                      '${GetIt.instance<Config>().apiBaseUrl}/collection/${model.id}/thumbnail',
                   errorWidget: Center(
                     child: Icon(
                       MdiIcons.imageMultiple,
@@ -531,6 +582,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                     children: [
                       Text(
                         model.name,
+                        style: theme.textTheme.titleSmall,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
                       ),
@@ -543,7 +595,9 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             softWrap: false,
-                            style: theme.textTheme.labelSmall,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontSize: 13.0,
+                            ),
                           ),
                         ),
                       ],
@@ -624,7 +678,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
             constraints: const BoxConstraints.expand(),
             child: Center(
               child: Text(
-                DateFormat.yMd().add_jms().format(model.createdAt),
+                DateFormat.yMd().add_jms().format(model.createdAt.toLocal()),
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
               ),
@@ -636,7 +690,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
             constraints: const BoxConstraints.expand(),
             child: Center(
               child: Text(
-                DateFormat.yMd().add_jms().format(model.updatedAt),
+                DateFormat.yMd().add_jms().format(model.updatedAt.toLocal()),
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
               ),
@@ -691,7 +745,12 @@ class _CollectionDataViewState extends State<CollectionDataView> {
 
     widget.onSelectionChanged(selectedIDs);
 
-    context.contextMenuOverlay.show(_buildContextMenu(context));
+    context.contextMenuOverlay.show(
+      _buildContextMenu(
+        context: context,
+        selectedIDs: selectedIDs,
+      ),
+    );
   }
 
   void _onDataRowSelectChanged({
@@ -790,6 +849,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
           child: Center(
             child: EditCollectionModal(
               theme: Theme.of(context),
+              permissions: widget.permissions,
               model: model,
               onCancel: () {
                 Navigator.of(context).pop();

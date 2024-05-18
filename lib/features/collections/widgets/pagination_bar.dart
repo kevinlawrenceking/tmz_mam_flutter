@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/pagination_info.dart';
 import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/create_collection_modal.dart';
@@ -13,7 +14,12 @@ class PaginationBar extends StatelessWidget {
   static final kResultsPerPage = [10, 25, 50, 100, 250];
   static const kDefaultResultsPerPage = 100;
 
-  const PaginationBar({super.key});
+  final AccessControlPermissionMapModel? permissions;
+
+  const PaginationBar({
+    super.key,
+    required this.permissions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -414,6 +420,7 @@ class PaginationBar extends StatelessWidget {
           child: Center(
             child: CreateCollectionModal(
               theme: Theme.of(context),
+              permissions: permissions,
               onCancel: () {
                 Navigator.of(context).pop();
               },

@@ -2,19 +2,25 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
+import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
 
 class EditCollectionForm extends StatefulWidget {
+  final AccessControlPermissionMapModel? permissions;
+  final CollectionModel model;
   final TextEditingController nameController;
   final TextEditingController descriptionController;
-  final ValueNotifier<bool> visibilityController;
+  final ValueNotifier<bool> isPrivateController;
   final ValueNotifier<bool> autoClearController;
 
   const EditCollectionForm({
     super.key,
+    required this.permissions,
+    required this.model,
     required this.nameController,
     required this.descriptionController,
-    required this.visibilityController,
+    required this.isPrivateController,
     required this.autoClearController,
   });
 
@@ -160,7 +166,17 @@ class _EditCollectionFormState extends State<EditCollectionForm> {
               child: Row(
                 children: [
                   AnimatedToggleSwitch.dual(
-                    current: widget.visibilityController.value,
+                    active: (() {
+                      if (widget.permissions?.collections.canCreate ?? false) {
+                        return true;
+                      } else if (widget.model.ownedBy.userID ==
+                          widget.permissions?.userID) {
+                        return !widget.isPrivateController.value;
+                      }
+
+                      return false;
+                    })(),
+                    current: widget.isPrivateController.value,
                     first: false,
                     second: true,
                     height: 30,
@@ -213,7 +229,7 @@ class _EditCollectionFormState extends State<EditCollectionForm> {
                     },
                     onChanged: (value) {
                       setState(() {
-                        widget.visibilityController.value = value;
+                        widget.isPrivateController.value = value;
                       });
                     },
                   ),
@@ -229,7 +245,7 @@ class _EditCollectionFormState extends State<EditCollectionForm> {
                       color: theme.colorScheme.primary.withAlpha(40),
                       shadows: kElevationToShadow[1],
                     ),
-                    crossFadeState: widget.visibilityController.value
+                    crossFadeState: widget.isPrivateController.value
                         ? CrossFadeState.showFirst
                         : CrossFadeState.showSecond,
                     duration: const Duration(milliseconds: 200),

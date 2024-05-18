@@ -1,14 +1,14 @@
-part of 'bloc.dart';
+part of 'assets_bloc.dart';
 
 @immutable
-abstract class BlocState extends Equatable {
+abstract class AssetsBlocState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class InitialState extends BlocState {}
+class InitialState extends AssetsBlocState {}
 
-class AddAssetsToCollectionFailureState extends BlocState {
+class AddAssetsToCollectionFailureState extends AssetsBlocState {
   final Failure failure;
 
   AddAssetsToCollectionFailureState(this.failure);
@@ -17,7 +17,7 @@ class AddAssetsToCollectionFailureState extends BlocState {
   List<Object?> get props => [failure];
 }
 
-class AddAssetsToCollectionSuccessState extends BlocState {
+class AddAssetsToCollectionSuccessState extends AssetsBlocState {
   final String _stateID;
 
   AddAssetsToCollectionSuccessState() : _stateID = const Uuid().v4();
@@ -26,7 +26,7 @@ class AddAssetsToCollectionSuccessState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
-class DeleteAssetFailureState extends BlocState {
+class DeleteAssetFailureState extends AssetsBlocState {
   final Failure failure;
 
   DeleteAssetFailureState(this.failure);
@@ -35,9 +35,9 @@ class DeleteAssetFailureState extends BlocState {
   List<Object?> get props => [failure];
 }
 
-class DeleteAssetSuccessState extends BlocState {}
+class DeleteAssetSuccessState extends AssetsBlocState {}
 
-class MoveAssetsToCollectionFailureState extends BlocState {
+class MoveAssetsToCollectionFailureState extends AssetsBlocState {
   final Failure failure;
 
   MoveAssetsToCollectionFailureState(this.failure);
@@ -46,7 +46,7 @@ class MoveAssetsToCollectionFailureState extends BlocState {
   List<Object?> get props => [failure];
 }
 
-class MoveAssetsToCollectionSuccessState extends BlocState {
+class MoveAssetsToCollectionSuccessState extends AssetsBlocState {
   final String _stateID;
 
   MoveAssetsToCollectionSuccessState() : _stateID = const Uuid().v4();
@@ -55,7 +55,7 @@ class MoveAssetsToCollectionSuccessState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
-class PaginationChangedState extends BlocState {
+class PaginationChangedState extends AssetsBlocState {
   final int offset;
   final int limit;
   final int totalRecords;
@@ -74,7 +74,7 @@ class PaginationChangedState extends BlocState {
       ];
 }
 
-class RemoveAssetsFromCollectionFailureState extends BlocState {
+class RemoveAssetsFromCollectionFailureState extends AssetsBlocState {
   final Failure failure;
 
   RemoveAssetsFromCollectionFailureState(this.failure);
@@ -83,7 +83,7 @@ class RemoveAssetsFromCollectionFailureState extends BlocState {
   List<Object?> get props => [failure];
 }
 
-class RemoveAssetsFromCollectionSuccessState extends BlocState {
+class RemoveAssetsFromCollectionSuccessState extends AssetsBlocState {
   final String _stateID;
 
   RemoveAssetsFromCollectionSuccessState() : _stateID = const Uuid().v4();
@@ -92,7 +92,7 @@ class RemoveAssetsFromCollectionSuccessState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
-class SearchFailureState extends BlocState {
+class SearchFailureState extends AssetsBlocState {
   final Failure failure;
 
   SearchFailureState(this.failure);
@@ -101,7 +101,7 @@ class SearchFailureState extends BlocState {
   List<Object?> get props => [failure];
 }
 
-class SearchResultsLoadedState extends BlocState {
+class SearchResultsLoadedState extends AssetsBlocState {
   final String _stateID;
   final List<AssetDetailsModel> assets;
 
@@ -113,4 +113,4 @@ class SearchResultsLoadedState extends BlocState {
   List<Object?> get props => [_stateID];
 }
 
-class SearchResultsLoadingState extends BlocState {}
+class SearchResultsLoadingState extends AssetsBlocState {}
