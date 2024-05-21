@@ -103,8 +103,8 @@ class _SearchViewState extends State<SearchView> {
                   state is InitialState || state is SearchResultsLoadedState,
               builder: (context, state) {
                 if (state is SearchResultsLoadedState) {
-                  if ((widget.collectionID == null) &&
-                      (_currentCollection != null)) {
+                  if ((_currentCollection != null) &&
+                      (_currentCollection!.id != widget.collectionID)) {
                     _currentCollection = null;
 
                     final assetsBloc = BlocProvider.of<AssetsBloc>(context);
@@ -112,7 +112,7 @@ class _SearchViewState extends State<SearchView> {
                     SchedulerBinding.instance.addPostFrameCallback((_) {
                       assetsBloc.add(
                         SetCurrentCollectionEvent(
-                          collectionID: null,
+                          collectionID: widget.collectionID,
                         ),
                       );
                     });
