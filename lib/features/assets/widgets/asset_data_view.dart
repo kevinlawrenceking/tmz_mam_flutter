@@ -1,6 +1,3 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:context_menus/context_menus.dart';
@@ -22,6 +19,7 @@ import 'package:tmz_damz/features/bulk_update/widgets/bulk_update_modal.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:web/web.dart' as web;
 
 class AssetDataView extends StatefulWidget {
   final ScrollController scrollController;
@@ -245,19 +243,21 @@ class _AssetDataViewState extends State<AssetDataView> {
           if (widget.selectedIDs.isNotEmpty) ...[
             ContextMenuButtonConfig(
               // ignore: lines_longer_than_80_chars
-              'Copy Technical ID${widget.selectedIDs.length > 1 ? 's' : ''}',
+              'Copy shareable link${widget.selectedIDs.length > 1 ? 's' : ''}',
               icon: Icon(
-                MdiIcons.contentCopy,
+                MdiIcons.link,
                 size: 16.0,
               ),
               onPressed: () async {
-                final ids = widget.selectedIDs.toList();
-
-                ids.insert(0, 'Asset IDs:');
+                final links = widget.selectedIDs
+                    .map(
+                      (id) => '${web.window.location.origin}/#/asset/$id',
+                    )
+                    .toList();
 
                 await Clipboard.setData(
                   ClipboardData(
-                    text: ids.join('\n'),
+                    text: links.join('\n'),
                   ),
                 );
 
@@ -266,7 +266,7 @@ class _AssetDataViewState extends State<AssetDataView> {
                   type: ToastTypeEnum.success,
                   message:
                       // ignore: lines_longer_than_80_chars
-                      'Technical ID${widget.selectedIDs.length > 1 ? 's' : ''} copied to clipboard!',
+                      'Asset link${widget.selectedIDs.length > 1 ? 's' : ''} copied to clipboard!',
                 );
               },
             ),
@@ -708,7 +708,7 @@ class _AssetDataViewState extends State<AssetDataView> {
       final url = '$apiBaseUrl/asset/${asset.id}/image/${img.id}/download';
 
       if (kIsWeb) {
-        html.window.open(url, '_blank');
+        web.window.open(url, '_blank');
       }
 
       await Future<void>.delayed(

@@ -57,10 +57,10 @@ abstract class $AppRouter extends _i7.RootStackRouter {
       );
     },
     AssetsSearchRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
+      final queryParams = routeData.queryParams;
       final args = routeData.argsAs<AssetsSearchRouteArgs>(
           orElse: () => AssetsSearchRouteArgs(
-              collectionID: pathParams.optString('collectionID')));
+              collectionID: queryParams.optString('collectionID')));
       return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i5.SearchView(
@@ -179,7 +179,7 @@ class AssetsSearchRoute extends _i7.PageRouteInfo<AssetsSearchRouteArgs> {
             key: key,
             collectionID: collectionID,
           ),
-          rawPathParams: {'collectionID': collectionID},
+          rawQueryParams: {'collectionID': collectionID},
           initialChildren: children,
         );
 

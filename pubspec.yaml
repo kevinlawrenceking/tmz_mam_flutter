@@ -53,10 +53,8 @@ dependencies:
   url_launcher_ios: ^6.2.4
   url_launcher_platform_interface: ^2.3.2
   uuid: ^4.3.3
-  window_manager: ^0.3.8
-
-dependency_overrides:
   web: ^0.5.1
+  window_manager: ^0.3.8
 
 dev_dependencies:
   auto_route_generator: ^7.3.2

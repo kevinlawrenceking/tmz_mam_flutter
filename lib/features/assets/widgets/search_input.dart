@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
+import 'package:tmz_damz/shared/widgets/content_menus/editable_text_context_menu_builder.dart';
 
 class SearchInput extends StatelessWidget {
   final TextEditingController? controller;

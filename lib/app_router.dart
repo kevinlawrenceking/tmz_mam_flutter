@@ -46,14 +46,6 @@ class AppRouter extends $AppRouter implements AutoRouteGuard {
           transitionsBuilder: _customTransition,
         ),
         CustomRoute(
-          path: '/assets/search/collection/:collectionID',
-          page: AssetsSearchRoute.page,
-          maintainState: false,
-          durationInMilliseconds: 0,
-          reverseDurationInMilliseconds: 0,
-          transitionsBuilder: _customTransition,
-        ),
-        CustomRoute(
           path: '/assets/search',
           page: AssetsSearchRoute.page,
           maintainState: false,

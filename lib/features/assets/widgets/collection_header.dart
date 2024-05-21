@@ -79,23 +79,23 @@ class CollectionHeader extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          CopyText(
                             state.model.name,
-                            style: theme.textTheme.headlineMedium,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
+                            maxLines: 1,
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           if (state.model.description.isNotEmpty) ...[
                             const SizedBox(height: 4.0),
                             Opacity(
                               opacity: 0.7,
-                              child: Text(
+                              child: CopyText(
                                 state.model.description,
                                 maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: false,
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   letterSpacing: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
@@ -103,6 +103,8 @@ class CollectionHeader extends StatelessWidget {
                         ],
                       ),
                     ),
+                    if (state.model.isPrivate || state.model.autoClear)
+                      const SizedBox(width: 20.0),
                     if (state.model.isPrivate)
                       SizedBox(
                         width: 40.0,
@@ -125,57 +127,63 @@ class CollectionHeader extends StatelessWidget {
                           ),
                         ),
                       ),
-                    const SizedBox(width: 20.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildInfoCell(
-                          context: context,
-                          theme: theme,
-                          canCopy: false,
-                          label: 'OWNER',
-                          value: () {
-                            final firstName = state.model.ownedBy.firstName;
-                            final lastName = state.model.ownedBy.lastName;
-                            return '$firstName $lastName'.trim();
-                          }(),
-                        ),
-                        _buildInfoCell(
-                          context: context,
-                          theme: theme,
-                          canCopy: false,
-                          label: 'ASSETS',
-                          value: (state.model.totalAssets > 0)
-                              ? NumberFormat('#,##0').format(
-                                  state.model.totalAssets,
-                                )
-                              : '-',
-                        ),
-                      ],
-                    ),
                     const SizedBox(width: 40.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
+                    Table(
+                      columnWidths: const {
+                        0: IntrinsicColumnWidth(),
+                        1: FixedColumnWidth(40.0),
+                        2: IntrinsicColumnWidth(),
+                      },
                       children: [
-                        _buildInfoCell(
-                          context: context,
-                          theme: theme,
-                          canCopy: false,
-                          label: 'CREATED',
-                          value: DateFormat.yMd()
-                              .add_jms()
-                              .format(state.model.createdAt.toLocal()),
+                        TableRow(
+                          children: [
+                            _buildInfoCell(
+                              context: context,
+                              theme: theme,
+                              canCopy: true,
+                              label: 'OWNER',
+                              value: () {
+                                final firstName = state.model.ownedBy.firstName;
+                                final lastName = state.model.ownedBy.lastName;
+                                return '$firstName $lastName'.trim();
+                              }(),
+                            ),
+                            const SizedBox.shrink(),
+                            _buildInfoCell(
+                              context: context,
+                              theme: theme,
+                              canCopy: true,
+                              label: 'CREATED',
+                              value: DateFormat.yMd()
+                                  .add_jms()
+                                  .format(state.model.createdAt.toLocal()),
+                            ),
+                          ],
                         ),
-                        _buildInfoCell(
-                          context: context,
-                          theme: theme,
-                          canCopy: false,
-                          label: 'UPDATED',
-                          value: DateFormat.yMd()
-                              .add_jms()
-                              .format(state.model.updatedAt.toLocal()),
+                        TableRow(
+                          children: [
+                            _buildInfoCell(
+                              context: context,
+                              theme: theme,
+                              canCopy: false,
+                              label: 'ASSETS',
+                              value: (state.model.totalAssets > 0)
+                                  ? NumberFormat('#,##0').format(
+                                      state.model.totalAssets,
+                                    )
+                                  : '-',
+                            ),
+                            const SizedBox.shrink(),
+                            _buildInfoCell(
+                              context: context,
+                              theme: theme,
+                              canCopy: true,
+                              label: 'UPDATED',
+                              value: DateFormat.yMd()
+                                  .add_jms()
+                                  .format(state.model.updatedAt.toLocal()),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -257,7 +265,6 @@ class CollectionHeader extends StatelessWidget {
               ? CopyText(
                   value,
                   maxLines: 1,
-                  softWrap: false,
                   style: theme.textTheme.bodySmall?.copyWith(
                     fontSize: 12.0,
                     fontWeight: FontWeight.w600,

@@ -47,6 +47,7 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
   @override
   Widget build(BuildContext context) {
     return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       columnWidths: const {
         0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
@@ -56,28 +57,22 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
         TableRow(
           children: [
             _buildFieldSelector(),
-            TableCell(
-              verticalAlignment: TableCellVerticalAlignment.middle,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                ),
-                child: widget.inputWidget ??
-                    DottedBorder(
-                      borderType: BorderType.RRect,
-                      color: Colors.white12,
-                      dashPattern: const [8, 4],
-                      padding: EdgeInsets.zero,
-                      radius: const Radius.circular(6.0),
-                      strokeCap: StrokeCap.round,
-                      child: const SizedBox(height: 42.0),
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
               ),
+              child: widget.inputWidget ??
+                  DottedBorder(
+                    borderType: BorderType.RRect,
+                    color: Colors.white12,
+                    dashPattern: const [8, 4],
+                    padding: EdgeInsets.zero,
+                    radius: const Radius.circular(6.0),
+                    strokeCap: StrokeCap.round,
+                    child: const SizedBox(height: 42.0),
+                  ),
             ),
-            TableCell(
-              verticalAlignment: TableCellVerticalAlignment.middle,
-              child: (widget.canAdd ? _buildAddButton() : _buildRemoveButton()),
-            ),
+            widget.canAdd ? _buildAddButton() : _buildRemoveButton(),
           ],
         ),
         if ((widget.inputWidget != null) && widget.showModeSelection)
@@ -125,45 +120,49 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
   }
 
   Widget _buildFieldSelector() {
-    return SizedBox(
-      height: 45.0,
-      width: 240.0,
-      child: DropdownSelector<AssetMetadataFieldEnum>(
-        initialValue: widget.initialField,
-        items: widget.fields,
-        itemBuilder: (value) {
-          final label = {
-                AssetMetadataFieldEnum.agency: 'Agency',
-                AssetMetadataFieldEnum.celebrityAssociated:
-                    'Celebrity (Associated)',
-                AssetMetadataFieldEnum.celebrityInPhoto: 'Celebrity (In Photo)',
-                AssetMetadataFieldEnum.credit: 'Credit',
-                AssetMetadataFieldEnum.creditLocation: 'Credit Location',
-                AssetMetadataFieldEnum.emotion: 'Emotions',
-                AssetMetadataFieldEnum.headline: 'Headline',
-                AssetMetadataFieldEnum.keywords: 'Keywords',
-                AssetMetadataFieldEnum.locationCity: 'City',
-                AssetMetadataFieldEnum.locationCountry: 'Country',
-                AssetMetadataFieldEnum.locationDescription: 'Shoot Location',
-                AssetMetadataFieldEnum.locationState: 'State',
-                AssetMetadataFieldEnum.overlay: 'Overlays',
-                AssetMetadataFieldEnum.qcNotes: 'QC Notes',
-                AssetMetadataFieldEnum.rights: 'Rights Summary',
-                AssetMetadataFieldEnum.rightsDetails: 'Rights Details',
-                AssetMetadataFieldEnum.rightsInstructions:
-                    'Rights Instructions',
-                AssetMetadataFieldEnum.shotDescription: 'Shot Description',
-              }[value] ??
-              '';
+    return TableCell(
+      verticalAlignment: TableCellVerticalAlignment.top,
+      child: SizedBox(
+        height: 45.0,
+        width: 240.0,
+        child: DropdownSelector<AssetMetadataFieldEnum>(
+          initialValue: widget.initialField,
+          items: widget.fields,
+          itemBuilder: (value) {
+            final label = {
+                  AssetMetadataFieldEnum.agency: 'Agency',
+                  AssetMetadataFieldEnum.celebrityAssociated:
+                      'Celebrity (Associated)',
+                  AssetMetadataFieldEnum.celebrityInPhoto:
+                      'Celebrity (In Photo)',
+                  AssetMetadataFieldEnum.credit: 'Credit',
+                  AssetMetadataFieldEnum.creditLocation: 'Credit Location',
+                  AssetMetadataFieldEnum.emotion: 'Emotions',
+                  AssetMetadataFieldEnum.headline: 'Headline',
+                  AssetMetadataFieldEnum.keywords: 'Keywords',
+                  AssetMetadataFieldEnum.locationCity: 'City',
+                  AssetMetadataFieldEnum.locationCountry: 'Country',
+                  AssetMetadataFieldEnum.locationDescription: 'Shoot Location',
+                  AssetMetadataFieldEnum.locationState: 'State',
+                  AssetMetadataFieldEnum.overlay: 'Overlays',
+                  AssetMetadataFieldEnum.qcNotes: 'QC Notes',
+                  AssetMetadataFieldEnum.rights: 'Rights Summary',
+                  AssetMetadataFieldEnum.rightsDetails: 'Rights Details',
+                  AssetMetadataFieldEnum.rightsInstructions:
+                      'Rights Instructions',
+                  AssetMetadataFieldEnum.shotDescription: 'Shot Description',
+                }[value] ??
+                '';
 
-          return Text(label);
-        },
-        onSelectionChanged: (value) => widget.onFieldSelected(
-          value,
-          ((_radioGroupController.myRadioGroupKey != null)
-                  ? _radioGroupController.value
-                  : null) ??
-              AssetMetadataFieldModeEnum.replace,
+            return Text(label);
+          },
+          onSelectionChanged: (value) => widget.onFieldSelected(
+            value,
+            ((_radioGroupController.myRadioGroupKey != null)
+                    ? _radioGroupController.value
+                    : null) ??
+                AssetMetadataFieldModeEnum.replace,
+          ),
         ),
       ),
     );

@@ -43,49 +43,39 @@ class PhotoInfo extends StatelessWidget {
                   children: [
                     TableRow(
                       children: [
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'TECHNICAL ID',
-                            value: model?.id ?? '',
-                          ),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'TECHNICAL ID',
+                          value: model?.id ?? '',
                         ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'ORIGINAL FILE NAME',
+                          value: model?.originalFileName ?? '',
                         ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'ORIGINAL FILE NAME',
-                            value: model?.originalFileName ?? '',
-                          ),
-                        ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: false,
-                            label: 'STATUS',
-                            value: () {
-                              switch (model?.status) {
-                                case AssetStatusEnum.available:
-                                  return 'Available';
-                                case AssetStatusEnum.deleted:
-                                  return 'Deleted';
-                                case AssetStatusEnum.processing:
-                                  return 'Processing';
-                                default:
-                                  return '-';
-                              }
-                            }(),
-                          ),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: false,
+                          label: 'STATUS',
+                          value: () {
+                            switch (model?.status) {
+                              case AssetStatusEnum.available:
+                                return 'Available';
+                              case AssetStatusEnum.deleted:
+                                return 'Deleted';
+                              case AssetStatusEnum.processing:
+                                return 'Processing';
+                              default:
+                                return '-';
+                            }
+                          }(),
                         ),
                       ],
                     ),
@@ -102,62 +92,52 @@ class PhotoInfo extends StatelessWidget {
                   children: [
                     TableRow(
                       children: [
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'CREATED BY',
-                            value: () {
-                              if (model?.createdBy != null) {
-                                final firstName = model!.createdBy.firstName;
-                                final lastName = model!.createdBy.lastName;
-                                return '$firstName $lastName';
-                              } else {
-                                return '';
-                              }
-                            }(),
-                          ),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'CREATED BY',
+                          value: () {
+                            if (model?.createdBy != null) {
+                              final firstName = model!.createdBy.firstName;
+                              final lastName = model!.createdBy.lastName;
+                              return '$firstName $lastName';
+                            } else {
+                              return '';
+                            }
+                          }(),
                         ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'CREATED',
+                          value: (() {
+                            if (model?.createdAt != null) {
+                              return DateFormat.yMd()
+                                  .add_jms()
+                                  .format(model!.createdAt.toLocal());
+                            } else {
+                              return '-';
+                            }
+                          })(),
                         ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'CREATED',
-                            value: (() {
-                              if (model?.createdAt != null) {
-                                return DateFormat.yMd()
-                                    .add_jms()
-                                    .format(model!.createdAt.toLocal());
-                              } else {
-                                return '-';
-                              }
-                            })(),
-                          ),
-                        ),
-                        const TableCell(
-                          child: SizedBox(),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'UPDATED',
-                            value: (() {
-                              if (model?.updatedAt != null) {
-                                return DateFormat.yMd()
-                                    .add_jms()
-                                    .format(model!.updatedAt.toLocal());
-                              } else {
-                                return '-';
-                              }
-                            })(),
-                          ),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'UPDATED',
+                          value: (() {
+                            if (model?.updatedAt != null) {
+                              return DateFormat.yMd()
+                                  .add_jms()
+                                  .format(model!.updatedAt.toLocal());
+                            } else {
+                              return '-';
+                            }
+                          })(),
                         ),
                       ],
                     ),
@@ -179,26 +159,20 @@ class PhotoInfo extends StatelessWidget {
                   children: [
                     TableRow(
                       children: [
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'TECHNICAL ID',
-                            value: model?.id ?? '',
-                          ),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'TECHNICAL ID',
+                          value: model?.id ?? '',
                         ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'ORIGINAL FILE NAME',
-                            value: model?.originalFileName ?? '',
-                          ),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'ORIGINAL FILE NAME',
+                          value: model?.originalFileName ?? '',
                         ),
                       ],
                     ),
@@ -217,83 +191,69 @@ class PhotoInfo extends StatelessWidget {
                   children: [
                     TableRow(
                       children: [
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'CREATED BY',
-                            value: () {
-                              if (model?.createdBy != null) {
-                                final firstName = model!.createdBy.firstName;
-                                final lastName = model!.createdBy.lastName;
-                                return '$firstName $lastName';
-                              } else {
-                                return '';
-                              }
-                            }(),
-                          ),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'CREATED BY',
+                          value: () {
+                            if (model?.createdBy != null) {
+                              final firstName = model!.createdBy.firstName;
+                              final lastName = model!.createdBy.lastName;
+                              return '$firstName $lastName';
+                            } else {
+                              return '';
+                            }
+                          }(),
                         ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: false,
-                            label: 'STATUS',
-                            value: () {
-                              switch (model?.status) {
-                                case AssetStatusEnum.available:
-                                  return 'Available';
-                                case AssetStatusEnum.processing:
-                                  return 'Processing';
-                                default:
-                                  return '-';
-                              }
-                            }(),
-                          ),
-                        ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'CREATED',
-                            value: (() {
-                              if (model?.createdAt != null) {
-                                return DateFormat.yMd()
-                                    .add_jms()
-                                    .format(model!.createdAt.toLocal());
-                              } else {
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: false,
+                          label: 'STATUS',
+                          value: () {
+                            switch (model?.status) {
+                              case AssetStatusEnum.available:
+                                return 'Available';
+                              case AssetStatusEnum.processing:
+                                return 'Processing';
+                              default:
                                 return '-';
-                              }
-                            })(),
-                          ),
+                            }
+                          }(),
                         ),
-                        const TableCell(
-                          child: SizedBox(),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'CREATED',
+                          value: (() {
+                            if (model?.createdAt != null) {
+                              return DateFormat.yMd()
+                                  .add_jms()
+                                  .format(model!.createdAt.toLocal());
+                            } else {
+                              return '-';
+                            }
+                          })(),
                         ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'UPDATED',
-                            value: (() {
-                              if (model?.updatedAt != null) {
-                                return DateFormat.yMd()
-                                    .add_jms()
-                                    .format(model!.updatedAt.toLocal());
-                              } else {
-                                return '-';
-                              }
-                            })(),
-                          ),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'UPDATED',
+                          value: (() {
+                            if (model?.updatedAt != null) {
+                              return DateFormat.yMd()
+                                  .add_jms()
+                                  .format(model!.updatedAt.toLocal());
+                            } else {
+                              return '-';
+                            }
+                          })(),
                         ),
                       ],
                     ),
@@ -329,84 +289,72 @@ class PhotoInfo extends StatelessWidget {
                   children: [
                     TableRow(
                       children: [
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'CREATED BY',
-                            value: () {
-                              if (model?.createdBy != null) {
-                                final firstName = model!.createdBy.firstName;
-                                final lastName = model!.createdBy.lastName;
-                                return '$firstName $lastName'.trim();
-                              } else {
-                                return '';
-                              }
-                            }(),
-                          ),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'CREATED BY',
+                          value: () {
+                            if (model?.createdBy != null) {
+                              final firstName = model!.createdBy.firstName;
+                              final lastName = model!.createdBy.lastName;
+                              return '$firstName $lastName'.trim();
+                            } else {
+                              return '';
+                            }
+                          }(),
                         ),
-                        const TableCell(
-                          child: SizedBox(width: 10.0),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: false,
-                            label: 'STATUS',
-                            value: () {
-                              switch (model?.status) {
-                                case AssetStatusEnum.available:
-                                  return 'Available';
-                                case AssetStatusEnum.processing:
-                                  return 'Processing';
-                                default:
-                                  return '-';
-                              }
-                            }(),
-                          ),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: false,
+                          label: 'STATUS',
+                          value: () {
+                            switch (model?.status) {
+                              case AssetStatusEnum.available:
+                                return 'Available';
+                              case AssetStatusEnum.processing:
+                                return 'Processing';
+                              default:
+                                return '-';
+                            }
+                          }(),
                         ),
                       ],
                     ),
                     TableRow(
                       children: [
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'CREATED',
-                            value: (() {
-                              if (model?.createdAt != null) {
-                                return DateFormat.yMd()
-                                    .add_jms()
-                                    .format(model!.createdAt.toLocal());
-                              } else {
-                                return '-';
-                              }
-                            })(),
-                          ),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'CREATED',
+                          value: (() {
+                            if (model?.createdAt != null) {
+                              return DateFormat.yMd()
+                                  .add_jms()
+                                  .format(model!.createdAt.toLocal());
+                            } else {
+                              return '-';
+                            }
+                          })(),
                         ),
-                        const TableCell(
-                          child: SizedBox(),
-                        ),
-                        TableCell(
-                          child: _buildCell(
-                            context: context,
-                            theme: theme,
-                            canCopy: true,
-                            label: 'UPDATED',
-                            value: (() {
-                              if (model?.updatedAt != null) {
-                                return DateFormat.yMd()
-                                    .add_jms()
-                                    .format(model!.updatedAt.toLocal());
-                              } else {
-                                return '-';
-                              }
-                            })(),
-                          ),
+                        const SizedBox.shrink(),
+                        _buildCell(
+                          context: context,
+                          theme: theme,
+                          canCopy: true,
+                          label: 'UPDATED',
+                          value: (() {
+                            if (model?.updatedAt != null) {
+                              return DateFormat.yMd()
+                                  .add_jms()
+                                  .format(model!.updatedAt.toLocal());
+                            } else {
+                              return '-';
+                            }
+                          })(),
                         ),
                       ],
                     ),
@@ -451,7 +399,6 @@ class PhotoInfo extends StatelessWidget {
               ? CopyText(
                   value,
                   maxLines: 1,
-                  softWrap: false,
                   style: theme.textTheme.bodySmall?.copyWith(
                     fontSize: 12.0,
                     fontWeight: FontWeight.w600,

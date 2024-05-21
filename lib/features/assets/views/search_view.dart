@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -30,7 +31,7 @@ class SearchView extends StatefulWidget {
 
   const SearchView({
     super.key,
-    @PathParam('collectionID') this.collectionID,
+    @QueryParam('collectionID') this.collectionID,
   });
 
   @override
@@ -101,6 +102,23 @@ class _SearchViewState extends State<SearchView> {
               buildWhen: (_, state) =>
                   state is InitialState || state is SearchResultsLoadedState,
               builder: (context, state) {
+                if (state is SearchResultsLoadedState) {
+                  if ((widget.collectionID == null) &&
+                      (_currentCollection != null)) {
+                    _currentCollection = null;
+
+                    final assetsBloc = BlocProvider.of<AssetsBloc>(context);
+
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      assetsBloc.add(
+                        SetCurrentCollectionEvent(
+                          collectionID: null,
+                        ),
+                      );
+                    });
+                  }
+                }
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

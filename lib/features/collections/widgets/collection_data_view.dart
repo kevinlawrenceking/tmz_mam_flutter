@@ -17,6 +17,7 @@ import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/scroll_aware_builder.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:web/web.dart' as web;
 
 class CollectionDataView extends StatefulWidget {
   final ScrollController scrollController;
@@ -237,19 +238,22 @@ class _CollectionDataViewState extends State<CollectionDataView> {
           ),
           null, // divider
           ContextMenuButtonConfig(
-            'Copy Technical ID${selectedIDs.length > 1 ? 's' : ''}',
+            'Copy shareable link${widget.selectedIDs.length > 1 ? 's' : ''}',
             icon: Icon(
-              MdiIcons.contentCopy,
+              MdiIcons.link,
               size: 16.0,
             ),
             onPressed: () async {
-              final ids = selectedIDs.toList();
-
-              ids.insert(0, 'Collection IDs:');
+              final links = widget.selectedIDs
+                  .map(
+                    (id) =>
+                        '${web.window.location.origin}/#/assets/search?collectionID=$id',
+                  )
+                  .toList();
 
               await Clipboard.setData(
                 ClipboardData(
-                  text: ids.join('\n'),
+                  text: links.join('\n'),
                 ),
               );
 
@@ -258,12 +262,12 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                 type: ToastTypeEnum.success,
                 message:
                     // ignore: lines_longer_than_80_chars
-                    'Technical ID${ids.length > 1 ? 's' : ''} copied to clipboard!',
+                    'Collection link${widget.selectedIDs.length > 1 ? 's' : ''} copied to clipboard!',
               );
             },
           ),
           ContextMenuButtonConfig(
-            'Copy Collection Name${selectedIDs.length > 1 ? 's' : ''}',
+            'Copy collection name${selectedIDs.length > 1 ? 's' : ''}',
             icon: Icon(
               MdiIcons.contentCopy,
               size: 16.0,
@@ -273,8 +277,6 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                   .where((_) => selectedIDs.contains(_.id))
                   .map((_) => _.name)
                   .toList();
-
-              names.insert(0, 'Collection Names:');
 
               await Clipboard.setData(
                 ClipboardData(
@@ -287,7 +289,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                 type: ToastTypeEnum.success,
                 message:
                     // ignore: lines_longer_than_80_chars
-                    'Collection Name${names.length > 1 ? 's' : ''} copied to clipboard!',
+                    'Collection name${names.length > 1 ? 's' : ''} copied to clipboard!',
               );
             },
           ),
