@@ -9,8 +9,8 @@ import 'package:tmz_damz/data/sources/picklist_celebrity.dart';
 import 'package:tmz_damz/data/sources/picklist_keyword.dart';
 import 'package:uuid/uuid.dart';
 
-part 'metadata_bloc_event.dart';
-part 'metadata_bloc_state.dart';
+part 'event.dart';
+part 'state.dart';
 
 class MetadataBloc extends Bloc<MetadataBlocEvent, MetadataBlocState> {
   final IPicklistAgencyDataSource picklistAgencyDataSource;

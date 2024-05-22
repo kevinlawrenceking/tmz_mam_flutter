@@ -23,6 +23,8 @@ import 'package:tmz_damz/features/bulk_update/service_locator.dart'
     as bulk_update;
 import 'package:tmz_damz/features/collections/service_locator.dart'
     as collections;
+import 'package:tmz_damz/features/metadata_picklists/service_locator.dart'
+    as metadata_picklists;
 import 'package:tmz_damz/features/user_collections/service_locator.dart'
     as user_collections;
 import 'package:tmz_damz/shared/bloc/global_bloc.dart';
@@ -80,6 +82,7 @@ Future<void> initServiceLocator() async {
   assets.ServiceLocator.init();
   bulk_update.ServiceLocator.init();
   collections.ServiceLocator.init();
+  metadata_picklists.ServiceLocator.init();
   user_collections.ServiceLocator.init();
   authentication.ServiceLocator.init();
 

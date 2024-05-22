@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_metadata_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_agency_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_celebrity_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/features/bulk_update/bloc/bloc.dart';
 import 'package:tmz_damz/features/bulk_update/widgets/metadata_field_input.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 

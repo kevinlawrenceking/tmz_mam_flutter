@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tmz_damz/data/models/picklist_celebrity.dart';
-import 'package:tmz_damz/features/asset_import/bloc/metadata_bloc.dart';
-import 'package:tmz_damz/features/asset_import/widgets/tag_field.dart';
+import 'package:tmz_damz/data/models/picklist_agency.dart';
+import 'package:tmz_damz/features/metadata_picklists/bloc/bloc.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/tag_field.dart';
 
-class PicklistCelebrityTagField extends StatefulWidget {
+class PicklistAgencyTagField extends StatefulWidget {
   final FocusNode? focusNode;
   final bool enabled;
   final List<String> tags;
   final void Function(List<String> tags) onChange;
 
-  const PicklistCelebrityTagField({
+  const PicklistAgencyTagField({
     super.key,
     this.focusNode,
     this.enabled = true,
@@ -20,11 +20,10 @@ class PicklistCelebrityTagField extends StatefulWidget {
   });
 
   @override
-  State<PicklistCelebrityTagField> createState() =>
-      _PicklistCelebrityTagFieldState();
+  State<PicklistAgencyTagField> createState() => _PicklistAgencyTagFieldState();
 }
 
-class _PicklistCelebrityTagFieldState extends State<PicklistCelebrityTagField> {
+class _PicklistAgencyTagFieldState extends State<PicklistAgencyTagField> {
   final _fieldKey = UniqueKey();
 
   @override
@@ -32,11 +31,11 @@ class _PicklistCelebrityTagFieldState extends State<PicklistCelebrityTagField> {
     return BlocProvider(
       create: (context) => GetIt.instance<MetadataBloc>(),
       child: BlocBuilder<MetadataBloc, MetadataBlocState>(
-        buildWhen: (_, state) => state is CelebrityPicklistState,
+        buildWhen: (_, state) => state is AgencyPicklistState,
         builder: (context, state) {
-          List<PicklistCelebrityModel> picklist;
+          List<PicklistAgencyModel> picklist;
 
-          if (state is CelebrityPicklistState) {
+          if (state is AgencyPicklistState) {
             picklist = state.picklist;
           } else {
             picklist = [];
@@ -46,7 +45,7 @@ class _PicklistCelebrityTagFieldState extends State<PicklistCelebrityTagField> {
             fieldKey: _fieldKey,
             focusNode: widget.focusNode,
             enabled: widget.enabled,
-            hintText: 'Add celebrity...',
+            hintText: 'Add agency...',
             tags: widget.tags,
             suggestions: picklist.map((_) => _.name).toList(),
             labelProvider: (tag) {
@@ -58,7 +57,7 @@ class _PicklistCelebrityTagFieldState extends State<PicklistCelebrityTagField> {
             onChange: widget.onChange,
             onSearchTextChanged: (query) {
               BlocProvider.of<MetadataBloc>(context).add(
-                RetrieveCelebrityPicklistEvent(
+                RetrieveAgencyPicklistEvent(
                   searchTerm: query,
                 ),
               );

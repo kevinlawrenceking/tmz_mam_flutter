@@ -1,4 +1,4 @@
-part of 'metadata_bloc.dart';
+part of 'bloc.dart';
 
 @immutable
 abstract class MetadataBlocEvent extends Equatable {

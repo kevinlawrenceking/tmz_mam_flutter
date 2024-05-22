@@ -3,9 +3,9 @@ import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_agency_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_celebrity_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
 
 class MetadataForm extends StatefulWidget {
   final MetadataFormController controller;

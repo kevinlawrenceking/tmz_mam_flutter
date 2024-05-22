@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:tmz_damz/features/asset_import/bloc/file_bloc.dart';
-import 'package:tmz_damz/features/asset_import/bloc/session_bloc.dart';
+import 'package:tmz_damz/features/metadata_picklists/bloc/bloc.dart';
 
 class ServiceLocator {
   static bool _initialized = false;
@@ -13,14 +12,10 @@ class ServiceLocator {
     final sl = GetIt.instance;
 
     sl.registerFactory(
-      () => FileBloc(
-        assetImportSessionDataSource: sl(),
-      ),
-    );
-
-    sl.registerFactory(
-      () => SessionBloc(
-        assetImportSessionDataSource: sl(),
+      () => MetadataBloc(
+        picklistAgencyDataSource: sl(),
+        picklistCelebrityDataSource: sl(),
+        picklistKeywordDataSource: sl(),
       ),
     );
 
