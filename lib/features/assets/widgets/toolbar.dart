@@ -6,7 +6,7 @@ import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/search_input.dart';
 import 'package:tmz_damz/features/assets/widgets/sort_options.dart';
 import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
-import 'package:tmz_damz/features/assets/widgets/toolbar_button.dart';
+import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 class Toolbar extends StatefulWidget {
   final TextEditingController? searchTermController;

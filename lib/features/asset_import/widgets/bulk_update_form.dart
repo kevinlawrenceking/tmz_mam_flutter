@@ -8,7 +8,7 @@ import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.
 import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
 import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
 import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
-import 'package:tmz_damz/shared/widgets/editable_text_context_menu_builder.dart';
+import 'package:tmz_damz/shared/widgets/content_menus/editable_text_context_menu_builder.dart';
 
 class BulkUpdateForm extends StatefulWidget {
   final BulkUpdateFormController controller;

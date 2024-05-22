@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:tmz_damz/features/assets/widgets/toolbar_button.dart';
+import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 enum ThumbnailSizeEnum {
   small,

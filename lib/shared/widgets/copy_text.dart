@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/shared/widgets/content_menus/selectable_region_context_menu_builder.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
 class CopyText extends StatefulWidget {
@@ -8,7 +9,6 @@ class CopyText extends StatefulWidget {
   final TextStyle? style;
   final int? maxLines;
   final TextOverflow? overflow;
-  final bool? softWrap;
 
   const CopyText(
     this.text, {
@@ -16,7 +16,6 @@ class CopyText extends StatefulWidget {
     this.style,
     this.maxLines,
     this.overflow,
-    this.softWrap,
   });
 
   @override
@@ -27,6 +26,7 @@ class _CopyTextState extends State<CopyText> {
   late FocusNode _focusNode;
 
   bool _copyButtonHover = false;
+  String? _selectedText;
 
   @override
   void dispose() {
@@ -58,16 +58,33 @@ class _CopyTextState extends State<CopyText> {
       children: [
         _buildCopyButton(),
         const SizedBox(width: 2.0),
-        Expanded(
+        Flexible(
           child: Focus(
             focusNode: _focusNode,
-            child: SelectableText(
-              widget.text,
-              key: UniqueKey(),
-              style: widget.style?.copyWith(
+            child: SelectionArea(
+              contextMenuBuilder: (context, selectableRegionState) =>
+                  kSelectableRegionContextMenuBuilder(
+                context,
+                selectableRegionState,
+                () async {
+                  if (_selectedText == null) {
+                    return;
+                  }
+
+                  await _onCopyText(_selectedText!);
+                },
+              ),
+              onSelectionChanged: (value) {
+                setState(() {
+                  _selectedText = value?.plainText;
+                });
+              },
+              child: Text(
+                widget.text,
+                style: widget.style,
+                maxLines: widget.maxLines,
                 overflow: widget.overflow,
               ),
-              maxLines: widget.maxLines,
             ),
           ),
         ),
@@ -89,17 +106,7 @@ class _CopyTextState extends State<CopyText> {
           child: GestureDetector(
             behavior: HitTestBehavior.deferToChild,
             onTap: () async {
-              await Clipboard.setData(
-                ClipboardData(
-                  text: widget.text,
-                ),
-              );
-
-              Toast.showNotification(
-                showDuration: const Duration(seconds: 3),
-                type: ToastTypeEnum.success,
-                message: 'Value copied to clipboard!',
-              );
+              await _onCopyText(widget.text);
             },
             child: Align(
               alignment: Alignment.centerLeft,
@@ -119,6 +126,20 @@ class _CopyTextState extends State<CopyText> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _onCopyText(String text) async {
+    await Clipboard.setData(
+      ClipboardData(
+        text: text,
+      ),
+    );
+
+    Toast.showNotification(
+      showDuration: const Duration(seconds: 3),
+      type: ToastTypeEnum.success,
+      message: 'Value copied to clipboard!',
     );
   }
 }

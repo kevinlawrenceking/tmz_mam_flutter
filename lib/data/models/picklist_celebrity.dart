@@ -40,7 +40,8 @@ class PicklistCelebrityModel extends Equatable {
       status: PicklistCelebrityStatusEnum.fromJsonDtoValue(dto?['status']),
       createdBy: UserMetaModel.fromJsonDto(dto?['created_by']),
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       name: dto?['name'] ?? '',
     );

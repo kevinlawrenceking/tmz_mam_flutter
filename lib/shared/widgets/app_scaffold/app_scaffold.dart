@@ -128,10 +128,9 @@ class _AppScaffoldState extends State<AppScaffold>
       _MenuItem(
         icon: MdiIcons.folderMultiple,
         title: 'Collections',
-        isActive:
-            false /* widget.router.current.name == CollectionsRoute.name */,
+        isActive: widget.router.current.name == CollectionsViewRoute.name,
         onTap: () {
-          // widget.router.navigate(const CollectionsRoute());
+          widget.router.navigate(const CollectionsViewRoute());
         },
       ),
       _MenuItem(

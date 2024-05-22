@@ -10,10 +10,12 @@ class CollectionModel extends Equatable {
   final String name;
   final String description;
   final DateTime createdAt;
+  final DateTime updatedAt;
   final bool deleted;
   final UserMetaModel? deletedBy;
   final DateTime? deletedAt;
   final Int32 totalAssets;
+  final bool favorited;
 
   const CollectionModel({
     required this.id,
@@ -23,10 +25,12 @@ class CollectionModel extends Equatable {
     required this.name,
     required this.description,
     required this.createdAt,
+    required this.updatedAt,
     required this.deleted,
     required this.deletedBy,
     required this.deletedAt,
     required this.totalAssets,
+    required this.favorited,
   });
 
   static CollectionModel fromJsonDto(
@@ -40,7 +44,12 @@ class CollectionModel extends Equatable {
       name: dto?['name'] ?? '',
       description: dto?['description'] ?? '',
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
+      ),
+      updatedAt: DateTime.parse(
+        dto?['updated_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       deleted: dto?['deleted'] ?? false,
       deletedBy: dto?['deleted_by'] != null
@@ -48,6 +57,7 @@ class CollectionModel extends Equatable {
           : null,
       deletedAt: DateTime.tryParse(dto?['deleted_at'] ?? ''),
       totalAssets: Int32(dto?['total_assets'] ?? 0),
+      favorited: dto?['favorited'] ?? false,
     );
   }
 
@@ -60,9 +70,35 @@ class CollectionModel extends Equatable {
         name,
         description,
         createdAt,
+        updatedAt,
         deleted,
         deletedBy,
         deletedAt,
         totalAssets,
+        favorited,
       ];
+
+  CollectionModel copyWith({
+    bool? isPrivate,
+    bool? autoClear,
+    String? name,
+    String? description,
+    bool? favorited,
+  }) {
+    return CollectionModel(
+      id: id,
+      ownedBy: ownedBy.copy(),
+      isPrivate: isPrivate ?? this.isPrivate,
+      autoClear: autoClear ?? this.autoClear,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      createdAt: createdAt.add(Duration.zero),
+      updatedAt: updatedAt.add(Duration.zero),
+      deleted: deleted,
+      deletedBy: deletedBy?.copy(),
+      deletedAt: deletedAt?.add(Duration.zero),
+      totalAssets: totalAssets,
+      favorited: favorited ?? this.favorited,
+    );
+  }
 }

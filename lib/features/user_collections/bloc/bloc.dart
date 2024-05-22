@@ -84,14 +84,12 @@ class UserCollectionsBloc extends Bloc<BlocEvent, BlocState> {
 
     addResult.fold(
       (failure) => emit(AddCollectionToFavoritesFailureState(failure)),
-      (_) {},
+      (_) => emit(CreateCollectionSuccessState()),
     );
 
     if (addResult.isLeft()) {
       return;
     }
-
-    emit(CreateCollectionSuccessState());
 
     final fetchResult = await userCollectionDataSource.getCollectionList();
 

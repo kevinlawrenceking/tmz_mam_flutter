@@ -60,10 +60,12 @@ class AssetDetailsModel extends Equatable {
       status: AssetStatusEnum.fromJsonDtoValue(dto?['status']),
       createdBy: UserMetaModel.fromJsonDto(dto?['created_by']),
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       updatedAt: DateTime.parse(
-        dto?['updated_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['updated_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       originalFileName: dto?['original_file_name'] ?? '',
       headline: dto?['headline'] ?? '',

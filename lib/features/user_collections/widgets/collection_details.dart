@@ -15,72 +15,56 @@ class CollectionDetails extends StatelessWidget {
     return Table(
       columnWidths: const {
         0: IntrinsicColumnWidth(),
-        1: FixedColumnWidth(10.0),
+        1: FixedColumnWidth(20.0),
         2: FlexColumnWidth(),
       },
       children: [
         TableRow(
           children: [
-            const TableCell(
-              child: Opacity(
-                opacity: 0.4,
-                child: Text('CREATED AT'),
-              ),
+            const Opacity(
+              opacity: 0.4,
+              child: Text('CREATED AT'),
             ),
-            const TableCell(child: SizedBox()),
-            TableCell(
-              child: Text(
-                DateFormat.yMMMMd().add_jms().format(model.createdAt.toLocal()),
-              ),
+            const SizedBox.shrink(),
+            Text(
+              DateFormat.yMMMMd().add_jms().format(model.createdAt.toLocal()),
             ),
           ],
         ),
         TableRow(
           children: [
-            const TableCell(
-              child: Opacity(
-                opacity: 0.4,
-                child: Text('OWNED BY'),
-              ),
+            const Opacity(
+              opacity: 0.4,
+              child: Text('OWNED BY'),
             ),
-            const TableCell(child: SizedBox()),
-            TableCell(
-              child: Text(
-                '${model.ownedBy.firstName} '
-                '${model.ownedBy.lastName}',
-              ),
+            const SizedBox.shrink(),
+            Text(
+              '${model.ownedBy.firstName} '
+              '${model.ownedBy.lastName}',
             ),
           ],
         ),
         TableRow(
           children: [
-            const TableCell(
-              child: Opacity(
-                opacity: 0.4,
-                child: Text('TYPE'),
-              ),
+            const Opacity(
+              opacity: 0.4,
+              child: Text('TYPE'),
             ),
-            const TableCell(child: SizedBox()),
-            TableCell(
-              child: Text(
-                model.isPrivate ? 'PRIVATE' : 'PUBLIC',
-              ),
+            const SizedBox.shrink(),
+            Text(
+              model.isPrivate ? 'PRIVATE' : 'PUBLIC',
             ),
           ],
         ),
         TableRow(
           children: [
-            const TableCell(
-              child: Opacity(
-                opacity: 0.4,
-                child: Text('TOTAL ASSETS'),
-              ),
+            const Opacity(
+              opacity: 0.4,
+              child: Text('TOTAL ASSETS'),
             ),
-            const TableCell(child: SizedBox()),
-            TableCell(
-              child: Text(
-                model.totalAssets.toString(),
-              ),
+            const SizedBox.shrink(),
+            Text(
+              model.totalAssets.toString(),
             ),
           ],
         ),

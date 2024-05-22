@@ -89,7 +89,8 @@ class AssetImportSessionFileModel extends Equatable {
       id: dto?['id'] ?? '',
       sessionID: dto?['session_id'] ?? '',
       uploadedAt: DateTime.parse(
-        dto?['uploaded_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['uploaded_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       status: AssetImportSessionFileStatusEnum.fromJsonDtoValue(dto?['status']),
       originalFileName: dto?['original_file_name'] ?? '',
@@ -145,10 +146,12 @@ class AssetImportSessionFileInfoModel extends Equatable {
       mimeType: dto?['mime_type'] ?? '',
       sizeOnDisk: Int64(dto?['size_on_disk'] ?? 0),
       createdAt: DateTime.parse(
-        dto?['created_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['created_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
       modifiedAt: DateTime.parse(
-        dto?['modified_at'] ?? DateTime.fromMillisecondsSinceEpoch(0),
+        dto?['modified_at'] ??
+            DateTime.fromMillisecondsSinceEpoch(0).toIso8601String(),
       ),
     );
   }

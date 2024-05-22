@@ -1,14 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/app_router.gr.dart';
+import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/asset_details/widgets/asset_details.dart';
-import 'package:tmz_damz/features/assets/bloc/bloc.dart';
+import 'package:tmz_damz/features/assets/bloc/assets_bloc.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_data_view.dart';
+import 'package:tmz_damz/features/assets/widgets/collection_header.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/pagination_bar.dart';
 import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
@@ -25,7 +31,7 @@ class SearchView extends StatefulWidget {
 
   const SearchView({
     super.key,
-    @PathParam('collectionID') this.collectionID,
+    @QueryParam('collectionID') this.collectionID,
   });
 
   @override
@@ -35,9 +41,6 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
-  static const kDefaultResultsPerPage = 100;
-
-  late final FocusNode _focusNode;
   late final ScrollController _scrollController;
   late final TextEditingController _searchTermController;
 
@@ -50,13 +53,12 @@ class _SearchViewState extends State<SearchView> {
   bool _favoritesVisible = false;
   bool _assetDetailsVisible = false;
 
-  String? _collectionID;
   List<String> _selectedIDs = [];
-  AssetDetailsModel? _currentModel;
+  AssetDetailsModel? _currentAsset;
+  CollectionModel? _currentCollection;
 
   @override
   void dispose() {
-    _focusNode.dispose();
     _scrollController.dispose();
     _searchTermController.dispose();
 
@@ -67,64 +69,109 @@ class _SearchViewState extends State<SearchView> {
   void initState() {
     super.initState();
 
-    _focusNode = FocusNode();
     _scrollController = ScrollController();
     _searchTermController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AssetsBloc>(
-      create: (context) {
-        final bloc = GetIt.instance<AssetsBloc>();
+    final auth = GetIt.instance<IAuthDataSource>();
 
-        bloc.add(
-          PaginationChangedEvent(
-            limit: kDefaultResultsPerPage,
-            offset: 0,
-          ),
+    return FutureBuilder(
+      future: auth.getPermissions(),
+      builder: (_, snapshot) {
+        final permissions = snapshot.data?.fold(
+          (failure) => null,
+          (permissions) => permissions,
         );
 
-        return bloc;
-      },
-      child: _buildAssetsBlocListener(
-        child: BlocBuilder<AssetsBloc, BlocState>(
-          buildWhen: (_, state) =>
-              state is InitialState || state is SearchResultsLoadedState,
-          builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildToolbar(),
-                const PaginationBar(),
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _buildCollections(
-                        blocContext: context,
-                      ),
-                      _buildCollectionsSplitter(),
-                      Expanded(
-                        child: _buildSearchResults(),
-                      ),
-                      if (_currentModel != null) _buildAssetDetailsSplitter(),
-                      _buildAssetDetails(),
-                    ],
-                  ),
-                ),
-              ],
+        return BlocProvider<AssetsBloc>(
+          create: (context) {
+            final bloc = GetIt.instance<AssetsBloc>();
+
+            bloc.add(
+              SetCurrentCollectionEvent(
+                collectionID: widget.collectionID,
+              ),
             );
+
+            return bloc;
           },
-        ),
-      ),
+          child: _buildAssetsBlocListener(
+            child: BlocBuilder<AssetsBloc, AssetsBlocState>(
+              buildWhen: (_, state) =>
+                  state is InitialState || state is SearchResultsLoadedState,
+              builder: (context, state) {
+                if (state is SearchResultsLoadedState) {
+                  if ((_currentCollection != null) &&
+                      (_currentCollection!.id != widget.collectionID)) {
+                    _currentCollection = null;
+
+                    final assetsBloc = BlocProvider.of<AssetsBloc>(context);
+
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      assetsBloc.add(
+                        SetCurrentCollectionEvent(
+                          collectionID: widget.collectionID,
+                        ),
+                      );
+                    });
+                  }
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.collectionID != null)
+                      CollectionHeader(
+                        key: ValueKey(widget.collectionID!),
+                        collectionID: widget.collectionID!,
+                        onCollectionLoaded: (collection) {
+                          if (!mounted) {
+                            return;
+                          }
+
+                          setState(() {
+                            _currentCollection = collection;
+                          });
+                        },
+                      ),
+                    _buildToolbar(),
+                    const PaginationBar(),
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildCollections(
+                            context: context,
+                            permissions: permissions,
+                          ),
+                          _buildCollectionsSplitter(),
+                          Expanded(
+                            child: _buildSearchResults(
+                              permissions: permissions,
+                            ),
+                          ),
+                          if (_currentAsset != null)
+                            _buildAssetDetailsSplitter(),
+                          _buildAssetDetails(),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
-  BlocListener<AssetsBloc, BlocState> _buildAssetsBlocListener({
+  BlocListener<AssetsBloc, AssetsBlocState> _buildAssetsBlocListener({
     required Widget child,
   }) {
-    return BlocListener<AssetsBloc, BlocState>(
+    return BlocListener<AssetsBloc, AssetsBlocState>(
       listener: (context, state) {
         if (state is AddAssetsToCollectionFailureState) {
           Toast.showNotification(
@@ -186,6 +233,10 @@ class _SearchViewState extends State<SearchView> {
             message: state.failure.message,
           );
         } else if (state is SearchResultsLoadingState) {
+          if (!mounted) {
+            return;
+          }
+
           setState(() {
             _selectedIDs.clear();
           });
@@ -208,8 +259,8 @@ class _SearchViewState extends State<SearchView> {
           color: const Color(0xFF232323),
           width: expandedWidth,
           child: AssetDetails(
-            key: ValueKey(_currentModel?.id),
-            assetID: _currentModel?.id,
+            key: ValueKey(_currentAsset?.id),
+            assetID: _currentAsset?.id,
             onClose: () {
               setState(() {
                 _assetDetailsVisible = false;
@@ -258,7 +309,8 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget _buildCollections({
-    required BuildContext blocContext,
+    required BuildContext context,
+    required AccessControlPermissionMapModel? permissions,
   }) {
     const expandedWidth = 300.0;
 
@@ -272,12 +324,24 @@ class _SearchViewState extends State<SearchView> {
           color: const Color(0xFF232323),
           width: expandedWidth,
           child: UserCollections(
-            onSelectionChanged: (model) {
-              _collectionID = model?.id;
+            permissions: permissions,
+            selectedCollectionID: widget.collectionID,
+            onSelectionChanged: (selectedID) async {
+              final assetsBloc = BlocProvider.of<AssetsBloc>(context);
 
-              BlocProvider.of<AssetsBloc>(blocContext).add(
+              setState(() {
+                _currentCollection = null;
+              });
+
+              await AutoRouter.of(context).navigate(
+                AssetsSearchRoute(
+                  collectionID: selectedID,
+                ),
+              );
+
+              assetsBloc.add(
                 SetCurrentCollectionEvent(
-                  collectionID: model?.id,
+                  collectionID: selectedID,
                 ),
               );
             },
@@ -323,8 +387,10 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
-  Widget _buildSearchResults() {
-    return BlocBuilder<AssetsBloc, BlocState>(
+  Widget _buildSearchResults({
+    required AccessControlPermissionMapModel? permissions,
+  }) {
+    return BlocBuilder<AssetsBloc, AssetsBlocState>(
       buildWhen: (_, state) =>
           state is SearchFailureState ||
           state is SearchResultsLoadedState ||
@@ -354,7 +420,8 @@ class _SearchViewState extends State<SearchView> {
             return AssetDataView(
               scrollController: _scrollController,
               config: GetIt.instance<Config>(),
-              collectionID: _collectionID,
+              permissions: permissions,
+              collection: _currentCollection,
               assets: assets,
               selectedIDs: _selectedIDs,
               layoutMode: _layoutMode,
@@ -362,19 +429,17 @@ class _SearchViewState extends State<SearchView> {
               onTap: (model) {
                 if (_assetDetailsVisible) {
                   setState(() {
-                    _currentModel = model;
+                    _currentAsset = model;
                   });
                 }
               },
               onDoubleTap: (model) {
                 setState(() {
                   _assetDetailsVisible = true;
-                  _currentModel = model;
+                  _currentAsset = model;
                 });
               },
               onSelectionChanged: (selectedIDs) {
-                _focusNode.requestFocus();
-
                 setState(() {
                   _selectedIDs = selectedIDs;
                 });
@@ -394,7 +459,8 @@ class _SearchViewState extends State<SearchView> {
                         child: AddAssetsToCollectionModal(
                           theme: theme,
                           title:
-                              'Add selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                              // ignore: lines_longer_than_80_chars
+                              'Add selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
                           onCancel: () {
                             Navigator.of(context).pop();
                           },
@@ -415,11 +481,11 @@ class _SearchViewState extends State<SearchView> {
                 );
               },
               onMoveSelectedToCollection: (selectedIDs) {
-                if ((_collectionID == null) || selectedIDs.isEmpty) {
+                if ((widget.collectionID == null) || selectedIDs.isEmpty) {
                   return;
                 }
 
-                final sourceCollectionID = _collectionID!;
+                final sourceCollectionID = widget.collectionID!;
 
                 showDialog<void>(
                   context: context,
@@ -435,7 +501,8 @@ class _SearchViewState extends State<SearchView> {
                         child: AddAssetsToCollectionModal(
                           theme: theme,
                           title:
-                              'Move selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} to collection...',
+                              // ignore: lines_longer_than_80_chars
+                              'Move selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
                           confirmButtonLabel: 'Move',
                           onCancel: () {
                             Navigator.of(context).pop();
@@ -446,6 +513,7 @@ class _SearchViewState extends State<SearchView> {
                                 showDuration: const Duration(seconds: 6),
                                 type: ToastTypeEnum.information,
                                 message:
+                                    // ignore: lines_longer_than_80_chars
                                     'You must select a collection that is not the same as the current collection.',
                               );
                               return;
@@ -475,9 +543,11 @@ class _SearchViewState extends State<SearchView> {
                 showConfirmationPrompt(
                   context: context,
                   title:
-                      'Are you sure you want to delete the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                      // ignore: lines_longer_than_80_chars
+                      'Delete asset${selectedIDs.length > 1 ? 's' : ''}...',
                   message:
-                      'This will delete the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from DAMZ.',
+                      // ignore: lines_longer_than_80_chars
+                      'Are you sure you want to delete the selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''}?',
                   onConfirm: () {
                     assetsBloc.add(
                       DeleteAssetEvent(
@@ -488,20 +558,22 @@ class _SearchViewState extends State<SearchView> {
                 );
               },
               onRemoveSelectedFromCollection: (selectedIDs) {
-                if ((_collectionID == null) || selectedIDs.isEmpty) {
+                if ((widget.collectionID == null) || selectedIDs.isEmpty) {
                   return;
                 }
 
                 showConfirmationPrompt(
                   context: context,
                   title:
-                      'Are you sure you want to remove the selected asset${selectedIDs.length > 1 ? 's' : ''}?',
+                      // ignore: lines_longer_than_80_chars
+                      'Remove asset${selectedIDs.length > 1 ? 's' : ''} from current collection...',
                   message:
-                      'This will remove the selected asset${selectedIDs.length > 1 ? 's (${selectedIDs.length})' : ''} from the active collection only.',
+                      // ignore: lines_longer_than_80_chars
+                      'Are you sure you want to remove the selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} from the current collection?',
                   onConfirm: () {
                     assetsBloc.add(
                       RemoveAssetsFromCollectionEvent(
-                        collectionID: _collectionID!,
+                        collectionID: widget.collectionID!,
                         assetIDs: selectedIDs,
                       ),
                     );
@@ -527,7 +599,7 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget _buildToolbar() {
-    return BlocBuilder<AssetsBloc, BlocState>(
+    return BlocBuilder<AssetsBloc, AssetsBlocState>(
       builder: (context, state) {
         return Toolbar(
           searchTermController: _searchTermController,
@@ -550,9 +622,9 @@ class _SearchViewState extends State<SearchView> {
 
               BlocProvider.of<AssetsBloc>(context).add(
                 SearchEvent(
+                  searchTerm: '',
                   sortField: _sortField,
                   sortDirection: _sortDirection,
-                  searchTerm: '',
                 ),
               );
             }
@@ -564,9 +636,9 @@ class _SearchViewState extends State<SearchView> {
 
             BlocProvider.of<AssetsBloc>(context).add(
               SearchEvent(
+                searchTerm: searchTerm,
                 sortField: _sortField,
                 sortDirection: _sortDirection,
-                searchTerm: searchTerm,
               ),
             );
           },

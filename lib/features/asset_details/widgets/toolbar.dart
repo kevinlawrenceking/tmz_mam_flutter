@@ -1,17 +1,19 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-
+import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection_modal.dart';
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
+import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:web/web.dart' as web;
 
 class Toolbar extends StatelessWidget {
   final AccessControlPermissionMapModel? permissions;
@@ -31,37 +33,40 @@ class Toolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 54,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color(0xFF454647),
-          ),
-          borderRadius: BorderRadius.circular(6.0),
-          color: const Color(0xFF353637),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color(0xFF454647),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              _buildBackButton(
-                context: context,
-              ),
-              const SizedBox(width: 10.0),
-              _buildAddToCollectionButton(
-                context: context,
-              ),
-              const SizedBox(width: 10.0),
-              _buildDownloadButton(),
-              const Spacer(),
-              _buildEditButton(),
-              const SizedBox(width: 10.0),
-              _buildDeleteButton(
-                context: context,
-              ),
-            ],
-          ),
+        borderRadius: BorderRadius.circular(6.0),
+        color: const Color(0xFF353637),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            _buildBackButton(
+              context: context,
+            ),
+            const SizedBox(width: 10.0),
+            _buildCopyLinkButton(),
+            const SizedBox(width: 10.0),
+            _buildAddToCollectionButton(
+              context: context,
+            ),
+            const SizedBox(width: 10.0),
+            _buildDownloadButton(),
+            const SizedBox(width: 10.0),
+            _buildOpenInNew(),
+            const Spacer(),
+            _buildEditButton(),
+            const SizedBox(width: 10.0),
+            _buildDeleteButton(
+              context: context,
+            ),
+          ],
         ),
       ),
     );
@@ -138,7 +143,7 @@ class Toolbar extends StatelessWidget {
       width: 46,
       child: IconButton(
         onPressed: () {
-          Navigator.of(context).pop();
+          AutoRouter.of(context).navigate(AssetsSearchRoute());
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
@@ -162,6 +167,51 @@ class Toolbar extends StatelessWidget {
             MdiIcons.exitToApp,
             color: const Color(0xAEFFFFFF),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCopyLinkButton() {
+    return SizedBox(
+      width: 46,
+      child: IconButton(
+        onPressed: () async {
+          final url = '${web.window.location.origin}/#/asset/${model.id}';
+
+          await Clipboard.setData(
+            ClipboardData(
+              text: url,
+            ),
+          );
+
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.success,
+            message:
+                // ignore: lines_longer_than_80_chars
+                'Asset link copied to clipboard!',
+          );
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            const Color(0x30FFFFFF),
+          ),
+          padding: MaterialStateProperty.all(EdgeInsets.zero),
+          shape: MaterialStateProperty.resolveWith(
+            (states) {
+              return RoundedRectangleBorder(
+                side: const BorderSide(
+                  color: Color(0x80000000),
+                ),
+                borderRadius: BorderRadius.circular(6.0),
+              );
+            },
+          ),
+        ),
+        icon: Icon(
+          MdiIcons.link,
+          color: const Color(0xAEFFFFFF),
         ),
       ),
     );
@@ -232,7 +282,7 @@ class Toolbar extends StatelessWidget {
                       '$apiBaseUrl/asset/${model.id}/image/${img.id}/download';
 
                   if (kIsWeb) {
-                    html.window.open(url, '_blank');
+                    web.window.open(url, '_blank');
                   }
                 }
               : null,
@@ -288,6 +338,41 @@ class Toolbar extends StatelessWidget {
             MdiIcons.textBoxEditOutline,
             color: const Color(0xAEFFFFFF),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOpenInNew() {
+    return SizedBox(
+      width: 46,
+      child: IconButton(
+        onPressed: () async {
+          final url = '${web.window.location.origin}/#/asset/${model.id}';
+
+          if (kIsWeb) {
+            web.window.open(url, '_blank');
+          }
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            const Color(0x30FFFFFF),
+          ),
+          padding: MaterialStateProperty.all(EdgeInsets.zero),
+          shape: MaterialStateProperty.resolveWith(
+            (states) {
+              return RoundedRectangleBorder(
+                side: const BorderSide(
+                  color: Color(0x80000000),
+                ),
+                borderRadius: BorderRadius.circular(6.0),
+              );
+            },
+          ),
+        ),
+        icon: Icon(
+          MdiIcons.openInNew,
+          color: const Color(0xAEFFFFFF),
         ),
       ),
     );

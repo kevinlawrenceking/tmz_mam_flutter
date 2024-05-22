@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/sort_direction_enum.dart';
-import 'package:tmz_damz/features/assets/widgets/toolbar_button.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
+import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 typedef SortOptionsChangedCallback = void Function(
   AssetSortFieldEnum field,
@@ -88,12 +88,12 @@ class SortOptions extends StatelessWidget {
     if ((initialField == AssetSortFieldEnum.createdAt) ||
         (initialField == AssetSortFieldEnum.updatedAt)) {
       icon = initialDirection == SortDirectionEnum.descending
-          ? MdiIcons.sortCalendarAscending
-          : MdiIcons.sortCalendarDescending;
+          ? MdiIcons.sortCalendarDescending
+          : MdiIcons.sortCalendarAscending;
     } else {
       icon = initialDirection == SortDirectionEnum.descending
-          ? MdiIcons.sortAlphabeticalDescendingVariant
-          : MdiIcons.sortAlphabeticalAscendingVariant;
+          ? MdiIcons.sortAlphabeticalDescending
+          : MdiIcons.sortAlphabeticalAscending;
     }
 
     return SizedBox(

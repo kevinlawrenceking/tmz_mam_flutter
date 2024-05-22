@@ -7,11 +7,13 @@ import 'package:tmz_damz/utils/service_locator.dart';
 
 class FileThumbnail extends StatefulWidget {
   final String url;
+  final Widget? errorWidget;
   final void Function(Size imageSize)? onLoaded;
 
   const FileThumbnail({
     super.key,
     required this.url,
+    this.errorWidget,
     this.onLoaded,
   });
 
@@ -53,13 +55,14 @@ class _FileThumbnailState extends State<FileThumbnail> {
             child: CircularProgressIndicator(),
           ),
         if (_error)
-          Center(
-            child: Icon(
-              MdiIcons.alert,
-              color: const Color(0xFF303030),
-              size: 40,
-            ),
-          ),
+          widget.errorWidget ??
+              Center(
+                child: Icon(
+                  MdiIcons.alert,
+                  color: const Color(0xFF303030),
+                  size: 40,
+                ),
+              ),
         if (!_error)
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
