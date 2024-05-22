@@ -8,6 +8,7 @@ import 'package:tmz_damz/features/metadata_picklists/widgets/tag_field.dart';
 class PicklistKeywordTagField extends StatefulWidget {
   final FocusNode? focusNode;
   final bool enabled;
+  final bool canAddNewtags;
   final List<String> tags;
   final void Function(List<String> tags) onChange;
 
@@ -15,6 +16,7 @@ class PicklistKeywordTagField extends StatefulWidget {
     super.key,
     this.focusNode,
     this.enabled = true,
+    required this.canAddNewtags,
     required this.tags,
     required this.onChange,
   });
@@ -46,6 +48,7 @@ class _PicklistKeywordTagFieldState extends State<PicklistKeywordTagField> {
             fieldKey: _fieldKey,
             focusNode: widget.focusNode,
             enabled: widget.enabled,
+            canAddNewtags: widget.canAddNewtags,
             hintText: 'Add keyword...',
             tags: widget.tags,
             suggestions: picklist.map((_) => _.value).toList(),

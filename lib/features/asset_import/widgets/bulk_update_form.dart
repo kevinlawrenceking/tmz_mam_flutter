@@ -272,6 +272,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistAgencyTagField(
             focusNode: _picklistAgencyTagFieldFocusNode,
             enabled: _includeAgency,
+            canAddNewtags: true,
             tags: widget.controller.agency,
             onChange: (tags) {
               setState(() {
@@ -400,6 +401,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistCelebrityTagField(
             focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
             enabled: _includeCelebrityAssociated,
+            canAddNewtags: true,
             tags: widget.controller.celebrityAssociated,
             onChange: (tags) {
               setState(() {
@@ -450,6 +452,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistCelebrityTagField(
             focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
             enabled: _includeCelebrityInPhoto,
+            canAddNewtags: true,
             tags: widget.controller.celebrityInPhoto,
             onChange: (tags) {
               setState(() {
@@ -770,6 +773,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistKeywordTagField(
             focusNode: _picklistKeywordsTagFieldFocusNode,
             enabled: _includeKeywords,
+            canAddNewtags: true,
             tags: widget.controller.keywords,
             onChange: (tags) {
               setState(() {

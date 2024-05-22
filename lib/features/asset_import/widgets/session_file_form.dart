@@ -157,6 +157,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistAgencyTagField(
                 key: _picklistAgencyTagFieldUniqueKey,
                 focusNode: _picklistAgencyTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.agency,
                 onChange: (tags) {
                   setState(() {
@@ -287,6 +288,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistCelebrityTagField(
                 key: _picklistCelebrityAssociatedTagFieldUniqueKey,
                 focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.celebrityAssociated,
                 onChange: (tags) {
                   setState(() {
@@ -326,6 +328,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistCelebrityTagField(
                 key: _picklistCelebrityInPhotoTagFieldUniqueKey,
                 focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.celebrityInPhoto,
                 onChange: (tags) {
                   setState(() {
@@ -596,6 +599,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistKeywordTagField(
                 key: _picklistKeywordsTagFieldUniqueKey,
                 focusNode: _picklistKeywordsTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.keywords,
                 onChange: (tags) {
                   setState(() {

@@ -6,6 +6,7 @@ class TagField<T> extends StatefulWidget {
   final Key fieldKey;
   final FocusNode? focusNode;
   final bool? enabled;
+  final bool canAddNewtags;
   final String hintText;
   final List<T> tags;
   final List<T> suggestions;
@@ -20,6 +21,7 @@ class TagField<T> extends StatefulWidget {
     required this.fieldKey,
     this.focusNode,
     this.enabled,
+    required this.canAddNewtags,
     required this.hintText,
     required this.tags,
     this.suggestions = const [],
@@ -74,6 +76,12 @@ class _TagFieldState<T> extends State<TagField<T>> {
             return Focus(
               skipTraversal: !(widget.enabled ?? true),
               onFocusChange: (hasFocus) {
+                if (!widget.canAddNewtags) {
+                  inputFieldValues.textEditingController.text = '';
+                  widget.onSearchTextChanged?.call('');
+                  return;
+                }
+
                 if (!hasFocus) {
                   final value = inputFieldValues.textEditingController.text
                       .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
@@ -103,7 +111,6 @@ class _TagFieldState<T> extends State<TagField<T>> {
                   theme: theme,
                   constraints: constraints,
                   inputFieldValues: inputFieldValues,
-                  onSearchTextChanged: widget.onSearchTextChanged,
                 ),
               ),
             );
@@ -127,7 +134,6 @@ class _TagFieldState<T> extends State<TagField<T>> {
     required ThemeData theme,
     required BoxConstraints constraints,
     required InputFieldValues<DynamicTagData<T>> inputFieldValues,
-    required void Function(String query)? onSearchTextChanged,
   }) {
     return SearchField<T>(
       key: widget.fieldKey,
@@ -214,10 +220,7 @@ class _TagFieldState<T> extends State<TagField<T>> {
             : null,
       ),
       onSearchTextChanged: (query) {
-        if (onSearchTextChanged != null) {
-          widget.onSearchTextChanged!(query);
-        }
-
+        widget.onSearchTextChanged?.call(query);
         return [];
       },
       onSuggestionTap: (item) {
@@ -243,9 +246,7 @@ class _TagFieldState<T> extends State<TagField<T>> {
 
         inputFieldValues.textEditingController.text = '';
 
-        if (onSearchTextChanged != null) {
-          widget.onSearchTextChanged!('');
-        }
+        widget.onSearchTextChanged?.call('');
       },
     );
   }

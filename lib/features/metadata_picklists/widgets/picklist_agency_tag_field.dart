@@ -8,6 +8,7 @@ import 'package:tmz_damz/features/metadata_picklists/widgets/tag_field.dart';
 class PicklistAgencyTagField extends StatefulWidget {
   final FocusNode? focusNode;
   final bool enabled;
+  final bool canAddNewtags;
   final List<String> tags;
   final void Function(List<String> tags) onChange;
 
@@ -15,6 +16,7 @@ class PicklistAgencyTagField extends StatefulWidget {
     super.key,
     this.focusNode,
     this.enabled = true,
+    required this.canAddNewtags,
     required this.tags,
     required this.onChange,
   });
@@ -45,6 +47,7 @@ class _PicklistAgencyTagFieldState extends State<PicklistAgencyTagField> {
             fieldKey: _fieldKey,
             focusNode: widget.focusNode,
             enabled: widget.enabled,
+            canAddNewtags: widget.canAddNewtags,
             hintText: 'Add agency...',
             tags: widget.tags,
             suggestions: picklist.map((_) => _.name).toList(),

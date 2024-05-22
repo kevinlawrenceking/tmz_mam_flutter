@@ -520,6 +520,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistAgencyTagField(
           key: _picklistAgencyTagFieldUniqueKey,
           focusNode: _picklistAgencyTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.agency,
           onChange: (tags) {
             setState(() {
@@ -539,6 +540,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistCelebrityTagField(
           key: _picklistCelebrityAssociatedTagFieldUniqueKey,
           focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.celebrityAssociated,
           onChange: (tags) {
             setState(() {
@@ -558,6 +560,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistCelebrityTagField(
           key: _picklistCelebrityInPhotoTagFieldUniqueKey,
           focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.celebrityInPhoto,
           onChange: (tags) {
             setState(() {
@@ -734,6 +737,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistKeywordTagField(
           key: _picklistKeywordsTagFieldUniqueKey,
           focusNode: _picklistKeywordsTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.keywords,
           onChange: (tags) {
             setState(() {
