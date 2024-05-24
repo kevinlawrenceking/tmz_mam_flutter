@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_metadata.dart';
+import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
 import 'package:tmz_damz/data/sources/collection.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
@@ -16,10 +18,13 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
   final IAssetDataSource assetDataSource;
   final ICollectionDataSource collectionDataSource;
 
-  var _offset = 0;
-  var _limit = 100;
-  String? _collectionID;
-  String? _searchTerm;
+  AssetSearchDataModel? _advancedSearchData;
+
+  String? _simpleSearchCollectionID;
+  String? _simpleSearchTerm;
+
+  int _offset = 0;
+  int _limit = 100;
   AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
 
@@ -36,7 +41,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
     on<RefreshEvent>(_refreshEvent);
     on<ReloadCurrentPageEvent>(_reloadCurrentPageEvent);
     on<RemoveAssetsFromCollectionEvent>(_removeAssetsFromCollectionEvent);
-    on<SearchEvent>(_searchEvent);
+    on<SearchAdvancedEvent>(_searchAdvancedEvent);
+    on<SearchSimpleEvent>(_searchSimpleEvent);
     on<SetCurrentCollectionEvent>(_setCurrentCollectionEvent);
   }
 
@@ -92,14 +98,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
 
     emit(DeleteAssetSuccessState());
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
@@ -130,14 +130,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
 
     emit(MoveAssetsToCollectionSuccessState());
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
@@ -148,14 +142,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
     _offset = event.offset;
     _limit = event.limit;
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
@@ -165,14 +153,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
   ) async {
     _offset = 0;
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
@@ -180,14 +162,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
     ReloadCurrentPageEvent event,
     Emitter<AssetsBlocState> emit,
   ) async {
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
@@ -217,38 +193,45 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
 
     emit(RemoveAssetsFromCollectionSuccessState());
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
-  Future<void> _searchEvent(
-    SearchEvent event,
+  Future<void> _searchAdvancedEvent(
+    SearchAdvancedEvent event,
+    Emitter<AssetsBlocState> emit,
+  ) async {
+    _advancedSearchData = event.searchData;
+
+    _simpleSearchCollectionID = null;
+    _simpleSearchTerm = null;
+
+    _offset = 0;
+    _totalRecords = 0;
+
+    await _search(
+      emit: emit,
+    );
+  }
+
+  Future<void> _searchSimpleEvent(
+    SearchSimpleEvent event,
     Emitter<AssetsBlocState> emit,
   ) async {
     if (event.searchTerm != null) {
-      _searchTerm = event.searchTerm;
+      _simpleSearchTerm = event.searchTerm;
     }
+
+    _advancedSearchData = null;
 
     _offset = 0;
     _sortField = event.sortField;
     _sortDirection = event.sortDirection;
     _totalRecords = 0;
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
@@ -258,25 +241,43 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
   ) async {
     _offset = 0;
     _totalRecords = 0;
-    _collectionID = event.collectionID;
+    _simpleSearchCollectionID = event.collectionID;
 
-    await _getAssetList(
+    await _search(
       emit: emit,
-      offset: _offset,
-      limit: _limit,
-      collectionID: _collectionID,
-      searchTerm: _searchTerm,
-      sortField: _sortField,
-      sortDirection: _sortDirection,
     );
   }
 
-  Future<void> _getAssetList({
+  Future<void> _search({
     required Emitter<AssetsBlocState> emit,
+  }) async {
+    if (_advancedSearchData != null) {
+      await _searchAdvanced(
+        emit: emit,
+        searchData: _advancedSearchData!,
+        offset: _offset,
+        limit: _limit,
+        sortField: _sortField,
+        sortDirection: _sortDirection,
+      );
+    } else {
+      await _searchSimple(
+        emit: emit,
+        collectionID: _simpleSearchCollectionID,
+        searchTerm: _simpleSearchTerm,
+        offset: _offset,
+        limit: _limit,
+        sortField: _sortField,
+        sortDirection: _sortDirection,
+      );
+    }
+  }
+
+  Future<void> _searchAdvanced({
+    required Emitter<AssetsBlocState> emit,
+    required AssetSearchDataModel searchData,
     required int offset,
     required int limit,
-    required String? collectionID,
-    required String? searchTerm,
     required AssetSortFieldEnum? sortField,
     required SortDirectionEnum? sortDirection,
   }) async {
@@ -290,11 +291,112 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
 
     emit(SearchResultsLoadingState());
 
-    final result = await assetDataSource.getAssetList(
+    final conditions = <AssetSearchDataMetadataConditionModel>[];
+
+    for (var i = 0; i < searchData.metadataConditions.length; i++) {
+      final condition = searchData.metadataConditions[i];
+
+      switch (condition.field) {
+        case AssetSearchMetadataFieldEnum.creditLocation:
+          conditions.add(
+            condition.copyWith(
+              value: (condition.value as AssetMetadataCreditLocationEnum?)
+                  ?.toJsonDtoValue(),
+            ),
+          );
+          break;
+        case AssetSearchMetadataFieldEnum.emotions:
+          conditions.add(
+            condition.copyWith(
+              value: (condition.value as List<AssetMetadataEmotionEnum>?)
+                  ?.map((_) => _.toJsonDtoValue())
+                  .toList(),
+            ),
+          );
+          break;
+        case AssetSearchMetadataFieldEnum.overlays:
+          conditions.add(
+            condition.copyWith(
+              value: (condition.value as List<AssetMetadataOverlayEnum>?)
+                  ?.map((_) => _.toJsonDtoValue())
+                  .toList(),
+            ),
+          );
+          break;
+        case AssetSearchMetadataFieldEnum.rights:
+          conditions.add(
+            condition.copyWith(
+              value: (condition.value as AssetMetadataRightsEnum?)
+                  ?.toJsonDtoValue(),
+            ),
+          );
+          break;
+        default:
+          conditions.add(condition.copyWith());
+          break;
+      }
+    }
+
+    final result = await assetDataSource.searchAdvanced(
+      searchData: AssetSearchDataModel(
+        createdAtStart: searchData.createdAtStart?.toUtc(),
+        createdAtEnd: searchData.createdAtEnd?.toUtc(),
+        updatedAtStart: searchData.updatedAtStart?.toUtc(),
+        updatedAtEnd: searchData.updatedAtEnd?.toUtc(),
+        metadataConditions: conditions,
+      ),
       offset: offset,
       limit: limit,
+      sortField: sortField,
+      sortDirection: sortDirection,
+    );
+
+    result.fold(
+      (failure) => emit(SearchFailureState(failure)),
+      (results) {
+        _totalRecords = results.totalRecords;
+
+        emit(
+          PaginationChangedState(
+            offset: offset,
+            limit: limit,
+            totalRecords: results.totalRecords,
+          ),
+        );
+
+        emit(
+          SearchResultsLoadedState(
+            assets: results.assets,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _searchSimple({
+    required Emitter<AssetsBlocState> emit,
+    required String? collectionID,
+    required String? searchTerm,
+    required int offset,
+    required int limit,
+    required AssetSortFieldEnum? sortField,
+    required SortDirectionEnum? sortDirection,
+  }) async {
+    emit(
+      PaginationChangedState(
+        offset: offset,
+        limit: limit,
+        totalRecords: _totalRecords,
+      ),
+    );
+
+    emit(SearchResultsLoadingState());
+
+    final result = await assetDataSource.searchSimple(
       collectionID: collectionID,
       searchTerm: searchTerm,
+      offset: offset,
+      limit: limit,
       sortField: sortField,
       sortDirection: sortDirection,
     );

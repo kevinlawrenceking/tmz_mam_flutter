@@ -161,8 +161,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0x30FFFFFF)),
-                    shape: MaterialStateProperty.all(
+                        WidgetStateProperty.all(const Color(0x30FFFFFF)),
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         side: const BorderSide(
                           color: Color(0x80000000),
@@ -1247,7 +1247,6 @@ class BulkUpdateFormController extends ChangeNotifier {
     return AssetImportSessionFileMetaModel(
       headline: headline,
       metadata: AssetMetadataModel(
-        daletID: null,
         keywords: keywords,
         shotDescription: shotDescription,
         location: _model?.metadata.location ??
@@ -1267,13 +1266,11 @@ class BulkUpdateFormController extends ChangeNotifier {
         credit: rights != AssetMetadataRightsEnum.freeTMZ ? credit : null,
         creditLocation:
             rights != AssetMetadataRightsEnum.freeTMZ ? creditLocation : null,
-        exclusivity: null,
         rightsInstructions: rights != AssetMetadataRightsEnum.freeTMZ
             ? rightsInstructions
             : null,
         rightsDetails:
             rights != AssetMetadataRightsEnum.freeTMZ ? rightsDetails : null,
-        qcNotes: null,
       ),
     );
   }

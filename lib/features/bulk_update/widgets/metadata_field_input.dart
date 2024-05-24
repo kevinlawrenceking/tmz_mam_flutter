@@ -47,7 +47,6 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
   @override
   Widget build(BuildContext context) {
     return Table(
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       columnWidths: const {
         0: IntrinsicColumnWidth(),
         1: FlexColumnWidth(),
@@ -72,7 +71,10 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
                     child: const SizedBox(height: 42.0),
                   ),
             ),
-            widget.canAdd ? _buildAddButton() : _buildRemoveButton(),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: widget.canAdd ? _buildAddButton() : _buildRemoveButton(),
+            ),
           ],
         ),
         if ((widget.inputWidget != null) && widget.showModeSelection)
@@ -176,11 +178,11 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
         onPressed: widget.onAddField,
         padding: EdgeInsets.zero,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0xFF11853F),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
@@ -207,11 +209,11 @@ class _MetadataFieldInputState extends State<MetadataFieldInput> {
         onPressed: widget.onRemoveField,
         padding: EdgeInsets.zero,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(

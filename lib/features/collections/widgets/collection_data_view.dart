@@ -496,8 +496,8 @@ class _CollectionDataViewState extends State<CollectionDataView> {
 
     return DataRow2.byIndex(
       index: index,
-      color: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.hovered)) {
+      color: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.hovered)) {
           return index.isEven
               ? Colors.white.withAlpha(40)
               : Colors.white.withAlpha(30);

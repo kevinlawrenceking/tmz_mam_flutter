@@ -416,8 +416,8 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             }
           : null,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(const Color(0x30FFFFFF)),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(const Color(0x30FFFFFF)),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             side: const BorderSide(
               color: Color(0x80000000),
@@ -457,8 +457,8 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             }
           : null,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(const Color(0x30FFFFFF)),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(const Color(0x30FFFFFF)),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             side: const BorderSide(
               color: Color(0x80000000),
@@ -541,8 +541,8 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
             }
           : null,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(const Color(0x30FFFFFF)),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(const Color(0x30FFFFFF)),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             side: const BorderSide(
               color: Color(0x80000000),

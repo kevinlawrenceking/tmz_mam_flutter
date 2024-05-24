@@ -7,9 +7,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
+import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/collection.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/asset_details/widgets/asset_details.dart';
 import 'package:tmz_damz/features/assets/bloc/assets_bloc.dart';
@@ -44,7 +45,9 @@ class _SearchViewState extends State<SearchView> {
   late final ScrollController _scrollController;
   late final TextEditingController _searchTermController;
 
-  String _searchTerm = '';
+  AssetSearchDataModel? _advancedSearchData;
+  String _simpleSearchTerm = '';
+
   AssetSortFieldEnum _sortField = AssetSortFieldEnum.createdAt;
   SortDirectionEnum _sortDirection = SortDirectionEnum.descending;
   LayoutModeEnum _layoutMode = LayoutModeEnum.tile;
@@ -137,7 +140,31 @@ class _SearchViewState extends State<SearchView> {
                         },
                       ),
                     _buildToolbar(),
-                    const PaginationBar(),
+                    PaginationBar(
+                      advancedSearchData: _advancedSearchData,
+                      onAdvancedSearch: (searchData) {
+                        setState(() {
+                          _advancedSearchData = searchData;
+                          _simpleSearchTerm = '';
+                        });
+
+                        if (searchData != null) {
+                          BlocProvider.of<AssetsBloc>(context).add(
+                            SearchAdvancedEvent(
+                              searchData: searchData,
+                            ),
+                          );
+                        } else {
+                          BlocProvider.of<AssetsBloc>(context).add(
+                            SearchSimpleEvent(
+                              searchTerm: _simpleSearchTerm,
+                              sortField: _sortField,
+                              sortDirection: _sortDirection,
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     Expanded(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -289,11 +316,11 @@ class _SearchViewState extends State<SearchView> {
         },
         padding: EdgeInsets.zero,
         style: Theme.of(context).textButtonTheme.style?.copyWith(
-              backgroundColor: MaterialStateProperty.all(
+              backgroundColor: WidgetStateProperty.all(
                 const Color(0xFF353637),
               ),
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-              shape: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+              shape: WidgetStateProperty.all(
                 const RoundedRectangleBorder(),
               ),
             ),
@@ -368,11 +395,11 @@ class _SearchViewState extends State<SearchView> {
         },
         padding: EdgeInsets.zero,
         style: Theme.of(context).textButtonTheme.style?.copyWith(
-              backgroundColor: MaterialStateProperty.all(
+              backgroundColor: WidgetStateProperty.all(
                 const Color(0xFF353637),
               ),
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-              shape: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(EdgeInsets.zero),
+              shape: WidgetStateProperty.all(
                 const RoundedRectangleBorder(),
               ),
             ),
@@ -603,25 +630,22 @@ class _SearchViewState extends State<SearchView> {
       builder: (context, state) {
         return Toolbar(
           searchTermController: _searchTermController,
+          advancedSearch: _advancedSearchData != null,
           sortField: _sortField,
           sortDirection: _sortDirection,
           layoutMode: _layoutMode,
           thumbnailSize: _thumbnailSize,
-          onReload: () {
-            BlocProvider.of<AssetsBloc>(context).add(
-              ReloadCurrentPageEvent(),
-            );
-          },
-          onSearchTermClear: () {
+          onClearSearchParams: () {
             _searchTermController.clear();
 
-            if (_searchTerm.isNotEmpty) {
+            if (_simpleSearchTerm.isNotEmpty || (_advancedSearchData != null)) {
               setState(() {
-                _searchTerm = '';
+                _advancedSearchData = null;
+                _simpleSearchTerm = '';
               });
 
               BlocProvider.of<AssetsBloc>(context).add(
-                SearchEvent(
+                SearchSimpleEvent(
                   searchTerm: '',
                   sortField: _sortField,
                   sortDirection: _sortDirection,
@@ -629,13 +653,19 @@ class _SearchViewState extends State<SearchView> {
               );
             }
           },
+          onReload: () {
+            BlocProvider.of<AssetsBloc>(context).add(
+              ReloadCurrentPageEvent(),
+            );
+          },
           onSearchTermChange: (searchTerm) {
             setState(() {
-              _searchTerm = searchTerm;
+              _advancedSearchData = null;
+              _simpleSearchTerm = searchTerm;
             });
 
             BlocProvider.of<AssetsBloc>(context).add(
-              SearchEvent(
+              SearchSimpleEvent(
                 searchTerm: searchTerm,
                 sortField: _sortField,
                 sortDirection: _sortDirection,
@@ -649,7 +679,7 @@ class _SearchViewState extends State<SearchView> {
             });
 
             BlocProvider.of<AssetsBloc>(context).add(
-              SearchEvent(
+              SearchSimpleEvent(
                 sortField: _sortField,
                 sortDirection: _sortDirection,
               ),

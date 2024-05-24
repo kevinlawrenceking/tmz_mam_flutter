@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/sources/collection.dart';
 import 'package:tmz_damz/data/sources/user_collection.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';

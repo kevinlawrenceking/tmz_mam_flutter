@@ -4,15 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/pagination_info.dart';
 import 'package:tmz_damz/features/assets/bloc/assets_bloc.dart';
+import 'package:tmz_damz/features/assets/widgets/advanced_search_modal.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
+import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 class PaginationBar extends StatelessWidget {
   static final kResultsPerPage = [10, 25, 50, 100, 250];
   static const kDefaultResultsPerPage = 100;
 
-  const PaginationBar({super.key});
+  final AssetSearchDataModel? advancedSearchData;
+  final void Function(AssetSearchDataModel? searchData) onAdvancedSearch;
+
+  const PaginationBar({
+    super.key,
+    required this.advancedSearchData,
+    required this.onAdvancedSearch,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +66,11 @@ class PaginationBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _buildAdvancedSearchButton(
+                context: context,
+                theme: theme,
+              ),
+              const SizedBox(width: 20.0),
               Text(
                 'Assets',
                 style: theme.textTheme.labelMedium,
@@ -119,6 +134,47 @@ class PaginationBar extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildAdvancedSearchButton({
+    required BuildContext context,
+    required ThemeData theme,
+  }) {
+    return SizedBox(
+      width: 46,
+      height: 38,
+      child: ToolbarButton(
+        icon: MdiIcons.filterVariant,
+        tooltip: 'Advanced search...',
+        onPressed: () {
+          showDialog<void>(
+            context: context,
+            barrierColor: Colors.black54,
+            barrierDismissible: false,
+            builder: (_) {
+              return OverflowBox(
+                minWidth: 1100.0,
+                maxWidth: 1100.0,
+                child: Center(
+                  child: AdvancedSearchModal(
+                    theme: Theme.of(context),
+                    searchData: advancedSearchData,
+                    onCancel: () {
+                      Navigator.of(context).pop();
+                    },
+                    onSearch: (searchData) {
+                      Navigator.of(context).pop();
+
+                      onAdvancedSearch(searchData);
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -190,11 +246,11 @@ class PaginationBar extends StatelessWidget {
             }
           : null,
       style: Theme.of(context).textButtonTheme.style?.copyWith(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               Colors.transparent,
             ),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(14.0)),
-            shape: MaterialStateProperty.all(
+            padding: WidgetStateProperty.all(const EdgeInsets.all(14.0)),
+            shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
               ),
@@ -265,13 +321,13 @@ class PaginationBar extends StatelessWidget {
                     }
                   : null,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   Colors.transparent,
                 ),
-                minimumSize: MaterialStateProperty.all(const Size(48, 48)),
-                maximumSize: MaterialStateProperty.all(const Size(48, 48)),
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                shape: MaterialStateProperty.all(
+                minimumSize: WidgetStateProperty.all(const Size(48, 48)),
+                maximumSize: WidgetStateProperty.all(const Size(48, 48)),
+                padding: WidgetStateProperty.all(EdgeInsets.zero),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(1000),
                   ),
@@ -308,11 +364,11 @@ class PaginationBar extends StatelessWidget {
             }
           : null,
       style: Theme.of(context).textButtonTheme.style?.copyWith(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               Colors.transparent,
             ),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(14.0)),
-            shape: MaterialStateProperty.all(
+            padding: WidgetStateProperty.all(const EdgeInsets.all(14.0)),
+            shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
               ),

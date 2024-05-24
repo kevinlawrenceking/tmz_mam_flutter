@@ -168,16 +168,16 @@ class _AddAssetsToCollectionModalState
             child: TextButton(
               onPressed: widget.onCancel,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   const Color(0x30FFFFFF),
                 ),
-                padding: MaterialStateProperty.all(
+                padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(
                     horizontal: 10.0,
                     vertical: 6.0,
                   ),
                 ),
-                shape: MaterialStateProperty.resolveWith(
+                shape: WidgetStateProperty.resolveWith(
                   (states) {
                     return RoundedRectangleBorder(
                       side: const BorderSide(

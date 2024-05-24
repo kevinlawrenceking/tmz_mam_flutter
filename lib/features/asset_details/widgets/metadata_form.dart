@@ -357,7 +357,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(50),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -510,7 +509,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(250),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -664,7 +662,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(250),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -694,7 +691,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(250),
           ],
-          maxLines: null,
         ),
       ],
     );

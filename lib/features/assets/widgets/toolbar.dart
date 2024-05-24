@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/search_input.dart';
 import 'package:tmz_damz/features/assets/widgets/sort_options.dart';
@@ -10,12 +10,13 @@ import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
 
 class Toolbar extends StatefulWidget {
   final TextEditingController? searchTermController;
+  final bool advancedSearch;
   final AssetSortFieldEnum sortField;
   final SortDirectionEnum sortDirection;
   final LayoutModeEnum layoutMode;
   final ThumbnailSizeEnum thumbnailSize;
   final VoidCallback onReload;
-  final void Function() onSearchTermClear;
+  final void Function() onClearSearchParams;
   final void Function(String searchTerm) onSearchTermChange;
   final SortOptionsChangedCallback onSortChanged;
   final void Function(LayoutModeEnum mode) onLayoutChange;
@@ -24,12 +25,13 @@ class Toolbar extends StatefulWidget {
   const Toolbar({
     super.key,
     required this.searchTermController,
+    required this.advancedSearch,
     required this.sortField,
     required this.sortDirection,
     required this.layoutMode,
     required this.thumbnailSize,
     required this.onReload,
-    required this.onSearchTermClear,
+    required this.onClearSearchParams,
     required this.onSearchTermChange,
     required this.onSortChanged,
     required this.onLayoutChange,
@@ -56,6 +58,7 @@ class _ToolbarState extends State<Toolbar> {
                       height: 44,
                       child: ToolbarButton(
                         icon: MdiIcons.rotateRight,
+                        tooltip: 'Reload current page',
                         onPressed: widget.onReload,
                       ),
                     ),
@@ -63,7 +66,15 @@ class _ToolbarState extends State<Toolbar> {
                     Expanded(
                       child: SearchInput(
                         controller: widget.searchTermController,
-                        onClear: widget.onSearchTermClear,
+                        hintText: widget.advancedSearch
+                            ? '[ Advanced Search... ]'
+                            : null,
+                        hintStyle: widget.advancedSearch
+                            ? const TextStyle(
+                                fontStyle: FontStyle.italic,
+                              )
+                            : null,
+                        onClear: widget.onClearSearchParams,
                         onFieldSubmitted: widget.onSearchTermChange,
                       ),
                     ),
@@ -107,7 +118,14 @@ class _ToolbarState extends State<Toolbar> {
                 Expanded(
                   child: SearchInput(
                     controller: widget.searchTermController,
-                    onClear: widget.onSearchTermClear,
+                    hintText:
+                        widget.advancedSearch ? '[ Advanced Search... ]' : null,
+                    hintStyle: widget.advancedSearch
+                        ? const TextStyle(
+                            fontStyle: FontStyle.italic,
+                          )
+                        : null,
+                    onClear: widget.onClearSearchParams,
                     onFieldSubmitted: widget.onSearchTermChange,
                   ),
                 ),

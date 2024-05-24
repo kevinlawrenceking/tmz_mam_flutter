@@ -142,16 +142,16 @@ class PaginationBar extends StatelessWidget {
         _showCreateCollectionDialog(context);
       },
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(
           const Color(0xFF11853F),
         ),
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(
             horizontal: 10.0,
             vertical: 6.0,
           ),
         ),
-        shape: MaterialStateProperty.resolveWith(
+        shape: WidgetStateProperty.resolveWith(
           (states) {
             return RoundedRectangleBorder(
               side: const BorderSide(
@@ -243,11 +243,11 @@ class PaginationBar extends StatelessWidget {
             }
           : null,
       style: Theme.of(context).textButtonTheme.style?.copyWith(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               Colors.transparent,
             ),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(14.0)),
-            shape: MaterialStateProperty.all(
+            padding: WidgetStateProperty.all(const EdgeInsets.all(14.0)),
+            shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
               ),
@@ -318,13 +318,13 @@ class PaginationBar extends StatelessWidget {
                     }
                   : null,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   Colors.transparent,
                 ),
-                minimumSize: MaterialStateProperty.all(const Size(48, 48)),
-                maximumSize: MaterialStateProperty.all(const Size(48, 48)),
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                shape: MaterialStateProperty.all(
+                minimumSize: WidgetStateProperty.all(const Size(48, 48)),
+                maximumSize: WidgetStateProperty.all(const Size(48, 48)),
+                padding: WidgetStateProperty.all(EdgeInsets.zero),
+                shape: WidgetStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(1000),
                   ),
@@ -361,11 +361,11 @@ class PaginationBar extends StatelessWidget {
             }
           : null,
       style: Theme.of(context).textButtonTheme.style?.copyWith(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               Colors.transparent,
             ),
-            padding: MaterialStateProperty.all(const EdgeInsets.all(14.0)),
-            shape: MaterialStateProperty.all(
+            padding: WidgetStateProperty.all(const EdgeInsets.all(14.0)),
+            shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6.0)),
               ),

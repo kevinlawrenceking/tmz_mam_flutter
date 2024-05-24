@@ -434,10 +434,10 @@ class _SessionViewState extends State<SessionView> {
                         children: [
                           TextButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                 const Color(0x30FFFFFF),
                               ),
-                              shape: MaterialStateProperty.all(
+                              shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                   side: const BorderSide(
                                     color: Color(0x80000000),
@@ -487,10 +487,10 @@ class _SessionViewState extends State<SessionView> {
                           const SizedBox(width: 20.0),
                           TextButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                 const Color(0x30FFFFFF),
                               ),
-                              shape: MaterialStateProperty.all(
+                              shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                   side: const BorderSide(
                                     color: Color(0x80000000),
@@ -551,8 +551,8 @@ class _SessionViewState extends State<SessionView> {
   }) {
     return TextButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(const Color(0x30FFFFFF)),
-        shape: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(const Color(0x30FFFFFF)),
+        shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             side: const BorderSide(
               color: Color(0x80000000),

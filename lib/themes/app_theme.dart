@@ -15,8 +15,8 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
       ),
       checkboxTheme: theme.checkboxTheme.copyWith(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return const Color(0xFF8E0000);
           } else {
             return Colors.transparent;
@@ -24,9 +24,9 @@ class AppTheme {
         }),
       ),
       colorScheme: theme.colorScheme.copyWith(
-        background: const Color(0xFF1D1E1F),
         primary: const Color(0xDEFFFFFF),
         secondary: const Color(0xFF8E0000),
+        surface: const Color(0xFF1D1E1F),
       ),
       dividerTheme: theme.dividerTheme.copyWith(
         color: const Color(
@@ -37,26 +37,26 @@ class AppTheme {
       ),
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
-          iconColor: MaterialStateProperty.resolveWith((states) {
+          iconColor: WidgetStateProperty.resolveWith((states) {
             final style = theme.textTheme.labelMedium;
 
-            if (states.contains(MaterialState.hovered)) {
+            if (states.contains(WidgetState.hovered)) {
               return style?.color;
             } else {
               return const Color(0x99FFFFFF);
             }
           }),
-          minimumSize: MaterialStateProperty.all(const Size(48.0, 48.0)),
-          maximumSize: MaterialStateProperty.all(const Size(48.0, 48.0)),
-          overlayColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
+          minimumSize: WidgetStateProperty.all(const Size(48.0, 48.0)),
+          maximumSize: WidgetStateProperty.all(const Size(48.0, 48.0)),
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
               return const Color(0x10FFFFFF);
             } else {
               return Colors.white10;
             }
           }),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(1000.0),
             ),
@@ -121,24 +121,24 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          minimumSize: MaterialStateProperty.all(const Size(1.0, 1.0)),
-          overlayColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
+          minimumSize: WidgetStateProperty.all(const Size(1.0, 1.0)),
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
               return const Color(0x10FFFFFF);
             } else {
               return Colors.white10;
             }
           }),
-          padding: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 8.0,
             ),
           ),
-          shape: MaterialStateProperty.resolveWith((states) {
+          shape: WidgetStateProperty.resolveWith((states) {
             Color borderColor;
 
-            if (states.contains(MaterialState.disabled)) {
+            if (states.contains(WidgetState.disabled)) {
               borderColor = const Color(0x331A1D27);
             } else {
               borderColor = const Color(0xFF454647);
@@ -154,12 +154,12 @@ class AppTheme {
         ),
       ),
       radioTheme: theme.radioTheme.copyWith(
-        overlayColor: MaterialStateProperty.all(Colors.white24),
+        overlayColor: WidgetStateProperty.all(Colors.white24),
         splashRadius: 10.0,
       ),
       scrollbarTheme: theme.scrollbarTheme.copyWith(
-        thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.hovered)) {
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.hovered)) {
             return const Color(0x40FFFFFF);
           } else {
             return const Color(0x20FFFFFF);
@@ -168,24 +168,24 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          minimumSize: MaterialStateProperty.all(const Size(1.0, 1.0)),
-          overlayColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
+          minimumSize: WidgetStateProperty.all(const Size(1.0, 1.0)),
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
               return const Color(0x10FFFFFF);
             } else {
               return Colors.white10;
             }
           }),
-          padding: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 8.0,
             ),
           ),
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               side: const BorderSide(
                 color: Color(0x80000000),
@@ -193,10 +193,10 @@ class AppTheme {
               borderRadius: BorderRadius.circular(6.0),
             ),
           ),
-          textStyle: MaterialStateProperty.resolveWith((states) {
+          textStyle: WidgetStateProperty.resolveWith((states) {
             final style = theme.textTheme.labelMedium;
 
-            if (states.contains(MaterialState.hovered)) {
+            if (states.contains(WidgetState.hovered)) {
               return style;
             } else {
               return style?.copyWith(
@@ -258,22 +258,28 @@ class AppTheme {
           ),
       tooltipTheme: theme.tooltipTheme.copyWith(
         padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 10,
+          horizontal: 14.0,
+          vertical: 6.0,
         ),
-        margin: const EdgeInsets.all(20),
-        verticalOffset: 0,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+        ),
+        verticalOffset: 22.0,
         decoration: BoxDecoration(
           border: Border.all(),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          boxShadow: kElevationToShadow[3],
-          color: const Color(0xFF40434C),
+          borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+          boxShadow: kElevationToShadow[12],
+          color: const Color(0xFF353637),
         ),
         textStyle: GoogleFonts.getFont(
           'Roboto',
-          color: const Color(0xFFAFB1B4),
+          color: const Color(0xDEFFFFFF),
+          fontWeight: FontWeight.w500,
         ),
-        waitDuration: const Duration(milliseconds: 500),
+        excludeFromSemantics: true,
+        preferBelow: true,
+        exitDuration: Duration.zero,
+        waitDuration: const Duration(milliseconds: 700),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );

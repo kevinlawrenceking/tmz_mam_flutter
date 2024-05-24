@@ -179,11 +179,11 @@ class _UserCollectionsState extends State<UserCollections> {
         },
         padding: EdgeInsets.zero,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0xFF11853F),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
@@ -231,11 +231,11 @@ class _UserCollectionsState extends State<UserCollections> {
                   },
                   padding: EdgeInsets.zero,
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       const Color(0x30FFFFFF),
                     ),
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    shape: MaterialStateProperty.resolveWith(
+                    padding: WidgetStateProperty.all(EdgeInsets.zero),
+                    shape: WidgetStateProperty.resolveWith(
                       (states) {
                         return RoundedRectangleBorder(
                           side: const BorderSide(

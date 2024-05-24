@@ -88,12 +88,25 @@ class RemoveAssetsFromCollectionEvent extends AssetsBlocEvent {
       ];
 }
 
-class SearchEvent extends AssetsBlocEvent {
+class SearchAdvancedEvent extends AssetsBlocEvent {
+  final AssetSearchDataModel searchData;
+
+  SearchAdvancedEvent({
+    required this.searchData,
+  });
+
+  @override
+  List<Object?> get props => [
+        searchData,
+      ];
+}
+
+class SearchSimpleEvent extends AssetsBlocEvent {
   final String? searchTerm;
   final AssetSortFieldEnum sortField;
   final SortDirectionEnum sortDirection;
 
-  SearchEvent({
+  SearchSimpleEvent({
     this.searchTerm,
     required this.sortField,
     required this.sortDirection,

@@ -209,8 +209,8 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                 AssetMetadataFieldEnum.overlay,
                 AssetMetadataFieldEnum.qcNotes,
                 AssetMetadataFieldEnum.rightsDetails,
-                AssetMetadataFieldEnum.rights,
                 AssetMetadataFieldEnum.rightsInstructions,
+                AssetMetadataFieldEnum.rights, // Rights Summary
                 AssetMetadataFieldEnum.locationDescription, // Shoot Location
                 AssetMetadataFieldEnum.shotDescription,
                 AssetMetadataFieldEnum.locationState,
@@ -460,16 +460,16 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
             child: TextButton(
               onPressed: widget.onClose,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   const Color(0x30FFFFFF),
                 ),
-                padding: MaterialStateProperty.all(
+                padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(
                     horizontal: 10.0,
                     vertical: 6.0,
                   ),
                 ),
-                shape: MaterialStateProperty.resolveWith(
+                shape: WidgetStateProperty.resolveWith(
                   (states) {
                     return RoundedRectangleBorder(
                       side: const BorderSide(
@@ -584,7 +584,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(50),
       ],
-      maxLines: null,
     );
   }
 
@@ -675,7 +674,26 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(250),
       ],
-      maxLines: null,
+    );
+  }
+
+  Widget _buildKeywords(ThemeData theme) {
+    return Builder(
+      builder: (context) {
+        return PicklistKeywordTagField(
+          key: _picklistKeywordsTagFieldUniqueKey,
+          focusNode: _picklistKeywordsTagFieldFocusNode,
+          canAddNewtags: true,
+          tags: _controller.keywords,
+          onChange: (tags) {
+            setState(() {
+              _controller.keywords = tags;
+            });
+
+            _picklistKeywordsTagFieldFocusNode.requestFocus();
+          },
+        );
+      },
     );
   }
 
@@ -728,26 +746,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(100),
       ],
-    );
-  }
-
-  Widget _buildKeywords(ThemeData theme) {
-    return Builder(
-      builder: (context) {
-        return PicklistKeywordTagField(
-          key: _picklistKeywordsTagFieldUniqueKey,
-          focusNode: _picklistKeywordsTagFieldFocusNode,
-          canAddNewtags: true,
-          tags: _controller.keywords,
-          onChange: (tags) {
-            setState(() {
-              _controller.keywords = tags;
-            });
-
-            _picklistKeywordsTagFieldFocusNode.requestFocus();
-          },
-        );
-      },
     );
   }
 
@@ -816,7 +814,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(250),
       ],
-      maxLines: null,
     );
   }
 
@@ -830,7 +827,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(250),
       ],
-      maxLines: null,
     );
   }
 

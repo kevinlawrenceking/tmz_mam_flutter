@@ -112,11 +112,11 @@ class Toolbar extends StatelessWidget {
                 }
               : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -146,11 +146,11 @@ class Toolbar extends StatelessWidget {
           AutoRouter.of(context).navigate(AssetsSearchRoute());
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
@@ -194,11 +194,11 @@ class Toolbar extends StatelessWidget {
           );
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
@@ -236,11 +236,11 @@ class Toolbar extends StatelessWidget {
                 }
               : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -287,11 +287,11 @@ class Toolbar extends StatelessWidget {
                 }
               : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -319,11 +319,11 @@ class Toolbar extends StatelessWidget {
         child: IconButton(
           onPressed: (permissions?.assets.canModify ?? false) ? onEdit : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -355,11 +355,11 @@ class Toolbar extends StatelessWidget {
           }
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
