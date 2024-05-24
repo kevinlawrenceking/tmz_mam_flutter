@@ -461,7 +461,10 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                     .toList(),
                 initialField: fieldData.condition?.field,
                 initialComparisonMethod: ComparisonMethodEnum.equal,
-                inputWidget: _buildInputField(fieldData),
+                inputWidget: _buildInputField(
+                  theme: theme,
+                  fieldData: fieldData,
+                ),
                 onFieldSelected: (field) {
                   setState(() {
                     _fieldData[index].condition = (field != null)
@@ -616,7 +619,10 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
     );
   }
 
-  Widget? _buildInputField(_InputFieldData fieldData) {
+  Widget? _buildInputField({
+    required ThemeData theme,
+    required _InputFieldData fieldData,
+  }) {
     if (fieldData.condition?.field == null) {
       return null;
     }
@@ -794,6 +800,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                                 'On-Screen',
                           }[creditLocation[index]] ??
                           '',
+                      style: theme.textTheme.bodyMedium,
                     ),
                     selected: condition.value == creditLocation[index],
                     selectedColor: const Color(0xFF8E0000),
@@ -893,6 +900,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       AssetMetadataEmotionEnum.neutral: 'Neutral',
                     }[emotions[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: (condition.value as List<AssetMetadataEmotionEnum>?)
                       ?.contains(emotions[index]) ??
@@ -1075,6 +1083,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       AssetMetadataOverlayEnum.watermark: 'Watermark',
                     }[overlays[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: (condition.value as List<AssetMetadataOverlayEnum>?)
                       ?.contains(overlays[index]) ??
@@ -1205,6 +1214,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                           }[rights[index]] ??
                           '',
+                      style: theme.textTheme.bodyMedium,
                     ),
                     selected: condition.value == rights[index],
                     selectedColor: const Color(0xFF8E0000),

@@ -182,6 +182,7 @@ class _AddCollectionToFavoritesModalState
               return ChoiceChip(
                 label: Text(
                   isNew ? 'New' : 'Existing',
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 selected: _isNewController.value == isNew,
                 selectedColor: const Color(0xFF8E0000),

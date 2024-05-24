@@ -435,6 +435,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                       }[creditLocation[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected:
                     widget.controller.creditLocation == creditLocation[index],
@@ -497,6 +498,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataEmotionEnum.neutral: 'Neutral',
                       }[emotions[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.emotion.contains(emotions[index]),
                 selectedColor: const Color(0xFF8E0000),
@@ -656,6 +658,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataOverlayEnum.watermark: 'Watermark',
                       }[overlays[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.overlay.contains(overlays[index]),
                 selectedColor: const Color(0xFF8E0000),
@@ -814,6 +817,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                       }[rights[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.rights == rights[index],
                 selectedColor: const Color(0xFF8E0000),

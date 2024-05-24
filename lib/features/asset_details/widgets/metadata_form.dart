@@ -393,6 +393,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                     }[creditLocation[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected:
                   widget.controller.creditLocation == creditLocation[index],
@@ -450,6 +451,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataEmotionEnum.neutral: 'Neutral',
                     }[emotions[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: widget.controller.emotion.contains(emotions[index]),
               selectedColor: const Color(0xFF8E0000),
@@ -586,6 +588,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataOverlayEnum.watermark: 'Watermark',
                     }[overlays[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: widget.controller.overlay.contains(overlays[index]),
               selectedColor: const Color(0xFF8E0000),
@@ -742,6 +745,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                     }[rights[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: widget.controller.rights == rights[index],
               selectedColor: const Color(0xFF8E0000),

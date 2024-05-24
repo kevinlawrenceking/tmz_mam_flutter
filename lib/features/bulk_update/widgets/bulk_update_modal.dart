@@ -604,6 +604,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                 }[creditLocation[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.creditLocation == creditLocation[index],
           selectedColor: const Color(0xFF8E0000),
@@ -644,6 +645,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataEmotionEnum.neutral: 'Neutral',
                 }[emotions[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.emotion.contains(emotions[index]),
           selectedColor: const Color(0xFF8E0000),
@@ -770,6 +772,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataOverlayEnum.watermark: 'Watermark',
                 }[overlays[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.overlay.contains(overlays[index]),
           selectedColor: const Color(0xFF8E0000),
@@ -849,6 +852,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                 }[rights[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.rights == rights[index],
           selectedColor: const Color(0xFF8E0000),
