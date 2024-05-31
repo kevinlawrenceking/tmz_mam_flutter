@@ -631,6 +631,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
     switch (fieldData.condition!.field) {
       case AssetSearchMetadataFieldEnum.agency:
         return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 45.0,
@@ -685,6 +686,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
         );
       case AssetSearchMetadataFieldEnum.celebrityAssociated:
         return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 45.0,
@@ -739,6 +741,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
         );
       case AssetSearchMetadataFieldEnum.celebrityInPhoto:
         return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 45.0,
@@ -1130,6 +1133,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
         );
       case AssetSearchMetadataFieldEnum.keywords:
         return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 45.0,
