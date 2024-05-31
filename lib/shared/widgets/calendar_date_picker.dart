@@ -39,7 +39,7 @@ class CalendarDatePicker extends StatelessWidget {
           color: Colors.black,
         ),
         weekdayLabelTextStyle: kTextStyle.copyWith(
-          color: kTextStyle.color!.withAlpha(70),
+          color: kTextStyle.color!.withAlpha(80),
           fontSize: 11.0,
           fontWeight: FontWeight.bold,
         ),

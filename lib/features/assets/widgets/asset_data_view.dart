@@ -237,7 +237,6 @@ class _AssetDataViewState extends State<AssetDataView> {
     })();
 
     return ContextMenuRegion(
-      enableLongPress: false,
       contextMenu: GenericContextMenu(
         buttonConfigs: [
           if (widget.selectedIDs.isNotEmpty) ...[

@@ -8,18 +8,13 @@ environment:
 
 dependencies:
   animated_toggle_switch: ^0.8.2
-  auto_route: ^7.8.4
+  auto_route: ^8.1.3
   bloc: ^8.1.3
   bot_toast: ^4.1.3
   calendar_date_picker2: ^1.0.2
   choice: ^2.3.1
   collection: ^1.18.0
-  context_menus:
-    # flutter sdk compatibilty fix made on May 16th, 2024
-    # temporary until >1.0.2 is released
-    git:
-        url: https://github.com/gskinnerTeam/flutter-context-menu.git
-        ref: master
+  context_menus: ^2.0.0
   cross_local_storage: ^3.0.0
   dartz: ^0.10.1
   data_table_2: ^2.5.12
@@ -34,7 +29,7 @@ dependencies:
   flutter_animate: ^4.5.0
   flutter_bloc: ^8.1.5
   flutter_dotenv: ^5.1.0
-  flutter_dropzone: ^3.0.7
+  flutter_dropzone: ^4.0.0
   flutter_secure_storage: ^9.2.2
   get_it: ^7.7.0
   google_fonts: ^6.2.1
@@ -63,12 +58,12 @@ dependencies:
   window_manager: ^0.3.9
 
 dev_dependencies:
-  auto_route_generator: ^7.3.2
+  auto_route_generator: ^8.0.0
   build_runner: ^2.4.8
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  lints: ^3.0.0
+  lints: ^4.0.0
 
 flutter:
   uses-material-design: true

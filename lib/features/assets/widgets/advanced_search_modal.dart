@@ -201,6 +201,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Icon(
                 MdiIcons.chevronTripleRight,
+                color: theme.textTheme.bodyMedium?.color,
               ),
             ),
             Container(
@@ -341,6 +342,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Icon(
                 MdiIcons.chevronTripleRight,
+                color: theme.textTheme.bodyMedium?.color,
               ),
             ),
             Container(
@@ -441,14 +443,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                           ![
                             // make sure we only have one instance
                             // of each of these types...
-                            AssetSearchMetadataFieldEnum.agency,
-                            AssetSearchMetadataFieldEnum.celebrityAssociated,
-                            AssetSearchMetadataFieldEnum.celebrityInPhoto,
                             AssetSearchMetadataFieldEnum.creditLocation,
                             AssetSearchMetadataFieldEnum.daletID,
-                            AssetSearchMetadataFieldEnum.emotions,
-                            AssetSearchMetadataFieldEnum.keywords,
-                            AssetSearchMetadataFieldEnum.overlays,
                             AssetSearchMetadataFieldEnum.rights,
                           ].any(
                             (e) =>
@@ -508,6 +504,11 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           TextButton(
             onPressed: () {
               setState(() {
+                _createdAtStart = null;
+                _createdAtEnd = null;
+                _updatedAtStart = null;
+                _updatedAtEnd = null;
+
                 for (var i = _fieldData.length - 1; i >= 0; i--) {
                   final field = _fieldData[i];
                   field.focusNode.dispose();
@@ -627,84 +628,182 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
       return null;
     }
 
-    final condition = fieldData.condition!;
-
-    switch (condition.field) {
+    switch (fieldData.condition!.field) {
       case AssetSearchMetadataFieldEnum.agency:
-        // contains
-        return Builder(
-          builder: (context) {
-            return PicklistAgencyTagField(
-              key: fieldData.key,
-              focusNode: fieldData.focusNode,
-              canAddNewtags: false,
-              tags: (condition.value as List<String>?) ?? [],
-              onChange: (tags) {
-                setState(() {
-                  fieldData.condition = condition.copyWith(
-                    value: tags,
-                  );
-                });
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
 
-                fieldData.focusNode.requestFocus();
-              },
-            );
-          },
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: value,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: PicklistAgencyTagField(
+                key: fieldData.key,
+                focusNode: fieldData.focusNode,
+                canAddNewtags: false,
+                tags: (fieldData.condition!.value as List<String>?) ?? [],
+                onChange: (tags) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: tags,
+                    );
+                  });
+
+                  fieldData.focusNode.requestFocus();
+                },
+              ),
+            ),
+          ],
         );
       case AssetSearchMetadataFieldEnum.celebrityAssociated:
-        // contains
-        return Builder(
-          builder: (context) {
-            return PicklistCelebrityTagField(
-              key: fieldData.key,
-              focusNode: fieldData.focusNode,
-              canAddNewtags: false,
-              tags: (condition.value as List<String>?) ?? [],
-              onChange: (tags) {
-                setState(() {
-                  fieldData.condition = condition.copyWith(
-                    value: tags,
-                  );
-                });
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
 
-                fieldData.focusNode.requestFocus();
-              },
-            );
-          },
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: value,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: PicklistCelebrityTagField(
+                key: fieldData.key,
+                focusNode: fieldData.focusNode,
+                canAddNewtags: false,
+                tags: (fieldData.condition!.value as List<String>?) ?? [],
+                onChange: (tags) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: tags,
+                    );
+                  });
+
+                  fieldData.focusNode.requestFocus();
+                },
+              ),
+            ),
+          ],
         );
       case AssetSearchMetadataFieldEnum.celebrityInPhoto:
-        // contains
-        return Builder(
-          builder: (context) {
-            return PicklistCelebrityTagField(
-              key: fieldData.key,
-              focusNode: fieldData.focusNode,
-              canAddNewtags: false,
-              tags: (condition.value as List<String>?) ?? [],
-              onChange: (tags) {
-                setState(() {
-                  fieldData.condition = condition.copyWith(
-                    value: tags,
-                  );
-                });
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
 
-                fieldData.focusNode.requestFocus();
-              },
-            );
-          },
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: value,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: PicklistCelebrityTagField(
+                key: fieldData.key,
+                focusNode: fieldData.focusNode,
+                canAddNewtags: false,
+                tags: (fieldData.condition!.value as List<String>?) ?? [],
+                onChange: (tags) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: tags,
+                    );
+                  });
+
+                  fieldData.focusNode.requestFocus();
+                },
+              ),
+            ),
+          ],
         );
       case AssetSearchMetadataFieldEnum.credit:
         return Row(
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                   ComparisonMethodEnum.beginsWith,
@@ -713,6 +812,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                         ComparisonMethodEnum.beginsWith: 'Begins With',
@@ -723,7 +823,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -733,7 +833,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -741,9 +841,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   LengthLimitingTextInputFormatter(50),
                 ],
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
@@ -756,9 +856,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
@@ -775,7 +875,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -784,7 +884,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             const SizedBox(width: 10.0),
             Expanded(
               child: Choice<AssetMetadataCreditLocationEnum>.inline(
-                value: (condition.value != null) ? [condition.value] : [],
+                value: (fieldData.condition!.value != null)
+                    ? [fieldData.condition!.value]
+                    : [],
                 itemCount: 2,
                 itemBuilder: (state, index) {
                   const creditLocation = [
@@ -802,7 +904,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                           '',
                       style: theme.textTheme.bodyMedium,
                     ),
-                    selected: condition.value == creditLocation[index],
+                    selected:
+                        fieldData.condition!.value == creditLocation[index],
                     selectedColor: const Color(0xFF8E0000),
                     onSelected: (value) {
                       state.replace([creditLocation[index]]);
@@ -811,9 +914,11 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 },
                 onChanged: (value) {
                   setState(() {
-                    fieldData.condition = condition.copyWith(
-                      comparisonMethod: condition.comparisonMethod ??
-                          _getDefaultComparisonMethod(condition.field),
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
                       value: value.firstOrNull ??
                           AssetMetadataCreditLocationEnum.end,
                     );
@@ -828,9 +933,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
@@ -847,7 +952,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -857,7 +962,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: condition.value?.toString() ?? '',
+                initialValue: fieldData.condition!.value?.toString() ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -866,9 +971,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   LengthLimitingTextInputFormatter(30),
                 ],
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: Int64.tryParseInt(value),
                   );
                 },
@@ -877,64 +982,105 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           ],
         );
       case AssetSearchMetadataFieldEnum.emotions:
-        // contains
-        return Choice<AssetMetadataEmotionEnum>.inline(
-          clearable: true,
-          multiple: true,
-          value: (condition.value as List<AssetMetadataEmotionEnum>?) ?? [],
-          itemCount: 4,
-          itemBuilder: (state, index) {
-            const emotions = [
-              AssetMetadataEmotionEnum.positive,
-              AssetMetadataEmotionEnum.negative,
-              AssetMetadataEmotionEnum.surprised,
-              AssetMetadataEmotionEnum.neutral,
-            ];
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
 
-            return ChoiceChip(
-              label: Text(
-                {
-                      AssetMetadataEmotionEnum.positive: 'Positive',
-                      AssetMetadataEmotionEnum.negative: 'Negative',
-                      AssetMetadataEmotionEnum.surprised: 'Surprised',
-                      AssetMetadataEmotionEnum.neutral: 'Neutral',
-                    }[emotions[index]] ??
-                    '',
-                style: theme.textTheme.bodyMedium,
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: value,
+                  );
+                },
               ),
-              selected: (condition.value as List<AssetMetadataEmotionEnum>?)
-                      ?.contains(emotions[index]) ??
-                  false,
-              selectedColor: const Color(0xFF8E0000),
-              onSelected: (value) {
-                if (value) {
-                  state.add(emotions[index]);
-                } else {
-                  state.remove(emotions[index]);
-                }
-              },
-            );
-          },
-          onChanged: (value) {
-            setState(() {
-              fieldData.condition = condition.copyWith(
-                value: value,
-              );
-            });
-          },
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: Choice<AssetMetadataEmotionEnum>.inline(
+                clearable: true,
+                multiple: true,
+                value: (fieldData.condition!.value
+                        as List<AssetMetadataEmotionEnum>?) ??
+                    [],
+                itemCount: 4,
+                itemBuilder: (state, index) {
+                  const emotions = [
+                    AssetMetadataEmotionEnum.positive,
+                    AssetMetadataEmotionEnum.negative,
+                    AssetMetadataEmotionEnum.surprised,
+                    AssetMetadataEmotionEnum.neutral,
+                  ];
+
+                  return ChoiceChip(
+                    label: Text(
+                      {
+                            AssetMetadataEmotionEnum.positive: 'Positive',
+                            AssetMetadataEmotionEnum.negative: 'Negative',
+                            AssetMetadataEmotionEnum.surprised: 'Surprised',
+                            AssetMetadataEmotionEnum.neutral: 'Neutral',
+                          }[emotions[index]] ??
+                          '',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    selected: (fieldData.condition!.value
+                                as List<AssetMetadataEmotionEnum>?)
+                            ?.contains(emotions[index]) ??
+                        false,
+                    selectedColor: const Color(0xFF8E0000),
+                    onSelected: (value) {
+                      if (value) {
+                        state.add(emotions[index]);
+                      } else {
+                        state.remove(emotions[index]);
+                      }
+                    },
+                  );
+                },
+                onChanged: (value) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: value,
+                    );
+                  });
+                },
+              ),
+            ),
+          ],
         );
       case AssetSearchMetadataFieldEnum.headline:
         return Row(
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                   ComparisonMethodEnum.beginsWith,
@@ -943,6 +1089,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                         ComparisonMethodEnum.beginsWith: 'Begins With',
@@ -953,7 +1100,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -963,7 +1110,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -971,9 +1118,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   LengthLimitingTextInputFormatter(250),
                 ],
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
@@ -982,38 +1129,72 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           ],
         );
       case AssetSearchMetadataFieldEnum.keywords:
-        // contains
-        return Builder(
-          builder: (context) {
-            return PicklistKeywordTagField(
-              key: fieldData.key,
-              focusNode: fieldData.focusNode,
-              canAddNewtags: false,
-              tags: (condition.value as List<String>?) ?? [],
-              onChange: (tags) {
-                setState(() {
-                  fieldData.condition = condition.copyWith(
-                    value: tags,
-                  );
-                });
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
 
-                fieldData.focusNode.requestFocus();
-              },
-            );
-          },
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: value,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: PicklistKeywordTagField(
+                key: fieldData.key,
+                focusNode: fieldData.focusNode,
+                canAddNewtags: false,
+                tags: (fieldData.condition!.value as List<String>?) ?? [],
+                onChange: (tags) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: tags,
+                    );
+                  });
+
+                  fieldData.focusNode.requestFocus();
+                },
+              ),
+            ),
+          ],
         );
       case AssetSearchMetadataFieldEnum.originalFileName:
         return Row(
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                   ComparisonMethodEnum.beginsWith,
@@ -1022,6 +1203,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                         ComparisonMethodEnum.beginsWith: 'Begins With',
@@ -1032,7 +1214,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -1042,7 +1224,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -1050,9 +1232,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   LengthLimitingTextInputFormatter(250),
                 ],
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
@@ -1061,50 +1243,90 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           ],
         );
       case AssetSearchMetadataFieldEnum.overlays:
-        // contains
-        return Choice<AssetMetadataOverlayEnum>.inline(
-          clearable: true,
-          multiple: true,
-          value: (condition.value as List<AssetMetadataOverlayEnum>?) ?? [],
-          itemCount: 3,
-          itemBuilder: (state, index) {
-            const overlays = [
-              AssetMetadataOverlayEnum.blackBarCensor,
-              AssetMetadataOverlayEnum.blurCensor,
-              AssetMetadataOverlayEnum.watermark,
-            ];
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
 
-            return ChoiceChip(
-              label: Text(
-                {
-                      AssetMetadataOverlayEnum.blackBarCensor:
-                          'Black Bar Censor',
-                      AssetMetadataOverlayEnum.blurCensor: 'Blur Censor',
-                      AssetMetadataOverlayEnum.watermark: 'Watermark',
-                    }[overlays[index]] ??
-                    '',
-                style: theme.textTheme.bodyMedium,
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: value,
+                  );
+                },
               ),
-              selected: (condition.value as List<AssetMetadataOverlayEnum>?)
-                      ?.contains(overlays[index]) ??
-                  false,
-              selectedColor: const Color(0xFF8E0000),
-              onSelected: (value) {
-                if (value) {
-                  state.add(overlays[index]);
-                } else {
-                  state.remove(overlays[index]);
-                }
-              },
-            );
-          },
-          onChanged: (value) {
-            setState(() {
-              fieldData.condition = condition.copyWith(
-                value: value,
-              );
-            });
-          },
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: Choice<AssetMetadataOverlayEnum>.inline(
+                clearable: true,
+                multiple: true,
+                value: (fieldData.condition!.value
+                        as List<AssetMetadataOverlayEnum>?) ??
+                    [],
+                itemCount: 3,
+                itemBuilder: (state, index) {
+                  const overlays = [
+                    AssetMetadataOverlayEnum.blackBarCensor,
+                    AssetMetadataOverlayEnum.blurCensor,
+                    AssetMetadataOverlayEnum.watermark,
+                  ];
+
+                  return ChoiceChip(
+                    label: Text(
+                      {
+                            AssetMetadataOverlayEnum.blackBarCensor:
+                                'Black Bar Censor',
+                            AssetMetadataOverlayEnum.blurCensor: 'Blur Censor',
+                            AssetMetadataOverlayEnum.watermark: 'Watermark',
+                          }[overlays[index]] ??
+                          '',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    selected: (fieldData.condition!.value
+                                as List<AssetMetadataOverlayEnum>?)
+                            ?.contains(overlays[index]) ??
+                        false,
+                    selectedColor: const Color(0xFF8E0000),
+                    onSelected: (value) {
+                      if (value) {
+                        state.add(overlays[index]);
+                      } else {
+                        state.remove(overlays[index]);
+                      }
+                    },
+                  );
+                },
+                onChanged: (value) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: value,
+                    );
+                  });
+                },
+              ),
+            ),
+          ],
         );
       case AssetSearchMetadataFieldEnum.qcNotes:
         return Row(
@@ -1112,19 +1334,21 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                 ],
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                       }[value] ??
@@ -1133,7 +1357,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -1143,7 +1367,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -1152,9 +1376,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 ],
                 maxLines: null,
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
@@ -1167,9 +1391,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
@@ -1186,7 +1410,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -1195,7 +1419,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             const SizedBox(width: 10.0),
             Expanded(
               child: Choice<AssetMetadataRightsEnum>.inline(
-                value: (condition.value != null) ? [condition.value] : [],
+                value: (fieldData.condition!.value != null)
+                    ? [fieldData.condition!.value]
+                    : [],
                 itemCount: 3,
                 itemBuilder: (state, index) {
                   const rights = [
@@ -1216,7 +1442,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                           '',
                       style: theme.textTheme.bodyMedium,
                     ),
-                    selected: condition.value == rights[index],
+                    selected: fieldData.condition!.value == rights[index],
                     selectedColor: const Color(0xFF8E0000),
                     onSelected: (value) {
                       state.replace([rights[index]]);
@@ -1225,9 +1451,11 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 },
                 onChanged: (value) {
                   setState(() {
-                    fieldData.condition = condition.copyWith(
-                      comparisonMethod: condition.comparisonMethod ??
-                          _getDefaultComparisonMethod(condition.field),
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
                       value:
                           value.firstOrNull ?? AssetMetadataRightsEnum.unknown,
                     );
@@ -1242,13 +1470,14 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                   ComparisonMethodEnum.beginsWith,
@@ -1257,6 +1486,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                         ComparisonMethodEnum.beginsWith: 'Begins With',
@@ -1267,7 +1497,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -1277,7 +1507,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -1285,9 +1515,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   LengthLimitingTextInputFormatter(250),
                 ],
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
@@ -1300,13 +1530,14 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                   ComparisonMethodEnum.beginsWith,
@@ -1315,6 +1546,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                         ComparisonMethodEnum.beginsWith: 'Begins With',
@@ -1325,7 +1557,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -1335,7 +1567,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -1343,9 +1575,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   LengthLimitingTextInputFormatter(250),
                 ],
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
@@ -1359,19 +1591,21 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           children: [
             SizedBox(
               height: 45.0,
-              width: 190.0,
+              width: 210.0,
               child: DropdownSelector<ComparisonMethodEnum>(
-                initialValue: condition.comparisonMethod,
+                initialValue: fieldData.condition!.comparisonMethod,
                 items: const [
                   // these need to match what the backend is
                   // capable of handling for this field...
                   ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
                   ComparisonMethodEnum.equal,
                   ComparisonMethodEnum.notEqual,
                 ],
                 itemBuilder: (value) {
                   final label = {
                         ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
                         ComparisonMethodEnum.equal: 'Equals',
                         ComparisonMethodEnum.notEqual: 'Does Not Equal',
                       }[value] ??
@@ -1380,7 +1614,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = condition.copyWith(
+                  fieldData.condition = fieldData.condition!.copyWith(
                     comparisonMethod: value,
                   );
                 },
@@ -1390,7 +1624,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: TextFormField(
                 key: UniqueKey(),
-                initialValue: (condition.value as String?) ?? '',
+                initialValue: (fieldData.condition!.value as String?) ?? '',
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                 ),
@@ -1400,9 +1634,9 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                 minLines: 3,
                 maxLines: null,
                 onChanged: (value) {
-                  fieldData.condition = condition.copyWith(
-                    comparisonMethod: condition.comparisonMethod ??
-                        _getDefaultComparisonMethod(condition.field),
+                  fieldData.condition = fieldData.condition!.copyWith(
+                    comparisonMethod: fieldData.condition!.comparisonMethod ??
+                        _getDefaultComparisonMethod(fieldData.condition!.field),
                     value: value.trim(),
                   );
                 },
