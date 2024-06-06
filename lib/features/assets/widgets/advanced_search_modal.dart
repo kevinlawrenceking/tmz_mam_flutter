@@ -6,37 +6,28 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/shared.dart';
+import 'package:tmz_damz/data/models/user.dart';
 import 'package:tmz_damz/features/assets/widgets/advanced_search_metadata_field_input.dart';
 import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
 import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
 import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_user_tag_field.dart';
 import 'package:tmz_damz/shared/widgets/calendar_date_picker.dart' as widgets;
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 
-class _InputFieldData {
-  UniqueKey key = UniqueKey();
-  final focusNode = FocusNode();
-
-  AssetSearchDataMetadataConditionModel? condition;
-
-  _InputFieldData({
-    this.condition,
-  });
-}
-
 class AdvancedSearchModal extends StatefulWidget {
   final ThemeData theme;
   final AssetSearchDataModel? searchData;
-  final void Function(AssetSearchDataModel searchData) onSearch;
   final VoidCallback onCancel;
+  final void Function(AssetSearchDataModel searchData) onSearch;
 
   const AdvancedSearchModal({
     super.key,
     required this.theme,
     required this.searchData,
-    required this.onSearch,
     required this.onCancel,
+    required this.onSearch,
   });
 
   @override
@@ -44,6 +35,7 @@ class AdvancedSearchModal extends StatefulWidget {
 }
 
 class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
+  late final TextEditingController _searchTermController;
   late final List<_InputFieldData> _fieldData;
 
   DateTime? _createdAtStart;
@@ -52,8 +44,23 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
   DateTime? _updatedAtEnd;
 
   @override
+  void dispose() {
+    _searchTermController.dispose();
+
+    for (var i = 0; i < _fieldData.length; i++) {
+      _fieldData[i].focusNode.dispose();
+    }
+
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+
+    _searchTermController = TextEditingController(
+      text: widget.searchData?.searchTerm,
+    );
 
     _createdAtStart = widget.searchData?.createdAtStart;
     _createdAtEnd = widget.searchData?.createdAtEnd;
@@ -408,6 +415,42 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
           ],
         ),
         const SizedBox(height: 20.0),
+        Row(
+          children: [
+            const SizedBox(
+              width: 230.0,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Search Term',
+                ),
+              ),
+            ),
+            const SizedBox(width: 20.0),
+            Expanded(
+              child: TextFormField(
+                key: UniqueKey(),
+                controller: _searchTermController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      MdiIcons.close,
+                      color: const Color(0xDEFFFFFF),
+                      size: 22,
+                    ),
+                    tooltip: 'Clear search term',
+                    onPressed: () {
+                      _searchTermController.text = '';
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 38.0),
+          ],
+        ),
+        const SizedBox(height: 20.0),
         ...List.generate(
           _fieldData.length,
           (index) {
@@ -423,10 +466,12 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   AssetSearchMetadataFieldEnum.agency,
                   AssetSearchMetadataFieldEnum.celebrityAssociated,
                   AssetSearchMetadataFieldEnum.celebrityInPhoto,
+                  AssetSearchMetadataFieldEnum.createdBy,
                   AssetSearchMetadataFieldEnum.credit,
                   AssetSearchMetadataFieldEnum.creditLocation,
                   AssetSearchMetadataFieldEnum.daletID,
                   AssetSearchMetadataFieldEnum.emotions,
+                  AssetSearchMetadataFieldEnum.exclusivity,
                   AssetSearchMetadataFieldEnum.headline,
                   AssetSearchMetadataFieldEnum.keywords,
                   AssetSearchMetadataFieldEnum.originalFileName,
@@ -445,6 +490,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             // of each of these types...
                             AssetSearchMetadataFieldEnum.creditLocation,
                             AssetSearchMetadataFieldEnum.daletID,
+                            AssetSearchMetadataFieldEnum.exclusivity,
                             AssetSearchMetadataFieldEnum.rights,
                           ].any(
                             (e) =>
@@ -541,6 +587,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                     createdAtEnd: _createdAtEnd,
                     updatedAtStart: _updatedAtStart,
                     updatedAtEnd: _updatedAtEnd,
+                    searchTerm: _searchTermController.text.trim(),
                     metadataConditions: _fieldData
                         .where((_) => _.condition != null)
                         .map((_) => _.condition!)
@@ -654,9 +701,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -665,7 +711,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
               child: PicklistAgencyTagField(
                 key: fieldData.key,
                 focusNode: fieldData.focusNode,
-                canAddNewtags: false,
+                canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
                   setState(() {
@@ -709,9 +755,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -720,7 +765,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
               child: PicklistCelebrityTagField(
                 key: fieldData.key,
                 focusNode: fieldData.focusNode,
-                canAddNewtags: false,
+                canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
                   setState(() {
@@ -764,9 +809,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -775,7 +819,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
               child: PicklistCelebrityTagField(
                 key: fieldData.key,
                 focusNode: fieldData.focusNode,
-                canAddNewtags: false,
+                canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
                   setState(() {
@@ -785,6 +829,60 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             fieldData.condition!.field,
                           ),
                       value: tags,
+                    );
+                  });
+
+                  fieldData.focusNode.requestFocus();
+                },
+              ),
+            ),
+          ],
+        );
+      case AssetSearchMetadataFieldEnum.createdBy:
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.contains,
+                  ComparisonMethodEnum.notContains,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.contains: 'Contains',
+                        ComparisonMethodEnum.notContains: 'Does Not Contain',
+                      }[value] ??
+                      '';
+
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
+                },
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: PicklistUserTagField(
+                key: fieldData.key,
+                focusNode: fieldData.focusNode,
+                tags:
+                    (fieldData.condition!.value as List<UserMetaModel>?) ?? [],
+                onChange: (tags) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: tags.toList(),
                     );
                   });
 
@@ -826,9 +924,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -878,21 +975,21 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
             const SizedBox(width: 10.0),
             Expanded(
               child: Choice<AssetMetadataCreditLocationEnum>.inline(
+                clearable: true,
                 value: (fieldData.condition!.value != null)
                     ? [fieldData.condition!.value]
                     : [],
                 itemCount: 2,
                 itemBuilder: (state, index) {
-                  const creditLocation = [
+                  const values = [
                     AssetMetadataCreditLocationEnum.end,
                     AssetMetadataCreditLocationEnum.onScreen,
                   ];
@@ -903,15 +1000,18 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             AssetMetadataCreditLocationEnum.end: 'End',
                             AssetMetadataCreditLocationEnum.onScreen:
                                 'On-Screen',
-                          }[creditLocation[index]] ??
+                          }[values[index]] ??
                           '',
                       style: theme.textTheme.bodyMedium,
                     ),
-                    selected:
-                        fieldData.condition!.value == creditLocation[index],
+                    selected: fieldData.condition!.value == values[index],
                     selectedColor: const Color(0xFF8E0000),
                     onSelected: (value) {
-                      state.replace([creditLocation[index]]);
+                      if (value) {
+                        state.replace([values[index]]);
+                      } else {
+                        state.replace([]);
+                      }
                     },
                   );
                 },
@@ -923,7 +1023,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             fieldData.condition!.field,
                           ),
                       value: value.firstOrNull ??
-                          AssetMetadataCreditLocationEnum.end,
+                          AssetMetadataCreditLocationEnum.unknown,
                     );
                   });
                 },
@@ -955,9 +1055,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1008,9 +1107,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1024,7 +1122,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                     [],
                 itemCount: 4,
                 itemBuilder: (state, index) {
-                  const emotions = [
+                  const values = [
                     AssetMetadataEmotionEnum.positive,
                     AssetMetadataEmotionEnum.negative,
                     AssetMetadataEmotionEnum.surprised,
@@ -1038,20 +1136,20 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             AssetMetadataEmotionEnum.negative: 'Negative',
                             AssetMetadataEmotionEnum.surprised: 'Surprised',
                             AssetMetadataEmotionEnum.neutral: 'Neutral',
-                          }[emotions[index]] ??
+                          }[values[index]] ??
                           '',
                       style: theme.textTheme.bodyMedium,
                     ),
                     selected: (fieldData.condition!.value
                                 as List<AssetMetadataEmotionEnum>?)
-                            ?.contains(emotions[index]) ??
+                            ?.contains(values[index]) ??
                         false,
                     selectedColor: const Color(0xFF8E0000),
                     onSelected: (value) {
                       if (value) {
-                        state.add(emotions[index]);
+                        state.add(values[index]);
                       } else {
-                        state.remove(emotions[index]);
+                        state.remove(values[index]);
                       }
                     },
                   );
@@ -1064,6 +1162,86 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             fieldData.condition!.field,
                           ),
                       value: value,
+                    );
+                  });
+                },
+              ),
+            ),
+          ],
+        );
+      case AssetSearchMetadataFieldEnum.exclusivity:
+        return Row(
+          children: [
+            SizedBox(
+              height: 45.0,
+              width: 210.0,
+              child: DropdownSelector<ComparisonMethodEnum>(
+                initialValue: fieldData.condition!.comparisonMethod,
+                items: const [
+                  // these need to match what the backend is
+                  // capable of handling for this field...
+                  ComparisonMethodEnum.equal,
+                  ComparisonMethodEnum.notEqual,
+                ],
+                itemBuilder: (value) {
+                  final label = {
+                        ComparisonMethodEnum.equal: 'Equals',
+                        ComparisonMethodEnum.notEqual: 'Does Not Equal',
+                      }[value] ??
+                      '';
+
+                  return Text(label);
+                },
+                onSelectionChanged: (value) {
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
+                },
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Expanded(
+              child: Choice<AssetMetadataExclusivityEnum>.inline(
+                clearable: true,
+                value: (fieldData.condition!.value != null)
+                    ? [fieldData.condition!.value]
+                    : [],
+                itemCount: 2,
+                itemBuilder: (state, index) {
+                  const values = [
+                    AssetMetadataExclusivityEnum.exclusive,
+                    AssetMetadataExclusivityEnum.premiumExclusive,
+                  ];
+
+                  return ChoiceChip(
+                    label: Text(
+                      {
+                            AssetMetadataExclusivityEnum.exclusive: 'Exclusive',
+                            AssetMetadataExclusivityEnum.premiumExclusive:
+                                'Premium Exclusive',
+                          }[values[index]] ??
+                          '',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    selected: fieldData.condition!.value == values[index],
+                    selectedColor: const Color(0xFF8E0000),
+                    onSelected: (value) {
+                      if (value) {
+                        state.replace([values[index]]);
+                      } else {
+                        state.replace([]);
+                      }
+                    },
+                  );
+                },
+                onChanged: (value) {
+                  setState(() {
+                    fieldData.condition = fieldData.condition!.copyWith(
+                      comparisonMethod: fieldData.condition!.comparisonMethod ??
+                          _getDefaultComparisonMethod(
+                            fieldData.condition!.field,
+                          ),
+                      value: value.firstOrNull ??
+                          AssetMetadataExclusivityEnum.unknown,
                     );
                   });
                 },
@@ -1103,9 +1281,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1156,9 +1333,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1167,7 +1343,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
               child: PicklistKeywordTagField(
                 key: fieldData.key,
                 focusNode: fieldData.focusNode,
-                canAddNewtags: false,
+                canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
                   setState(() {
@@ -1218,9 +1394,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1270,9 +1445,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1286,7 +1460,7 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                     [],
                 itemCount: 3,
                 itemBuilder: (state, index) {
-                  const overlays = [
+                  const values = [
                     AssetMetadataOverlayEnum.blackBarCensor,
                     AssetMetadataOverlayEnum.blurCensor,
                     AssetMetadataOverlayEnum.watermark,
@@ -1299,20 +1473,20 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                                 'Black Bar Censor',
                             AssetMetadataOverlayEnum.blurCensor: 'Blur Censor',
                             AssetMetadataOverlayEnum.watermark: 'Watermark',
-                          }[overlays[index]] ??
+                          }[values[index]] ??
                           '',
                       style: theme.textTheme.bodyMedium,
                     ),
                     selected: (fieldData.condition!.value
                                 as List<AssetMetadataOverlayEnum>?)
-                            ?.contains(overlays[index]) ??
+                            ?.contains(values[index]) ??
                         false,
                     selectedColor: const Color(0xFF8E0000),
                     onSelected: (value) {
                       if (value) {
-                        state.add(overlays[index]);
+                        state.add(values[index]);
                       } else {
-                        state.remove(overlays[index]);
+                        state.remove(values[index]);
                       }
                     },
                   );
@@ -1361,9 +1535,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1414,21 +1587,21 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
             const SizedBox(width: 10.0),
             Expanded(
               child: Choice<AssetMetadataRightsEnum>.inline(
+                clearable: true,
                 value: (fieldData.condition!.value != null)
                     ? [fieldData.condition!.value]
                     : [],
                 itemCount: 3,
                 itemBuilder: (state, index) {
-                  const rights = [
+                  const values = [
                     AssetMetadataRightsEnum.freeTMZ,
                     AssetMetadataRightsEnum.freeNonTMZ,
                     AssetMetadataRightsEnum.costNonTMZ,
@@ -1442,14 +1615,18 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                             AssetMetadataRightsEnum.freeNonTMZ:
                                 'Free (Non-TMZ)',
                             AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
-                          }[rights[index]] ??
+                          }[values[index]] ??
                           '',
                       style: theme.textTheme.bodyMedium,
                     ),
-                    selected: fieldData.condition!.value == rights[index],
+                    selected: fieldData.condition!.value == values[index],
                     selectedColor: const Color(0xFF8E0000),
                     onSelected: (value) {
-                      state.replace([rights[index]]);
+                      if (value) {
+                        state.replace([values[index]]);
+                      } else {
+                        state.replace([]);
+                      }
                     },
                   );
                 },
@@ -1501,9 +1678,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1561,9 +1737,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1618,9 +1793,8 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                   return Text(label);
                 },
                 onSelectionChanged: (value) {
-                  fieldData.condition = fieldData.condition!.copyWith(
-                    comparisonMethod: value,
-                  );
+                  fieldData.condition =
+                      fieldData.condition!.copyWithComparisonMethod(value);
                 },
               ),
             ),
@@ -1684,4 +1858,15 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
       return null;
     }
   }
+}
+
+class _InputFieldData {
+  UniqueKey key = UniqueKey();
+  final focusNode = FocusNode();
+
+  AssetSearchDataMetadataConditionModel? condition;
+
+  _InputFieldData({
+    this.condition,
+  });
 }

@@ -6,8 +6,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/app_router.gr.dart';
-import 'package:tmz_damz/data/sources/auth.dart';
-import 'package:tmz_damz/shared/bloc/global_bloc.dart';
+import 'package:tmz_damz/shared/bloc/auth_session_bloc.dart';
+import 'package:tmz_damz/shared/widgets/toast.dart';
+import 'package:tmz_damz/utils/auth_session_manager.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 
 part 'menu_drawer.dart';
 part 'menu_drawer_header.dart';
@@ -89,48 +91,69 @@ class _AppScaffoldState extends State<AppScaffold>
     }
 
     return BlocProvider.value(
-      value: GetIt.instance<GlobalBloc>(),
-      child: BlocBuilder<GlobalBloc, GlobalBlocState>(
-        buildWhen: (_, state) => state is InitialState,
-        builder: (context, state) {
-          return Material(
-            child: AnimatedBuilder(
-              animation: _animation,
-              builder: (context, _) {
-                final collapsedWidth =
-                    _menuItemPadding.resolve(TextDirection.ltr).horizontal +
-                        _iconSize;
-                final menuWidth = collapsedWidth +
-                    ((_menuExpandedWidth - collapsedWidth) * _animation.value);
+      value: GetIt.instance<AuthSessionBloc>(),
+      child: BlocListener<AuthSessionBloc, AuthSessionBlocState>(
+        listener: (context, state) async {
+          if (state is SessionExpiredState) {
+            Toast.showNotification(
+              showDuration: null,
+              type: ToastTypeEnum.information,
+              message: 'Session expired.',
+            );
 
-                return SizedBox(
-                  width: menuWidth,
-                  child: _buildMenuDrawer(context),
-                );
-              },
-            ),
-          );
+            await widget.router.replace(
+              const AuthenticationLoginRoute(),
+            );
+          } else if (state is UserLoggedOutState) {
+            await widget.router.replace(
+              const AuthenticationLoginRoute(),
+            );
+          }
         },
+        child: Material(
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, _) {
+              final collapsedWidth =
+                  _menuItemPadding.resolve(TextDirection.ltr).horizontal +
+                      _iconSize;
+              final menuWidth = collapsedWidth +
+                  ((_menuExpandedWidth - collapsedWidth) * _animation.value);
+
+              return SizedBox(
+                width: menuWidth,
+                child: _buildMenuDrawer(context),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildMenuDrawer(BuildContext context) {
+    final notifier = Provider.of<RouteChangeNotifier>(
+      context,
+      listen: false,
+    );
+
     final topItems = [
       _MenuItem(
         icon: MdiIcons.viewDashboard,
         title: 'Assets',
         isActive: widget.router.current.name == AssetsSearchRoute.name,
-        onTap: () {
-          widget.router.navigate(AssetsSearchRoute());
+        onTap: () async {
+          notifier.notify();
+          await widget.router.navigate(AssetsSearchRoute());
         },
       ),
       _MenuItem(
         icon: MdiIcons.folderMultiple,
         title: 'Collections',
         isActive: widget.router.current.name == CollectionsViewRoute.name,
-        onTap: () {
-          widget.router.navigate(const CollectionsViewRoute());
+        onTap: () async {
+          notifier.notify();
+          await widget.router.navigate(const CollectionsViewRoute());
         },
       ),
       _MenuItem(
@@ -138,8 +161,9 @@ class _AppScaffoldState extends State<AppScaffold>
         title: 'Import Images',
         isActive: (widget.router.current.name == AssetImportRoute.name) ||
             (widget.router.current.name == AssetImportSessionRoute.name),
-        onTap: () {
-          widget.router.navigate(const AssetImportRoute());
+        onTap: () async {
+          notifier.notify();
+          await widget.router.navigate(const AssetImportRoute());
         },
       ),
     ];
@@ -163,22 +187,22 @@ class _AppScaffoldState extends State<AppScaffold>
     ];
 
     final bottomItems = [
-      _MenuItem(
-        icon: MdiIcons.shieldAccountVariant,
-        title: 'Admin',
-        isActive: false /* widget.router.current.name == AdminRoute.name */,
-        onTap: () {
-          // widget.router.navigate(const AdminRoute());
-        },
-      ),
-      _MenuItem(
-        icon: MdiIcons.cog,
-        title: 'Settings',
-        isActive: false /* widget.router.current.name == SettingsRoute.name */,
-        onTap: () {
-          // widget.router.navigate(const SettingsRoute());
-        },
-      ),
+      // _MenuItem(
+      //   icon: MdiIcons.shieldAccountVariant,
+      //   title: 'Admin',
+      //   isActive: false /* widget.router.current.name == AdminRoute.name */,
+      //   onTap: () {
+      //     // widget.router.navigate(const AdminRoute());
+      //   },
+      // ),
+      // _MenuItem(
+      //   icon: MdiIcons.cog,
+      //   title: 'Settings',
+      //   isActive: false /* widget.router.current.name == SettingsRoute.name */,
+      //   onTap: () {
+      //     // widget.router.navigate(const SettingsRoute());
+      //   },
+      // ),
       _MenuItem(
         icon: MdiIcons.logout,
         title: 'Logout',
@@ -186,16 +210,8 @@ class _AppScaffoldState extends State<AppScaffold>
         onTap: () async {
           // TODO: prompt user to confirm they really want to logout...
 
-          final authDataSource = GetIt.instance<IAuthDataSource>();
-          await authDataSource.logout();
-
-          if (!context.mounted) {
-            return;
-          }
-
-          await widget.router.replace(
-            const AuthenticationLoginRoute(),
-          );
+          final manager = GetIt.instance<AuthSessionManager>();
+          await manager.logout();
         },
       ),
     ];

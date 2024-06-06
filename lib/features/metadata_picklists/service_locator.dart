@@ -16,6 +16,7 @@ class ServiceLocator {
         picklistAgencyDataSource: sl(),
         picklistCelebrityDataSource: sl(),
         picklistKeywordDataSource: sl(),
+        userDataSource: sl(),
       ),
     );
 

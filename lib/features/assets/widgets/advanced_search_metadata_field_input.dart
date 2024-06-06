@@ -87,11 +87,13 @@ class _AdvancedSearchMetadataFieldInputState
                       'Celebrity (Associated)',
                   AssetSearchMetadataFieldEnum.celebrityInPhoto:
                       'Celebrity (In Photo)',
+                  AssetSearchMetadataFieldEnum.createdBy: 'Created By',
                   AssetSearchMetadataFieldEnum.credit: 'Credit',
                   AssetSearchMetadataFieldEnum.creditLocation:
                       'Credit Location',
                   AssetSearchMetadataFieldEnum.daletID: 'Dalet ID',
                   AssetSearchMetadataFieldEnum.emotions: 'Emotions',
+                  AssetSearchMetadataFieldEnum.exclusivity: 'Exclusivity',
                   AssetSearchMetadataFieldEnum.headline: 'Headline',
                   AssetSearchMetadataFieldEnum.keywords: 'Keywords',
                   AssetSearchMetadataFieldEnum.originalFileName:

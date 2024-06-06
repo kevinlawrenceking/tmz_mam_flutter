@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
@@ -20,11 +21,14 @@ import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/pagination_bar.dart';
 import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/toolbar.dart';
+import 'package:tmz_damz/features/bulk_update/widgets/bulk_update_modal.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection_modal.dart';
 import 'package:tmz_damz/features/user_collections/widgets/user_collections.dart';
+import 'package:tmz_damz/shared/widgets/change_notifier_listener.dart';
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 
 @RoutePage(name: 'AssetsSearchRoute')
 class SearchView extends StatefulWidget {
@@ -471,95 +475,27 @@ class _SearchViewState extends State<SearchView> {
                   _selectedIDs = selectedIDs;
                 });
               },
-              onAddSelectedToCollection: (selectedIDs) {
-                showDialog<void>(
+              onBulkUpdate: (selectedIDs) async {
+                await _showBulkEditDialog(
                   context: context,
-                  barrierColor: Colors.black54,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    final theme = Theme.of(context);
-
-                    return OverflowBox(
-                      minWidth: 600.0,
-                      maxWidth: 600.0,
-                      child: Center(
-                        child: AddAssetsToCollectionModal(
-                          theme: theme,
-                          title:
-                              // ignore: lines_longer_than_80_chars
-                              'Add selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
-                          onCancel: () {
-                            Navigator.of(context).pop();
-                          },
-                          onConfirm: (collectionID) {
-                            assetsBloc.add(
-                              AddAssetsToCollectionEvent(
-                                collectionID: collectionID,
-                                assetIDs: selectedIDs,
-                              ),
-                            );
-
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                    );
-                  },
+                  selectedIDs: selectedIDs,
                 );
               },
-              onMoveSelectedToCollection: (selectedIDs) {
+              onAddSelectedToCollection: (selectedIDs) async {
+                await _showAddSelectedToCollection(
+                  context: context,
+                  selectedIDs: selectedIDs,
+                );
+              },
+              onMoveSelectedToCollection: (selectedIDs) async {
                 if ((widget.collectionID == null) || selectedIDs.isEmpty) {
                   return;
                 }
 
-                final sourceCollectionID = widget.collectionID!;
-
-                showDialog<void>(
+                await _showMoveSelectedToCollection(
                   context: context,
-                  barrierColor: Colors.black54,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    final theme = Theme.of(context);
-
-                    return OverflowBox(
-                      minWidth: 600.0,
-                      maxWidth: 600.0,
-                      child: Center(
-                        child: AddAssetsToCollectionModal(
-                          theme: theme,
-                          title:
-                              // ignore: lines_longer_than_80_chars
-                              'Move selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
-                          confirmButtonLabel: 'Move',
-                          onCancel: () {
-                            Navigator.of(context).pop();
-                          },
-                          onConfirm: (collectionID) {
-                            if (collectionID == sourceCollectionID) {
-                              Toast.showNotification(
-                                showDuration: const Duration(seconds: 6),
-                                type: ToastTypeEnum.information,
-                                message:
-                                    // ignore: lines_longer_than_80_chars
-                                    'You must select a collection that is not the same as the current collection.',
-                              );
-                              return;
-                            }
-
-                            assetsBloc.add(
-                              MoveAssetsToCollectionEvent(
-                                sourceCollectionID: sourceCollectionID,
-                                targetCollectionID: collectionID,
-                                assetIDs: selectedIDs,
-                              ),
-                            );
-
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                    );
-                  },
+                  sourceCollectionID: widget.collectionID!,
+                  selectedIDs: selectedIDs,
                 );
               },
               onDeleteSelected: (selectedIDs) {
@@ -695,6 +631,161 @@ class _SearchViewState extends State<SearchView> {
               _thumbnailSize = size;
             });
           },
+        );
+      },
+    );
+  }
+
+  Future<void> _showAddSelectedToCollection({
+    required BuildContext context,
+    required List<String> selectedIDs,
+  }) async {
+    final theme = Theme.of(context);
+
+    final notifier = Provider.of<RouteChangeNotifier>(
+      context,
+      listen: false,
+    );
+
+    await showDialog<void>(
+      context: context,
+      barrierColor: Colors.black54,
+      barrierDismissible: false,
+      builder: (_) {
+        return ChangeNotifierListener(
+          notifier: notifier,
+          listener: () {
+            Navigator.of(context).pop();
+          },
+          child: OverflowBox(
+            minWidth: 600.0,
+            maxWidth: 600.0,
+            child: Center(
+              child: AddAssetsToCollectionModal(
+                theme: theme,
+                title:
+                    // ignore: lines_longer_than_80_chars
+                    'Add selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
+                onCancel: () {
+                  Navigator.of(context).pop();
+                },
+                onConfirm: (collectionID) {
+                  BlocProvider.of<AssetsBloc>(context).add(
+                    AddAssetsToCollectionEvent(
+                      collectionID: collectionID,
+                      assetIDs: selectedIDs,
+                    ),
+                  );
+
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showBulkEditDialog({
+    required BuildContext context,
+    required List<String> selectedIDs,
+  }) async {
+    final theme = Theme.of(context);
+
+    final notifier = Provider.of<RouteChangeNotifier>(
+      context,
+      listen: false,
+    );
+
+    await showDialog<void>(
+      context: context,
+      barrierColor: Colors.black54,
+      barrierDismissible: false,
+      builder: (_) {
+        return ChangeNotifierListener(
+          notifier: notifier,
+          listener: () {
+            Navigator.of(context).pop();
+          },
+          child: OverflowBox(
+            minWidth: 900.0,
+            maxWidth: 900.0,
+            child: Center(
+              child: BulkUpdateModal(
+                theme: theme,
+                assetIDs: selectedIDs,
+                onClose: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showMoveSelectedToCollection({
+    required BuildContext context,
+    required String sourceCollectionID,
+    required List<String> selectedIDs,
+  }) async {
+    final theme = Theme.of(context);
+
+    final notifier = Provider.of<RouteChangeNotifier>(
+      context,
+      listen: false,
+    );
+
+    await showDialog<void>(
+      context: context,
+      barrierColor: Colors.black54,
+      barrierDismissible: false,
+      builder: (_) {
+        return ChangeNotifierListener(
+          notifier: notifier,
+          listener: () {
+            Navigator.of(context).pop();
+          },
+          child: OverflowBox(
+            minWidth: 600.0,
+            maxWidth: 600.0,
+            child: Center(
+              child: AddAssetsToCollectionModal(
+                theme: theme,
+                title:
+                    // ignore: lines_longer_than_80_chars
+                    'Move selected${selectedIDs.length > 1 ? '  ( ${selectedIDs.length} ) ' : ''} asset${selectedIDs.length > 1 ? 's' : ''} to collection...',
+                confirmButtonLabel: 'Move',
+                onCancel: () {
+                  Navigator.of(context).pop();
+                },
+                onConfirm: (collectionID) {
+                  if (collectionID == sourceCollectionID) {
+                    Toast.showNotification(
+                      showDuration: const Duration(seconds: 6),
+                      type: ToastTypeEnum.information,
+                      message:
+                          // ignore: lines_longer_than_80_chars
+                          'You must select a collection that is not the same as the current collection.',
+                    );
+                    return;
+                  }
+
+                  BlocProvider.of<AssetsBloc>(context).add(
+                    MoveAssetsToCollectionEvent(
+                      sourceCollectionID: sourceCollectionID,
+                      targetCollectionID: collectionID,
+                      assetIDs: selectedIDs,
+                    ),
+                  );
+
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ),
         );
       },
     );

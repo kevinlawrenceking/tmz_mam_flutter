@@ -13,7 +13,7 @@ enum ToastTypeEnum {
 class Toast {
   static void showNotification({
     required ToastTypeEnum type,
-    Duration showDuration = const Duration(milliseconds: 2500),
+    Duration? showDuration = const Duration(milliseconds: 2500),
     String? title,
     String? message,
   }) {
@@ -72,6 +72,7 @@ class Toast {
     }
 
     BotToast.showAnimationWidget(
+      clickClose: true,
       onlyOne: true,
       duration: showDuration,
       animationDuration: const Duration(milliseconds: 200),

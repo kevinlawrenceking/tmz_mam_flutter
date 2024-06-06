@@ -6,6 +6,7 @@ import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/shared.dart';
+import 'package:tmz_damz/data/models/user.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
 import 'package:tmz_damz/data/sources/collection.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
@@ -297,27 +298,44 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
       final condition = searchData.metadataConditions[i];
 
       switch (condition.field) {
+        case AssetSearchMetadataFieldEnum.createdBy:
+          conditions.add(
+            condition.copyWithValue(
+              (condition.value as List<UserMetaModel>?)
+                  ?.map((_) => _.userID)
+                  .toList(),
+            ),
+          );
+          break;
         case AssetSearchMetadataFieldEnum.creditLocation:
           conditions.add(
-            condition.copyWith(
-              value: (condition.value as AssetMetadataCreditLocationEnum?)
-                  ?.toJsonDtoValue(),
+            condition.copyWithValue(
+              (condition.value as AssetMetadataCreditLocationEnum)
+                  .toJsonDtoValue(),
             ),
           );
           break;
         case AssetSearchMetadataFieldEnum.emotions:
           conditions.add(
-            condition.copyWith(
-              value: (condition.value as List<AssetMetadataEmotionEnum>?)
+            condition.copyWithValue(
+              (condition.value as List<AssetMetadataEmotionEnum>?)
                   ?.map((_) => _.toJsonDtoValue())
                   .toList(),
             ),
           );
           break;
+        case AssetSearchMetadataFieldEnum.exclusivity:
+          conditions.add(
+            condition.copyWithValue(
+              (condition.value as AssetMetadataExclusivityEnum)
+                  .toJsonDtoValue(),
+            ),
+          );
+          break;
         case AssetSearchMetadataFieldEnum.overlays:
           conditions.add(
-            condition.copyWith(
-              value: (condition.value as List<AssetMetadataOverlayEnum>?)
+            condition.copyWithValue(
+              (condition.value as List<AssetMetadataOverlayEnum>?)
                   ?.map((_) => _.toJsonDtoValue())
                   .toList(),
             ),
@@ -325,14 +343,13 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
           break;
         case AssetSearchMetadataFieldEnum.rights:
           conditions.add(
-            condition.copyWith(
-              value: (condition.value as AssetMetadataRightsEnum?)
-                  ?.toJsonDtoValue(),
+            condition.copyWithValue(
+              (condition.value as AssetMetadataRightsEnum).toJsonDtoValue(),
             ),
           );
           break;
         default:
-          conditions.add(condition.copyWith());
+          conditions.add(condition);
           break;
       }
     }
@@ -343,6 +360,7 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
         createdAtEnd: searchData.createdAtEnd?.toUtc(),
         updatedAtStart: searchData.updatedAtStart?.toUtc(),
         updatedAtEnd: searchData.updatedAtEnd?.toUtc(),
+        searchTerm: searchData.searchTerm,
         metadataConditions: conditions,
       ),
       offset: offset,

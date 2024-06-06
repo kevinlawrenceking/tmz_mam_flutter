@@ -8,15 +8,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/edit_collection_modal.dart';
+import 'package:tmz_damz/shared/widgets/change_notifier_listener.dart';
 import 'package:tmz_damz/shared/widgets/file_thumbnail.dart';
 import 'package:tmz_damz/shared/widgets/scroll_aware_builder.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 import 'package:web/web.dart' as web;
 
 class CollectionDataView extends StatefulWidget {
@@ -301,8 +304,8 @@ class _CollectionDataViewState extends State<CollectionDataView> {
               size: 16.0,
             ),
             onPressed: canEdit && (firstSelected != null)
-                ? () {
-                    _showEditCollectionDialog(
+                ? () async {
+                    await _showEditCollectionDialog(
                       context: context,
                       model: firstSelected,
                     );
@@ -836,39 +839,52 @@ class _CollectionDataViewState extends State<CollectionDataView> {
     widget.onSelectionChanged(widget.collections.map((_) => _.id).toList());
   }
 
-  void _showEditCollectionDialog({
+  Future<void> _showEditCollectionDialog({
     required BuildContext context,
     required CollectionModel model,
-  }) {
-    showDialog<void>(
+  }) async {
+    final theme = Theme.of(context);
+
+    final notifier = Provider.of<RouteChangeNotifier>(
+      context,
+      listen: false,
+    );
+
+    await showDialog<void>(
       context: context,
       barrierColor: Colors.black54,
       barrierDismissible: false,
       builder: (_) {
-        return OverflowBox(
-          minWidth: 600.0,
-          maxWidth: 600.0,
-          child: Center(
-            child: EditCollectionModal(
-              theme: Theme.of(context),
-              permissions: widget.permissions,
-              model: model,
-              onCancel: () {
-                Navigator.of(context).pop();
-              },
-              onSave: (params) {
-                BlocProvider.of<CollectionsBloc>(context).add(
-                  SaveCollectionEvent(
-                    collectionID: params.collectionID,
-                    name: params.name,
-                    description: params.description,
-                    isPrivate: params.isPrivate,
-                    autoClear: params.autoClear,
-                  ),
-                );
+        return ChangeNotifierListener(
+          notifier: notifier,
+          listener: () {
+            Navigator.of(context).pop();
+          },
+          child: OverflowBox(
+            minWidth: 600.0,
+            maxWidth: 600.0,
+            child: Center(
+              child: EditCollectionModal(
+                theme: theme,
+                permissions: widget.permissions,
+                model: model,
+                onCancel: () {
+                  Navigator.of(context).pop();
+                },
+                onSave: (params) {
+                  BlocProvider.of<CollectionsBloc>(context).add(
+                    SaveCollectionEvent(
+                      collectionID: params.collectionID,
+                      name: params.name,
+                      description: params.description,
+                      isPrivate: params.isPrivate,
+                      autoClear: params.autoClear,
+                    ),
+                  );
 
-                Navigator.of(context).pop();
-              },
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
         );

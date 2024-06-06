@@ -38,3 +38,14 @@ class RetrieveKeywordPicklistEvent extends MetadataBlocEvent {
   @override
   List<Object?> get props => [searchTerm];
 }
+
+class RetrieveUserPicklistEvent extends MetadataBlocEvent {
+  final String searchTerm;
+
+  RetrieveUserPicklistEvent({
+    required this.searchTerm,
+  });
+
+  @override
+  List<Object?> get props => [searchTerm];
+}

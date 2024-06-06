@@ -72,10 +72,11 @@ enum AssetMetadataEmotionEnum {
 }
 
 enum AssetMetadataExclusivityEnum {
+  unknown,
   exclusive,
   premiumExclusive;
 
-  static AssetMetadataExclusivityEnum? fromJsonDtoValue(
+  factory AssetMetadataExclusivityEnum.fromJsonDtoValue(
     String? value,
   ) {
     switch (value?.toUpperCase()) {
@@ -84,7 +85,7 @@ enum AssetMetadataExclusivityEnum {
       case 'PREMIUM_EXCLUSIVE':
         return premiumExclusive;
       default:
-        return null;
+        return unknown;
     }
   }
 

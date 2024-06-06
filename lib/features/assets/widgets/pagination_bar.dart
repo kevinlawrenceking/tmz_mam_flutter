@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/pagination_info.dart';
 import 'package:tmz_damz/features/assets/bloc/assets_bloc.dart';
 import 'package:tmz_damz/features/assets/widgets/advanced_search_modal.dart';
+import 'package:tmz_damz/shared/widgets/change_notifier_listener.dart';
 import 'package:tmz_damz/shared/widgets/dropdown_selector.dart';
 import 'package:tmz_damz/shared/widgets/toolbar_button.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 
 class PaginationBar extends StatelessWidget {
   static final kResultsPerPage = [10, 25, 50, 100, 250];
@@ -147,27 +150,38 @@ class PaginationBar extends StatelessWidget {
       child: ToolbarButton(
         icon: MdiIcons.filterVariant,
         tooltip: 'Advanced search...',
-        onPressed: () {
-          showDialog<void>(
+        onPressed: () async {
+          final notifier = Provider.of<RouteChangeNotifier>(
+            context,
+            listen: false,
+          );
+
+          await showDialog<void>(
             context: context,
             barrierColor: Colors.black54,
             barrierDismissible: false,
             builder: (_) {
-              return OverflowBox(
-                minWidth: 1100.0,
-                maxWidth: 1100.0,
-                child: Center(
-                  child: AdvancedSearchModal(
-                    theme: Theme.of(context),
-                    searchData: advancedSearchData,
-                    onCancel: () {
-                      Navigator.of(context).pop();
-                    },
-                    onSearch: (searchData) {
-                      Navigator.of(context).pop();
+              return ChangeNotifierListener(
+                notifier: notifier,
+                listener: () {
+                  Navigator.of(context).pop();
+                },
+                child: OverflowBox(
+                  minWidth: 1100.0,
+                  maxWidth: 1100.0,
+                  child: Center(
+                    child: AdvancedSearchModal(
+                      theme: theme,
+                      searchData: advancedSearchData,
+                      onCancel: () {
+                        Navigator.of(context).pop();
+                      },
+                      onSearch: (searchData) {
+                        Navigator.of(context).pop();
 
-                      onAdvancedSearch(searchData);
-                    },
+                        onAdvancedSearch(searchData);
+                      },
+                    ),
                   ),
                 ),
               );

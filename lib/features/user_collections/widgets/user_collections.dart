@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/features/user_collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_collection_to_favorites_modal.dart';
 import 'package:tmz_damz/features/user_collections/widgets/user_collection_item.dart';
+import 'package:tmz_damz/shared/widgets/change_notifier_listener.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 
 class UserCollections extends StatefulWidget {
   final AccessControlPermissionMapModel? permissions;
@@ -169,13 +172,19 @@ class _UserCollectionsState extends State<UserCollections> {
     );
   }
 
-  Widget _buildAddCollectionToFavoritesButton(BuildContext context) {
+  Widget _buildAddCollectionToFavoritesButton({
+    required BuildContext context,
+    required ThemeData theme,
+  }) {
     return SizedBox(
       height: 24.0,
       width: 24.0,
       child: IconButton(
-        onPressed: () {
-          _showAddCollectionToFavoritesDialog(context);
+        onPressed: () async {
+          await _showAddCollectionToFavoritesDialog(
+            context: context,
+            theme: theme,
+          );
         },
         padding: EdgeInsets.zero,
         style: ButtonStyle(
@@ -259,7 +268,10 @@ class _UserCollectionsState extends State<UserCollections> {
                   style: theme.textTheme.labelMedium,
                 ),
               ),
-              _buildAddCollectionToFavoritesButton(context),
+              _buildAddCollectionToFavoritesButton(
+                context: context,
+                theme: theme,
+              ),
             ],
           ),
         ),
@@ -295,43 +307,57 @@ class _UserCollectionsState extends State<UserCollections> {
     );
   }
 
-  void _showAddCollectionToFavoritesDialog(BuildContext context) {
-    showDialog<void>(
+  Future<void> _showAddCollectionToFavoritesDialog({
+    required BuildContext context,
+    required ThemeData theme,
+  }) async {
+    final notifier = Provider.of<RouteChangeNotifier>(
+      context,
+      listen: false,
+    );
+
+    await showDialog<void>(
       context: context,
       barrierColor: Colors.black54,
       barrierDismissible: false,
       builder: (_) {
-        return OverflowBox(
-          minWidth: 600.0,
-          maxWidth: 600.0,
-          child: Center(
-            child: AddCollectionToFavoritesModal(
-              theme: Theme.of(context),
-              permissions: widget.permissions,
-              onCancel: () {
-                Navigator.of(context).pop();
-              },
-              onAdd: (collectionID) {
-                BlocProvider.of<UserCollectionsBloc>(context).add(
-                  AddCollectionToFavoritesEvent(
-                    collectionID: collectionID,
-                  ),
-                );
+        return ChangeNotifierListener(
+          notifier: notifier,
+          listener: () {
+            Navigator.of(context).pop();
+          },
+          child: OverflowBox(
+            minWidth: 600.0,
+            maxWidth: 600.0,
+            child: Center(
+              child: AddCollectionToFavoritesModal(
+                theme: theme,
+                permissions: widget.permissions,
+                onCancel: () {
+                  Navigator.of(context).pop();
+                },
+                onAdd: (collectionID) {
+                  BlocProvider.of<UserCollectionsBloc>(context).add(
+                    AddCollectionToFavoritesEvent(
+                      collectionID: collectionID,
+                    ),
+                  );
 
-                Navigator.of(context).pop();
-              },
-              onCreate: (params) {
-                BlocProvider.of<UserCollectionsBloc>(context).add(
-                  CreateCollectionEvent(
-                    name: params.name,
-                    description: params.description,
-                    isPrivate: params.isPrivate,
-                    autoClear: params.autoClear,
-                  ),
-                );
+                  Navigator.of(context).pop();
+                },
+                onCreate: (params) {
+                  BlocProvider.of<UserCollectionsBloc>(context).add(
+                    CreateCollectionEvent(
+                      name: params.name,
+                      description: params.description,
+                      isPrivate: params.isPrivate,
+                      autoClear: params.autoClear,
+                    ),
+                  );
 
-                Navigator.of(context).pop();
-              },
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
         );

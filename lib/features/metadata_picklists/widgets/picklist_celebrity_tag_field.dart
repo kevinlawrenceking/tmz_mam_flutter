@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:tmz_damz/data/models/picklist_celebrity.dart';
 import 'package:tmz_damz/features/metadata_picklists/bloc/bloc.dart';
 import 'package:tmz_damz/features/metadata_picklists/widgets/tag_field.dart';
+import 'package:tmz_damz/utils/debounce_timer.dart';
 
 class PicklistCelebrityTagField extends StatefulWidget {
   final FocusNode? focusNode;
@@ -28,6 +29,8 @@ class PicklistCelebrityTagField extends StatefulWidget {
 
 class _PicklistCelebrityTagFieldState extends State<PicklistCelebrityTagField> {
   final _fieldKey = UniqueKey();
+
+  final _debounce = DebounceTimer();
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +58,18 @@ class _PicklistCelebrityTagFieldState extends State<PicklistCelebrityTagField> {
             labelProvider: (tag) {
               return tag;
             },
-            tagProvider: (value) {
-              return value;
+            valueProvider: (tag) {
+              return tag;
             },
             onChange: widget.onChange,
             onSearchTextChanged: (query) {
-              BlocProvider.of<MetadataBloc>(context).add(
-                RetrieveCelebrityPicklistEvent(
-                  searchTerm: query,
-                ),
-              );
+              _debounce.wrap(() {
+                BlocProvider.of<MetadataBloc>(context).add(
+                  RetrieveCelebrityPicklistEvent(
+                    searchTerm: query,
+                  ),
+                );
+              });
             },
           );
         },

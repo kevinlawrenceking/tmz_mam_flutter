@@ -15,6 +15,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  static final kENV = const String.fromEnvironment('ENV').toUpperCase();
+
   TextEditingController? _usernameController;
   TextEditingController? _passwordController;
 
@@ -122,6 +124,19 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
+                        if (kENV == 'STAGING') ...[
+                          const SizedBox(height: 24.0),
+                          const Center(
+                            child: Text(
+                              'STAGING ENVIRONMENT',
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 48.0),
                         Form(
                           child: AutofillGroup(

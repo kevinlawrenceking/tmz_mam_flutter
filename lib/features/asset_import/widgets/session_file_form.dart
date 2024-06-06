@@ -989,7 +989,6 @@ class SessionFileFormController extends ChangeNotifier {
     return AssetImportSessionFileMetaModel(
       headline: headline,
       metadata: AssetMetadataModel(
-        daletID: null,
         keywords: keywords,
         shotDescription: shotDescription,
         location: _meta?.metadata.location ??
@@ -1009,13 +1008,11 @@ class SessionFileFormController extends ChangeNotifier {
         credit: rights != AssetMetadataRightsEnum.freeTMZ ? credit : null,
         creditLocation:
             rights != AssetMetadataRightsEnum.freeTMZ ? creditLocation : null,
-        exclusivity: null,
         rightsInstructions: rights != AssetMetadataRightsEnum.freeTMZ
             ? rightsInstructions
             : null,
         rightsDetails:
             rights != AssetMetadataRightsEnum.freeTMZ ? rightsDetails : null,
-        qcNotes: null,
       ),
     );
   }

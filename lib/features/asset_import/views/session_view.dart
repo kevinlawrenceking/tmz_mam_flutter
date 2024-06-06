@@ -14,7 +14,6 @@ import 'package:tmz_damz/features/asset_import/view_models/file_view_model.dart'
 import 'package:tmz_damz/features/asset_import/widgets/bulk_update_form.dart';
 import 'package:tmz_damz/features/asset_import/widgets/session_file.dart';
 import 'package:tmz_damz/features/assets/views/search_view.dart';
-import 'package:tmz_damz/shared/bloc/global_bloc.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
@@ -63,56 +62,53 @@ class _SessionViewState extends State<SessionView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: GetIt.instance<GlobalBloc>(),
-      child: BlocProvider<SessionBloc>(
-        create: (context) {
-          final bloc = GetIt.instance<SessionBloc>();
+    return BlocProvider<SessionBloc>(
+      create: (context) {
+        final bloc = GetIt.instance<SessionBloc>();
 
-          bloc.add(
-            GetSessionDetailsEvent(
-              sessionID: widget.sessionID,
-            ),
-          );
-
-          return bloc;
-        },
-        child: _buildSessionBlocListener(
-          child: BlocBuilder<SessionBloc, SessionBlocState>(
-            buildWhen: (_, state) =>
-                state is SessionDetailsState || state is FinalizingSessionState,
-            builder: (context, state) {
-              if (state is SessionDetailsState) {
-                return _buildSessionDetails(
-                  context: context,
-                  sessionStatus: state.sessionStatus,
-                  files: state.files,
-                  uploading: state.uploading,
-                );
-              } else if (state is FinalizingSessionState) {
-                return Stack(
-                  children: [
-                    _buildSessionDetails(
-                      context: context,
-                      sessionStatus: AssetImportSessionStatusEnum.processing,
-                      files: state.files,
-                      uploading: state.uploading,
-                    ),
-                    Container(
-                      color: const Color(0xB0232323),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
+        bloc.add(
+          GetSessionDetailsEvent(
+            sessionID: widget.sessionID,
           ),
+        );
+
+        return bloc;
+      },
+      child: _buildSessionBlocListener(
+        child: BlocBuilder<SessionBloc, SessionBlocState>(
+          buildWhen: (_, state) =>
+              state is SessionDetailsState || state is FinalizingSessionState,
+          builder: (context, state) {
+            if (state is SessionDetailsState) {
+              return _buildSessionDetails(
+                context: context,
+                sessionStatus: state.sessionStatus,
+                files: state.files,
+                uploading: state.uploading,
+              );
+            } else if (state is FinalizingSessionState) {
+              return Stack(
+                children: [
+                  _buildSessionDetails(
+                    context: context,
+                    sessionStatus: AssetImportSessionStatusEnum.processing,
+                    files: state.files,
+                    uploading: state.uploading,
+                  ),
+                  Container(
+                    color: const Color(0xB0232323),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
     );
