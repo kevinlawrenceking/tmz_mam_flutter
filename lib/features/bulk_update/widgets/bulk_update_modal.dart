@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_metadata_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_agency_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_celebrity_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/features/bulk_update/bloc/bloc.dart';
 import 'package:tmz_damz/features/bulk_update/widgets/metadata_field_input.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 
@@ -209,8 +209,8 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                 AssetMetadataFieldEnum.overlay,
                 AssetMetadataFieldEnum.qcNotes,
                 AssetMetadataFieldEnum.rightsDetails,
-                AssetMetadataFieldEnum.rights,
                 AssetMetadataFieldEnum.rightsInstructions,
+                AssetMetadataFieldEnum.rights, // Rights Summary
                 AssetMetadataFieldEnum.locationDescription, // Shoot Location
                 AssetMetadataFieldEnum.shotDescription,
                 AssetMetadataFieldEnum.locationState,
@@ -460,16 +460,16 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
             child: TextButton(
               onPressed: widget.onClose,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   const Color(0x30FFFFFF),
                 ),
-                padding: MaterialStateProperty.all(
+                padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(
                     horizontal: 10.0,
                     vertical: 6.0,
                   ),
                 ),
-                shape: MaterialStateProperty.resolveWith(
+                shape: WidgetStateProperty.resolveWith(
                   (states) {
                     return RoundedRectangleBorder(
                       side: const BorderSide(
@@ -520,6 +520,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistAgencyTagField(
           key: _picklistAgencyTagFieldUniqueKey,
           focusNode: _picklistAgencyTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.agency,
           onChange: (tags) {
             setState(() {
@@ -539,6 +540,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistCelebrityTagField(
           key: _picklistCelebrityAssociatedTagFieldUniqueKey,
           focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.celebrityAssociated,
           onChange: (tags) {
             setState(() {
@@ -558,6 +560,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
         return PicklistCelebrityTagField(
           key: _picklistCelebrityInPhotoTagFieldUniqueKey,
           focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
+          canAddNewtags: true,
           tags: _controller.celebrityInPhoto,
           onChange: (tags) {
             setState(() {
@@ -581,7 +584,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(50),
       ],
-      maxLines: null,
     );
   }
 
@@ -602,6 +604,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                 }[creditLocation[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.creditLocation == creditLocation[index],
           selectedColor: const Color(0xFF8E0000),
@@ -642,6 +645,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataEmotionEnum.neutral: 'Neutral',
                 }[emotions[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.emotion.contains(emotions[index]),
           selectedColor: const Color(0xFF8E0000),
@@ -672,7 +676,26 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(250),
       ],
-      maxLines: null,
+    );
+  }
+
+  Widget _buildKeywords(ThemeData theme) {
+    return Builder(
+      builder: (context) {
+        return PicklistKeywordTagField(
+          key: _picklistKeywordsTagFieldUniqueKey,
+          focusNode: _picklistKeywordsTagFieldFocusNode,
+          canAddNewtags: true,
+          tags: _controller.keywords,
+          onChange: (tags) {
+            setState(() {
+              _controller.keywords = tags;
+            });
+
+            _picklistKeywordsTagFieldFocusNode.requestFocus();
+          },
+        );
+      },
     );
   }
 
@@ -728,25 +751,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
     );
   }
 
-  Widget _buildKeywords(ThemeData theme) {
-    return Builder(
-      builder: (context) {
-        return PicklistKeywordTagField(
-          key: _picklistKeywordsTagFieldUniqueKey,
-          focusNode: _picklistKeywordsTagFieldFocusNode,
-          tags: _controller.keywords,
-          onChange: (tags) {
-            setState(() {
-              _controller.keywords = tags;
-            });
-
-            _picklistKeywordsTagFieldFocusNode.requestFocus();
-          },
-        );
-      },
-    );
-  }
-
   Widget _buildOverlays(ThemeData theme) {
     return Choice.inline(
       clearable: true,
@@ -768,6 +772,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataOverlayEnum.watermark: 'Watermark',
                 }[overlays[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.overlay.contains(overlays[index]),
           selectedColor: const Color(0xFF8E0000),
@@ -812,7 +817,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(250),
       ],
-      maxLines: null,
     );
   }
 
@@ -826,7 +830,6 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(250),
       ],
-      maxLines: null,
     );
   }
 
@@ -849,6 +852,7 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                   AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                 }[rights[index]] ??
                 '',
+            style: theme.textTheme.bodyMedium,
           ),
           selected: _controller.rights == rights[index],
           selectedColor: const Color(0xFF8E0000),

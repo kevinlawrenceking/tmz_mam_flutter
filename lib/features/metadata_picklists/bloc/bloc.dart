@@ -4,27 +4,32 @@ import 'package:flutter/foundation.dart';
 import 'package:tmz_damz/data/models/picklist_agency.dart';
 import 'package:tmz_damz/data/models/picklist_celebrity.dart';
 import 'package:tmz_damz/data/models/picklist_keyword.dart';
+import 'package:tmz_damz/data/models/user.dart';
 import 'package:tmz_damz/data/sources/picklist_agency.dart';
 import 'package:tmz_damz/data/sources/picklist_celebrity.dart';
 import 'package:tmz_damz/data/sources/picklist_keyword.dart';
+import 'package:tmz_damz/data/sources/user.dart';
 import 'package:uuid/uuid.dart';
 
-part 'metadata_bloc_event.dart';
-part 'metadata_bloc_state.dart';
+part 'event.dart';
+part 'state.dart';
 
 class MetadataBloc extends Bloc<MetadataBlocEvent, MetadataBlocState> {
   final IPicklistAgencyDataSource picklistAgencyDataSource;
   final IPicklistCelebrityDataSource picklistCelebrityDataSource;
   final IPicklistKeywordDataSource picklistKeywordDataSource;
+  final IUserDataSource userDataSource;
 
   MetadataBloc({
     required this.picklistAgencyDataSource,
     required this.picklistCelebrityDataSource,
     required this.picklistKeywordDataSource,
+    required this.userDataSource,
   }) : super(InitialState()) {
     on<RetrieveAgencyPicklistEvent>(_retrieveAgencyPicklistEvent);
     on<RetrieveCelebrityPicklistEvent>(_retrieveCelebrityPicklistEvent);
     on<RetrieveKeywordPicklistEvent>(_retrieveKeywordPicklistEvent);
+    on<RetrieveUserPicklistEvent>(_retrieveUserPicklistEvent);
   }
 
   Future<void> _retrieveAgencyPicklistEvent(
@@ -121,6 +126,39 @@ class MetadataBloc extends Bloc<MetadataBlocEvent, MetadataBlocState> {
       (results) => emit(
         KeywordPicklistState(
           picklist: results.keywords,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _retrieveUserPicklistEvent(
+    RetrieveUserPicklistEvent event,
+    Emitter<MetadataBlocState> emit,
+  ) async {
+    if (event.searchTerm.length < 2) {
+      emit(
+        UserPicklistState(
+          picklist: const [],
+        ),
+      );
+      return;
+    }
+
+    final result = await userDataSource.getUserList(
+      searchTerm: event.searchTerm,
+      offset: 0,
+      limit: 100,
+    );
+
+    return result.fold(
+      (_) => emit(
+        UserPicklistState(
+          picklist: const [],
+        ),
+      ),
+      (results) => emit(
+        UserPicklistState(
+          picklist: results.users,
         ),
       ),
     );

@@ -8,6 +8,7 @@ import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/shared/widgets/app_scaffold/app_scaffold.dart';
 import 'package:tmz_damz/themes/app_theme.dart';
 import 'package:tmz_damz/themes/theme_provider.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -21,59 +22,62 @@ class App extends StatelessWidget {
           builder: (context, themeProvider, child) {
             final router = GetIt.instance<AppRouter>();
 
-            return Directionality(
-              textDirection: TextDirection.ltr,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppScaffold(
-                    router: router,
-                  ),
-                  Expanded(
-                    child: MaterialApp.router(
-                      debugShowCheckedModeBanner: false,
-                      title: 'TMZ DAMZ',
-                      theme: AppTheme.light(context),
-                      darkTheme: AppTheme.dark(context),
-                      themeMode: ThemeMode.dark, // themeProvider.themeMode
-                      builder: (context, child) {
-                        return ContextMenuOverlay(
-                          cardBuilder: (context, children) {
-                            return _buildContextMenuCard(
-                              children: children,
-                            );
-                          },
-                          buttonBuilder: (context, config, [style]) {
-                            return _ContextMenuButton(
-                              config: config,
-                              style: style,
-                            );
-                          },
-                          dividerBuilder: (context) {
-                            return const Divider(
-                              color: Color(
-                                0x20FFFFFF,
+            return ChangeNotifierProvider(
+              create: (context) => RouteChangeNotifier(),
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AppScaffold(
+                      router: router,
+                    ),
+                    Expanded(
+                      child: MaterialApp.router(
+                        debugShowCheckedModeBanner: false,
+                        title: 'TMZ DAMZ',
+                        theme: AppTheme.light(context),
+                        darkTheme: AppTheme.dark(context),
+                        themeMode: ThemeMode.dark, // themeProvider.themeMode
+                        builder: (context, child) {
+                          return ContextMenuOverlay(
+                            cardBuilder: (context, children) {
+                              return _buildContextMenuCard(
+                                children: children,
+                              );
+                            },
+                            buttonBuilder: (context, config, [style]) {
+                              return _ContextMenuButton(
+                                config: config,
+                                style: style,
+                              );
+                            },
+                            dividerBuilder: (context) {
+                              return const Divider(
+                                color: Color(
+                                  0x20FFFFFF,
+                                ),
+                                height: 7.0,
+                                thickness: 1.0,
+                              );
+                            },
+                            child: BotToastInit()(
+                              context,
+                              Material(
+                                child: child,
                               ),
-                              height: 7.0,
-                              thickness: 1.0,
-                            );
-                          },
-                          child: BotToastInit()(
-                            context,
-                            Material(
-                              child: child,
                             ),
-                          ),
-                        );
-                      },
-                      routerConfig: router.config(
-                        navigatorObservers: () => [
-                          BotToastNavigatorObserver(),
-                        ],
+                          );
+                        },
+                        routerConfig: router.config(
+                          navigatorObservers: () => [
+                            BotToastNavigatorObserver(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -141,7 +145,7 @@ class _ContextMenuButtonState extends State<_ContextMenuButton> {
       bgColor: widget.style?.bgColor ?? Colors.transparent,
       hoverFgColor: widget.style?.hoverFgColor ?? theme.colorScheme.primary,
       hoverBgColor: widget.style?.hoverBgColor ??
-          theme.colorScheme.background.withOpacity(0.2),
+          theme.colorScheme.surface.withOpacity(0.2),
       padding: widget.style?.padding ??
           const EdgeInsets.symmetric(
             horizontal: 16.0,

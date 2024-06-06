@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.dart';
-import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
-import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
-import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/shared/widgets/content_menus/editable_text_context_menu_builder.dart';
 
 class BulkUpdateForm extends StatefulWidget {
@@ -161,8 +161,8 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(const Color(0x30FFFFFF)),
-                    shape: MaterialStateProperty.all(
+                        WidgetStateProperty.all(const Color(0x30FFFFFF)),
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         side: const BorderSide(
                           color: Color(0x80000000),
@@ -272,6 +272,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistAgencyTagField(
             focusNode: _picklistAgencyTagFieldFocusNode,
             enabled: _includeAgency,
+            canAddNewtags: true,
             tags: widget.controller.agency,
             onChange: (tags) {
               setState(() {
@@ -400,6 +401,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistCelebrityTagField(
             focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
             enabled: _includeCelebrityAssociated,
+            canAddNewtags: true,
             tags: widget.controller.celebrityAssociated,
             onChange: (tags) {
               setState(() {
@@ -450,6 +452,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistCelebrityTagField(
             focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
             enabled: _includeCelebrityInPhoto,
+            canAddNewtags: true,
             tags: widget.controller.celebrityInPhoto,
             onChange: (tags) {
               setState(() {
@@ -573,6 +576,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                         AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                       }[creditLocation[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected:
                     widget.controller.creditLocation == creditLocation[index],
@@ -651,6 +655,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                         AssetMetadataEmotionEnum.neutral: 'Neutral',
                       }[emotions[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.emotion.contains(emotions[index]),
                 selectedColor: const Color(0xFF8E0000),
@@ -770,6 +775,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
           child: PicklistKeywordTagField(
             focusNode: _picklistKeywordsTagFieldFocusNode,
             enabled: _includeKeywords,
+            canAddNewtags: true,
             tags: widget.controller.keywords,
             onChange: (tags) {
               setState(() {
@@ -838,6 +844,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                         AssetMetadataOverlayEnum.watermark: 'Watermark',
                       }[overlays[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.overlay.contains(overlays[index]),
                 selectedColor: const Color(0xFF8E0000),
@@ -1040,6 +1047,7 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
                         AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                       }[rights[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.rights == rights[index],
                 selectedColor: const Color(0xFF8E0000),
@@ -1243,7 +1251,6 @@ class BulkUpdateFormController extends ChangeNotifier {
     return AssetImportSessionFileMetaModel(
       headline: headline,
       metadata: AssetMetadataModel(
-        daletID: null,
         keywords: keywords,
         shotDescription: shotDescription,
         location: _model?.metadata.location ??
@@ -1263,13 +1270,11 @@ class BulkUpdateFormController extends ChangeNotifier {
         credit: rights != AssetMetadataRightsEnum.freeTMZ ? credit : null,
         creditLocation:
             rights != AssetMetadataRightsEnum.freeTMZ ? creditLocation : null,
-        exclusivity: null,
         rightsInstructions: rights != AssetMetadataRightsEnum.freeTMZ
             ? rightsInstructions
             : null,
         rightsDetails:
             rights != AssetMetadataRightsEnum.freeTMZ ? rightsDetails : null,
-        qcNotes: null,
       ),
     );
   }

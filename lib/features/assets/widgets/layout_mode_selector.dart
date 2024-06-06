@@ -53,7 +53,7 @@ class LayoutModeSelector extends StatelessWidget {
       child: IconButton(
         onPressed: initialMode != value ? () => onChanged(value) : null,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
             Color? backgroundColor;
 
             if (initialMode == value) {
@@ -64,8 +64,8 @@ class LayoutModeSelector extends StatelessWidget {
 
             return backgroundColor;
           }),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(

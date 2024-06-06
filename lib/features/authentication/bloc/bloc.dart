@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/shared/errors/failures/failure.dart';
+import 'package:tmz_damz/utils/auth_session_manager.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class AuthenticationBloc extends Bloc<BlocEvent, BlocState> {
-  final IAuthDataSource authDataSource;
+  final AuthSessionManager authSessionManager;
 
   AuthenticationBloc({
-    required this.authDataSource,
+    required this.authSessionManager,
   }) : super(InitialState()) {
     on<LoginEvent>(_loginEvent);
   }
@@ -26,7 +26,7 @@ class AuthenticationBloc extends Bloc<BlocEvent, BlocState> {
       const Duration(milliseconds: 250),
     );
 
-    final result = await authDataSource.authenticate(
+    final result = await authSessionManager.authenticate(
       username: event.username,
       password: event.password,
     );

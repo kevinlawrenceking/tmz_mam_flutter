@@ -13,7 +13,7 @@ class ServiceLocator {
 
     sl.registerFactory(
       () => AuthenticationBloc(
-        authDataSource: sl(),
+        authSessionManager: sl(),
       ),
     );
 

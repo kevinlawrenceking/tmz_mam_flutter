@@ -182,6 +182,7 @@ class _AddCollectionToFavoritesModalState
               return ChoiceChip(
                 label: Text(
                   isNew ? 'New' : 'Existing',
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 selected: _isNewController.value == isNew,
                 selectedColor: const Color(0xFF8E0000),
@@ -274,16 +275,16 @@ class _AddCollectionToFavoritesModalState
             child: TextButton(
               onPressed: widget.onCancel,
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                   const Color(0x30FFFFFF),
                 ),
-                padding: MaterialStateProperty.all(
+                padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(
                     horizontal: 10.0,
                     vertical: 6.0,
                   ),
                 ),
-                shape: MaterialStateProperty.resolveWith(
+                shape: WidgetStateProperty.resolveWith(
                   (states) {
                     return RoundedRectangleBorder(
                       side: const BorderSide(

@@ -1,4 +1,4 @@
-part of 'metadata_bloc.dart';
+part of 'bloc.dart';
 
 @immutable
 abstract class MetadataBlocEvent extends Equatable {
@@ -32,6 +32,17 @@ class RetrieveKeywordPicklistEvent extends MetadataBlocEvent {
   final String searchTerm;
 
   RetrieveKeywordPicklistEvent({
+    required this.searchTerm,
+  });
+
+  @override
+  List<Object?> get props => [searchTerm];
+}
+
+class RetrieveUserPicklistEvent extends MetadataBlocEvent {
+  final String searchTerm;
+
+  RetrieveUserPicklistEvent({
     required this.searchTerm,
   });
 

@@ -38,6 +38,7 @@ abstract class IRestClient {
   Future<http.Response> post({
     required String endPoint,
     String? authToken,
+    Map<String, String>? queryParams,
     Map<String, String>? headers,
     Object? body,
   });
@@ -175,10 +176,12 @@ class RestClient implements IRestClient {
   Future<http.Response> post({
     required String endPoint,
     String? authToken,
+    Map<String, String>? queryParams,
     Map<String, String>? headers,
     Object? body,
   }) async {
-    final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}');
+    final url = Uri.parse('$_baseUrl${endPoint.replaceAll(RegExp('^/+'), '')}')
+        .replace(queryParameters: queryParams);
 
     final mergedHeaders = {
       'cache-control': 'no-cache',

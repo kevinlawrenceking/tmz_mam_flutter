@@ -5,8 +5,9 @@ import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_metadata_field.dart';
+import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/shared/empty.dart';
@@ -22,11 +23,19 @@ abstract class IAssetDataSource {
     required String assetID,
   });
 
-  Future<Either<Failure, AssetSearchResults>> getAssetList({
+  Future<Either<Failure, AssetSearchResults>> searchAdvanced({
+    required AssetSearchDataModel searchData,
     required int offset,
     required int limit,
+    AssetSortFieldEnum? sortField,
+    SortDirectionEnum? sortDirection,
+  });
+
+  Future<Either<Failure, AssetSearchResults>> searchSimple({
     String? collectionID,
     String? searchTerm,
+    required int offset,
+    required int limit,
     AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
   });
@@ -109,11 +118,110 @@ class AssetDataSource implements IAssetDataSource {
       })();
 
   @override
-  Future<Either<Failure, AssetSearchResults>> getAssetList({
+  Future<Either<Failure, AssetSearchResults>> searchAdvanced({
+    required AssetSearchDataModel searchData,
     required int offset,
     required int limit,
+    AssetSortFieldEnum? sortField,
+    SortDirectionEnum? sortDirection,
+  }) async =>
+      ExceptionHandler<AssetSearchResults>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final queryParams = {
+              'offset': offset.toString(),
+              'limit': limit.toString(),
+            };
+
+            if (sortField != null) {
+              const paramKey = 'sortField';
+
+              switch (sortField) {
+                case AssetSortFieldEnum.headline:
+                  queryParams[paramKey] = 'headline';
+                  break;
+                case AssetSortFieldEnum.createdAt:
+                  queryParams[paramKey] = 'created_at';
+                  break;
+                case AssetSortFieldEnum.updatedAt:
+                  queryParams[paramKey] = 'updated_at';
+                  break;
+                case AssetSortFieldEnum.agency:
+                  queryParams[paramKey] = 'agency';
+                  break;
+                case AssetSortFieldEnum.celebrityAssociated:
+                  queryParams[paramKey] = 'celebrity_associated';
+                  break;
+                case AssetSortFieldEnum.celebrityInPhoto:
+                  queryParams[paramKey] = 'celebrity_in_photo';
+                  break;
+                case AssetSortFieldEnum.credit:
+                  queryParams[paramKey] = 'credit';
+                  break;
+                case AssetSortFieldEnum.creditLocation:
+                  queryParams[paramKey] = 'credit_location';
+                  break;
+                case AssetSortFieldEnum.keywords:
+                  queryParams[paramKey] = 'keywords';
+                  break;
+                case AssetSortFieldEnum.originalFileName:
+                  queryParams[paramKey] = 'original_file_name';
+                  break;
+                case AssetSortFieldEnum.rights:
+                  queryParams[paramKey] = 'rights';
+                  break;
+                case AssetSortFieldEnum.rightsDetails:
+                  queryParams[paramKey] = 'rights_details';
+                  break;
+                case AssetSortFieldEnum.shotDescription:
+                  queryParams[paramKey] = 'shot_description';
+                  break;
+              }
+            }
+
+            if (sortDirection != null) {
+              const paramKey = 'sortDirection';
+
+              switch (sortDirection) {
+                case SortDirectionEnum.ascending:
+                  queryParams[paramKey] = 'asc';
+                  break;
+                case SortDirectionEnum.descending:
+                  queryParams[paramKey] = 'desc';
+                  break;
+              }
+            }
+
+            final response = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/searchAdvanced',
+              queryParams: queryParams,
+              body: searchData.toJsonDto(),
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            final data = json.decode(response.body);
+            final results = AssetSearchResults.fromJsonDto(data);
+
+            return Right(results);
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, AssetSearchResults>> searchSimple({
     String? collectionID,
     String? searchTerm,
+    required int offset,
+    required int limit,
     AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
   }) async =>
@@ -197,7 +305,7 @@ class AssetDataSource implements IAssetDataSource {
 
             final response = await _client.get(
               authToken: authToken,
-              endPoint: '/api/v1/asset',
+              endPoint: '/api/v1/asset/search',
               queryParams: queryParams,
             );
 

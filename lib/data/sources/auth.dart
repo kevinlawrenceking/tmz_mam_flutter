@@ -29,8 +29,10 @@ abstract class IAuthDataSource {
 class AuthDataSource implements IAuthDataSource {
   // Randomly generated keys are used here since they are
   // human-readable in web browsers storage.
-  static const kAuthTokenKey = 's2FQQXcO6Y7mINRqv85DVuP0FpKXHwHTWRi0RwyT';
-  static const kPermissionsKey = 'L2VJGQWVUl5lPL3qX406O7s6Z5EoSsYujbTfyz33';
+  static const kAuthTokenStorageKey =
+      's2FQQXcO6Y7mINRqv85DVuP0FpKXHwHTWRi0RwyT';
+  static const kPermissionsStorageKey =
+      'L2VJGQWVUl5lPL3qX406O7s6Z5EoSsYujbTfyz33';
 
   final IRestClient _client;
 
@@ -69,7 +71,7 @@ class AuthDataSource implements IAuthDataSource {
         }
 
         final storage = await LocalStorage.getInstance();
-        await storage.setString(kAuthTokenKey, authToken);
+        await storage.setString(kAuthTokenStorageKey, authToken);
 
         // await _storage.write(
         //   key: kAuthTokenKey,
@@ -95,7 +97,7 @@ class AuthDataSource implements IAuthDataSource {
   Future<Either<Failure, String>> getAuthToken() async =>
       ExceptionHandler<String>(() async {
         final storage = await LocalStorage.getInstance();
-        final authToken = storage.getString(kAuthTokenKey);
+        final authToken = storage.getString(kAuthTokenStorageKey);
 
         // final authToken = await _storage.read(
         //   key: kAuthTokenKey,
@@ -113,7 +115,7 @@ class AuthDataSource implements IAuthDataSource {
       getPermissions() async =>
           ExceptionHandler<AccessControlPermissionMapModel>(() async {
             final storage = await LocalStorage.getInstance();
-            final permissionsJson = storage.getString(kPermissionsKey);
+            final permissionsJson = storage.getString(kPermissionsStorageKey);
 
             // final permissionsJson = await _storage.read(
             //   key: kPermissionsKey,
@@ -133,7 +135,7 @@ class AuthDataSource implements IAuthDataSource {
   Future<Either<Failure, Empty>> logout() async =>
       ExceptionHandler<Empty>(() async {
         final storage = await LocalStorage.getInstance();
-        await storage.remove(kAuthTokenKey);
+        await storage.remove(kAuthTokenStorageKey);
 
         // await _storage.write(
         //   key: kAuthTokenKey,
@@ -147,7 +149,7 @@ class AuthDataSource implements IAuthDataSource {
   Future<Either<Failure, String>> refreshToken() =>
       ExceptionHandler<String>(() async {
         final storage = await LocalStorage.getInstance();
-        final authToken = storage.getString(kAuthTokenKey);
+        final authToken = storage.getString(kAuthTokenStorageKey);
 
         // final authToken = await _storage.read(
         //   key: kAuthTokenKey,
@@ -176,7 +178,7 @@ class AuthDataSource implements IAuthDataSource {
           return const Left(AuthFailure());
         }
 
-        await storage.setString(kAuthTokenKey, authToken);
+        await storage.setString(kAuthTokenStorageKey, newAuthToken);
 
         // await _storage.write(
         //   key: kAuthTokenKey,
@@ -204,7 +206,7 @@ class AuthDataSource implements IAuthDataSource {
     final model = AccessControlPermissionMapModel.fromJsonDto(data);
 
     final storage = await LocalStorage.getInstance();
-    await storage.setString(kPermissionsKey, response.body);
+    await storage.setString(kPermissionsStorageKey, response.body);
 
     return Right(model);
   }

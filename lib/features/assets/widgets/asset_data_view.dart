@@ -15,7 +15,6 @@ import 'package:tmz_damz/features/assets/widgets/asset_list_item.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_tile_item.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
 import 'package:tmz_damz/features/assets/widgets/thumbnail_size_selector.dart';
-import 'package:tmz_damz/features/bulk_update/widgets/bulk_update_modal.dart';
 import 'package:tmz_damz/shared/widgets/masked_scroll_view.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
@@ -33,6 +32,7 @@ class AssetDataView extends StatefulWidget {
   final void Function(AssetDetailsModel model) onTap;
   final void Function(AssetDetailsModel model) onDoubleTap;
   final void Function(List<String> selectedIDs) onSelectionChanged;
+  final void Function(List<String> selectedIDs) onBulkUpdate;
   final void Function(List<String> selectedIDs) onAddSelectedToCollection;
   final void Function(List<String> selectedIDs) onMoveSelectedToCollection;
   final void Function(List<String> selectedIDs) onDeleteSelected;
@@ -52,6 +52,7 @@ class AssetDataView extends StatefulWidget {
     required this.onTap,
     required this.onDoubleTap,
     required this.onSelectionChanged,
+    required this.onBulkUpdate,
     required this.onAddSelectedToCollection,
     required this.onMoveSelectedToCollection,
     required this.onDeleteSelected,
@@ -237,7 +238,6 @@ class _AssetDataViewState extends State<AssetDataView> {
     })();
 
     return ContextMenuRegion(
-      enableLongPress: false,
       contextMenu: GenericContextMenu(
         buttonConfigs: [
           if (widget.selectedIDs.isNotEmpty) ...[
@@ -297,28 +297,7 @@ class _AssetDataViewState extends State<AssetDataView> {
               ),
               onPressed: ((widget.permissions?.assets.canBulkUpdate ?? false) &&
                       widget.selectedIDs.isNotEmpty)
-                  ? () {
-                      showDialog<void>(
-                        context: context,
-                        barrierColor: Colors.black54,
-                        barrierDismissible: false,
-                        builder: (context) {
-                          return OverflowBox(
-                            minWidth: 900.0,
-                            maxWidth: 900.0,
-                            child: Center(
-                              child: BulkUpdateModal(
-                                theme: Theme.of(context),
-                                assetIDs: widget.selectedIDs,
-                                onClose: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
+                  ? () => widget.onBulkUpdate(widget.selectedIDs)
                   : null,
             ),
             null, // divider

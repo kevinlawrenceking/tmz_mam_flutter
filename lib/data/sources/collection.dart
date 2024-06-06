@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:tmz_damz/data/models/collection.dart';
 import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/shared/empty.dart';

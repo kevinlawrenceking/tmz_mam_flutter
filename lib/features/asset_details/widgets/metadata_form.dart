@@ -3,9 +3,9 @@ import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_agency_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_celebrity_tag_field.dart';
-import 'package:tmz_damz/features/asset_details/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
 
 class MetadataForm extends StatefulWidget {
   final MetadataFormController controller;
@@ -148,6 +148,7 @@ class _MetadataFormState extends State<MetadataForm> {
             return PicklistAgencyTagField(
               key: _picklistAgencyTagFieldUniqueKey,
               focusNode: _picklistAgencyTagFieldFocusNode,
+              canAddNewtags: true,
               tags: widget.controller.agency,
               onChange: (tags) {
                 setState(() {
@@ -267,6 +268,7 @@ class _MetadataFormState extends State<MetadataForm> {
             return PicklistCelebrityTagField(
               key: _picklistCelebrityAssociatedTagFieldUniqueKey,
               focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
+              canAddNewtags: true,
               tags: widget.controller.celebrityAssociated,
               onChange: (tags) {
                 setState(() {
@@ -302,6 +304,7 @@ class _MetadataFormState extends State<MetadataForm> {
             return PicklistCelebrityTagField(
               key: _picklistCelebrityInPhotoTagFieldUniqueKey,
               focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
+              canAddNewtags: true,
               tags: widget.controller.celebrityInPhoto,
               onChange: (tags) {
                 setState(() {
@@ -354,7 +357,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(50),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -391,6 +393,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                     }[creditLocation[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected:
                   widget.controller.creditLocation == creditLocation[index],
@@ -448,6 +451,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataEmotionEnum.neutral: 'Neutral',
                     }[emotions[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: widget.controller.emotion.contains(emotions[index]),
               selectedColor: const Color(0xFF8E0000),
@@ -507,7 +511,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(250),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -533,6 +536,7 @@ class _MetadataFormState extends State<MetadataForm> {
             return PicklistKeywordTagField(
               key: _picklistKeywordsTagFieldUniqueKey,
               focusNode: _picklistKeywordsTagFieldFocusNode,
+              canAddNewtags: true,
               tags: widget.controller.keywords,
               onChange: (tags) {
                 setState(() {
@@ -584,6 +588,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataOverlayEnum.watermark: 'Watermark',
                     }[overlays[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: widget.controller.overlay.contains(overlays[index]),
               selectedColor: const Color(0xFF8E0000),
@@ -660,7 +665,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(250),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -690,7 +694,6 @@ class _MetadataFormState extends State<MetadataForm> {
           inputFormatters: [
             LengthLimitingTextInputFormatter(250),
           ],
-          maxLines: null,
         ),
       ],
     );
@@ -742,6 +745,7 @@ class _MetadataFormState extends State<MetadataForm> {
                       AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                     }[rights[index]] ??
                     '',
+                style: theme.textTheme.bodyMedium,
               ),
               selected: widget.controller.rights == rights[index],
               selectedColor: const Color(0xFF8E0000),

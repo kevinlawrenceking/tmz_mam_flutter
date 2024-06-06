@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/features/user_collections/widgets/add_assets_to_collection_modal.dart';
+import 'package:tmz_damz/shared/widgets/change_notifier_listener.dart';
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:tmz_damz/utils/route_change_notifier.dart';
 import 'package:web/web.dart' as web;
 
 class Toolbar extends StatelessWidget {
@@ -81,29 +84,40 @@ class Toolbar extends StatelessWidget {
         opacity: (permissions?.collections.canAddAssets ?? false) ? 1.0 : 0.4,
         child: IconButton(
           onPressed: (permissions?.collections.canAddAssets ?? false)
-              ? () {
-                  showDialog<void>(
+              ? () async {
+                  final theme = Theme.of(context);
+
+                  final notifier = Provider.of<RouteChangeNotifier>(
+                    context,
+                    listen: false,
+                  );
+
+                  await showDialog<void>(
                     context: context,
                     barrierColor: Colors.black54,
                     barrierDismissible: false,
-                    builder: (context) {
-                      final theme = Theme.of(context);
+                    builder: (_) {
+                      return ChangeNotifierListener(
+                        notifier: notifier,
+                        listener: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: OverflowBox(
+                          minWidth: 600.0,
+                          maxWidth: 600.0,
+                          child: Center(
+                            child: AddAssetsToCollectionModal(
+                              theme: theme,
+                              title: 'Add asset to collection...',
+                              onCancel: () {
+                                Navigator.of(context).pop();
+                              },
+                              onConfirm: (collectionID) {
+                                onAddToCollection(collectionID, model.id);
 
-                      return OverflowBox(
-                        minWidth: 600.0,
-                        maxWidth: 600.0,
-                        child: Center(
-                          child: AddAssetsToCollectionModal(
-                            theme: theme,
-                            title: 'Add asset to collection...',
-                            onCancel: () {
-                              Navigator.of(context).pop();
-                            },
-                            onConfirm: (collectionID) {
-                              onAddToCollection(collectionID, model.id);
-
-                              Navigator.of(context).pop();
-                            },
+                                Navigator.of(context).pop();
+                              },
+                            ),
                           ),
                         ),
                       );
@@ -112,11 +126,11 @@ class Toolbar extends StatelessWidget {
                 }
               : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -146,11 +160,11 @@ class Toolbar extends StatelessWidget {
           AutoRouter.of(context).navigate(AssetsSearchRoute());
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
@@ -194,11 +208,11 @@ class Toolbar extends StatelessWidget {
           );
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(
@@ -236,11 +250,11 @@ class Toolbar extends StatelessWidget {
                 }
               : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -287,11 +301,11 @@ class Toolbar extends StatelessWidget {
                 }
               : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -319,11 +333,11 @@ class Toolbar extends StatelessWidget {
         child: IconButton(
           onPressed: (permissions?.assets.canModify ?? false) ? onEdit : null,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               const Color(0x30FFFFFF),
             ),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.resolveWith(
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.resolveWith(
               (states) {
                 return RoundedRectangleBorder(
                   side: const BorderSide(
@@ -355,11 +369,11 @@ class Toolbar extends StatelessWidget {
           }
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
             const Color(0x30FFFFFF),
           ),
-          padding: MaterialStateProperty.all(EdgeInsets.zero),
-          shape: MaterialStateProperty.resolveWith(
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(

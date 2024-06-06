@@ -77,7 +77,7 @@ class ThumbnailSizeSelector extends StatelessWidget {
       width: 54,
       height: 42,
       child: ToolbarButton(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
           Color? backgroundColor;
 
           if (initialSize == value) {
@@ -90,11 +90,16 @@ class ThumbnailSizeSelector extends StatelessWidget {
         }),
         borderRadius: borderRadius,
         icon: MdiIcons.imageOutline,
-        iconColor: initialSize == value
+        iconColor: (initialSize == value)
             ? const Color(0xDEFFFFFF)
             : const Color(0xAEFFFFFF),
         iconSize: iconSize,
-        onPressed: initialSize != value ? () => onChanged(value) : null,
+        tooltip: {
+          ThumbnailSizeEnum.small: 'Small',
+          ThumbnailSizeEnum.medium: 'Medium',
+          ThumbnailSizeEnum.large: 'Large',
+        }[value],
+        onPressed: (initialSize != value) ? () => onChanged(value) : null,
       ),
     );
   }

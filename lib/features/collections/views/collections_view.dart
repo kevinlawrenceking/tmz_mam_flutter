@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/collections/bloc/bloc.dart';
 import 'package:tmz_damz/features/collections/widgets/collection_data_view.dart';

@@ -75,6 +75,7 @@ class UserCollectionItem extends StatelessWidget {
                         title:
                             'Are you sure you want to remove this collection?',
                         message:
+                            // ignore: lines_longer_than_80_chars
                             'This will remove the collection from your favorites.',
                         onConfirm: () {
                           BlocProvider.of<UserCollectionsBloc>(context).add(
@@ -87,11 +88,11 @@ class UserCollectionItem extends StatelessWidget {
                     },
                     padding: EdgeInsets.zero,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(
                         const Color(0x30FFFFFF),
                       ),
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      shape: MaterialStateProperty.resolveWith(
+                      padding: WidgetStateProperty.all(EdgeInsets.zero),
+                      shape: WidgetStateProperty.resolveWith(
                         (states) {
                           return RoundedRectangleBorder(
                             side: const BorderSide(

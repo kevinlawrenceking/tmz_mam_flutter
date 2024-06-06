@@ -1,19 +1,20 @@
 name: tmz_damz
 description: "TMZ's digital media asset management system."
 publish_to: 'none'
-version: 1.2.1
+version: 1.3.0
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
   animated_toggle_switch: ^0.8.2
-  auto_route: ^7.8.4
+  auto_route: ^8.1.3
   bloc: ^8.1.3
   bot_toast: ^4.1.3
+  calendar_date_picker2: ^1.0.2
   choice: ^2.3.1
   collection: ^1.18.0
-  context_menus: ^1.0.2
+  context_menus: ^2.0.0
   cross_local_storage: ^3.0.0
   dartz: ^0.10.1
   data_table_2: ^2.5.12
@@ -26,24 +27,24 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0
-  flutter_bloc: ^8.1.4
+  flutter_bloc: ^8.1.5
   flutter_dotenv: ^5.1.0
-  flutter_dropzone: ^3.0.7
-  flutter_secure_storage: ^9.0.0
-  get_it: ^7.6.7
-  google_fonts: 6.1.0
+  flutter_dropzone: ^4.0.0
+  flutter_secure_storage: ^9.2.2
+  get_it: ^7.7.0
+  google_fonts: ^6.2.1
   http: ^1.2.1
   http_parser: ^4.0.2
   intl: ^0.19.0
   jwt_decoder: ^2.0.1
-  logger: ^2.2.0
+  logger: ^2.3.0
   material_design_icons_flutter: ^7.0.7296
   overlay_support: ^2.1.0
-  package_info_plus: ^6.0.0
-  photo_view: ^0.14.0
-  provider: ^6.1.1
-  radio_group_v2: ^3.1.0
-  searchfield: ^1.0.1
+  package_info_plus: ^8.0.0
+  photo_view: ^0.15.0
+  provider: ^6.1.2
+  radio_group_v2: ^3.1.1
+  searchfield: ^1.0.2
   super_tooltip: ^2.0.7
   textfield_tags: ^3.0.1
   timeago: ^3.6.1
@@ -54,15 +55,15 @@ dependencies:
   url_launcher_platform_interface: ^2.3.2
   uuid: ^4.3.3
   web: ^0.5.1
-  window_manager: ^0.3.8
+  window_manager: ^0.3.9
 
 dev_dependencies:
-  auto_route_generator: ^7.3.2
+  auto_route_generator: ^8.0.0
   build_runner: ^2.4.8
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  lints: ^3.0.0
+  lints: ^4.0.0
 
 flutter:
   uses-material-design: true
@@ -70,14 +71,8 @@ flutter:
     - .env.development
     - .env.production
     - .env.staging
-    - assets/audios/
     - assets/fonts/
     - assets/images/
-    - assets/images/test.jpg
-    - assets/lottie_animations/
-    - assets/pdfs/
-    - assets/rive_animations/
-    - assets/videos/
   fonts:
     - family: MyFlutterApp
       fonts:

@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/features/asset_import/view_models/bulk_meta_view_model.dart';
-import 'package:tmz_damz/features/asset_import/widgets/picklist_agency_tag_field.dart';
-import 'package:tmz_damz/features/asset_import/widgets/picklist_celebrity_tag_field.dart';
-import 'package:tmz_damz/features/asset_import/widgets/picklist_keyword_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_agency_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_celebrity_tag_field.dart';
+import 'package:tmz_damz/features/metadata_picklists/widgets/picklist_keyword_tag_field.dart';
 import 'package:tmz_damz/shared/widgets/content_menus/editable_text_context_menu_builder.dart';
 import 'package:tmz_damz/utils/debounce_timer.dart';
 
@@ -157,6 +157,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistAgencyTagField(
                 key: _picklistAgencyTagFieldUniqueKey,
                 focusNode: _picklistAgencyTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.agency,
                 onChange: (tags) {
                   setState(() {
@@ -287,6 +288,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistCelebrityTagField(
                 key: _picklistCelebrityAssociatedTagFieldUniqueKey,
                 focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.celebrityAssociated,
                 onChange: (tags) {
                   setState(() {
@@ -326,6 +328,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistCelebrityTagField(
                 key: _picklistCelebrityInPhotoTagFieldUniqueKey,
                 focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.celebrityInPhoto,
                 onChange: (tags) {
                   setState(() {
@@ -432,6 +435,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataCreditLocationEnum.onScreen: 'On-Screen',
                       }[creditLocation[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected:
                     widget.controller.creditLocation == creditLocation[index],
@@ -494,6 +498,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataEmotionEnum.neutral: 'Neutral',
                       }[emotions[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.emotion.contains(emotions[index]),
                 selectedColor: const Color(0xFF8E0000),
@@ -596,6 +601,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
               return PicklistKeywordTagField(
                 key: _picklistKeywordsTagFieldUniqueKey,
                 focusNode: _picklistKeywordsTagFieldFocusNode,
+                canAddNewtags: true,
                 tags: widget.controller.keywords,
                 onChange: (tags) {
                   setState(() {
@@ -652,6 +658,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataOverlayEnum.watermark: 'Watermark',
                       }[overlays[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.overlay.contains(overlays[index]),
                 selectedColor: const Color(0xFF8E0000),
@@ -810,6 +817,7 @@ class _SessionFileFormState extends State<SessionFileForm> {
                         AssetMetadataRightsEnum.freeTMZ: 'Free (TMZ)',
                       }[rights[index]] ??
                       '',
+                  style: theme.textTheme.bodyMedium,
                 ),
                 selected: widget.controller.rights == rights[index],
                 selectedColor: const Color(0xFF8E0000),
@@ -981,7 +989,6 @@ class SessionFileFormController extends ChangeNotifier {
     return AssetImportSessionFileMetaModel(
       headline: headline,
       metadata: AssetMetadataModel(
-        daletID: null,
         keywords: keywords,
         shotDescription: shotDescription,
         location: _meta?.metadata.location ??
@@ -1001,13 +1008,11 @@ class SessionFileFormController extends ChangeNotifier {
         credit: rights != AssetMetadataRightsEnum.freeTMZ ? credit : null,
         creditLocation:
             rights != AssetMetadataRightsEnum.freeTMZ ? creditLocation : null,
-        exclusivity: null,
         rightsInstructions: rights != AssetMetadataRightsEnum.freeTMZ
             ? rightsInstructions
             : null,
         rightsDetails:
             rights != AssetMetadataRightsEnum.freeTMZ ? rightsDetails : null,
-        qcNotes: null,
       ),
     );
   }

@@ -15,6 +15,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  static final kENV = const String.fromEnvironment('ENV').toUpperCase();
+
   TextEditingController? _usernameController;
   TextEditingController? _passwordController;
 
@@ -122,6 +124,19 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
+                        if (kENV == 'STAGING') ...[
+                          const SizedBox(height: 24.0),
+                          const Center(
+                            child: Text(
+                              'STAGING ENVIRONMENT',
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 48.0),
                         Form(
                           child: AutofillGroup(
@@ -198,21 +213,21 @@ class _LoginViewState extends State<LoginView> {
       child: TextButton(
         onPressed: enabled ? () => _login(context) : null,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
-          overlayColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.pressed)) {
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
               return const Color(0x10FFFFFF);
             } else {
               return Colors.white10;
             }
           }),
-          padding: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 16.0,
             ),
           ),
-          shape: MaterialStateProperty.resolveWith(
+          shape: WidgetStateProperty.resolveWith(
             (states) {
               return RoundedRectangleBorder(
                 side: const BorderSide(

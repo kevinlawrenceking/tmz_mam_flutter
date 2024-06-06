@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/data/models/collection_sort_field_enum.dart';
-import 'package:tmz_damz/data/models/sort_direction_enum.dart';
+import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/features/collections/widgets/search_input.dart';
 import 'package:tmz_damz/features/collections/widgets/sort_options.dart';
 import 'package:tmz_damz/shared/widgets/toolbar_button.dart';

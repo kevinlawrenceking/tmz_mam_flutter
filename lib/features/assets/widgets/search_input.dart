@@ -4,15 +4,19 @@ import 'package:tmz_damz/shared/widgets/content_menus/editable_text_context_menu
 
 class SearchInput extends StatelessWidget {
   final TextEditingController? controller;
+  final String _hintText;
+  final TextStyle? hintStyle;
   final void Function() onClear;
   final void Function(String value) onFieldSubmitted;
 
   const SearchInput({
     super.key,
     required this.controller,
+    String? hintText,
+    this.hintStyle,
     required this.onClear,
     required this.onFieldSubmitted,
-  });
+  }) : _hintText = hintText ?? 'Search...';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,8 @@ class SearchInput extends StatelessWidget {
         undoController,
       ),
       decoration: InputDecoration(
-        hintText: 'Search...',
+        hintText: _hintText,
+        hintStyle: hintStyle,
         prefixIcon: const Icon(
           Icons.search_outlined,
           color: Color(0xDEFFFFFF),
@@ -40,6 +45,7 @@ class SearchInput extends StatelessWidget {
             color: const Color(0xDEFFFFFF),
             size: 22,
           ),
+          tooltip: 'Clear search filter',
           onPressed: onClear,
         ),
       ),

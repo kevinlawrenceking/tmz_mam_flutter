@@ -18,6 +18,14 @@ class ExceptionHandler<TResult> {
           message: 'Request failed. Service may be unavailable.',
         ),
       );
+      // ignore: avoid_catching_errors
+    } on Error catch (e) {
+      debugPrint(e.toString());
+      return Left(
+        GeneralFailure(
+          message: e.toString(),
+        ),
+      );
     } on Exception catch (e) {
       debugPrint(e.toString());
       return Left(

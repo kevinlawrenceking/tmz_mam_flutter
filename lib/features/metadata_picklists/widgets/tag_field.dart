@@ -6,12 +6,13 @@ class TagField<T> extends StatefulWidget {
   final Key fieldKey;
   final FocusNode? focusNode;
   final bool? enabled;
+  final bool canAddNewtags;
   final String hintText;
   final List<T> tags;
   final List<T> suggestions;
   final int maxTagLength;
   final String Function(T tag) labelProvider;
-  final T Function(String value) tagProvider;
+  final T? Function(String tag) valueProvider;
   final void Function(List<T> tags) onChange;
   final void Function(String query)? onSearchTextChanged;
 
@@ -20,12 +21,13 @@ class TagField<T> extends StatefulWidget {
     required this.fieldKey,
     this.focusNode,
     this.enabled,
+    required this.canAddNewtags,
     required this.hintText,
     required this.tags,
     this.suggestions = const [],
     this.maxTagLength = 100,
     required this.labelProvider,
-    required this.tagProvider,
+    required this.valueProvider,
     required this.onChange,
     this.onSearchTextChanged,
   });
@@ -74,18 +76,30 @@ class _TagFieldState<T> extends State<TagField<T>> {
             return Focus(
               skipTraversal: !(widget.enabled ?? true),
               onFocusChange: (hasFocus) {
+                if (!widget.canAddNewtags) {
+                  inputFieldValues.textEditingController.text = '';
+                  widget.onSearchTextChanged?.call('');
+                  return;
+                }
+
                 if (!hasFocus) {
-                  final value = inputFieldValues.textEditingController.text
+                  final tag = inputFieldValues.textEditingController.text
                       .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
                       .replaceAll(RegExp(r'\s{2,}'), '')
                       .trim();
 
-                  if (value.isEmpty) {
+                  if (tag.isEmpty) {
+                    return;
+                  }
+
+                  final value = widget.valueProvider(tag);
+
+                  if (value == null) {
                     return;
                   }
 
                   _tagController.onTagSubmitted(
-                    DynamicTagData(value, widget.tagProvider(value)),
+                    DynamicTagData<T>(tag, value),
                   );
 
                   final tags = _tagController.getTags
@@ -103,14 +117,13 @@ class _TagFieldState<T> extends State<TagField<T>> {
                   theme: theme,
                   constraints: constraints,
                   inputFieldValues: inputFieldValues,
-                  onSearchTextChanged: widget.onSearchTextChanged,
                 ),
               ),
             );
           },
           validator: (data) {
             final exists =
-                _tagController.getTags!.any((_) => _.tag == data.tag);
+                _tagController.getTags!.any((_) => _.data == data.data);
 
             if (exists) {
               return 'Already added';
@@ -127,8 +140,25 @@ class _TagFieldState<T> extends State<TagField<T>> {
     required ThemeData theme,
     required BoxConstraints constraints,
     required InputFieldValues<DynamicTagData<T>> inputFieldValues,
-    required void Function(String query)? onSearchTextChanged,
   }) {
+    final suggestions = widget.suggestions.map((item) {
+      final label = widget.labelProvider(item);
+
+      return SearchFieldListItem<T>(
+        label,
+        item: item,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12.0,
+          ),
+          child: Text(
+            label,
+            style: theme.textTheme.bodyMedium,
+          ),
+        ),
+      );
+    }).toList();
+
     return SearchField<T>(
       key: widget.fieldKey,
       controller: inputFieldValues.textEditingController,
@@ -136,25 +166,10 @@ class _TagFieldState<T> extends State<TagField<T>> {
       animationDuration: const Duration(milliseconds: 150),
       autoCorrect: false,
       enabled: widget.enabled,
+      itemHeight: 40.0,
       maxSuggestionsInViewPort: 10,
-      suggestions: widget.suggestions.map((item) {
-        final label = widget.labelProvider(item);
-
-        return SearchFieldListItem<T>(
-          label,
-          item: item,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12.0,
-            ),
-            child: Text(
-              label,
-              style: theme.textTheme.bodyMedium,
-            ),
-          ),
-        );
-      }).toList(),
-      emptyWidget: inputFieldValues.textEditingController.text.length >= 2
+      suggestions: suggestions,
+      emptyWidget: (inputFieldValues.textEditingController.text.length >= 2)
           ? Container(
               decoration: kSuggestionDecoration,
               padding: const EdgeInsets.symmetric(
@@ -214,11 +229,8 @@ class _TagFieldState<T> extends State<TagField<T>> {
             : null,
       ),
       onSearchTextChanged: (query) {
-        if (onSearchTextChanged != null) {
-          widget.onSearchTextChanged!(query);
-        }
-
-        return [];
+        widget.onSearchTextChanged?.call(query);
+        return suggestions;
       },
       onSuggestionTap: (item) {
         final tag = item.item;
@@ -227,7 +239,7 @@ class _TagFieldState<T> extends State<TagField<T>> {
         }
 
         _tagController.onTagSubmitted(
-          DynamicTagData(
+          DynamicTagData<T>(
             widget.labelProvider(tag),
             tag,
           ),
@@ -243,9 +255,7 @@ class _TagFieldState<T> extends State<TagField<T>> {
 
         inputFieldValues.textEditingController.text = '';
 
-        if (onSearchTextChanged != null) {
-          widget.onSearchTextChanged!('');
-        }
+        widget.onSearchTextChanged?.call('');
       },
     );
   }
