@@ -310,8 +310,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
         case AssetSearchMetadataFieldEnum.creditLocation:
           conditions.add(
             condition.copyWithValue(
-              (condition.value as AssetMetadataCreditLocationEnum)
-                  .toJsonDtoValue(),
+              (condition.value as AssetMetadataCreditLocationEnum?)
+                  ?.toJsonDtoValue(),
             ),
           );
           break;
@@ -327,8 +327,8 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
         case AssetSearchMetadataFieldEnum.exclusivity:
           conditions.add(
             condition.copyWithValue(
-              (condition.value as AssetMetadataExclusivityEnum)
-                  .toJsonDtoValue(),
+              (condition.value as AssetMetadataExclusivityEnum?)
+                  ?.toJsonDtoValue(),
             ),
           );
           break;
@@ -344,7 +344,7 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
         case AssetSearchMetadataFieldEnum.rights:
           conditions.add(
             condition.copyWithValue(
-              (condition.value as AssetMetadataRightsEnum).toJsonDtoValue(),
+              (condition.value as AssetMetadataRightsEnum?)?.toJsonDtoValue(),
             ),
           );
           break;
