@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tmz_damz/app_router.gr.dart';
@@ -290,7 +289,7 @@ class Toolbar extends StatelessWidget {
                     return;
                   }
 
-                  final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
+                  final apiBaseUrl = Config.instance.service.apiBaseUrl;
 
                   final url =
                       '$apiBaseUrl/asset/${model.id}/image/${img.id}/download';

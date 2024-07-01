@@ -3,8 +3,6 @@ import 'package:searchfield/searchfield.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class TagField<T> extends StatefulWidget {
-  final Key fieldKey;
-  final FocusNode? focusNode;
   final bool? enabled;
   final bool canAddNewtags;
   final String hintText;
@@ -18,8 +16,6 @@ class TagField<T> extends StatefulWidget {
 
   const TagField({
     super.key,
-    required this.fieldKey,
-    this.focusNode,
     this.enabled,
     required this.canAddNewtags,
     required this.hintText,
@@ -37,8 +33,6 @@ class TagField<T> extends StatefulWidget {
 }
 
 class _TagFieldState<T> extends State<TagField<T>> {
-  late final DynamicTagController<DynamicTagData<T>> _tagController;
-
   final kSuggestionDecoration = SuggestionDecoration(
     border: Border.all(),
     borderRadius: BorderRadius.circular(6.0),
@@ -46,18 +40,16 @@ class _TagFieldState<T> extends State<TagField<T>> {
     elevation: 10.0,
   );
 
+  final _fieldKey = UniqueKey();
+  final _focusNode = FocusNode();
+  final _tagController = DynamicTagController<DynamicTagData<T>>();
+
   @override
   void dispose() {
+    _focusNode.dispose();
     _tagController.dispose();
 
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _tagController = DynamicTagController<DynamicTagData<T>>();
   }
 
   @override
@@ -76,40 +68,44 @@ class _TagFieldState<T> extends State<TagField<T>> {
             return Focus(
               skipTraversal: !(widget.enabled ?? true),
               onFocusChange: (hasFocus) {
+                final searchValue = inputFieldValues.textEditingController.text;
+                inputFieldValues.textEditingController.text = '';
+
                 if (!widget.canAddNewtags) {
-                  inputFieldValues.textEditingController.text = '';
                   widget.onSearchTextChanged?.call('');
                   return;
                 }
 
-                if (!hasFocus) {
-                  final tag = inputFieldValues.textEditingController.text
-                      .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
-                      .replaceAll(RegExp(r'\s{2,}'), '')
-                      .trim();
-
-                  if (tag.isEmpty) {
-                    return;
-                  }
-
-                  final value = widget.valueProvider(tag);
-
-                  if (value == null) {
-                    return;
-                  }
-
-                  _tagController.onTagSubmitted(
-                    DynamicTagData<T>(tag, value),
-                  );
-
-                  final tags = _tagController.getTags
-                      ?.map(
-                        (_) => _.data,
-                      )
-                      .toList();
-
-                  widget.onChange(tags ?? []);
+                if (hasFocus || searchValue.isEmpty) {
+                  return;
                 }
+
+                final tag = searchValue
+                    .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
+                    .replaceAll(RegExp(r'\s{2,}'), '')
+                    .trim();
+
+                if (tag.isEmpty) {
+                  return;
+                }
+
+                final value = widget.valueProvider(tag);
+
+                if (value == null) {
+                  return;
+                }
+
+                _tagController.onTagSubmitted(
+                  DynamicTagData<T>(tag, value),
+                );
+
+                final tags = _tagController.getTags
+                    ?.map(
+                      (_) => _.data,
+                    )
+                    .toList();
+
+                widget.onChange(tags ?? []);
               },
               child: Opacity(
                 opacity: (widget.enabled ?? true) ? 1.0 : 0.5,
@@ -160,9 +156,9 @@ class _TagFieldState<T> extends State<TagField<T>> {
     }).toList();
 
     return SearchField<T>(
-      key: widget.fieldKey,
+      key: _fieldKey,
       controller: inputFieldValues.textEditingController,
-      focusNode: widget.focusNode,
+      focusNode: _focusNode,
       animationDuration: const Duration(milliseconds: 150),
       autoCorrect: false,
       enabled: widget.enabled,
@@ -230,13 +226,53 @@ class _TagFieldState<T> extends State<TagField<T>> {
       ),
       onSearchTextChanged: (query) {
         widget.onSearchTextChanged?.call(query);
-        return suggestions;
+        return null;
+      },
+      onSubmit: (value) {
+        if (!widget.canAddNewtags ||
+            inputFieldValues.textEditingController.text.isEmpty) {
+          return;
+        }
+
+        final tag = value
+            .replaceAll(RegExp(r'(?![\sa-zA-Z0-9]).'), '')
+            .replaceAll(RegExp(r'\s{2,}'), '')
+            .trim();
+
+        if (tag.isEmpty) {
+          return;
+        }
+
+        final tagValue = widget.valueProvider(tag);
+
+        if (tagValue == null) {
+          return;
+        }
+
+        inputFieldValues.textEditingController.text = '';
+
+        _tagController.onTagSubmitted(
+          DynamicTagData<T>(tag, tagValue),
+        );
+
+        final tags = _tagController.getTags
+            ?.map(
+              (_) => _.data,
+            )
+            .toList();
+
+        widget.onChange(tags ?? []);
+        widget.onSearchTextChanged?.call('');
+
+        _focusNode.requestFocus();
       },
       onSuggestionTap: (item) {
         final tag = item.item;
         if (tag == null) {
           return;
         }
+
+        inputFieldValues.textEditingController.text = '';
 
         _tagController.onTagSubmitted(
           DynamicTagData<T>(
@@ -252,10 +288,9 @@ class _TagFieldState<T> extends State<TagField<T>> {
             .toList();
 
         widget.onChange(tags ?? []);
-
-        inputFieldValues.textEditingController.text = '';
-
         widget.onSearchTextChanged?.call('');
+
+        _focusNode.requestFocus();
       },
     );
   }

@@ -39,9 +39,8 @@ class CollectionHeader extends StatelessWidget {
       child: BlocListener<CollectionBloc, CollectionBlocState>(
         listener: (context, state) async {
           if (state is CollectionLoadedState) {
-            final config = GetIt.instance<Config>();
             final provider = ExtendedNetworkImageProvider(
-              '${config.apiBaseUrl}/collection/$collectionID/thumbnail',
+              '${Config.instance.service.apiBaseUrl}/collection/$collectionID/thumbnail',
             );
 
             // evict the image cache in case the "poster asset" has changed
@@ -292,8 +291,6 @@ class CollectionHeader extends StatelessWidget {
   Widget _buildThumbnail({
     required String collectionID,
   }) {
-    final config = GetIt.instance<Config>();
-
     return Container(
       width: ((kHeaderHeight - 20) * (16.0 / 9.0)).floorToDouble(),
       margin: const EdgeInsets.symmetric(
@@ -302,7 +299,8 @@ class CollectionHeader extends StatelessWidget {
       child: Container(
         color: Colors.black,
         child: FileThumbnail(
-          url: '${config.apiBaseUrl}/collection/$collectionID/thumbnail',
+          url:
+              '${Config.instance.service.apiBaseUrl}/collection/$collectionID/thumbnail',
           errorWidget: Center(
             child: Icon(
               MdiIcons.imageMultiple,

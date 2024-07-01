@@ -4,7 +4,6 @@ import 'package:context_menus/context_menus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tmz_damz/app_router.gr.dart';
 import 'package:tmz_damz/data/models/access_control_permission_map.dart';
@@ -22,7 +21,6 @@ import 'package:web/web.dart' as web;
 
 class AssetDataView extends StatefulWidget {
   final ScrollController scrollController;
-  final Config config;
   final AccessControlPermissionMapModel? permissions;
   final CollectionModel? collection;
   final List<AssetDetailsModel> assets;
@@ -42,7 +40,6 @@ class AssetDataView extends StatefulWidget {
   const AssetDataView({
     super.key,
     required this.scrollController,
-    required this.config,
     required this.permissions,
     required this.collection,
     required this.assets,
@@ -419,7 +416,7 @@ class _AssetDataViewState extends State<AssetDataView> {
       child: SizedBox(
         height: height,
         child: AssetListItem(
-          apiBaseUrl: widget.config.apiBaseUrl,
+          apiBaseUrl: Config.instance.service.apiBaseUrl,
           scrollController: widget.scrollController,
           model: model,
           selected: widget.selectedIDs.any((id) => id == model.id),
@@ -473,7 +470,7 @@ class _AssetDataViewState extends State<AssetDataView> {
           child: _buildContextMenu(
             model: model,
             child: AssetTileItem(
-              apiBaseUrl: widget.config.apiBaseUrl,
+              apiBaseUrl: Config.instance.service.apiBaseUrl,
               scrollController: widget.scrollController,
               model: model,
               selected: widget.selectedIDs.any((id) => id == model.id),
@@ -667,8 +664,6 @@ class _AssetDataViewState extends State<AssetDataView> {
       return;
     }
 
-    final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
-
     final selected = widget.assets
         .where((asset) => widget.selectedIDs.contains(asset.id))
         .toList();
@@ -684,7 +679,8 @@ class _AssetDataViewState extends State<AssetDataView> {
         return;
       }
 
-      final url = '$apiBaseUrl/asset/${asset.id}/image/${img.id}/download';
+      final url =
+          '${Config.instance.service.apiBaseUrl}/asset/${asset.id}/image/${img.id}/download';
 
       if (kIsWeb) {
         web.window.open(url, '_blank');

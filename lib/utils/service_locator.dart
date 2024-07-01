@@ -1,6 +1,4 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tmz_damz/app_router.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
@@ -24,13 +22,12 @@ import 'package:tmz_damz/features/bulk_update/service_locator.dart'
     as bulk_update;
 import 'package:tmz_damz/features/collections/service_locator.dart'
     as collections;
-import 'package:tmz_damz/features/metadata_picklists/service_locator.dart'
-    as metadata_picklists;
 import 'package:tmz_damz/features/user_collections/service_locator.dart'
     as user_collections;
 import 'package:tmz_damz/shared/bloc/auth_session_bloc.dart';
 import 'package:tmz_damz/utils/auth_session_manager.dart';
 import 'package:tmz_damz/utils/config.dart';
+import 'package:tmz_damz/utils/log.dart';
 
 Future<void> initServiceLocator() async {
   final sl = GetIt.instance;
@@ -47,32 +44,12 @@ Future<void> initServiceLocator() async {
     ),
   );
 
-  sl.registerLazySingleton<Config>(
-    () {
-      final serverHost = dotenv.env['SERVER_HOST'] ?? 'localhost';
-      final serverPort = dotenv.env['SERVER_PORT'] ?? '3000';
-      final serverSecure =
-          dotenv.env['SERVER_SECURE']?.toLowerCase() ?? 'false';
-
-      final apiBaseAddress =
-          'http${serverSecure == 'true' ? 's' : ''}://$serverHost:$serverPort';
-
-      return Config(
-        apiBaseAddress: apiBaseAddress,
-        apiBaseUrl: '$apiBaseAddress/api/v1',
-      );
-    },
-  );
-
   sl.registerSingleton(
-    Logger(
-      filter: ProductionFilter(),
-      level: Level.debug,
-      printer: PrettyPrinter(
-        methodCount: 0,
-        noBoxingByDefault: true,
-        printTime: true,
-      ),
+    Log.init(
+      minimumLevel: Config.instance.log.minimumLevel,
+      elasticSearchUrl: Config.instance.log.url,
+      serviceEnvironment: const String.fromEnvironment('ENV'),
+      serviceVersion: '$version$buildNumber',
     ),
   );
 
@@ -84,7 +61,6 @@ Future<void> initServiceLocator() async {
   assets.ServiceLocator.init();
   bulk_update.ServiceLocator.init();
   collections.ServiceLocator.init();
-  metadata_picklists.ServiceLocator.init();
   user_collections.ServiceLocator.init();
   authentication.ServiceLocator.init();
 
@@ -174,7 +150,7 @@ void _initRestClient() {
 
   sl.registerSingleton<IRestClient>(
     RestClient(
-      baseUrl: sl<Config>().apiBaseAddress,
+      baseUrl: Config.instance.service.apiBaseAddress,
       appIdentifier: sl<AppIdentifier>().value,
     ),
   );

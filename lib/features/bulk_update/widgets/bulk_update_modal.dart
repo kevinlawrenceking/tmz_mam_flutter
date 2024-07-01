@@ -36,13 +36,9 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
   final _controller = BulkUpdateModalController();
 
   var _picklistAgencyTagFieldUniqueKey = UniqueKey();
-  final _picklistAgencyTagFieldFocusNode = FocusNode();
   var _picklistCelebrityAssociatedTagFieldUniqueKey = UniqueKey();
-  final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
   var _picklistCelebrityInPhotoTagFieldUniqueKey = UniqueKey();
-  final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
   var _picklistKeywordsTagFieldUniqueKey = UniqueKey();
-  final _picklistKeywordsTagFieldFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -286,6 +282,10 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
                 });
               },
               onModeSelected: (mode) {
+                if (mode == null) {
+                  return;
+                }
+
                 setState(() {
                   _modes[field] = mode;
                 });
@@ -519,15 +519,12 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       builder: (context) {
         return PicklistAgencyTagField(
           key: _picklistAgencyTagFieldUniqueKey,
-          focusNode: _picklistAgencyTagFieldFocusNode,
           canAddNewtags: true,
           tags: _controller.agency,
           onChange: (tags) {
             setState(() {
               _controller.agency = tags;
             });
-
-            _picklistAgencyTagFieldFocusNode.requestFocus();
           },
         );
       },
@@ -539,15 +536,12 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       builder: (context) {
         return PicklistCelebrityTagField(
           key: _picklistCelebrityAssociatedTagFieldUniqueKey,
-          focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
           canAddNewtags: true,
           tags: _controller.celebrityAssociated,
           onChange: (tags) {
             setState(() {
               _controller.celebrityAssociated = tags;
             });
-
-            _picklistCelebrityAssociatedTagFieldFocusNode.requestFocus();
           },
         );
       },
@@ -559,15 +553,12 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       builder: (context) {
         return PicklistCelebrityTagField(
           key: _picklistCelebrityInPhotoTagFieldUniqueKey,
-          focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
           canAddNewtags: true,
           tags: _controller.celebrityInPhoto,
           onChange: (tags) {
             setState(() {
               _controller.celebrityInPhoto = tags;
             });
-
-            _picklistCelebrityInPhotoTagFieldFocusNode.requestFocus();
           },
         );
       },
@@ -684,15 +675,12 @@ class _BulkUpdateModalState extends State<BulkUpdateModal> {
       builder: (context) {
         return PicklistKeywordTagField(
           key: _picklistKeywordsTagFieldUniqueKey,
-          focusNode: _picklistKeywordsTagFieldFocusNode,
           canAddNewtags: true,
           tags: _controller.keywords,
           onChange: (tags) {
             setState(() {
               _controller.keywords = tags;
             });
-
-            _picklistKeywordsTagFieldFocusNode.requestFocus();
           },
         );
       },

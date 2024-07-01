@@ -40,21 +40,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
   bool _includeRightsSummary = false;
   bool _includeShotDescription = false;
 
-  final _picklistAgencyTagFieldFocusNode = FocusNode();
-  final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
-  final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
-  final _picklistKeywordsTagFieldFocusNode = FocusNode();
-
-  @override
-  void dispose() {
-    _picklistAgencyTagFieldFocusNode.dispose();
-    _picklistCelebrityAssociatedTagFieldFocusNode.dispose();
-    _picklistCelebrityInPhotoTagFieldFocusNode.dispose();
-    _picklistKeywordsTagFieldFocusNode.dispose();
-
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -270,7 +255,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         const SizedBox(width: 20.0),
         Expanded(
           child: PicklistAgencyTagField(
-            focusNode: _picklistAgencyTagFieldFocusNode,
             enabled: _includeAgency,
             canAddNewtags: true,
             tags: widget.controller.agency,
@@ -278,8 +262,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
               setState(() {
                 widget.controller.agency = tags;
               });
-
-              _picklistAgencyTagFieldFocusNode.requestFocus();
             },
           ),
         ),
@@ -399,7 +381,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         const SizedBox(width: 20.0),
         Expanded(
           child: PicklistCelebrityTagField(
-            focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
             enabled: _includeCelebrityAssociated,
             canAddNewtags: true,
             tags: widget.controller.celebrityAssociated,
@@ -407,8 +388,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
               setState(() {
                 widget.controller.celebrityAssociated = tags;
               });
-
-              _picklistCelebrityAssociatedTagFieldFocusNode.requestFocus();
             },
           ),
         ),
@@ -450,7 +429,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         const SizedBox(width: 20.0),
         Expanded(
           child: PicklistCelebrityTagField(
-            focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
             enabled: _includeCelebrityInPhoto,
             canAddNewtags: true,
             tags: widget.controller.celebrityInPhoto,
@@ -458,8 +436,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
               setState(() {
                 widget.controller.celebrityInPhoto = tags;
               });
-
-              _picklistCelebrityInPhotoTagFieldFocusNode.requestFocus();
             },
           ),
         ),
@@ -773,7 +749,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
         const SizedBox(width: 20.0),
         Expanded(
           child: PicklistKeywordTagField(
-            focusNode: _picklistKeywordsTagFieldFocusNode,
             enabled: _includeKeywords,
             canAddNewtags: true,
             tags: widget.controller.keywords,
@@ -781,8 +756,6 @@ class _BulkUpdateFormState extends State<BulkUpdateForm> {
               setState(() {
                 widget.controller.keywords = tags;
               });
-
-              _picklistKeywordsTagFieldFocusNode.requestFocus();
             },
           ),
         ),

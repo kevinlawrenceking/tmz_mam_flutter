@@ -33,13 +33,9 @@ class _SessionFileFormState extends State<SessionFileForm> {
   );
 
   var _picklistAgencyTagFieldUniqueKey = UniqueKey();
-  final _picklistAgencyTagFieldFocusNode = FocusNode();
   var _picklistCelebrityAssociatedTagFieldUniqueKey = UniqueKey();
-  final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
   var _picklistCelebrityInPhotoTagFieldUniqueKey = UniqueKey();
-  final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
   var _picklistKeywordsTagFieldUniqueKey = UniqueKey();
-  final _picklistKeywordsTagFieldFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -152,25 +148,18 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: Builder(
-            builder: (context) {
-              return PicklistAgencyTagField(
-                key: _picklistAgencyTagFieldUniqueKey,
-                focusNode: _picklistAgencyTagFieldFocusNode,
-                canAddNewtags: true,
-                tags: widget.controller.agency,
-                onChange: (tags) {
-                  setState(() {
-                    widget.controller.agency = tags;
-                  });
+          child: PicklistAgencyTagField(
+            key: _picklistAgencyTagFieldUniqueKey,
+            canAddNewtags: true,
+            tags: widget.controller.agency,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.agency = tags;
+              });
 
-                  _picklistAgencyTagFieldFocusNode.requestFocus();
-
-                  _onChangeDebounce.wrap(() {
-                    widget.onChange?.call(widget.controller.getModel());
-                  });
-                },
-              );
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
             },
           ),
         ),
@@ -283,25 +272,18 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: Builder(
-            builder: (context) {
-              return PicklistCelebrityTagField(
-                key: _picklistCelebrityAssociatedTagFieldUniqueKey,
-                focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
-                canAddNewtags: true,
-                tags: widget.controller.celebrityAssociated,
-                onChange: (tags) {
-                  setState(() {
-                    widget.controller.celebrityAssociated = tags;
-                  });
+          child: PicklistCelebrityTagField(
+            key: _picklistCelebrityAssociatedTagFieldUniqueKey,
+            canAddNewtags: true,
+            tags: widget.controller.celebrityAssociated,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.celebrityAssociated = tags;
+              });
 
-                  _picklistCelebrityAssociatedTagFieldFocusNode.requestFocus();
-
-                  _onChangeDebounce.wrap(() {
-                    widget.onChange?.call(widget.controller.getModel());
-                  });
-                },
-              );
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
             },
           ),
         ),
@@ -323,25 +305,18 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: Builder(
-            builder: (context) {
-              return PicklistCelebrityTagField(
-                key: _picklistCelebrityInPhotoTagFieldUniqueKey,
-                focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
-                canAddNewtags: true,
-                tags: widget.controller.celebrityInPhoto,
-                onChange: (tags) {
-                  setState(() {
-                    widget.controller.celebrityInPhoto = tags;
-                  });
+          child: PicklistCelebrityTagField(
+            key: _picklistCelebrityInPhotoTagFieldUniqueKey,
+            canAddNewtags: true,
+            tags: widget.controller.celebrityInPhoto,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.celebrityInPhoto = tags;
+              });
 
-                  _picklistCelebrityInPhotoTagFieldFocusNode.requestFocus();
-
-                  _onChangeDebounce.wrap(() {
-                    widget.onChange?.call(widget.controller.getModel());
-                  });
-                },
-              );
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
             },
           ),
         ),
@@ -596,25 +571,18 @@ class _SessionFileFormState extends State<SessionFileForm> {
         ),
         const SizedBox(width: 20.0),
         Expanded(
-          child: Builder(
-            builder: (context) {
-              return PicklistKeywordTagField(
-                key: _picklistKeywordsTagFieldUniqueKey,
-                focusNode: _picklistKeywordsTagFieldFocusNode,
-                canAddNewtags: true,
-                tags: widget.controller.keywords,
-                onChange: (tags) {
-                  setState(() {
-                    widget.controller.keywords = tags;
-                  });
+          child: PicklistKeywordTagField(
+            key: _picklistKeywordsTagFieldUniqueKey,
+            canAddNewtags: true,
+            tags: widget.controller.keywords,
+            onChange: (tags) {
+              setState(() {
+                widget.controller.keywords = tags;
+              });
 
-                  _picklistKeywordsTagFieldFocusNode.requestFocus();
-
-                  _onChangeDebounce.wrap(() {
-                    widget.onChange?.call(widget.controller.getModel());
-                  });
-                },
-              );
+              _onChangeDebounce.wrap(() {
+                widget.onChange?.call(widget.controller.getModel());
+              });
             },
           ),
         ),
