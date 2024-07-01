@@ -21,13 +21,9 @@ class MetadataForm extends StatefulWidget {
 
 class _MetadataFormState extends State<MetadataForm> {
   var _picklistAgencyTagFieldUniqueKey = UniqueKey();
-  final _picklistAgencyTagFieldFocusNode = FocusNode();
   var _picklistCelebrityAssociatedTagFieldUniqueKey = UniqueKey();
-  final _picklistCelebrityAssociatedTagFieldFocusNode = FocusNode();
   var _picklistCelebrityInPhotoTagFieldUniqueKey = UniqueKey();
-  final _picklistCelebrityInPhotoTagFieldFocusNode = FocusNode();
   var _picklistKeywordsTagFieldUniqueKey = UniqueKey();
-  final _picklistKeywordsTagFieldFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -147,15 +143,12 @@ class _MetadataFormState extends State<MetadataForm> {
           builder: (context) {
             return PicklistAgencyTagField(
               key: _picklistAgencyTagFieldUniqueKey,
-              focusNode: _picklistAgencyTagFieldFocusNode,
               canAddNewtags: true,
               tags: widget.controller.agency,
               onChange: (tags) {
                 setState(() {
                   widget.controller.agency = tags;
                 });
-
-                _picklistAgencyTagFieldFocusNode.requestFocus();
               },
             );
           },
@@ -267,15 +260,12 @@ class _MetadataFormState extends State<MetadataForm> {
           builder: (context) {
             return PicklistCelebrityTagField(
               key: _picklistCelebrityAssociatedTagFieldUniqueKey,
-              focusNode: _picklistCelebrityAssociatedTagFieldFocusNode,
               canAddNewtags: true,
               tags: widget.controller.celebrityAssociated,
               onChange: (tags) {
                 setState(() {
                   widget.controller.celebrityAssociated = tags;
                 });
-
-                _picklistCelebrityAssociatedTagFieldFocusNode.requestFocus();
               },
             );
           },
@@ -303,15 +293,12 @@ class _MetadataFormState extends State<MetadataForm> {
           builder: (context) {
             return PicklistCelebrityTagField(
               key: _picklistCelebrityInPhotoTagFieldUniqueKey,
-              focusNode: _picklistCelebrityInPhotoTagFieldFocusNode,
               canAddNewtags: true,
               tags: widget.controller.celebrityInPhoto,
               onChange: (tags) {
                 setState(() {
                   widget.controller.celebrityInPhoto = tags;
                 });
-
-                _picklistCelebrityInPhotoTagFieldFocusNode.requestFocus();
               },
             );
           },
@@ -535,15 +522,12 @@ class _MetadataFormState extends State<MetadataForm> {
           builder: (context) {
             return PicklistKeywordTagField(
               key: _picklistKeywordsTagFieldUniqueKey,
-              focusNode: _picklistKeywordsTagFieldFocusNode,
               canAddNewtags: true,
               tags: widget.controller.keywords,
               onChange: (tags) {
                 setState(() {
                   widget.controller.keywords = tags;
                 });
-
-                _picklistKeywordsTagFieldFocusNode.requestFocus();
               },
             );
           },

@@ -1,6 +1,5 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
 import 'package:tmz_damz/data/models/asset_import_session_file.dart';
@@ -265,7 +264,7 @@ class _SessionFileState extends State<SessionFile> {
         );
       } else {
         content = FileThumbnail(
-          url: '${GetIt.instance<Config>().apiBaseUrl}'
+          url: '${Config.instance.service.apiBaseUrl}'
               '/asset/import/session/${widget.file!.sessionID}'
               '/file/${widget.file!.fileID}'
               '/thumbnail',

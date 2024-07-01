@@ -337,7 +337,7 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
   Widget _buildImagePreview({
     required AssetDetailsModel model,
   }) {
-    final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
+    final apiBaseUrl = Config.instance.service.apiBaseUrl;
 
     String? imageUrl;
 

@@ -5,7 +5,6 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -547,7 +546,7 @@ class _CollectionDataViewState extends State<CollectionDataView> {
                 controller: widget.scrollController,
                 builder: (context) => FileThumbnail(
                   url:
-                      '${GetIt.instance<Config>().apiBaseUrl}/collection/${model.id}/thumbnail',
+                      '${Config.instance.service.apiBaseUrl}/collection/${model.id}/thumbnail',
                   errorWidget: Center(
                     child: Icon(
                       MdiIcons.imageMultiple,

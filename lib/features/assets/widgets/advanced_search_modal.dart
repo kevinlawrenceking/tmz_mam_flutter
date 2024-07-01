@@ -710,7 +710,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: PicklistAgencyTagField(
                 key: fieldData.key,
-                focusNode: fieldData.focusNode,
                 canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
@@ -723,8 +722,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       value: tags,
                     );
                   });
-
-                  fieldData.focusNode.requestFocus();
                 },
               ),
             ),
@@ -764,7 +761,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: PicklistCelebrityTagField(
                 key: fieldData.key,
-                focusNode: fieldData.focusNode,
                 canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
@@ -777,8 +773,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       value: tags,
                     );
                   });
-
-                  fieldData.focusNode.requestFocus();
                 },
               ),
             ),
@@ -818,7 +812,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: PicklistCelebrityTagField(
                 key: fieldData.key,
-                focusNode: fieldData.focusNode,
                 canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
@@ -831,8 +824,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       value: tags,
                     );
                   });
-
-                  fieldData.focusNode.requestFocus();
                 },
               ),
             ),
@@ -872,7 +863,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: PicklistUserTagField(
                 key: fieldData.key,
-                focusNode: fieldData.focusNode,
                 tags:
                     (fieldData.condition!.value as List<UserMetaModel>?) ?? [],
                 onChange: (tags) {
@@ -885,8 +875,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       value: tags.toList(),
                     );
                   });
-
-                  fieldData.focusNode.requestFocus();
                 },
               ),
             ),
@@ -1342,7 +1330,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
             Expanded(
               child: PicklistKeywordTagField(
                 key: fieldData.key,
-                focusNode: fieldData.focusNode,
                 canAddNewtags: true,
                 tags: (fieldData.condition!.value as List<String>?) ?? [],
                 onChange: (tags) {
@@ -1355,8 +1342,6 @@ class _AdvancedSearchModalState extends State<AdvancedSearchModal> {
                       value: tags,
                     );
                   });
-
-                  fieldData.focusNode.requestFocus();
                 },
               ),
             ),

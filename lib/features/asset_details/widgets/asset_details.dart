@@ -83,7 +83,7 @@ class AssetDetails extends StatelessWidget {
     required BuildContext context,
     required AssetDetailsModel model,
   }) {
-    final apiBaseUrl = GetIt.instance<Config>().apiBaseUrl;
+    final apiBaseUrl = Config.instance.service.apiBaseUrl;
     final theme = Theme.of(context);
 
     String? imageUrl;

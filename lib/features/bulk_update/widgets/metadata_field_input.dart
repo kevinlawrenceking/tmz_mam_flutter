@@ -17,7 +17,7 @@ class MetadataFieldInput extends StatefulWidget {
     AssetMetadataFieldEnum? field,
     AssetMetadataFieldModeEnum mode,
   ) onFieldSelected;
-  final void Function(AssetMetadataFieldModeEnum mode) onModeSelected;
+  final void Function(AssetMetadataFieldModeEnum? mode) onModeSelected;
   final VoidCallback onAddField;
   final VoidCallback onRemoveField;
 

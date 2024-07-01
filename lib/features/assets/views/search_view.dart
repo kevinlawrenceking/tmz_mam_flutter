@@ -27,7 +27,6 @@ import 'package:tmz_damz/features/user_collections/widgets/user_collections.dart
 import 'package:tmz_damz/shared/widgets/change_notifier_listener.dart';
 import 'package:tmz_damz/shared/widgets/confirmation_prompt.dart';
 import 'package:tmz_damz/shared/widgets/toast.dart';
-import 'package:tmz_damz/utils/config.dart';
 import 'package:tmz_damz/utils/route_change_notifier.dart';
 
 @RoutePage(name: 'AssetsSearchRoute')
@@ -450,7 +449,6 @@ class _SearchViewState extends State<SearchView> {
 
             return AssetDataView(
               scrollController: _scrollController,
-              config: GetIt.instance<Config>(),
               permissions: permissions,
               collection: _currentCollection,
               assets: assets,
