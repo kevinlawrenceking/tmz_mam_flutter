@@ -7,6 +7,7 @@ import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_metadata_field.dart';
 import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/send_to.dart';
 import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/providers/rest_client.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
@@ -23,6 +24,8 @@ abstract class IAssetDataSource {
     required String assetID,
   });
 
+  Future<Either<Failure, List<SendToModel>>> getSendToOptions();
+
   Future<Either<Failure, AssetSearchResults>> searchAdvanced({
     required AssetSearchDataModel searchData,
     required int offset,
@@ -38,6 +41,11 @@ abstract class IAssetDataSource {
     required int limit,
     AssetSortFieldEnum? sortField,
     SortDirectionEnum? sortDirection,
+  });
+
+  Future<Either<Failure, Empty>> sendAssetTo({
+    required String assetID,
+    required String sendToID,
   });
 
   Future<Either<Failure, AssetUpdateMetadataResult>> updateAssetMetadata({
@@ -113,6 +121,42 @@ class AssetDataSource implements IAssetDataSource {
             final model = AssetDetailsModel.fromJsonDto(data);
 
             return Right(model);
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, List<SendToModel>>> getSendToOptions() async =>
+      ExceptionHandler<List<SendToModel>>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.get(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/sendTo',
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            final data = json.decode(response.body);
+            final dto = data as Map<String, dynamic>;
+
+            return Right(
+              (dto['options'] as List?)
+                      ?.map(
+                        (_) => SendToModel.fromJsonDto(
+                          _,
+                        ),
+                      )
+                      .toList() ??
+                  [],
+            );
           },
         );
       })();
@@ -319,6 +363,33 @@ class AssetDataSource implements IAssetDataSource {
             final results = AssetSearchResults.fromJsonDto(data);
 
             return Right(results);
+          },
+        );
+      })();
+
+  @override
+  Future<Either<Failure, Empty>> sendAssetTo({
+    required String assetID,
+    required String sendToID,
+  }) async =>
+      ExceptionHandler<Empty>(() async {
+        final response = await _auth.getAuthToken();
+
+        return response.fold(
+          (failure) => Left(failure),
+          (authToken) async {
+            final response = await _client.post(
+              authToken: authToken,
+              endPoint: '/api/v1/asset/$assetID/sendTo/$sendToID',
+            );
+
+            if (response.statusCode != HttpStatus.ok) {
+              return Left(
+                HttpFailure.fromResponse(response),
+              );
+            }
+
+            return const Right(Empty());
           },
         );
       })();

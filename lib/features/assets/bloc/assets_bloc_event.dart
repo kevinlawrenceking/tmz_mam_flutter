@@ -120,6 +120,22 @@ class SearchSimpleEvent extends AssetsBlocEvent {
       ];
 }
 
+class SendAssetsToEvent extends AssetsBlocEvent {
+  final List<String> assetIDs;
+  final String sendToID;
+
+  SendAssetsToEvent({
+    required this.assetIDs,
+    required this.sendToID,
+  });
+
+  @override
+  List<Object?> get props => [
+        assetIDs,
+        sendToID,
+      ];
+}
+
 class SetCurrentCollectionEvent extends AssetsBlocEvent {
   final String? collectionID;
 

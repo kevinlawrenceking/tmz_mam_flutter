@@ -42,6 +42,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
   final bool canSearch;
   final bool canViewDetails;
   final bool canDownloadSource;
+  final bool canSendTo;
 
   const AccessControlPermissionMapAssetsModel({
     required this.canImport,
@@ -52,6 +53,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
     required this.canSearch,
     required this.canViewDetails,
     required this.canDownloadSource,
+    required this.canSendTo,
   });
 
   static AccessControlPermissionMapAssetsModel fromJsonDto(
@@ -66,6 +68,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
       canSearch: dto?['can_search'] ?? false,
       canViewDetails: dto?['can_view_details'] ?? false,
       canDownloadSource: dto?['can_download_source'] ?? false,
+      canSendTo: dto?['can_send_to'] ?? false,
     );
   }
 
@@ -79,6 +82,7 @@ class AccessControlPermissionMapAssetsModel extends Equatable {
         canSearch,
         canViewDetails,
         canDownloadSource,
+        canSendTo,
       ];
 }
 
