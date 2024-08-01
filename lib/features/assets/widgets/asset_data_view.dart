@@ -10,6 +10,7 @@ import 'package:tmz_damz/data/models/access_control_permission_map.dart';
 import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_image.dart';
 import 'package:tmz_damz/data/models/collection.dart';
+import 'package:tmz_damz/data/models/send_to.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_list_item.dart';
 import 'package:tmz_damz/features/assets/widgets/asset_tile_item.dart';
 import 'package:tmz_damz/features/assets/widgets/layout_mode_selector.dart';
@@ -22,6 +23,7 @@ import 'package:web/web.dart' as web;
 class AssetDataView extends StatefulWidget {
   final ScrollController scrollController;
   final AccessControlPermissionMapModel? permissions;
+  final List<SendToModel>? sendToOptions;
   final CollectionModel? collection;
   final List<AssetDetailsModel> assets;
   final List<String> selectedIDs;
@@ -31,6 +33,7 @@ class AssetDataView extends StatefulWidget {
   final void Function(AssetDetailsModel model) onDoubleTap;
   final void Function(List<String> selectedIDs) onSelectionChanged;
   final void Function(List<String> selectedIDs) onBulkUpdate;
+  final void Function(List<String> selectedIDs, String sendToID) onSendTo;
   final void Function(List<String> selectedIDs) onAddSelectedToCollection;
   final void Function(List<String> selectedIDs) onMoveSelectedToCollection;
   final void Function(List<String> selectedIDs) onDeleteSelected;
@@ -41,6 +44,7 @@ class AssetDataView extends StatefulWidget {
     super.key,
     required this.scrollController,
     required this.permissions,
+    required this.sendToOptions,
     required this.collection,
     required this.assets,
     required this.selectedIDs,
@@ -50,6 +54,7 @@ class AssetDataView extends StatefulWidget {
     required this.onDoubleTap,
     required this.onSelectionChanged,
     required this.onBulkUpdate,
+    required this.onSendTo,
     required this.onAddSelectedToCollection,
     required this.onMoveSelectedToCollection,
     required this.onDeleteSelected,
@@ -310,6 +315,30 @@ class _AssetDataViewState extends State<AssetDataView> {
                   : null,
             ),
             null, // divider
+            if (widget.sendToOptions?.isNotEmpty ?? false) ...[
+              ...List.generate(
+                widget.sendToOptions!.length,
+                (index) {
+                  final option = widget.sendToOptions![index];
+                  return ContextMenuButtonConfig(
+                    option.label,
+                    icon: Icon(
+                      MdiIcons.progressUpload,
+                      size: 16.0,
+                    ),
+                    onPressed:
+                        ((widget.permissions?.assets.canSendTo ?? false) &&
+                                widget.selectedIDs.isNotEmpty)
+                            ? () => widget.onSendTo(
+                                  widget.selectedIDs,
+                                  option.id,
+                                )
+                            : null,
+                  );
+                },
+              ),
+              null,
+            ],
             ContextMenuButtonConfig(
               // ignore: lines_longer_than_80_chars
               'Add selected asset${widget.selectedIDs.length > 1 ? 's' : ''} to collection...',

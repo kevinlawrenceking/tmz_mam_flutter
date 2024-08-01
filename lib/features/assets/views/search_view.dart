@@ -11,6 +11,7 @@ import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
 import 'package:tmz_damz/data/models/collection.dart';
+import 'package:tmz_damz/data/models/send_to.dart';
 import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/sources/auth.dart';
 import 'package:tmz_damz/features/asset_details/widgets/asset_details.dart';
@@ -59,6 +60,7 @@ class _SearchViewState extends State<SearchView> {
   bool _favoritesVisible = false;
   bool _assetDetailsVisible = false;
 
+  List<SendToModel> _sendToOptions = [];
   List<String> _selectedIDs = [];
   AssetDetailsModel? _currentAsset;
   CollectionModel? _currentCollection;
@@ -180,6 +182,7 @@ class _SearchViewState extends State<SearchView> {
                           Expanded(
                             child: _buildSearchResults(
                               permissions: permissions,
+                              sendToOptions: _sendToOptions,
                             ),
                           ),
                           if (_currentAsset != null)
@@ -215,6 +218,12 @@ class _SearchViewState extends State<SearchView> {
             showDuration: const Duration(seconds: 3),
             type: ToastTypeEnum.success,
             message: 'Asset(s) added to collection!',
+          );
+        } else if (state is AssetsSentState) {
+          Toast.showNotification(
+            showDuration: const Duration(seconds: 3),
+            type: ToastTypeEnum.success,
+            message: 'Asset(s) sent!',
           );
         } else if (state is DeleteAssetFailureState) {
           Toast.showNotification(
@@ -270,6 +279,12 @@ class _SearchViewState extends State<SearchView> {
           setState(() {
             _selectedIDs.clear();
           });
+        } else if (state is SendToOptionsState) {
+          if (!mounted) {
+            return;
+          }
+
+          _sendToOptions = state.options;
         }
       },
       child: child,
@@ -419,6 +434,7 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _buildSearchResults({
     required AccessControlPermissionMapModel? permissions,
+    required List<SendToModel>? sendToOptions,
   }) {
     return BlocBuilder<AssetsBloc, AssetsBlocState>(
       buildWhen: (_, state) =>
@@ -450,6 +466,7 @@ class _SearchViewState extends State<SearchView> {
             return AssetDataView(
               scrollController: _scrollController,
               permissions: permissions,
+              sendToOptions: sendToOptions,
               collection: _currentCollection,
               assets: assets,
               selectedIDs: _selectedIDs,
@@ -477,6 +494,14 @@ class _SearchViewState extends State<SearchView> {
                 await _showBulkEditDialog(
                   context: context,
                   selectedIDs: selectedIDs,
+                );
+              },
+              onSendTo: (selectedIDs, sendToID) async {
+                assetsBloc.add(
+                  SendAssetsToEvent(
+                    assetIDs: selectedIDs,
+                    sendToID: sendToID,
+                  ),
                 );
               },
               onAddSelectedToCollection: (selectedIDs) async {

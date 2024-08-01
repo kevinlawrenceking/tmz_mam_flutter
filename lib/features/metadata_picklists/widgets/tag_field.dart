@@ -118,8 +118,15 @@ class _TagFieldState<T> extends State<TagField<T>> {
             );
           },
           validator: (data) {
-            final exists =
-                _tagController.getTags!.any((_) => _.data == data.data);
+            final exists = _tagController.getTags!.any((_) {
+              if ((_.data?.runtimeType == String) &&
+                  (data.data?.runtimeType == String)) {
+                return (_.data as String).toLowerCase() ==
+                    (data.data as String).toLowerCase();
+              } else {
+                return _.data == data.data;
+              }
+            });
 
             if (exists) {
               return 'Already added';

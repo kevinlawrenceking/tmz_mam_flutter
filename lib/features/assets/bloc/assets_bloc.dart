@@ -5,6 +5,7 @@ import 'package:tmz_damz/data/models/asset_details.dart';
 import 'package:tmz_damz/data/models/asset_metadata.dart';
 import 'package:tmz_damz/data/models/asset_search_data.dart';
 import 'package:tmz_damz/data/models/asset_sort_field_enum.dart';
+import 'package:tmz_damz/data/models/send_to.dart';
 import 'package:tmz_damz/data/models/shared.dart';
 import 'package:tmz_damz/data/models/user.dart';
 import 'package:tmz_damz/data/sources/asset.dart';
@@ -44,6 +45,7 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
     on<RemoveAssetsFromCollectionEvent>(_removeAssetsFromCollectionEvent);
     on<SearchAdvancedEvent>(_searchAdvancedEvent);
     on<SearchSimpleEvent>(_searchSimpleEvent);
+    on<SendAssetsToEvent>(_sendAssetsToEvent);
     on<SetCurrentCollectionEvent>(_setCurrentCollectionEvent);
   }
 
@@ -234,6 +236,25 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
     await _search(
       emit: emit,
     );
+  }
+
+  Future<void> _sendAssetsToEvent(
+    SendAssetsToEvent event,
+    Emitter<AssetsBlocState> emit,
+  ) async {
+    if (event.assetIDs.isEmpty) {
+      return;
+    }
+
+    for (var i = 0; i < event.assetIDs.length; i++) {
+      await assetDataSource.sendAssetTo(
+        assetID: event.assetIDs[i],
+        sendToID: event.sendToID,
+      );
+    }
+
+    emit(AssetsSentState());
+    emit(InitialState());
   }
 
   Future<void> _setCurrentCollectionEvent(
@@ -439,5 +460,20 @@ class AssetsBloc extends Bloc<AssetsBlocEvent, AssetsBlocState> {
         );
       },
     );
+
+    final getSendToOptionsResult = await assetDataSource.getSendToOptions();
+
+    getSendToOptionsResult.fold(
+      (failure) {},
+      (options) {
+        emit(
+          SendToOptionsState(
+            options: options,
+          ),
+        );
+      },
+    );
+
+    emit(InitialState());
   }
 }

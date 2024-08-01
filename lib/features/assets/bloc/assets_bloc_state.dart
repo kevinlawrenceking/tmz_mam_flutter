@@ -26,6 +26,8 @@ class AddAssetsToCollectionSuccessState extends AssetsBlocState {
   List<Object?> get props => [_stateID];
 }
 
+class AssetsSentState extends AssetsBlocState {}
+
 class DeleteAssetFailureState extends AssetsBlocState {
   final Failure failure;
 
@@ -114,3 +116,15 @@ class SearchResultsLoadedState extends AssetsBlocState {
 }
 
 class SearchResultsLoadingState extends AssetsBlocState {}
+
+class SendToOptionsState extends AssetsBlocState {
+  final String _stateID;
+  final List<SendToModel> options;
+
+  SendToOptionsState({
+    required this.options,
+  }) : _stateID = const Uuid().v4();
+
+  @override
+  List<Object?> get props => [_stateID];
+}
