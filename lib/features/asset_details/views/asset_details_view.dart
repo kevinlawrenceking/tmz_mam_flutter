@@ -293,7 +293,57 @@ class _AssetDetailsViewState extends State<AssetDetailsView> {
                           style: theme.textTheme.headlineMedium,
                         ),
                       ),
-                    const SizedBox(height: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        20.0,
+                        10.0,
+                        20.0,
+                        20.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'CATEGORIES:',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.textTheme.labelSmall?.color
+                                  ?.withOpacity(0.4),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 4.0),
+                          Text(
+                            model.categories.isNotEmpty
+                                ? model.categories.join(', ')
+                                : '-',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Text(
+                            'APPEARS IN:',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.textTheme.labelSmall?.color
+                                  ?.withOpacity(0.4),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 4.0),
+                          Text(
+                            model.appearsIn.isNotEmpty
+                                ? model.appearsIn.map((_) => _.name).join(', ')
+                                : '-',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Expanded(
                       child: Stack(
                         fit: StackFit.expand,
